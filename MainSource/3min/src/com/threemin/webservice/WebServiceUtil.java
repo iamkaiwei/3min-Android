@@ -51,8 +51,10 @@ public class WebServiceUtil {
 		String response = null;
 		URL myUrl = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) myUrl.openConnection();
+		con.setRequestProperty("Content-Type", "application/json");
 		con.setConnectTimeout(TIMEOUT_CONNECTION);
 		con.setReadTimeout(TIMEOUT_CONNECTION);
+		((HttpURLConnection) con).setRequestMethod("GET");
 		InputStream ins = con.getInputStream();
 		InputStreamReader isr = new InputStreamReader(ins);
 		BufferedReader in = new BufferedReader(isr);

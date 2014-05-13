@@ -1,9 +1,9 @@
 package com.threemin.app;
 
-import com.threemin.R;
-import com.threemin.R.id;
-import com.threemin.R.layout;
-import com.threemin.R.menu;
+import com.threemins.R;
+import com.threemins.R.id;
+import com.threemins.R.layout;
+import com.threemins.R.menu;
 
 import android.app.Activity;
 import android.app.ActionBar;
