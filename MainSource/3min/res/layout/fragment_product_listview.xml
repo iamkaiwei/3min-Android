@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/swipe" >
+
+    <za.co.immedia.pinnedheaderlistview.PinnedHeaderListView
+        android:id="@+id/lv_product"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" 
+        android:divider="@android:color/darker_gray">
+    </za.co.immedia.pinnedheaderlistview.PinnedHeaderListView>
+
+</android.support.v4.widget.SwipeRefreshLayout>

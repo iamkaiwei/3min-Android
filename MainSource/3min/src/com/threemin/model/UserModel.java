@@ -24,7 +24,7 @@ public class UserModel {
 	private String birthday;
 	private String udid;
 	private String role;
-	private String faebook_avatar;
+	private String facebook_avatar;
 	private ImageModel image;
 	
 	
@@ -148,12 +148,12 @@ public class UserModel {
 		this.role = role;
 	}
 
-	public String getFaebook_avatar() {
-		return faebook_avatar;
+	public String getFacebook_avatar() {
+		return facebook_avatar;
 	}
 
-	public void setFaebook_avatar(String faebook_avatar) {
-		this.faebook_avatar = faebook_avatar;
+	public void setFacebook_avatar(String faebook_avatar) {
+		this.facebook_avatar = faebook_avatar;
 	}
 
 }

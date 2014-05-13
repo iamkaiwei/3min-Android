@@ -6,6 +6,7 @@ import com.threemin.model.UserModel;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.util.Log;
 
 
 public class PreferenceHelper {
@@ -102,6 +103,7 @@ public class PreferenceHelper {
 	}
 
 	public void setTokken(String tokken){
+		Log.d("token", tokken);
 		putString(CommonConstant.PREF_TOKEN, tokken);
 	}
 	

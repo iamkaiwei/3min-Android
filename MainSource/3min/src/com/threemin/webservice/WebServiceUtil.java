@@ -12,6 +12,8 @@ import java.nio.charset.Charset;
 
 import org.json.JSONObject;
 
+import android.util.Log;
+
 
 public class WebServiceUtil {
 	public static final String tag = WebServiceUtil.class.getSimpleName();
@@ -20,6 +22,8 @@ public class WebServiceUtil {
 	
 
 	protected static String postJson(String link, JSONObject jo) throws Exception {
+		Log.d(tag, link);
+		Log.d(tag, jo.toString());
 		URL url = new URL(link);
 		URLConnection conn = url.openConnection();
 		conn.setConnectTimeout(TIMEOUT_CONNECTION);
@@ -44,10 +48,12 @@ public class WebServiceUtil {
 		while ((inputLine = in.readLine()) != null) {
 			result += inputLine;
 		}
+		Log.d(tag, result);
 		return result;
 	}
 
 	protected static String getData(String url) throws Exception {
+		Log.d(tag, url);
 		String response = null;
 		URL myUrl = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) myUrl.openConnection();
@@ -65,6 +71,7 @@ public class WebServiceUtil {
 		}
 		in.close();
 		response = temp;
+		Log.d(tag, response);
 		return response;
 	}
 	
