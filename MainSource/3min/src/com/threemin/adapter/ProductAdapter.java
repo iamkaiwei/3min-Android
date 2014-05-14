@@ -110,6 +110,7 @@ public class ProductAdapter extends SectionedBaseAdapter {
 		ProductModel model = data.get(section);
 
 		ImageView image = (ImageView) convertView.findViewById(R.id.inflater_heeader_product_image);
+		Log.d("facebook_avatar",model.getOwner().getFacebook_avatar());
 		UrlImageViewHelper.setUrlDrawable(image, model.getOwner().getFacebook_avatar());
 		
 		TextView tv_name = (TextView) convertView.findViewById(R.id.inflater_heeader_product_tv_name);

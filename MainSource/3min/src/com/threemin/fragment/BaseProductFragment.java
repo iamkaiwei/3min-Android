@@ -29,6 +29,7 @@ public abstract class BaseProductFragment extends Fragment {
 
 	public void setCategoryData(CategoryModel model) {
 		currentCate = model;
+		new GetProductTaks().execute(STEP_INIT);
 	}
 
 	public void setProductModels(List<ProductModel> productModels) {
@@ -77,6 +78,8 @@ public abstract class BaseProductFragment extends Fragment {
 					updateUI();
 				} else {
 				}
+			} else if(currentStep==STEP_INIT){
+				setProductModels(result);
 			}
 		}
 	}

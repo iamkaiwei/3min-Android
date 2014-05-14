@@ -1,24 +1,11 @@
 package com.threemin.app;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
-
-import com.threemin.adapter.CategoryAdapter;
-import com.threemin.fragment.ProductFragmentList;
-import com.threemin.model.CategoryModel;
-import com.threemin.uti.CommonUti;
-import com.threemin.webservice.AuthorizeWebservice;
-import com.threemin.webservice.CategoryWebservice;
-import com.threemins.R;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Context;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
-import android.content.pm.Signature;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -26,11 +13,20 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Base64;
-import android.util.Log;
-import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+
+import com.threemin.adapter.CategoryAdapter;
+import com.threemin.fragment.BaseProductFragment;
+import com.threemin.fragment.ProductFragmentList;
+import com.threemin.model.CategoryModel;
+import com.threemin.uti.CommonUti;
+import com.threemin.webservice.AuthorizeWebservice;
+import com.threemin.webservice.CategoryWebservice;
+import com.threemins.R;
 
 public class HomeActivity extends Activity {
 
@@ -40,6 +36,7 @@ public class HomeActivity extends Activity {
 	DrawerLayout layout;
 	String fb_tokken = "CAACq3f9R9LsBAF6tNZBLDg3eGnXQPrwQLnSVjZCVIt4AZBnxvKhebLWBk65ZAGarUElG5ZC4vZBmP0ECYILkBhNEqzkzxX4BOZBY0DHEi4rN3GcuGqfx6EqWjAeE1ZAZApYUhe4aEIYqvauu393iTJ9k5sIC5Gyc4atubV9xCNxNthB1PhaUPEwZAZAZCycHweGqM9ZCe6ivJk3LfjaU9DZBmRFjO1kvYN05O2TrvqwrheoYp7lgZDZD";
 	ActionBarDrawerToggle mDrawerToggle;
+	BaseProductFragment currentFragment;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -52,7 +49,20 @@ public class HomeActivity extends Activity {
 		new InitCategory().execute();
 		productFragmentList = new ProductFragmentList();
 		getFragmentManager().beginTransaction().replace(R.id.content_fragment, productFragmentList).commit();
+		currentFragment=productFragmentList;
+		lvCategory.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				CategoryModel categoryModel=(CategoryModel) lvCategory.getItemAtPosition(arg2);
+				currentFragment.setCategoryData(categoryModel);
+				layout.closeDrawer(lvCategory);
+				getActionBar().setTitle(categoryModel.getName());
+			}
+		});
 	}
+	
 
 	private class InitCategory extends AsyncTask<Void, Void, List<CategoryModel>> {
 		@Override
@@ -116,6 +126,17 @@ public class HomeActivity extends Activity {
         super.onConfigurationChanged(newConfig);
         // Pass any configuration change to the drawer toggls
         mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Pass the event to ActionBarDrawerToggle, if it returns
+        // true, then it has handled the app icon touch event
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+          return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 	
 }

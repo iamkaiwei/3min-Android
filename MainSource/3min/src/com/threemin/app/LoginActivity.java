@@ -1,11 +1,11 @@
 package com.threemin.app;
 
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v13.app.FragmentStatePagerAdapter;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
@@ -24,7 +24,7 @@ import com.facebook.model.GraphUser;
 import com.threemins.R;
 import com.threemin.fragment.SlidePageFragment;
 
-public class LoginActivity extends Activity {
+public class LoginActivity extends FragmentActivity {
 	
 	private static final int NUM_PAGES = 3;
 	
@@ -51,7 +51,7 @@ public class LoginActivity extends Activity {
         mImgLoading3.setImageResource(R.drawable.loading_2);
 
         mViewPager = (ViewPager) findViewById(R.id.pager);
-        mAdapter = new SlidePagerAdapter(getFragmentManager());
+        mAdapter = new SlidePagerAdapter(getSupportFragmentManager());
         if (mAdapter == null) {
 			Toast.makeText(this, "Null", Toast.LENGTH_LONG).show();
 		}
@@ -132,7 +132,7 @@ public class LoginActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    private class SlidePagerAdapter extends FragmentStatePagerAdapter {
+    private class SlidePagerAdapter extends android.support.v4.app.FragmentStatePagerAdapter {
 
 		public SlidePagerAdapter(FragmentManager fm) {
 			super(fm);

@@ -24,6 +24,7 @@ public class UserModel {
 	private String birthday;
 	private String udid;
 	private String role;
+	@SerializedName("avatar")
 	private String facebook_avatar;
 	private ImageModel image;
 	
