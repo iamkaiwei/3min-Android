@@ -1,7 +1,10 @@
 package com.threemin.app;
 
 import android.app.Activity;
+
+import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -23,8 +26,13 @@ import com.facebook.SessionState;
 import com.facebook.model.GraphUser;
 import com.threemins.R;
 import com.threemin.fragment.SlidePageFragment;
+import com.threemin.model.UserModel;
+import com.threemin.uti.CommonUti;
+import com.threemin.webservice.AuthorizeWebservice;
 
 public class LoginActivity extends FragmentActivity {
+	
+	Context mContext;
 	
 	private static final int NUM_PAGES = 3;
 	
@@ -41,6 +49,8 @@ public class LoginActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        
+        mContext = this;
         
         mImgLoading1 = (ImageView) findViewById(R.id.img_login_loading_1);
         mImgLoading2 = (ImageView) findViewById(R.id.img_login_loading_2);
@@ -110,9 +120,13 @@ public class LoginActivity extends FragmentActivity {
 //
 //        }
         //=========================================================================
+        Session session = Session.getActiveSession();
+        if (session != null && session.isOpened()) {
+        	doLogin(session.getAccessToken());
+		}
     }
 
-    @Override
+	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -151,9 +165,31 @@ public class LoginActivity extends FragmentActivity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
-		Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
+		Session session = Session.getActiveSession();
+		session.onActivityResult(this, requestCode, resultCode, data);
+		doLogin(session.getAccessToken());
+	}
+	
+	private void doLogin(String accessToken) {
+		new StartingHomeActivity().execute(accessToken);
+	}
+	
+	private class StartingHomeActivity extends AsyncTask<String, Void, UserModel> {
+
+		@Override
+		protected UserModel doInBackground(String... params) {
+			try {
+				UserModel user = new AuthorizeWebservice().login(params[0], CommonUti.getDeviceId(mContext), mContext);
+				Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+				startActivity(intent);
+				return user;
+			} catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+		}
+		
 	}
 
 }

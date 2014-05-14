@@ -34,7 +34,6 @@ public class HomeActivity extends Activity {
 	ListView lvCategory;
 	ProductFragmentList productFragmentList;
 	DrawerLayout layout;
-	String fb_tokken = "CAACq3f9R9LsBAF6tNZBLDg3eGnXQPrwQLnSVjZCVIt4AZBnxvKhebLWBk65ZAGarUElG5ZC4vZBmP0ECYILkBhNEqzkzxX4BOZBY0DHEi4rN3GcuGqfx6EqWjAeE1ZAZApYUhe4aEIYqvauu393iTJ9k5sIC5Gyc4atubV9xCNxNthB1PhaUPEwZAZAZCycHweGqM9ZCe6ivJk3LfjaU9DZBmRFjO1kvYN05O2TrvqwrheoYp7lgZDZD";
 	ActionBarDrawerToggle mDrawerToggle;
 	BaseProductFragment currentFragment;
 	@Override
@@ -73,7 +72,6 @@ public class HomeActivity extends Activity {
 		@Override
 		protected List<CategoryModel> doInBackground(Void... arg0) {
 			try {
-				new AuthorizeWebservice().login(fb_tokken, CommonUti.getDeviceId(mContext), mContext);
 				return CategoryWebservice.getInstance().getAllCategory(mContext);
 			} catch (Exception e) {
 				e.printStackTrace();
