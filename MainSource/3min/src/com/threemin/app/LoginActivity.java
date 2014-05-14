@@ -24,7 +24,7 @@ import com.facebook.model.GraphUser;
 import com.threemin.R;
 import com.threemin.fragment.SlidePageFragment;
 
-public class LoginActivity extends Activity implements OnClickListener {
+public class LoginActivity extends Activity {
 	
 	private static final int NUM_PAGES = 3;
 	
@@ -35,7 +35,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 	ImageView mImgLoading2;
 	ImageView mImgLoading3;
 	
-	Button mBtnLoginFB;
+//	Button mBtnLoginFB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,9 +49,6 @@ public class LoginActivity extends Activity implements OnClickListener {
         mImgLoading1.setImageResource(R.drawable.loading_1);
         mImgLoading2.setImageResource(R.drawable.loading_2);
         mImgLoading3.setImageResource(R.drawable.loading_2);
-        
-        mBtnLoginFB = (Button) findViewById(R.id.btn_login_facebook);
-        mBtnLoginFB.setOnClickListener(this);
 
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mAdapter = new SlidePagerAdapter(getFragmentManager());
@@ -115,7 +112,6 @@ public class LoginActivity extends Activity implements OnClickListener {
         //=========================================================================
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         
@@ -153,48 +149,11 @@ public class LoginActivity extends Activity implements OnClickListener {
 		}
     }
 
-    //listener for buttons
-	@Override
-	public void onClick(View v) {
-		switch (v.getId()) {
-		case R.id.btn_login_facebook:
-			doLoginFacebook();
-			break;
-
-		default:
-			break;
-		}
-	}
-
-
-	private void doLoginFacebook() {
-		Session.openActiveSession(this, true, new Session.StatusCallback() {
-			
-			@Override
-			public void call(Session session, SessionState state, Exception exception) {
-				if (session.isOpened()) {
-					Request.newMeRequest(session, new Request.GraphUserCallback() {
-						
-						@Override
-						public void onCompleted(GraphUser user, Response response) {
-							if (user != null) {
-								Toast.makeText(LoginActivity.this, "Hello " + user.getName(), Toast.LENGTH_LONG).show();
-							}
-						}
-					}).executeAsync();
-				}
-			}
-		});
-	}
-
-
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
 		Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
 	}
-	
-	
 
 }
