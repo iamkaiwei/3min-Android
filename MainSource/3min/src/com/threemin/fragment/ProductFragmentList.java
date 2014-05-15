@@ -13,9 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.ListView;
 
 public class ProductFragmentList extends BaseProductFragment {
-	PinnedHeaderListView list;
+	ListView list;
 	ProductAdapter adapter;
 
 	public ProductFragmentList() {
@@ -26,7 +27,7 @@ public class ProductFragmentList extends BaseProductFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_product_listview, null);
 		swipeLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe);
-		list = (PinnedHeaderListView) v.findViewById(R.id.lv_product);
+		list = (ListView) v.findViewById(R.id.lv_product);
 		page = 1;
 		initListner();
 		new GetProductTaks().execute(BaseProductFragment.STEP_INIT);

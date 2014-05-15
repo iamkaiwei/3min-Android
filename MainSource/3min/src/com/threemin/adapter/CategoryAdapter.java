@@ -46,7 +46,7 @@ public class CategoryAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		if (convertView == null) {
 			LayoutInflater inflater=LayoutInflater.from(mContext);
-			convertView=inflater.inflate(R.layout.inflater_category, null);
+			convertView=inflater.inflate(R.layout.inflater_category, parent, false);
 		}
 		ImageView img=(ImageView) convertView.findViewById(R.id.inflater_cate_image);
 		UrlImageViewHelper.setUrlDrawable(img, data.get(position).getImage().getUrl());

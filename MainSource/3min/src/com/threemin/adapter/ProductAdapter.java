@@ -94,13 +94,13 @@ public class ProductAdapter extends SectionedBaseAdapter {
 
 	@Override
 	public View getSectionHeaderView(int section, View convertView, ViewGroup parent) {
-		RelativeLayout layout = null;
+		LinearLayout layout = null;
 		if (convertView == null) {
 			LayoutInflater inflator = (LayoutInflater) parent.getContext().getSystemService(
 					Context.LAYOUT_INFLATER_SERVICE);
-			layout = (RelativeLayout) inflator.inflate(R.layout.inflater_header, null);
+			layout = (LinearLayout) inflator.inflate(R.layout.inflater_header, null);
 		} else {
-			layout = (RelativeLayout) convertView;
+			layout = (LinearLayout) convertView;
 		}
 		initHeaderView(section, layout);
 		return layout;
