@@ -14,12 +14,13 @@
         android:adjustViewBounds="true"
          />
 
+
     <TextView
         android:id="@+id/inflater_cate_tv_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:background="@android:color/black"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_weight="4" />
 
     <ImageView
