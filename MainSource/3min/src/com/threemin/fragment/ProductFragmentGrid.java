@@ -40,7 +40,8 @@ public class ProductFragmentGrid extends BaseProductFragment {
 		mGrid.setAdapter(mAdapter);
 		
 		page = 1;
-		if (this.productModels == null || this.productModels.isEmpty()) {
+
+		if(productModels==null||productModels.isEmpty()){
 			new GetProductTaks(ProductFragmentGrid.this).execute(BaseProductFragment.STEP_INIT);
 		}
 		

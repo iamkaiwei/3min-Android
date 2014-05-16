@@ -11,7 +11,7 @@
     <dimen name="login_screen_btn_login_fb_margin_left_right">3dp</dimen>
     <dimen name="login_screen_btn_login_fb_margin_bottom">5dp</dimen>
     
-    <dimen name="login_screen_btn_login_google_plus_text_size">8dp</dimen>
+    <dimen name="login_screen_btn_login_google_plus_text_size">10sp</dimen>
     
     <dimen name="login_screen_img_loading_margin_left_right">10dp</dimen>
     <dimen name="login_screen_img_loading_margin_bottom">10dp</dimen>

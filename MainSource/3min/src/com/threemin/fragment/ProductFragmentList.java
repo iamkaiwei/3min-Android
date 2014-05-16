@@ -22,7 +22,7 @@ import android.widget.ListView;
 public class ProductFragmentList extends BaseProductFragment {
 	ListView list;
 	ProductAdapter adapter;
-
+	int thelasttotalCount;
 	public ProductFragmentList() {
 		super();
 	}
@@ -40,8 +40,8 @@ public class ProductFragmentList extends BaseProductFragment {
 		
 		page = 1;
 		initListner();
-		
-		if (this.productModels == null) {
+
+		if(productModels==null||productModels.isEmpty()){
 			new GetProductTaks(this).execute(BaseProductFragment.STEP_INIT);
 		}
 		return v;
@@ -65,8 +65,10 @@ public class ProductFragmentList extends BaseProductFragment {
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 				boolean loadMore = firstVisibleItem + visibleItemCount >= totalItemCount - 1;
-				if (loadMore) {
+				if (loadMore && totalItemCount>1 && thelasttotalCount!=totalItemCount) {
 					page++;
+					Log.d("loadmore", "loadmore page="+page);
+					thelasttotalCount=totalItemCount;
 					new GetProductTaks(ProductFragmentList.this).execute(BaseProductFragment.STEP_ADDMORE);
 				}
 			}

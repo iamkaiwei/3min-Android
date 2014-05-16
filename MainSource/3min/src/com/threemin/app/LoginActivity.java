@@ -15,6 +15,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -411,7 +412,7 @@ public class LoginActivity extends FragmentActivity implements ConnectionCallbac
 	        if (v instanceof TextView) {
 	            TextView mTextView = (TextView) v;
 	            mTextView.setText(buttonText);
-	            mTextView.setTextSize(getResources().getDimension(R.dimen.login_screen_btn_login_google_plus_text_size));
+	            mTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
 	            return;
 	        }
 	    }

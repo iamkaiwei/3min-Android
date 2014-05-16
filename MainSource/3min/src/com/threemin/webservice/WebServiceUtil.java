@@ -48,6 +48,7 @@ public class WebServiceUtil {
 		while ((inputLine = in.readLine()) != null) {
 			result += inputLine;
 		}
+		in.close();
 		Log.d(tag, result);
 		return result;
 	}
@@ -70,6 +71,8 @@ public class WebServiceUtil {
 			temp += inputLine;
 		}
 		in.close();
+		isr.close();
+		ins.close();
 		response = temp;
 		Log.d(tag, response);
 		return response;

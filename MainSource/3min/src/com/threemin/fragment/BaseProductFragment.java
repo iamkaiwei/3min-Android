@@ -37,8 +37,20 @@ public abstract class BaseProductFragment extends Fragment {
 		updateUI();
 	}
 	
-	public List<ProductModel> getProductModels() {
-		return this.productModels;
+	public CategoryModel getcurrenCate(){
+		return currentCate;
+	}
+	
+	public List<ProductModel> getListpProductModels(){
+		return productModels;
+	}
+	
+	public int getCurrentPage(){
+		return page;
+	}
+	
+	public void setCurrentPage(int currentPage){
+		page=currentPage;
 	}
 
 	public static class GetProductTaks extends AsyncTask<Integer, Void, List<ProductModel>> {
@@ -97,6 +109,7 @@ public abstract class BaseProductFragment extends Fragment {
 					baseProductFragment.updateUI();
 				} else {
 				}
+
 			} else if(currentStep==STEP_INIT){
 				baseProductFragment.setProductModels(result);
 			}
