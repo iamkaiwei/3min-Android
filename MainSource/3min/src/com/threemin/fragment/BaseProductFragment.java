@@ -36,6 +36,10 @@ public abstract class BaseProductFragment extends Fragment {
 		this.productModels = productModels;
 		updateUI();
 	}
+	
+	public List<ProductModel> getProductModels() {
+		return this.productModels;
+	}
 
 	public static class GetProductTaks extends AsyncTask<Integer, Void, List<ProductModel>> {
 		int currentStep;

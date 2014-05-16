@@ -199,13 +199,13 @@ public class HomeActivity extends Activity {
 			if (mModeView == MODE_LIST_VIEW) { 
 				mModeView = MODE_GRID_VIEW;
 				item.setIcon(R.drawable.ic_listview);
-				productFragmentGrid.updateData(productFragmentList.getData());
+				productFragmentGrid.setProductModels(productFragmentList.getProductModels());
 				getFragmentManager().beginTransaction().replace(R.id.content_fragment, productFragmentGrid).commit();
 				currentFragment = productFragmentGrid;
 			} else { 
 				mModeView = MODE_LIST_VIEW;
 				item.setIcon(R.drawable.ic_gridview);
-				productFragmentList.updateData(productFragmentGrid.getData());
+				productFragmentList.setProductModels(productFragmentGrid.getProductModels());
 				getFragmentManager().beginTransaction().replace(R.id.content_fragment, productFragmentList).commit();
 				currentFragment = productFragmentList;
 			}

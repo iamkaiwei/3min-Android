@@ -9,7 +9,7 @@
     <ImageView
         android:id="@+id/inflater_body_product_grid_image"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="150dp"
         android:scaleType="fitXY" />
 
     <LinearLayout

@@ -40,8 +40,9 @@ public class ProductFragmentGrid extends BaseProductFragment {
 		mGrid.setAdapter(mAdapter);
 		
 		page = 1;
-		
-		new GetProductTaks(ProductFragmentGrid.this).execute(BaseProductFragment.STEP_INIT);
+		if (this.productModels == null || this.productModels.isEmpty()) {
+			new GetProductTaks(ProductFragmentGrid.this).execute(BaseProductFragment.STEP_INIT);
+		}
 		
 		initListner();
 		return v;
@@ -85,13 +86,4 @@ public class ProductFragmentGrid extends BaseProductFragment {
 		} 
 		mAdapter.updateData(productModels);
 	}
-	
-	public void updateData(List<ProductModel> newData) {
-		setProductModels(newData);
-	}
-	
-	public List<ProductModel> getData() {
-		return this.productModels;
-	}
-
 }

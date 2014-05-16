@@ -40,9 +40,10 @@ public class ProductFragmentList extends BaseProductFragment {
 		
 		page = 1;
 		initListner();
-	
-		new GetProductTaks(this).execute(BaseProductFragment.STEP_INIT);
 		
+		if (this.productModels == null) {
+			new GetProductTaks(this).execute(BaseProductFragment.STEP_INIT);
+		}
 		return v;
 	}
 
@@ -79,13 +80,4 @@ public class ProductFragmentList extends BaseProductFragment {
 		} 
 		adapter.updateData(productModels);
 	}
-	
-	public void updateData(List<ProductModel> newData) {
-		setProductModels(newData);
-	}
-	
-	public List<ProductModel> getData() {
-		return this.productModels;
-	}
-
 }
