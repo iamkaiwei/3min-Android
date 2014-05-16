@@ -10,13 +10,17 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:src="@drawable/ic_launcher" />
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+         />
+
 
     <TextView
         android:id="@+id/inflater_cate_tv_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_weight="4" />
 
     <ImageView

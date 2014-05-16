@@ -108,7 +108,7 @@ public class PreferenceHelper {
 	}
 	
 	public String getTokken(){
-		return getString(CommonConstant.PREF_TOKEN, "720da8de7f8f030804b6f169f2d1210b18223892ae590fd79db89db0cfa40d72"); //for testing only
+		return getString(CommonConstant.PREF_TOKEN, "");
 	}
 	
 	public void setCurrentUser(String currentUser){

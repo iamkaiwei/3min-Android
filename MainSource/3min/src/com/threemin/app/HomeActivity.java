@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
@@ -23,6 +24,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.threemin.adapter.CategoryAdapter;
@@ -38,7 +40,7 @@ public class HomeActivity extends Activity {
 	Context mContext;
 	ListView lvCategory;
 	ProductFragmentList productFragmentList;
-	DrawerLayout layout;
+	DrawerLayout drawerLayout;
 	ActionBarDrawerToggle mDrawerToggle;
 	BaseProductFragment currentFragment;
 
@@ -59,7 +61,7 @@ public class HomeActivity extends Activity {
 		setContentView(R.layout.activity_home);
 		mContext = this;
 		lvCategory = (ListView) findViewById(R.id.home_left_drawer);
-		layout = (DrawerLayout) findViewById(R.id.drawer_layout);
+		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		initActionBar();
 		new InitCategory().execute();
 		
@@ -81,7 +83,7 @@ public class HomeActivity extends Activity {
 				CategoryModel categoryModel = (CategoryModel) lvCategory
 						.getItemAtPosition(arg2);
 				currentFragment.setCategoryData(categoryModel);
-				layout.closeDrawer(lvCategory);
+				drawerLayout.closeDrawer(lvCategory);
 				getActionBar().setTitle(categoryModel.getName());
 			}
 		});
@@ -134,7 +136,7 @@ public class HomeActivity extends Activity {
 
 	private void initActionBar() {
 		mDrawerToggle = new ActionBarDrawerToggle(this, /* host Activity */
-		layout, /* DrawerLayout object */
+		drawerLayout, /* DrawerLayout object */
 		R.drawable.navigation_icon, /* nav drawer image to replace 'Up' caret */
 		R.string.app_name, /* "open drawer" description for accessibility */
 		R.string.app_name /* "close drawer" description for accessibility */
@@ -147,14 +149,21 @@ public class HomeActivity extends Activity {
 				// onPrepareOptionsMenu()
 			}
 		};
-		layout.setDrawerListener(mDrawerToggle);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setHomeButtonEnabled(true);
 
 		ActionBar bar = getActionBar();
 		bar.setBackgroundDrawable(new ColorDrawable(Color
 				.parseColor(getString(R.color.orange))));
-		bar.setDisplayShowHomeEnabled(false);
+		bar.setIcon(new ColorDrawable(Color.TRANSPARENT));
+		
+		int actionBarTitleId = Resources.getSystem().getIdentifier("action_bar_title", "id", "android");
+		if (actionBarTitleId > 0) {
+		    TextView title = (TextView) findViewById(actionBarTitleId);
+		    if (title != null) {
+		        title.setTextColor(Color.WHITE);
+		    }
+		}
 	}
 
 	@Override
