@@ -33,6 +33,9 @@ public class ProductAdapter extends SectionedBaseAdapter {
 
 	@Override
 	public Object getItem(int section, int position) {
+		if(data==null){
+			return null;
+		}
 		return data.get(section);
 	}
 
@@ -43,6 +46,9 @@ public class ProductAdapter extends SectionedBaseAdapter {
 
 	@Override
 	public int getSectionCount() {
+		if (data == null) {
+			return 0;
+		}
 		return data.size();
 	}
 
@@ -69,7 +75,9 @@ public class ProductAdapter extends SectionedBaseAdapter {
 		ProductModel model = data.get(section);
 
 		ImageView image = (ImageView) convertView.findViewById(R.id.inflater_body_product_image);
-		UrlImageViewHelper.setUrlDrawable(image, model.getImages().get(0).getMedium());
+		if (model.getImages().size() > 0) {
+			UrlImageViewHelper.setUrlDrawable(image, model.getImages().get(0).getMedium());
+		}
 
 		TextView tv_name = (TextView) convertView.findViewById(R.id.inflater_body_product_tv_name);
 		tv_name.setText(model.getName());
@@ -110,16 +118,14 @@ public class ProductAdapter extends SectionedBaseAdapter {
 		ProductModel model = data.get(section);
 
 		ImageView image = (ImageView) convertView.findViewById(R.id.inflater_heeader_product_image);
-		Log.d("facebook_avatar",model.getOwner().getFacebook_avatar());
 		UrlImageViewHelper.setUrlDrawable(image, model.getOwner().getFacebook_avatar());
-		
+
 		TextView tv_name = (TextView) convertView.findViewById(R.id.inflater_heeader_product_tv_name);
 		tv_name.setText(model.getOwner().getFullName());
-		
+
 		TextView tv_time = (TextView) convertView.findViewById(R.id.inflater_heeader_product_tv_time);
-		Log.d("update", ""+model.getUpdateTime());
-		Log.d("curren",""+ System.currentTimeMillis());
-		tv_time.setText(DateUtils.getRelativeTimeSpanString(model.getUpdateTime()*1000, System.currentTimeMillis(), 0L,DateUtils.FORMAT_ABBREV_RELATIVE));
+		tv_time.setText(DateUtils.getRelativeTimeSpanString(model.getUpdateTime() * 1000, System.currentTimeMillis(),
+				0L, DateUtils.FORMAT_ABBREV_RELATIVE));
 	}
 
 }

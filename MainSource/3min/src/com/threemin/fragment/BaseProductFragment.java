@@ -39,7 +39,6 @@ public abstract class BaseProductFragment extends Fragment {
 
 	public class GetProductTaks extends AsyncTask<Integer, Void, List<ProductModel>> {
 		int currentStep;
-
 		@Override
 		protected void onPreExecute() {
 			// TODO Auto-generated method stub
@@ -78,9 +77,11 @@ public abstract class BaseProductFragment extends Fragment {
 					updateUI();
 				} else {
 				}
-			} else if(currentStep==STEP_INIT){
+			} else{ 
+				if(currentStep==STEP_INIT){
 				setProductModels(result);
-			}
+				}
+			} 
 		}
 	}
 
