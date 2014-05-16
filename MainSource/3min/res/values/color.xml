@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="orange">#FE7C42</color>
+    <color name="gridview_orange">#FC3308</color>
+    <color name="fragment_product_gridview_bg">#E6E6E6</color>
 </resources>

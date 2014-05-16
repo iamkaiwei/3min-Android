@@ -14,6 +14,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -26,6 +29,7 @@ import android.widget.Toast;
 
 import com.threemin.adapter.CategoryAdapter;
 import com.threemin.fragment.BaseProductFragment;
+import com.threemin.fragment.ProductFragmentGrid;
 import com.threemin.fragment.ProductFragmentList;
 import com.threemin.model.CategoryModel;
 import com.threemin.webservice.CategoryWebservice;
@@ -41,6 +45,14 @@ public class HomeActivity extends Activity {
 	BaseProductFragment currentFragment;
 
 	ImageButton btn_browse, btn_search, btn_sell, btn_activity, btn_me;
+	
+	//add grid view
+	ProductFragmentGrid productFragmentGrid;
+	
+	//view mode: list view or grid view
+	public static final int MODE_LIST_VIEW = 1;
+	public static final int MODE_GRID_VIEW = 2;
+	public int mModeView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -52,10 +64,17 @@ public class HomeActivity extends Activity {
 		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		initActionBar();
 		new InitCategory().execute();
+		
+		//init: list of products is shown in list view:
+		mModeView = MODE_LIST_VIEW;
 		productFragmentList = new ProductFragmentList();
 		getFragmentManager().beginTransaction()
 				.replace(R.id.content_fragment, productFragmentList).commit();
 		currentFragment = productFragmentList;
+		
+		//create the fragment to switch between grid view and list view
+		productFragmentGrid = new ProductFragmentGrid();
+		
 		lvCategory.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
@@ -160,6 +179,13 @@ public class HomeActivity extends Activity {
 		// Pass any configuration change to the drawer toggls
 		mDrawerToggle.onConfigurationChanged(newConfig);
 	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.menu_switch_view, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -168,7 +194,26 @@ public class HomeActivity extends Activity {
 		if (mDrawerToggle.onOptionsItemSelected(item)) {
 			return true;
 		}
-
+		
+		if (item.getItemId() == R.id.action_switch_view) {
+			if (mModeView == MODE_LIST_VIEW) { 
+				mModeView = MODE_GRID_VIEW;
+				item.setIcon(R.drawable.ic_listview);
+				productFragmentGrid.setCategoryData(productFragmentList.getcurrenCate());
+				productFragmentGrid.setProductModels(productFragmentList.getListpProductModels());
+				productFragmentGrid.setCurrentPage(productFragmentList.getCurrentPage());
+				getFragmentManager().beginTransaction().replace(R.id.content_fragment, productFragmentGrid).commit();
+				currentFragment = productFragmentGrid;
+			} else { 
+				mModeView = MODE_LIST_VIEW;
+				item.setIcon(R.drawable.ic_gridview);
+				productFragmentList.setCategoryData(productFragmentGrid.getcurrenCate());
+				productFragmentList.setProductModels(productFragmentGrid.getListpProductModels());
+				productFragmentList.setCurrentPage(productFragmentGrid.getCurrentPage());
+				getFragmentManager().beginTransaction().replace(R.id.content_fragment, productFragmentList).commit();
+				currentFragment = productFragmentList;
+			}
+		}
 		return super.onOptionsItemSelected(item);
 	}
 

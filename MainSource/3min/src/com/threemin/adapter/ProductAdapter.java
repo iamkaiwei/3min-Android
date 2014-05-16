@@ -25,6 +25,10 @@ public class ProductAdapter extends SectionedBaseAdapter {
 	public ProductAdapter(List<ProductModel> data) {
 		this.data = data;
 	}
+	
+	public List<ProductModel> getListProducts() {
+		return this.data;
+	}
 
 	public void updateData(List<ProductModel> data) {
 		this.data = data;

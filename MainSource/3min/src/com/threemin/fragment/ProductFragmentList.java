@@ -1,8 +1,11 @@
 package com.threemin.fragment;
 
+import java.util.List;
+
 import za.co.immedia.pinnedheaderlistview.PinnedHeaderListView;
 
 import com.threemin.adapter.ProductAdapter;
+import com.threemin.model.ProductModel;
 import com.threemins.R;
 
 import android.os.Bundle;
@@ -28,10 +31,18 @@ public class ProductFragmentList extends BaseProductFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_product_listview, null);
 		swipeLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe);
-		list = (ListView) v.findViewById(R.id.lv_product);
+		list = (PinnedHeaderListView) v.findViewById(R.id.lv_product);
+		
+		if (adapter == null) {
+			adapter = new ProductAdapter(productModels);
+		}
+		list.setAdapter(adapter);
+		
 		page = 1;
 		initListner();
-		new GetProductTaks().execute(BaseProductFragment.STEP_INIT);
+		if(productModels==null||productModels.isEmpty()){
+		new GetProductTaks(this).execute(BaseProductFragment.STEP_INIT);
+		}
 		return v;
 	}
 
@@ -40,14 +51,13 @@ public class ProductFragmentList extends BaseProductFragment {
 
 			@Override
 			public void onRefresh() {
-				new GetProductTaks().execute(BaseProductFragment.STEP_REFRESH);
+				new GetProductTaks(ProductFragmentList.this).execute(BaseProductFragment.STEP_REFRESH);
 			}
 		});
 		list.setOnScrollListener(new OnScrollListener() {
 
 			@Override
 			public void onScrollStateChanged(AbsListView view, int scrollState) {
-				// TODO Auto-generated method stub
 
 			}
 
@@ -58,7 +68,7 @@ public class ProductFragmentList extends BaseProductFragment {
 					page++;
 					Log.d("loadmore", "loadmore page="+page);
 					thelasttotalCount=totalItemCount;
-					new GetProductTaks().execute(BaseProductFragment.STEP_ADDMORE);
+					new GetProductTaks(ProductFragmentList.this).execute(BaseProductFragment.STEP_ADDMORE);
 				}
 			}
 		});
@@ -68,11 +78,16 @@ public class ProductFragmentList extends BaseProductFragment {
 	protected void updateUI() {
 		if (adapter == null) {
 			adapter = new ProductAdapter(productModels);
-			list.setAdapter(adapter);
-			;
-		} else {
-			adapter.updateData(productModels);
-		}
+		} 
+		adapter.updateData(productModels);
+	}
+	
+	public void updateData(List<ProductModel> newData) {
+		setProductModels(newData);
+	}
+	
+	public List<ProductModel> getData() {
+		return this.productModels;
 	}
 
 }

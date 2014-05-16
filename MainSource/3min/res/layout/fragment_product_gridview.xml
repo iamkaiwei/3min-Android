@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/swipe_gridview"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <GridView
+        android:id="@+id/gv_product"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@android:color/darker_gray"
+        android:numColumns="2"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="@dimen/fragment_product_grudview_spacing"
+        android:horizontalSpacing="@dimen/fragment_product_grudview_spacing"
+    	android:paddingLeft="@dimen/fragment_product_grudview_spacing"
+    	android:paddingRight="@dimen/fragment_product_grudview_spacing"
+    	android:background="@color/fragment_product_gridview_bg" >
+    </GridView>
+
+</android.support.v4.widget.SwipeRefreshLayout>

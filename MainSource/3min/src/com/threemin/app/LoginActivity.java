@@ -18,6 +18,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.Session;
@@ -152,15 +154,22 @@ public class LoginActivity extends FragmentActivity implements ConnectionCallbac
 
 			}
 		});
+        
+        //prepare for login G+
+        mBtnLoginGooglePlus = (SignInButton) findViewById(R.id.btn_login_google_plus);
+        mBtnLoginGooglePlus.setOnClickListener(this);
+        setGooglePlusButtonText(mBtnLoginGooglePlus, getResources().getString(R.string.activity_login_btn_login_gg));
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+        	.addConnectionCallbacks(this)
+        	.addOnConnectionFailedListener(this)
+        	.addApi(Plus.API, null)
+        	.addScope(Plus.SCOPE_PLUS_PROFILE)
+        	.build();
 
-		// prepare for login G+
-		mBtnLoginGooglePlus = (SignInButton) findViewById(R.id.btn_login_google_plus);
-		mBtnLoginGooglePlus.setOnClickListener(this);
-		mGoogleApiClient = new GoogleApiClient.Builder(this).addConnectionCallbacks(this)
-				.addOnConnectionFailedListener(this).addApi(Plus.API, null).addScope(Plus.SCOPE_PLUS_PROFILE).build();
-		Session session = Session.getActiveSession();
-		if (session != null && session.isOpened()) {
-			doLogin(session.getAccessToken());
+        //check if user has logged in with facebook
+        Session session = Session.getActiveSession();
+        if (session != null && session.isOpened()) {
+        	doLogin(session.getAccessToken());
 		}
 	}
 
@@ -196,8 +205,6 @@ public class LoginActivity extends FragmentActivity implements ConnectionCallbac
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		if (requestCode == RC_SIGN_IN) {
-
 			if (requestCode == RC_SIGN_IN) {
 				if (resultCode != RESULT_OK) {
 					mSignInClicked = false;
@@ -208,7 +215,6 @@ public class LoginActivity extends FragmentActivity implements ConnectionCallbac
 				if (!mGoogleApiClient.isConnecting()) {
 					mGoogleApiClient.connect();
 				}
-			}
 		} else if (requestCode == MY_ACTIVITYS_AUTH_REQUEST_CODE) {
 			if (resultCode == RESULT_OK) {
 				getGooglePlusToken();
@@ -377,7 +383,7 @@ public class LoginActivity extends FragmentActivity implements ConnectionCallbac
 
 			return gg_token;
 		}
-
+		
 		@Override
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
@@ -396,5 +402,20 @@ public class LoginActivity extends FragmentActivity implements ConnectionCallbac
 			}
 		}
 	}
+
+	
+	//method set text to SignInButton of Google +
+	protected void setGooglePlusButtonText(SignInButton signInButton, String buttonText) {
+	    for (int i = 0; i < signInButton.getChildCount(); i++) {
+	        View v = signInButton.getChildAt(i);
+	        if (v instanceof TextView) {
+	            TextView mTextView = (TextView) v;
+	            mTextView.setText(buttonText);
+	            mTextView.setTextSize(getResources().getDimension(R.dimen.login_screen_btn_login_google_plus_text_size));
+	            return;
+	        }
+	    }
+	}
+
 
 }
