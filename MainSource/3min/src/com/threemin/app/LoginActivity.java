@@ -22,6 +22,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.Request;
@@ -161,28 +163,15 @@ public class LoginActivity extends FragmentActivity implements
         //prepare for login G+
         mBtnLoginGooglePlus = (SignInButton) findViewById(R.id.btn_login_google_plus);
         mBtnLoginGooglePlus.setOnClickListener(this);
+        setGooglePlusButtonText(mBtnLoginGooglePlus, getResources().getString(R.string.activity_login_btn_login_gg));
         mGoogleApiClient = new GoogleApiClient.Builder(this)
         	.addConnectionCallbacks(this)
         	.addOnConnectionFailedListener(this)
         	.addApi(Plus.API, null)
         	.addScope(Plus.SCOPE_PLUS_LOGIN)
         	.build();
-        //=========================================================================
-//        try {
-//            PackageInfo info = getPackageManager().getPackageInfo(
-//                    getPackageName(), 
-//                    PackageManager.GET_SIGNATURES);
-//            for (Signature signature : info.signatures) {
-//                MessageDigest md = MessageDigest.getInstance("SHA");
-//                md.update(signature.toByteArray());
-//                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
-//                }
-//        } catch (NameNotFoundException e) {
-//
-//        } catch (NoSuchAlgorithmException e) {
-//
-//        }
-        //=========================================================================
+
+        //check if user has logged in with facebook
         Session session = Session.getActiveSession();
         if (session != null && session.isOpened()) {
         	doLogin(session.getAccessToken());
@@ -248,11 +237,6 @@ public class LoginActivity extends FragmentActivity implements
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == RC_SIGN_IN) {
-//		    mIntentInProgress = false;
-//
-//		    if (!mGoogleApiClient.isConnecting()) {
-//		      mGoogleApiClient.connect();
-//		    }
 			
 			if (requestCode == RC_SIGN_IN) {
 			    if (resultCode != RESULT_OK) {
@@ -303,18 +287,6 @@ public class LoginActivity extends FragmentActivity implements
 	//Methods of ConnectionCallbacks and OnConnectionFailedListener Interface
 	@Override
 	public void onConnectionFailed(ConnectionResult result) {
-//		if (!mIntentInProgress && result.hasResolution()) {
-//		    try {
-//		      mIntentInProgress = true;
-////		      startIntentSenderForResult(result.getIntentSender(), RC_SIGN_IN, null, 0, 0, 0);
-//		      result.startResolutionForResult(this, RC_SIGN_IN);
-//		    } catch (SendIntentException e) {
-//		      // The intent was canceled before it was sent.  Return to the default
-//		      // state and attempt to connect to get an updated ConnectionResult.
-//		      mIntentInProgress = false;
-//		      mGoogleApiClient.connect();
-//		    }
-//		  }
 		
 		if (!mIntentInProgress) {
 			// Store the ConnectionResult so that we can use it later when the
@@ -334,7 +306,6 @@ public class LoginActivity extends FragmentActivity implements
 	@Override
 	public void onConnected(Bundle arg0) {
 		mSignInClicked = false;
-//		Log.i("tructran","Account name: " + Plus.AccountApi.getAccountName(mGoogleApiClient));
 		
 		new GoogleTokenGetter().execute();
 	}
@@ -397,39 +368,18 @@ public class LoginActivity extends FragmentActivity implements
 			
 			return gg_token;
 		}
-
-//		@Override
-//		protected void onPostExecute(String result) {
-//			super.onPostExecute(result);
-//			try {
-//				new StartingHomeActivityWithGoogle().execute(result);
-//				Log.i("tructran", "Debug: Call method to Start home screen from google");
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//				Log.i("tructran", "Login GG exception" + e.toString());
-//			}
-//		}
 	}
 	
-//	private class StartingHomeActivityWithGoogle extends AsyncTask<String, Void, UserModel> {
-//
-//		@Override
-//		protected UserModel doInBackground(String... params) {
-//			try {
-//				Log.i("tructran", "Debug: token to start: " + params[0]);
-//				UserModel user = new AuthorizeWebservice().login(params[0], CommonUti.getDeviceId(mContext), mContext, CommonConstant.TYPE_GOOGLE_TOKEN);
-//				Log.i("tructran", "Debug: User name: " + user.getFullName());
-//				Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-//				startActivity(intent);
-//				finish();
-//				return user;
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//				return null;
-//			}
-//		}
-//		
-//	}
-	
-	
+	//method set text to SignInButton of Google +
+	protected void setGooglePlusButtonText(SignInButton signInButton, String buttonText) {
+	    for (int i = 0; i < signInButton.getChildCount(); i++) {
+	        View v = signInButton.getChildAt(i);
+	        if (v instanceof TextView) {
+	            TextView mTextView = (TextView) v;
+	            mTextView.setText(buttonText);
+	            mTextView.setTextSize(getResources().getDimension(R.dimen.login_screen_btn_login_google_plus_text_size));
+	            return;
+	        }
+	    }
+	}
 }

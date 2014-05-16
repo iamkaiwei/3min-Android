@@ -8,6 +8,7 @@
         android:id="@+id/inflater_body_product_image"
         android:layout_width="match_parent"
         android:layout_height="300dp"
+        android:background="@android:color/black"
         android:scaleType="fitXY" />
 
     <LinearLayout

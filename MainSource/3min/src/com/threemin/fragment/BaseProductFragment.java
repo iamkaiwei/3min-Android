@@ -29,7 +29,7 @@ public abstract class BaseProductFragment extends Fragment {
 
 	public void setCategoryData(CategoryModel model) {
 		currentCate = model;
-		new GetProductTaks().execute(STEP_INIT);
+		new GetProductTaks(this).execute(STEP_INIT);
 	}
 
 	public void setProductModels(List<ProductModel> productModels) {
@@ -37,15 +37,30 @@ public abstract class BaseProductFragment extends Fragment {
 		updateUI();
 	}
 
-	public class GetProductTaks extends AsyncTask<Integer, Void, List<ProductModel>> {
+	public static class GetProductTaks extends AsyncTask<Integer, Void, List<ProductModel>> {
 		int currentStep;
+		
+		BaseProductFragment baseProductFragment;
+		
+		//flag check if asynctask is proccessing or not
+		static private  boolean isProccessingFlag;
+		
+		//constructor
+		public GetProductTaks(BaseProductFragment baseProductFragment) {
+			this.baseProductFragment = baseProductFragment;
+		}
+		
+		public static boolean getIsProccessingFlag() {
+			return isProccessingFlag;
+		}
 
 		@Override
 		protected void onPreExecute() {
 			// TODO Auto-generated method stub
+			isProccessingFlag = true;
 			super.onPreExecute();
-			if (swipeLayout != null) {
-				swipeLayout.setRefreshing(true);
+			if (baseProductFragment.swipeLayout != null) {
+				baseProductFragment.swipeLayout.setRefreshing(true);
 			}
 		}
 
@@ -53,11 +68,11 @@ public abstract class BaseProductFragment extends Fragment {
 		protected List<ProductModel> doInBackground(Integer... params) {
 			currentStep = params[0];
 			if (currentStep == STEP_INIT || currentStep == STEP_REFRESH) {
-				page=1;
+				baseProductFragment.page=1;
 			}
-			String tokken = PreferenceHelper.getInstance(getActivity()).getTokken();
+			String tokken = PreferenceHelper.getInstance(baseProductFragment.getActivity()).getTokken();
 			try {
-				return new ProductWebservice().getProduct(tokken, currentCate, page);
+				return new ProductWebservice().getProduct(tokken, baseProductFragment.currentCate, baseProductFragment.page);
 			} catch (Exception e) {
 				e.printStackTrace();
 				return null;
@@ -67,20 +82,21 @@ public abstract class BaseProductFragment extends Fragment {
 		@Override
 		protected void onPostExecute(List<ProductModel> result) {
 			super.onPostExecute(result);
-			if (swipeLayout != null) {
-				swipeLayout.setRefreshing(false);
+			if (baseProductFragment.swipeLayout != null) {
+				baseProductFragment.swipeLayout.setRefreshing(false);
 			}
 			if (result != null && result.size() > 0) {
 				if (currentStep == STEP_INIT || currentStep == STEP_REFRESH) {
-					setProductModels(result);
+					baseProductFragment.setProductModels(result);
 				} else if (currentStep == STEP_ADDMORE) {
-					productModels.addAll(result);
-					updateUI();
+					baseProductFragment.productModels.addAll(result);
+					baseProductFragment.updateUI();
 				} else {
 				}
 			} else if(currentStep==STEP_INIT){
-				setProductModels(result);
+				baseProductFragment.setProductModels(result);
 			}
+			isProccessingFlag = false;
 		}
 	}
 

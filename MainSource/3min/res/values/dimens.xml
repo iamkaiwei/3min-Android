@@ -5,15 +5,21 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     
     <!-- login screen -->
-    <dimen name="login_screen_btn_login_fb_margin_left">100dp</dimen>
-    <dimen name="login_screen_btn_login_fb_margin_right">100dp</dimen>
+    <dimen name="login_screen_group_button_margin_bottom">30dp</dimen>
+    <dimen name="login_screen_group_button_width">250dp</dimen>
+    
+    <dimen name="login_screen_btn_login_fb_margin_left_right">3dp</dimen>
     <dimen name="login_screen_btn_login_fb_margin_bottom">5dp</dimen>
     
-    <dimen name="login_screen_btn_login_google_plus_margin_left">100dp</dimen>
-    <dimen name="login_screen_btn_login_google_plus_margin_right">100dp</dimen>
-    <dimen name="login_screen_btn_login_google_plus_margin_bottom">30dp</dimen>
+    <dimen name="login_screen_btn_login_google_plus_text_size">8dp</dimen>
     
     <dimen name="login_screen_img_loading_margin_left_right">10dp</dimen>
     <dimen name="login_screen_img_loading_margin_bottom">10dp</dimen>
+    
+    <!-- fragment_product_gridview.xml -->
+    <dimen name="fragment_product_grudview_spacing">10dp</dimen>
+    
+    <!-- inflater_body_product_grid.xml -->
+    <dimen name="inflater_body_product_grid_padding">10dp</dimen>
 
 </resources>
