@@ -21,5 +21,19 @@
     
     <!-- inflater_body_product_grid.xml -->
     <dimen name="inflater_body_product_grid_padding">10dp</dimen>
+    
+    <!-- inflater_body_product.xml -->
+    <dimen name="inflater_body_product_margin_top">10dp</dimen>
+    <dimen name="inflater_body_product_image_share_size">40dp</dimen>
+    
+    <!-- inflater_header.xml -->
+    <dimen name="inflater_header_margin_left">5dp</dimen>
+    
+    <!-- inflater_category.xml -->
+    <dimen name="inflater_category_tv_padding_left">20dp</dimen>
+    
+    <!-- action bar style -->
+    <dimen name="action_bar_title_text_size">25sp</dimen>
+    <dimen name="action_bar_padding_left">20dp</dimen>
 
 </resources>

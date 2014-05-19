@@ -3,4 +3,11 @@
     <color name="orange">#FE7C42</color>
     <color name="gridview_orange">#FC3308</color>
     <color name="fragment_product_gridview_bg">#E6E6E6</color>
+    
+    <!-- inflater_header.xml -->
+    <color name="inflater_header_text_color">#71706F</color>
+    
+    <!-- inflater_body_product.xml -->
+    <color name="inflater_body_product_tv_name_text_color">#8B8A89</color>
+    <color name="inflater_body_product_tv_like_text_color">#71706F</color>
 </resources>

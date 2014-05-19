@@ -25,7 +25,7 @@
                 android:layout_height="wrap_content"
                 android:text="Medium Text"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@android:color/darker_gray"
+                android:textColor="@color/orange"
                 android:textStyle="bold" />
 
             <TextView
@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:text="50 000 VND"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/orange" />
+                android:textColor="@android:color/black" />
     </LinearLayout>
 
 </LinearLayout>

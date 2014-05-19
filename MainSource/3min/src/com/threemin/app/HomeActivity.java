@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -23,6 +24,7 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -137,7 +139,7 @@ public class HomeActivity extends Activity {
 	private void initActionBar() {
 		mDrawerToggle = new ActionBarDrawerToggle(this, /* host Activity */
 		drawerLayout, /* DrawerLayout object */
-		R.drawable.navigation_icon, /* nav drawer image to replace 'Up' caret */
+		R.drawable.layer_list, /* nav drawer image to replace 'Up' caret */
 		R.string.app_name, /* "open drawer" description for accessibility */
 		R.string.app_name /* "close drawer" description for accessibility */
 		) {
@@ -153,17 +155,21 @@ public class HomeActivity extends Activity {
 		getActionBar().setHomeButtonEnabled(true);
 
 		ActionBar bar = getActionBar();
-		bar.setBackgroundDrawable(new ColorDrawable(Color
-				.parseColor(getString(R.color.orange))));
+//		bar.setBackgroundDrawable(new ColorDrawable(Color
+//				.parseColor(getString(R.color.orange))));
 		bar.setIcon(new ColorDrawable(Color.TRANSPARENT));
 		
-		int actionBarTitleId = Resources.getSystem().getIdentifier("action_bar_title", "id", "android");
-		if (actionBarTitleId > 0) {
-		    TextView title = (TextView) findViewById(actionBarTitleId);
-		    if (title != null) {
-		        title.setTextColor(Color.WHITE);
-		    }
-		}
+//		int actionBarTitleId = Resources.getSystem().getIdentifier("action_bar_title", "id", "android");
+//		if (actionBarTitleId > 0) {
+//		    TextView title = (TextView) findViewById(actionBarTitleId);
+//		    if (title != null) {
+//		        title.setTextColor(Color.WHITE);
+//		    }
+//		}
+		
+		//set padding between home icon and the title
+		ImageView view = (ImageView)findViewById(android.R.id.home);
+		view.setPadding(0, 0, 20, 0);
 	}
 
 	@Override
