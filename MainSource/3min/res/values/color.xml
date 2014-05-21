@@ -10,4 +10,7 @@
     <!-- inflater_body_product.xml -->
     <color name="inflater_body_product_tv_name_text_color">#8B8A89</color>
     <color name="inflater_body_product_tv_like_text_color">#71706F</color>
+    
+    <!-- activity_imageview.xml -->
+    <color name="activity_imageview_grey">#DDDBDA</color>
 </resources>

@@ -1,11 +1,224 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
-    <ImageView android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:scaleType="fitCenter"
-        android:id="@+id/img"/>
+    android:layout_height="match_parent" >
 
-</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:orientation="vertical" >
+
+        <!-- 2 imageviews above -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/activity_imageview_img_height"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/activity_imageview_spacing_a_half"
+            android:paddingLeft="@dimen/activity_imageview_spacing"
+            android:paddingRight="@dimen/activity_imageview_spacing"
+            android:paddingTop="@dimen/activity_imageview_spacing" >
+
+            <ImageView
+                android:id="@+id/activity_imageview_img_1"
+                style="@style/activity_imageview_img_style"
+                android:layout_marginRight="@dimen/activity_imageview_spacing_a_half" />
+
+            <ImageView
+                android:id="@+id/activity_imageview_img_2"
+                style="@style/activity_imageview_img_style"
+                android:layout_marginLeft="@dimen/activity_imageview_spacing_a_half" />
+        </LinearLayout>
+
+        <!-- 2 imageviews below -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/activity_imageview_img_height"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/activity_imageview_spacing"
+            android:paddingLeft="@dimen/activity_imageview_spacing"
+            android:paddingRight="@dimen/activity_imageview_spacing"
+            android:paddingTop="@dimen/activity_imageview_spacing_a_half" >
+
+            <ImageView
+                android:id="@+id/activity_imageview_img_3"
+                style="@style/activity_imageview_img_style"
+                android:layout_marginRight="@dimen/activity_imageview_spacing_a_half" />
+
+            <ImageView
+                android:id="@+id/activity_imageview_img_4"
+                style="@style/activity_imageview_img_style"
+                android:layout_marginLeft="@dimen/activity_imageview_spacing_a_half" />
+        </LinearLayout>
+
+        <!-- infomation -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/activity_imageview_linear_height"
+            android:layout_marginBottom="@dimen/activity_imageview_spacing"
+            android:layout_marginLeft="@dimen/activity_imageview_spacing"
+            android:layout_marginRight="@dimen/activity_imageview_spacing"
+            android:background="@color/activity_imageview_grey"
+            android:orientation="horizontal" >
+
+            <!-- group of icons -->
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/activity_imageview_spacing"
+                android:orientation="vertical"
+                android:weightSum="4" >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_activity_imageview_category" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_activity_imageview_item" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_activity_imageview_price" />
+            </LinearLayout>
+
+            <!-- group of textviews and editexts -->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/activity_imageview_spacing"
+                android:orientation="vertical"
+                android:weightSum="4" >
+
+                <!-- category -->
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" >
+
+                    <TextView
+                        android:id="@+id/activity_imageview_tv_category"
+                        style="@style/activity_imageview_textview_style"
+                        android:text="@string/activity_imageview_category" />
+
+                    <Spinner
+                        android:id="@+id/activity_imageview_spn_category"
+                        style="@style/activity_imageview_edittext_style"
+                        android:hint="@string/activity_imageview_category_hint" />
+                </RelativeLayout>
+
+                <!-- item -->
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" >
+
+                    <TextView
+                        style="@style/activity_imageview_textview_style"
+                        android:text="@string/activity_imageview_item" />
+
+                    <EditText
+                        android:id="@+id/activity_imageview_et_item"
+                        style="@style/activity_imageview_edittext_style"
+                        android:hint="@string/activity_imageview_item_hint" />
+                </RelativeLayout>
+
+                <!-- price -->
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" >
+
+                    <TextView
+                        style="@style/activity_imageview_textview_style"
+                        android:text="@string/activity_imageview_price" />
+
+                    <EditText
+                        android:id="@+id/activity_imageview_et_price"
+                        style="@style/activity_imageview_edittext_style"
+                        android:hint="@string/activity_imageview_price_hint"
+                        android:inputType="number" />
+                </RelativeLayout>
+
+                <!-- Location -->
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" >
+
+                    <TextView
+                        style="@style/activity_imageview_textview_style"
+                        android:text="@string/activity_imageview_location" />
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- description -->
+
+        <EditText
+            android:id="@+id/activity_imageview_et_description"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/activity_imageview_et_description_height"
+            android:layout_marginBottom="@dimen/activity_imageview_spacing"
+            android:layout_marginLeft="@dimen/activity_imageview_spacing"
+            android:layout_marginRight="@dimen/activity_imageview_spacing"
+            android:background="@color/activity_imageview_grey"
+            android:gravity="top|left"
+            android:hint="@string/activity_imageview_et_description_hint"
+            android:inputType="textMultiLine"
+            android:padding="@dimen/common_spacing" />
+
+        <RelativeLayout
+            android:id="@+id/activity_imageview_relative_layout_share_on_facebook"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_imageview_spacing"
+            android:layout_marginRight="@dimen/activity_imageview_spacing"
+            android:background="@color/activity_imageview_grey"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:id="@+id/activity_imageview_img_share_on_facebook"
+                android:layout_width="15dp"
+                android:layout_height="45dp"
+                android:layout_alignParentLeft="true"
+                android:src="@drawable/ic_activity_imageview_facebook"
+                android:layout_marginLeft="@dimen/activity_imageview_spacing" />
+
+            <TextView
+                android:id="@+id/activity_imageview_tv_share_on_facebook"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/activity_imageview_img_share_on_facebook"
+                android:layout_marginLeft="@dimen/activity_imageview_spacing"
+                android:text="@string/activity_imageview_share_on_facebook"
+                android:textSize="@dimen/activity_imageview_textview_textsize"
+                android:textStyle="bold" />
+
+            <Switch
+                android:id="@+id/activity_imageview_switch_share_on_facebook"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/activity_imageview_spacing"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</ScrollView>

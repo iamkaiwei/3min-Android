@@ -55,6 +55,12 @@ public class CategoryModel {
 	public void setImage(ImageModel image) {
 		this.image = image;
 	}
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return this.name;
+	}
+	
 	
 	
 }

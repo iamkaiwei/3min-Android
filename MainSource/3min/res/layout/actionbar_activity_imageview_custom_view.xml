@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <Button
+        android:id="@+id/activity_imageview_btn_submit"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="@dimen/common_spacing"
+        android:layout_marginRight="@dimen/activity_imageview_spacing"
+        android:layout_marginTop="@dimen/common_spacing"
+        android:background="@drawable/activity_imageview_action_bar_btn_bg"
+        android:paddingLeft="@dimen/activity_imageview_spacing"
+        android:paddingRight="@dimen/activity_imageview_spacing"
+        android:text="@string/activity_imageview_action_submit_title"
+        android:textSize="@dimen/activity_imageview_actionbar_textsize"
+        android:textColor="@color/orange"
+        android:textStyle="bold" />
+    
+    <Button
+        android:id="@+id/activity_imageview_btn_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="@dimen/common_spacing"
+        android:layout_marginLeft="@dimen/activity_imageview_spacing"
+        android:layout_marginTop="@dimen/common_spacing"
+        android:background="@drawable/activity_imageview_action_bar_btn_bg"
+        android:paddingLeft="@dimen/activity_imageview_spacing"
+        android:paddingRight="@dimen/activity_imageview_spacing"
+        android:text="@string/activity_imageview_action_cancel_title"
+        android:textSize="@dimen/activity_imageview_actionbar_textsize"
+        android:textColor="@color/orange"
+        android:textStyle="bold" />
+
+</RelativeLayout>

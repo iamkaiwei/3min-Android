@@ -7,4 +7,17 @@
     <string name="app_id">580806171975545</string>
     <string name="activity_login_btn_login_gg">Log in with Google+</string>
     <string name="please_wait">Please wait</string>
+    
+    <!-- activity_imageview.xml -->
+    <string name="activity_imageview_category">Category</string>
+    <string name="activity_imageview_item">Item</string>
+    <string name="activity_imageview_price">Price</string>
+    <string name="activity_imageview_location">Location</string>
+    <string name="activity_imageview_share_on_facebook">Share on facebook</string>
+    <string name="activity_imageview_category_hint">Books</string>
+    <string name="activity_imageview_item_hint">What are you selling?</string>
+    <string name="activity_imageview_price_hint">Set a price</string>
+    <string name="activity_imageview_et_description_hint">Enter product description</string>
+    <string name="activity_imageview_action_submit_title">Submit</string>
+    <string name="activity_imageview_action_cancel_title">Cancel</string>
 </resources>

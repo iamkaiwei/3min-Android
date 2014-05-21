@@ -3,8 +3,10 @@ package com.threemin.app;
 import java.io.IOException;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
 import android.os.AsyncTask;
@@ -254,7 +256,7 @@ public class LoginActivity extends FragmentActivity implements ConnectionCallbac
 						CommonConstant.TYPE_FACEBOOK_TOKEN);
 				if (user != null) {
 					CategoryWebservice.getInstance().getAllCategory(mContext);
-				}
+				} 
 				
 				return user;
 			} catch (Exception e) {
@@ -272,9 +274,37 @@ public class LoginActivity extends FragmentActivity implements ConnectionCallbac
 				Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
 				startActivity(intent);
 				finish();
+			} else {
+				Log.i("tructran", "Can not authorize webservice: user returned is null");
+				new AlertDialog.Builder(mContext)
+					.setTitle("Authorization failed!")
+					.setMessage("User is not authorized")
+					.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							logoutFacebook();
+							dialog.dismiss();
+						}
+					})
+					.show();
+				
 			}
 		}
 
+	}
+	
+	public void logoutFacebook() {
+		Session session =  Session.getActiveSession();
+		if (session != null) {
+			if (!session.isClosed()) {
+				session.closeAndClearTokenInformation();
+			}
+		} else {
+			session = new Session(mContext);
+			Session.setActiveSession(session);
+			session.closeAndClearTokenInformation();
+		}
 	}
 
 	// Methods of ConnectionCallbacks and OnConnectionFailedListener Interface
@@ -347,13 +377,12 @@ public class LoginActivity extends FragmentActivity implements ConnectionCallbac
 		return token;
 	}
 
-	private class LoginWithGoogleTask extends AsyncTask<Void, Void, String> {
+	private class LoginWithGoogleTask extends AsyncTask<Void, Void, UserModel> {
 
 		ProgressDialog dialog;
 
 		@Override
 		protected void onPreExecute() {
-			// TODO Auto-generated method stub
 			super.onPreExecute();
 			dialog = new ProgressDialog(mContext);
 			if (!isFinishing()) {
@@ -363,30 +392,30 @@ public class LoginActivity extends FragmentActivity implements ConnectionCallbac
 		}
 
 		@Override
-		protected String doInBackground(Void... params) {
+		protected UserModel doInBackground(Void... params) {
 			String gg_token = getGooglePlusToken();
+			UserModel user = null;
 			if (gg_token == null) {
-				return gg_token;
+				return user;
 			}
 			try {
 				Log.i("tructran", "Debug: token to start: " + gg_token);
-				UserModel user = new AuthorizeWebservice().login(gg_token, CommonUti.getDeviceId(mContext), mContext,
+				user = new AuthorizeWebservice().login(gg_token, CommonUti.getDeviceId(mContext), mContext,
 						CommonConstant.TYPE_GOOGLE_TOKEN);
 				if (user != null) {
 					CategoryWebservice.getInstance().getAllCategory(mContext);
 				}
 				Log.i("tructran", "Debug: User name: " + user.getFullName());
 
+				return user;
 			} catch (Exception e) {
 				e.printStackTrace();
 				return null;
 			}
-
-			return gg_token;
 		}
 		
 		@Override
-		protected void onPostExecute(String result) {
+		protected void onPostExecute(UserModel result) {
 			super.onPostExecute(result);
 			if (dialog != null && dialog.isShowing()) {
 				dialog.dismiss();
