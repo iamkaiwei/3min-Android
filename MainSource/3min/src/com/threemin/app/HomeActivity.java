@@ -1,13 +1,21 @@
 package com.threemin.app;
 
+import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.List;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.ParseException;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
@@ -15,7 +23,6 @@ import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -26,15 +33,21 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.threemin.adapter.CategoryAdapter;
 import com.threemin.fragment.BaseProductFragment;
 import com.threemin.fragment.ProductFragmentGrid;
 import com.threemin.fragment.ProductFragmentList;
 import com.threemin.model.CategoryModel;
+import com.threemin.model.ProductModel;
+import com.threemin.uti.CommonConstant;
+import com.threemin.uti.PreferenceHelper;
+import com.threemin.uti.WebserviceConstant;
 import com.threemin.webservice.CategoryWebservice;
+import com.threemin.webservice.UploaderImageUlti;
 import com.threemins.R;
 
 public class HomeActivity extends Activity {
@@ -54,6 +67,7 @@ public class HomeActivity extends Activity {
 	//view mode: list view or grid view
 	public static final int MODE_LIST_VIEW = 1;
 	public static final int MODE_GRID_VIEW = 2;
+	private static final int REQUEST_UPLOAD=3;
 	public int mModeView;
 
 	@Override
@@ -230,7 +244,7 @@ public class HomeActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				if (v == btn_sell) {
-					startActivity(new Intent(mContext, ImageViewActivity.class));
+					startActivityForResult(new Intent(mContext, ImageViewActivity.class),REQUEST_UPLOAD);
 				} else {
 					Toast.makeText(mContext, "to be continue",
 							Toast.LENGTH_SHORT).show();
@@ -238,5 +252,66 @@ public class HomeActivity extends Activity {
 			}
 		};
 	}
-
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if(requestCode==REQUEST_UPLOAD){
+			if(resultCode==RESULT_OK){
+				ProductModel productModel=new Gson().fromJson(data.getStringExtra(CommonConstant.INTENT_PRODUCT_DATA), ProductModel.class);
+				new UploadProduct(this).execute(productModel);
+			}
+		}
+		super.onActivityResult(requestCode, resultCode, data);
+	}
+	private static class UploadProduct extends AsyncTask<ProductModel, Void, ProductModel>{
+		HomeActivity activity;
+		CategoryModel categoryModel;
+		public UploadProduct(HomeActivity activity){
+			this.activity=activity;
+		}
+		
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			activity.currentFragment.getRefreshLayout().setRefreshing(true);
+		}
+		
+		@Override
+		protected void onPostExecute(ProductModel result) {
+			// TODO Auto-generated method stub
+			super.onPostExecute(result);
+			if(activity!=null && activity.currentFragment!=null){
+			activity.currentFragment.getRefreshLayout().setRefreshing(false);
+			activity.currentFragment.addNewProducts(result,categoryModel);
+			}
+		}
+		
+		@Override
+		protected ProductModel doInBackground(ProductModel... params) {
+			ProductModel model=params[0];
+			String tokken=PreferenceHelper.getInstance(activity).getTokken();
+			categoryModel=model.getCategory();
+			HttpResponse reponese=new UploaderImageUlti().uploadUserPhoto(WebserviceConstant.CREATE_PRODUCT, model,tokken);
+			HttpEntity r_entity = reponese.getEntity();
+			String responseString;
+			try {
+				responseString = EntityUtils.toString(r_entity);
+				JSONObject resultObject=new JSONObject(responseString);
+				
+				ProductModel list = new Gson().fromJson(resultObject.optJSONObject("product").toString(), ProductModel.class);
+				Log.d("UPLOAD", responseString);
+				return list;
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			catch (JSONException e) {
+				// TODO: handle exception
+			}
+			return null;
+		}
+	}
 }

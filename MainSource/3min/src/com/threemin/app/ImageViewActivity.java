@@ -1,63 +1,75 @@
 package com.threemin.app;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.MediaStore.MediaColumns;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
+import com.google.gson.Gson;
+import com.koushikdutta.urlimageviewhelper.UrlImageViewCallback;
+import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.threemin.model.CategoryModel;
+import com.threemin.model.ImageModel;
+import com.threemin.model.ProductModel;
+import com.threemin.uti.CommonConstant;
+import com.threemin.uti.PreferenceHelper;
+import com.threemin.uti.WebserviceConstant;
 import com.threemin.webservice.CategoryWebservice;
+import com.threemin.webservice.UploaderImageUlti;
 import com.threemins.R;
 
-public class ImageViewActivity extends Activity  {
-	
+public class ImageViewActivity extends Activity {
+
 	public final static int REQUEST_CAMERA = 1;
 	public final static int REQUEST_SELECT_FILE = 2;
 
 	ImageView mImg1, mImg2, mImg3, mImg4;
 	private int mNumOfImage;
 	Context mContext;
-	
+
 	OnClickListener onImageViewClicked = new OnClickListener() {
-		
+
 		@Override
 		public void onClick(View v) {
 			if (mNumOfImage >= 4) {
 				return;
 			}
-			final CharSequence[] items = {"Take a photo", "Select from Gallery", "Cancel"};
+			final CharSequence[] items = { "Take a photo", "Select from Gallery", "Cancel" };
 			AlertDialog.Builder builder = new AlertDialog.Builder(ImageViewActivity.this);
 			builder.setTitle("Add photo...");
 			builder.setItems(items, new DialogInterface.OnClickListener() {
-				
+
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					if (items[which].equals("Take a photo")) {
-						startActivityForResult(new Intent(ImageViewActivity.this,ActivityCamera.class), REQUEST_CAMERA);
+						startActivityForResult(new Intent(ImageViewActivity.this, ActivityCamera.class), REQUEST_CAMERA);
 					} else if (items[which].equals("Select from Gallery")) {
 						openGallery();
 					} else if (items[which].equals("Cancel")) {
@@ -68,35 +80,37 @@ public class ImageViewActivity extends Activity  {
 			builder.show();
 		}
 	};
-	
-	//variables for spinner
+
+	// variables for spinner
 	Spinner mSpnCategory;
 	List<CategoryModel> mListCategory;
 	ArrayAdapter<CategoryModel> mAdapter;
 	CategoryModel mSelectedCategory;
-	
+	EditText etName, etPrice, etDescription;
+	List<ImageModel> imageModels;
+
 	OnItemSelectedListener onItemSpinnerSelected = new OnItemSelectedListener() {
 
 		@Override
-		public void onItemSelected(AdapterView<?> arg0, View arg1, int position,
-				long arg3) {
+		public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long arg3) {
 			mSelectedCategory = mListCategory.get(position);
 		}
 
 		@Override
 		public void onNothingSelected(AdapterView<?> arg0) {
-			
+
 		}
 	};
-	
+
 	private void openGallery() {
-//		Intent i = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//		i.setType("image/*");
+		// Intent i = new
+		// Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+		// i.setType("image/*");
 		Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
 		photoPickerIntent.setType("image/*");
 		startActivityForResult(photoPickerIntent, REQUEST_SELECT_FILE);
-	 }
-	
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -104,37 +118,84 @@ public class ImageViewActivity extends Activity  {
 
 		mNumOfImage = 0;
 		mContext = ImageViewActivity.this;
-		
+		imageModels=new ArrayList<ImageModel>();
+		initActionBar();
 		initWidgets();
 		initSpiner();
 		setEvents();
-		initActionBar();
-		
-//		startActivityForResult(new Intent(this,ActivityCamera.class), 1);
+
+		// startActivityForResult(new Intent(this,ActivityCamera.class), 1);
 	}
-	
+
 	public void initWidgets() {
 		mImg1 = (ImageView) findViewById(R.id.activity_imageview_img_1);
 		mImg2 = (ImageView) findViewById(R.id.activity_imageview_img_2);
 		mImg3 = (ImageView) findViewById(R.id.activity_imageview_img_3);
 		mImg4 = (ImageView) findViewById(R.id.activity_imageview_img_4);
-		
+
+		etDescription = (EditText) findViewById(R.id.activity_imageview_et_description);
+		etName = (EditText) findViewById(R.id.activity_imageview_et_item);
+		etPrice = (EditText) findViewById(R.id.activity_imageview_et_price);
+
 		mSpnCategory = (Spinner) findViewById(R.id.activity_imageview_spn_category);
+		findViewById(R.id.activity_imageview_btn_submit).setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				ProductModel result=validateInput();
+				if(result!=null){
+					String data=new Gson().toJson(result);
+					Intent intent=new Intent();
+					intent.putExtra(CommonConstant.INTENT_PRODUCT_DATA, data);
+					setResult(RESULT_OK, intent);
+					finish();
+				}
+			}
+
+		});
 	}
-	
+
+	private ProductModel validateInput() {
+		String description = etDescription.getText().toString();
+		String name = etName.getText().toString();
+		String price = etPrice.getText().toString();
+		
+		ProductModel result=new ProductModel();
+		if(TextUtils.isEmpty(name)){
+			//notify
+			return null;
+		} else {
+			result.setName(name);
+		}
+		
+		if(TextUtils.isEmpty(price)){
+			//notify
+			return null;
+		} else {
+			result.setPrice(price);
+		}
+		
+		if(!TextUtils.isEmpty(description)){
+			result.setDescription(description);
+		} 
+		result.setCategory(mSelectedCategory);
+		result.setOwner(PreferenceHelper.getInstance(mContext).getCurrentUser());
+		result.setImages(imageModels);
+		return result;
+	}
+
 	public void setEvents() {
 		mImg1.setOnClickListener(onImageViewClicked);
 		mImg2.setOnClickListener(onImageViewClicked);
 		mImg3.setOnClickListener(onImageViewClicked);
 		mImg4.setOnClickListener(onImageViewClicked);
 	}
-	
+
 	public void initSpiner() {
 		new InitCategory().execute();
 	}
-	
-	private class InitCategory extends
-			AsyncTask<Void, Void, List<CategoryModel>> {
+
+	private class InitCategory extends AsyncTask<Void, Void, List<CategoryModel>> {
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
@@ -143,8 +204,7 @@ public class ImageViewActivity extends Activity  {
 		@Override
 		protected List<CategoryModel> doInBackground(Void... arg0) {
 			try {
-				return CategoryWebservice.getInstance()
-						.getAllCategory(mContext);
+				return CategoryWebservice.getInstance().getTaggableCategory(mContext);
 			} catch (Exception e) {
 				e.printStackTrace();
 				return null;
@@ -156,7 +216,8 @@ public class ImageViewActivity extends Activity  {
 			if (result != null) {
 				Log.i("tructran", "Set adapter");
 				mListCategory = result;
-				mAdapter = new ArrayAdapter<CategoryModel>(mContext, android.R.layout.simple_spinner_item, mListCategory);
+				mAdapter = new ArrayAdapter<CategoryModel>(mContext, android.R.layout.simple_spinner_item,
+						mListCategory);
 				mAdapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
 				mSpnCategory.setAdapter(mAdapter);
 				mSpnCategory.setOnItemSelectedListener(onItemSpinnerSelected);
@@ -164,7 +225,7 @@ public class ImageViewActivity extends Activity  {
 			super.onPostExecute(result);
 		}
 	}
-	
+
 	public void initActionBar() {
 		ActionBar bar = getActionBar();
 		bar.setDisplayShowHomeEnabled(false);
@@ -172,7 +233,7 @@ public class ImageViewActivity extends Activity  {
 		bar.setCustomView(R.layout.actionbar_activity_imageview_custom_view);
 		bar.setDisplayShowCustomEnabled(true);
 	}
-	
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -182,74 +243,125 @@ public class ImageViewActivity extends Activity  {
 				setImageURI(uri);
 			} else if (requestCode == REQUEST_SELECT_FILE) {
 				Uri selectedFileUri = data.getData();
-				String tempPath = getPath(selectedFileUri, ImageViewActivity.this);
-                Bitmap bm;
-                BitmapFactory.Options btmapOptions = new BitmapFactory.Options();
-                bm = BitmapFactory.decodeFile(tempPath, btmapOptions);
-                setImageBitmap(bm);
+				// String tempPath = getPath(selectedFileUri,
+				// ImageViewActivity.this);
+				// Bitmap bm;
+				// BitmapFactory.Options btmapOptions = new
+				// BitmapFactory.Options();
+				// bm = BitmapFactory.decodeFile(tempPath, btmapOptions);
+				// setImageBitmap(bm);
+				Log.d("image", selectedFileUri.toString());
+				setImageURI(selectedFileUri);
 			}
-			
+
 		}
 	}
+
+	public String getPath(Uri uri) {
+
+		ContentResolver cr = this.getContentResolver();
+		String[] projection = { MediaStore.MediaColumns.DATA };
+		Cursor cur = cr.query(uri, projection, null, null, null);
+		if (cur != null) {
+			cur.moveToFirst();
+			String filePath = cur.getString(0);
+			return filePath;
+		}
+		return null;
+	}
+
+	public void setImageURI(Uri uri) {
+		switch (mNumOfImage) {
+		case 0:
+			// mImg1.setImageURI(uri);
+			UrlImageViewHelper.setUrlDrawable(mImg1, uri.toString(), getImageCallback());
+			mNumOfImage++;
+			break;
+
+		case 1:
+			// mImg2.setImageURI(uri);
+			UrlImageViewHelper.setUrlDrawable(mImg2, uri.toString(), getImageCallback());
+			mNumOfImage++;
+			break;
+
+		case 2:
+			// mImg3.setImageURI(uri);
+			UrlImageViewHelper.setUrlDrawable(mImg3, uri.toString(), getImageCallback());
+			mNumOfImage++;
+			break;
+
+		case 3:
+			// mImg4.setImageURI(uri);
+			UrlImageViewHelper.setUrlDrawable(mImg4, uri.toString(), getImageCallback());
+			mNumOfImage++;
+			break;
+		default:
+			break;
+		}
+
+	}
+
+	private UrlImageViewCallback getImageCallback() {
+		return new UrlImageViewCallback() {
+
+			@Override
+			public void onLoaded(ImageView imageView, Bitmap loadedBitmap, String url, boolean loadedFromCache) {
+				Log.d("url", url);
+				ImageModel imageModel=new ImageModel();
+				if (url.contains("content://com.google.android.apps.photos.content")) {
+					imageModel.setUrl(saveImagetoLocal(loadedBitmap));
+					Log.d("path", imageModel.getUrl());
+				} else {
+					String pathImage=getPath(Uri.parse(url));
+					Log.d("path", pathImage)
+;					imageModel.setUrl(pathImage);
+				}
+				imageModels.add(imageModel);
+			}
+		};
+	}
+
+	private String saveImagetoLocal(Bitmap bitmap) {
+		File filename = getOutputMediaFile();
+
+		FileOutputStream out = null;
+		try {
+			out = new FileOutputStream(filename);
+			bitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				out.close();
+			} catch (Throwable ignore) {
+			}
+		}
+		return filename.getAbsolutePath();
+	}
+
+	private File getOutputMediaFile() {
+		// To be safe, you should check that the SDCard is mounted
+		// using Environment.getExternalStorageState() before doing this.
+
+		File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+				"threemins");
+		// This location works best if you want the created images to be shared
+		// between applications and persist after your app has been uninstalled.
+
+		// Create the storage directory if it does not exist
+		if (!mediaStorageDir.exists()) {
+			if (!mediaStorageDir.mkdirs()) {
+				Log.d("MyCameraApp", "failed to create directory");
+				return null;
+			}
+		}
+
+		// Create a media file name
+		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+		File mediaFile;
+		mediaFile = new File(mediaStorageDir.getPath() + File.separator + "IMG_" + timeStamp + ".jpg");
+
+		return mediaFile;
+	}
 	
-	 public String getPath(Uri uri, Activity activity) {
-		 String[] projection = { MediaColumns.DATA };
-	        Cursor cursor = activity
-	                .managedQuery(uri, projection, null, null, null);
-	        int column_index = cursor.getColumnIndexOrThrow(MediaColumns.DATA);
-	        cursor.moveToFirst();
-	        return cursor.getString(column_index);
-	 }
-	 
-	 public void setImageURI (Uri uri) {
-		 switch (mNumOfImage) {
-		case 0:
-			mImg1.setImageURI(uri);
-			mNumOfImage++;
-			break;
-
-		case 1:
-			mImg2.setImageURI(uri);
-			mNumOfImage++;
-			break;
-
-		case 2:
-			mImg3.setImageURI(uri);
-			mNumOfImage++;
-			break;
-
-		case 3:
-			mImg4.setImageURI(uri);
-			mNumOfImage++;
-			break;
-		default:
-			break;
-		}
-	 }
-	 
-	 public void setImageBitmap (Bitmap bm) {
-		 switch (mNumOfImage) {
-		case 0:
-			mImg1.setImageBitmap(bm);
-			mNumOfImage++;
-			break;
-
-		case 1:
-			mImg2.setImageBitmap(bm);
-			mNumOfImage++;
-			break;
-
-		case 2:
-			mImg3.setImageBitmap(bm);
-			mNumOfImage++;
-			break;
-
-		case 3:
-			mImg4.setImageBitmap(bm);
-			mNumOfImage++;
-			break;
-		default:
-			break;
-		}
-	 }
 }

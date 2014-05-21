@@ -24,6 +24,10 @@ public abstract class BaseProductFragment extends Fragment {
 	public BaseProductFragment() {
 		productModels = new ArrayList<ProductModel>();
 	}
+	
+	public SwipeRefreshLayout getRefreshLayout(){
+		return swipeLayout;
+	}
 
 	protected abstract void updateUI();
 
@@ -114,6 +118,13 @@ public abstract class BaseProductFragment extends Fragment {
 				baseProductFragment.setProductModels(result);
 			}
 			isProccessingFlag = false;
+		}
+	}
+
+	public void addNewProducts(ProductModel result, CategoryModel categoryModel) {
+		if(currentCate==null || currentCate.getId()==categoryModel.getId()){
+			productModels.add(0, result);
+			updateUI();
 		}
 	}
 
