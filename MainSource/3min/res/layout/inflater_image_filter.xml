@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp" >
+
+    <ImageView
+        android:id="@+id/inflater_filter_img"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:src="@drawable/contrast_house" />
+
+    <TextView
+        android:id="@+id/inflater_filter_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="contranst"
+        android:textColor="@android:color/white" />
+
+</LinearLayout>
