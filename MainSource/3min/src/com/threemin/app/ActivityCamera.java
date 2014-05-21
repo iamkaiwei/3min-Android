@@ -29,11 +29,13 @@ import jp.co.cyberagent.android.gpuimage.GPUImageSepiaFilter;
 import jp.co.cyberagent.android.gpuimage.GPUImageSobelEdgeDetection;
 import jp.co.cyberagent.android.gpuimage.GPUImage.OnPictureSavedListener;
 import jp.co.cyberagent.android.gpuimage.GPUImageFilter;
+import jp.co.cyberagent.android.gpuimage.GPUImageVignetteFilter;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.graphics.PointF;
 import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
 import android.hardware.Camera.Parameters;
@@ -111,7 +113,10 @@ public class ActivityCamera extends Activity implements OnSeekBarChangeListener,
 					switchFilterTo(new GPUImageGrayscaleFilter());
 					break;
 				case 4:
-					switchFilterTo(new GPUImageSobelEdgeDetection());
+					PointF centerPoint = new PointF();
+	                centerPoint.x = 0.5f;
+	                centerPoint.y = 0.5f;
+	                switchFilterTo(new GPUImageVignetteFilter(centerPoint, new float[] {0.0f, 0.0f, 0.0f}, 0.3f, 0.75f));
 					break;
 
 				default:

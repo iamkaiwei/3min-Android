@@ -15,10 +15,15 @@ import com.threemin.uti.WebserviceConstant;
 public class CategoryWebservice {
 
 	List<CategoryModel> currCategoryModels;
+
+	List<CategoryModel> tagCategoryModels;
+	List<CategoryModel> displayCategoryModels;
 	private static CategoryWebservice instance;
 
 	private CategoryWebservice() {
 		currCategoryModels = new ArrayList<CategoryModel>();
+		tagCategoryModels = new ArrayList<CategoryModel>();
+		displayCategoryModels = new ArrayList<CategoryModel>();
 	}
 
 	public static CategoryWebservice getInstance() {
@@ -28,37 +33,39 @@ public class CategoryWebservice {
 		return instance;
 	}
 
-	public List<CategoryModel> getTaggableCategory(Context context)
-			throws Exception {
-		String tokken = PreferenceHelper.getInstance(context).getTokken();
-		String requestLink = WebserviceConstant.GET_CATE_TAGGABLE
-				+ "?access_token=" + tokken;
-		String result = WebServiceUtil.getData(requestLink);
-		Type listType = new TypeToken<List<CategoryModel>>() {
-		}.getType();
-		List<CategoryModel> list = new Gson().fromJson(result, listType);
-		currCategoryModels.addAll(list);
-		return list;
+	public List<CategoryModel> getTaggableCategory(Context context) throws Exception {
+		if (tagCategoryModels == null || tagCategoryModels.isEmpty()) {
+			String tokken = PreferenceHelper.getInstance(context).getTokken();
+			String requestLink = WebserviceConstant.GET_CATE_TAGGABLE + "?access_token=" + tokken;
+			String result = WebServiceUtil.getData(requestLink);
+			Type listType = new TypeToken<List<CategoryModel>>() {
+			}.getType();
+			List<CategoryModel> list = new Gson().fromJson(result, listType);
+			currCategoryModels.addAll(list);
+			tagCategoryModels = list;
+		}
+		return tagCategoryModels;
 	}
 
-	public List<CategoryModel> getDisplayCategory(Context context)
-			throws Exception {
+	public List<CategoryModel> getDisplayCategory(Context context) throws Exception {
+		if(displayCategoryModels==null || displayCategoryModels.isEmpty()){
 		String tokken = PreferenceHelper.getInstance(context).getTokken();
-		String requestLink = WebserviceConstant.GET_CATE_DISPLAY
-				+ "?access_token=" + tokken;
+		String requestLink = WebserviceConstant.GET_CATE_DISPLAY + "?access_token=" + tokken;
 		String result = WebServiceUtil.getData(requestLink);
 		Type listType = new TypeToken<List<CategoryModel>>() {
 		}.getType();
 		List<CategoryModel> list = new Gson().fromJson(result, listType);
 		currCategoryModels.addAll(list);
-		return list;
+		displayCategoryModels=list;
+		}
+		return displayCategoryModels;
 	}
 
 	public List<CategoryModel> getAllCategory(Context context) throws Exception {
-		if (currCategoryModels.isEmpty()) {
+//		if (currCategoryModels.isEmpty()) {
 			getDisplayCategory(context);
 			getTaggableCategory(context);
-		}
+//		}
 		return currCategoryModels;
 	}
 

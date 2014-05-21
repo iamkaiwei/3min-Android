@@ -61,8 +61,8 @@ public class FilterAdapter extends BaseAdapter {
 			text.setText("Grayscale");
 			break;
 		case 4:
-			image.setImageResource(R.drawable.sobel_edge);
-			text.setText("Sobel Edge");
+			image.setImageResource(R.drawable.vignette);
+			text.setText("Vignette");
 			break;
 
 		default:

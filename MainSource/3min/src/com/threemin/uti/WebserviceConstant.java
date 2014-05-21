@@ -9,4 +9,5 @@ public class WebserviceConstant {
 	public static final String GET_CATE_TAGGABLE = URL_HOST + API + "/categories/taggable.json";
 	public static final String GET_CATE_DISPLAY = URL_HOST + API + "/categories/display.json";
 	public static final String GET_PRODUCT = URL_HOST + API + "/products.json";
+	public static final String CREATE_PRODUCT = URL_HOST + API + "/products";
 }

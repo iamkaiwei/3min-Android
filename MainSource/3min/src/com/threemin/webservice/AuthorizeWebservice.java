@@ -35,6 +35,7 @@ public class AuthorizeWebservice {
 		PreferenceHelper.getInstance(context).setTokken(jsonResult.optString(CommonConstant.KEY_ACCESS_TOKEN));
 		JSONObject jsonUser=jsonResult.optJSONObject(CommonConstant.KEY_USER);
 		UserModel user=new Gson().fromJson(jsonUser.toString(), UserModel.class);
+		PreferenceHelper.getInstance(context).setCurrentUser(jsonUser.toString());
 		return user;
 	}
 }

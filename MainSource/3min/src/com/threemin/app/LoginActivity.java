@@ -39,6 +39,7 @@ import com.threemin.fragment.SlidePageFragment;
 import com.threemin.model.UserModel;
 import com.threemin.uti.CommonConstant;
 import com.threemin.uti.CommonUti;
+import com.threemin.uti.PreferenceHelper;
 import com.threemin.webservice.AuthorizeWebservice;
 import com.threemin.webservice.CategoryWebservice;
 import com.threemins.R;
@@ -254,6 +255,7 @@ public class LoginActivity extends FragmentActivity implements ConnectionCallbac
 			try {
 				UserModel user = new AuthorizeWebservice().login(params[0], CommonUti.getDeviceId(mContext), mContext,
 						CommonConstant.TYPE_FACEBOOK_TOKEN);
+				
 				if (user != null) {
 					CategoryWebservice.getInstance().getAllCategory(mContext);
 				} 

@@ -1,30 +1,54 @@
 package com.threemin.app;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.text.TextUtils;
+
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
+import com.google.gson.Gson;
+import com.koushikdutta.urlimageviewhelper.UrlImageViewCallback;
+import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.threemin.model.CategoryModel;
+import com.threemin.model.ImageModel;
+import com.threemin.model.ProductModel;
+import com.threemin.uti.CommonConstant;
+import com.threemin.uti.PreferenceHelper;
+import com.threemin.uti.WebserviceConstant;
 import com.threemin.webservice.CategoryWebservice;
+import com.threemin.webservice.UploaderImageUlti;
 import com.threemins.R;
 
-public class ImageViewActivity extends Activity  {
+public class ImageViewActivity extends Activity {
+
+	
 	
 	public final static int REQUEST_CAMERA_IMG_1 = 11;
 	public final static int REQUEST_CAMERA_IMG_2 = 12;
@@ -40,127 +64,89 @@ public class ImageViewActivity extends Activity  {
 	ImageView mImg1, mImg2, mImg3, mImg4;
 	Context mContext;
 	
+	//variables for spinner
+		Spinner mSpnCategory;
+		List<CategoryModel> mListCategory;
+		ArrayAdapter<CategoryModel> mAdapter;
+		CategoryModel mSelectedCategory;
+		EditText etName, etPrice, etDescription;
+		List<ImageModel> imageModels;
+
 	OnClickListener onImageViewClicked = new OnClickListener() {
-		
+
 		@Override
+
 		public void onClick(final View v) {
 			final CharSequence[] items = { "Take a photo",
 					"Select from Gallery", "Delete" };
-			final CharSequence[] itemsWithoutDelete = {"Take a photo",
-					"Select from Gallery"};
 			AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
 			builder.setTitle("Add photo...");
-			if ( ((ImageView) v).getDrawable() != null ) {
-				builder.setItems(items, new DialogInterface.OnClickListener() {
+			builder.setItems(items, new DialogInterface.OnClickListener() {
 
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						// which imageView is tapped
-						int requestCode_Camera = 0;
-						int requestCode_SelectFile = 0;
-						switch (v.getId()) {
-						case R.id.activity_imageview_img_1:
-							requestCode_Camera = REQUEST_CAMERA_IMG_1;
-							requestCode_SelectFile = REQUEST_SELECT_FILE_IMG_1;
-							break;
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// which imageView is tapped
+					int requestCode_Camera = 0;
+					int requestCode_SelectFile = 0;
+					switch (v.getId()) {
+					case R.id.activity_imageview_img_1:
+						requestCode_Camera = REQUEST_CAMERA_IMG_1;
+						requestCode_SelectFile = REQUEST_SELECT_FILE_IMG_1;
+						break;
 
-						case R.id.activity_imageview_img_2:
-							requestCode_Camera = REQUEST_CAMERA_IMG_2;
-							requestCode_SelectFile = REQUEST_SELECT_FILE_IMG_2;
-							break;
+					case R.id.activity_imageview_img_2:
+						requestCode_Camera = REQUEST_CAMERA_IMG_2;
+						requestCode_SelectFile = REQUEST_SELECT_FILE_IMG_2;
+						break;
 
-						case R.id.activity_imageview_img_3:
-							requestCode_Camera = REQUEST_CAMERA_IMG_3;
-							requestCode_SelectFile = REQUEST_SELECT_FILE_IMG_3;
-							break;
+					case R.id.activity_imageview_img_3:
+						requestCode_Camera = REQUEST_CAMERA_IMG_3;
+						requestCode_SelectFile = REQUEST_SELECT_FILE_IMG_3;
+						break;
 
-						case R.id.activity_imageview_img_4:
-							requestCode_Camera = REQUEST_CAMERA_IMG_4;
-							requestCode_SelectFile = REQUEST_SELECT_FILE_IMG_4;
-							break;
+					case R.id.activity_imageview_img_4:
+						requestCode_Camera = REQUEST_CAMERA_IMG_4;
+						requestCode_SelectFile = REQUEST_SELECT_FILE_IMG_4;
+						break;
 
-						default:
-							break;
-						}
-						if (items[which].equals("Take a photo")) {
-							startActivityForResult(new Intent(ImageViewActivity.this, ActivityCamera.class), requestCode_Camera);
-						} else if (items[which].equals("Select from Gallery")) {
-							openGallery(requestCode_SelectFile);
-						} else if (items[which].equals("Delete")) {
-							deleteImage(v.getId());
-						}
+					default:
+						break;
 					}
-				});
-				builder.show();
-			} else {
-				builder.setItems(itemsWithoutDelete, new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						// which imageView is tapped
-						int requestCode_Camera = 0;
-						int requestCode_SelectFile = 0;
-						switch (v.getId()) {
-						case R.id.activity_imageview_img_1:
-							requestCode_Camera = REQUEST_CAMERA_IMG_1;
-							requestCode_SelectFile = REQUEST_SELECT_FILE_IMG_1;
-							break;
-
-						case R.id.activity_imageview_img_2:
-							requestCode_Camera = REQUEST_CAMERA_IMG_2;
-							requestCode_SelectFile = REQUEST_SELECT_FILE_IMG_2;
-							break;
-
-						case R.id.activity_imageview_img_3:
-							requestCode_Camera = REQUEST_CAMERA_IMG_3;
-							requestCode_SelectFile = REQUEST_SELECT_FILE_IMG_3;
-							break;
-
-						case R.id.activity_imageview_img_4:
-							requestCode_Camera = REQUEST_CAMERA_IMG_4;
-							requestCode_SelectFile = REQUEST_SELECT_FILE_IMG_4;
-							break;
-
-						default:
-							break;
-						}
-						if (itemsWithoutDelete[which].equals("Take a photo")) {
-							startActivityForResult(new Intent(ImageViewActivity.this, ActivityCamera.class), requestCode_Camera);
-						} else if (itemsWithoutDelete[which].equals("Select from Gallery")) {
-							openGallery(requestCode_SelectFile);
-						}
+					if (items[which].equals("Take a photo")) {
+						startActivityForResult(new Intent(ImageViewActivity.this, ActivityCamera.class), requestCode_Camera);
+					} else if (items[which].equals("Select from Gallery")) {
+						openGallery(requestCode_SelectFile);
+					} else if (items[which].equals("Delete")) {
+						deleteImage(v.getId());
 					}
-				});
-				builder.show();
-			}
-			
+				}
+			});
+			builder.show();
 		}
 	};
+
+	// variables for spinner
 	
 	public void deleteImage (int resId) {
 		ImageView img = (ImageView) findViewById(resId);
+		imageModels.remove((ImageModel)img.getTag());
 		if (img.getDrawable() != null) {
 			img.setImageDrawable(null);
 		}
 	}
 	
-	//variables for spinner
-	Spinner mSpnCategory;
-	List<CategoryModel> mListCategory;
-	ArrayAdapter<CategoryModel> mAdapter;
-	CategoryModel mSelectedCategory;
 	
+
 	OnItemSelectedListener onItemSpinnerSelected = new OnItemSelectedListener() {
 
 		@Override
-		public void onItemSelected(AdapterView<?> arg0, View arg1, int position,
-				long arg3) {
+		public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long arg3) {
 			mSelectedCategory = mListCategory.get(position);
 		}
 
 		@Override
 		public void onNothingSelected(AdapterView<?> arg0) {
-			
+
 		}
 	};
 	
@@ -176,36 +162,91 @@ public class ImageViewActivity extends Activity  {
 		setContentView(R.layout.activity_imageview);
 
 		mContext = ImageViewActivity.this;
-		
+		imageModels=new ArrayList<ImageModel>();
+		initActionBar();
 		initWidgets();
 		initSpiner();
 		setEvents();
-		initActionBar();
-		
 	}
-	
+
 	public void initWidgets() {
 		mImg1 = (ImageView) findViewById(R.id.activity_imageview_img_1);
 		mImg2 = (ImageView) findViewById(R.id.activity_imageview_img_2);
 		mImg3 = (ImageView) findViewById(R.id.activity_imageview_img_3);
 		mImg4 = (ImageView) findViewById(R.id.activity_imageview_img_4);
-		
+
+		etDescription = (EditText) findViewById(R.id.activity_imageview_et_description);
+		etName = (EditText) findViewById(R.id.activity_imageview_et_item);
+		etPrice = (EditText) findViewById(R.id.activity_imageview_et_price);
+
 		mSpnCategory = (Spinner) findViewById(R.id.activity_imageview_spn_category);
+		findViewById(R.id.activity_imageview_btn_submit).setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				ProductModel result=validateInput();
+				if(result!=null){
+					String data=new Gson().toJson(result);
+					Intent intent=new Intent();
+					intent.putExtra(CommonConstant.INTENT_PRODUCT_DATA, data);
+					setResult(RESULT_OK, intent);
+					finish();
+				}
+			}
+
+		});
+		
+		findViewById(R.id.activity_imageview_btn_cancel).setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				finish();
+			}
+
+		});
 	}
-	
+
+	private ProductModel validateInput() {
+		String description = etDescription.getText().toString();
+		String name = etName.getText().toString();
+		String price = etPrice.getText().toString();
+		
+		ProductModel result=new ProductModel();
+		if(TextUtils.isEmpty(name)){
+			//notify
+			return null;
+		} else {
+			result.setName(name);
+		}
+		
+		if(TextUtils.isEmpty(price)){
+			//notify
+			return null;
+		} else {
+			result.setPrice(price);
+		}
+		
+		if(!TextUtils.isEmpty(description)){
+			result.setDescription(description);
+		} 
+		result.setCategory(mSelectedCategory);
+		result.setOwner(PreferenceHelper.getInstance(mContext).getCurrentUser());
+		result.setImages(imageModels);
+		return result;
+	}
+
 	public void setEvents() {
 		mImg1.setOnClickListener(onImageViewClicked);
 		mImg2.setOnClickListener(onImageViewClicked);
 		mImg3.setOnClickListener(onImageViewClicked);
 		mImg4.setOnClickListener(onImageViewClicked);
 	}
-	
+
 	public void initSpiner() {
 		new InitCategory().execute();
 	}
-	
-	private class InitCategory extends
-			AsyncTask<Void, Void, List<CategoryModel>> {
+
+	private class InitCategory extends AsyncTask<Void, Void, List<CategoryModel>> {
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
@@ -214,8 +255,7 @@ public class ImageViewActivity extends Activity  {
 		@Override
 		protected List<CategoryModel> doInBackground(Void... arg0) {
 			try {
-				return CategoryWebservice.getInstance()
-						.getAllCategory(mContext);
+				return CategoryWebservice.getInstance().getTaggableCategory(mContext);
 			} catch (Exception e) {
 				e.printStackTrace();
 				return null;
@@ -236,7 +276,7 @@ public class ImageViewActivity extends Activity  {
 			super.onPostExecute(result);
 		}
 	}
-	
+
 	public void initActionBar() {
 		ActionBar bar = getActionBar();
 		bar.setDisplayShowHomeEnabled(false);
@@ -244,7 +284,7 @@ public class ImageViewActivity extends Activity  {
 		bar.setCustomView(R.layout.actionbar_activity_imageview_custom_view);
 		bar.setDisplayShowCustomEnabled(true);
 	}
-	
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -252,27 +292,110 @@ public class ImageViewActivity extends Activity  {
 			if (requestCode >= REQUEST_CAMERA_IMG_1 && requestCode <= REQUEST_CAMERA_IMG_4) {
 				Uri uri = Uri.parse(data.getStringExtra("imageUri"));
 				if (requestCode == REQUEST_CAMERA_IMG_1) {
-					mImg1.setImageURI(uri);
+					setImageURI(uri,mImg1);
 				} else if (requestCode == REQUEST_CAMERA_IMG_2) {
-					mImg2.setImageURI(uri);
+					setImageURI(uri,mImg2);
 				} else if (requestCode == REQUEST_CAMERA_IMG_3) {
-					mImg3.setImageURI(uri);
+					setImageURI(uri,mImg3);
 				} else if (requestCode == REQUEST_CAMERA_IMG_4) {
-					mImg4.setImageURI(uri);
+					setImageURI(uri,mImg4);
 				}
 			} else if (requestCode >= REQUEST_SELECT_FILE_IMG_1 && requestCode <= REQUEST_SELECT_FILE_IMG_4) {
 				Uri uri = data.getData();
 				if (requestCode == REQUEST_SELECT_FILE_IMG_1) {
-					mImg1.setImageURI(uri);
+					setImageURI(uri,mImg1);
 				} else if (requestCode == REQUEST_SELECT_FILE_IMG_2) {
-					mImg2.setImageURI(uri);
+					setImageURI(uri,mImg2);
 				} else if (requestCode == REQUEST_SELECT_FILE_IMG_3) {
-					mImg3.setImageURI(uri);
+					setImageURI(uri,mImg3);
 				} else if (requestCode == REQUEST_SELECT_FILE_IMG_4) {
-					mImg4.setImageURI(uri);
+					setImageURI(uri,mImg4);
 				}
 			}
-			
+
 		}
 	}
+
+	public String getPath(Uri uri) {
+
+		ContentResolver cr = this.getContentResolver();
+		String[] projection = { MediaStore.MediaColumns.DATA };
+		Cursor cur = cr.query(uri, projection, null, null, null);
+		if (cur != null) {
+			cur.moveToFirst();
+			String filePath = cur.getString(0);
+			return filePath;
+		}
+		return null;
+	}
+
+	public void setImageURI(Uri uri,ImageView imageView) {
+			UrlImageViewHelper.setUrlDrawable(imageView, uri.toString(), getImageCallback());
+
+	}
+
+	private UrlImageViewCallback getImageCallback() {
+		return new UrlImageViewCallback() {
+
+			@Override
+			public void onLoaded(ImageView imageView, Bitmap loadedBitmap, String url, boolean loadedFromCache) {
+				Log.d("url", url);
+				ImageModel imageModel=new ImageModel();
+				if (url.contains("content://com.google.android.apps.photos.content")) {
+					imageModel.setUrl(saveImagetoLocal(loadedBitmap));
+					Log.d("path", imageModel.getUrl());
+				} else {
+					String pathImage=getPath(Uri.parse(url));
+					Log.d("path", pathImage)
+;					imageModel.setUrl(pathImage);
+				}
+				imageView.setTag(imageModel);
+				imageModels.add(imageModel);
+			}
+		};
+	}
+
+	private String saveImagetoLocal(Bitmap bitmap) {
+		File filename = getOutputMediaFile();
+
+		FileOutputStream out = null;
+		try {
+			out = new FileOutputStream(filename);
+			bitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				out.close();
+			} catch (Throwable ignore) {
+			}
+		}
+		return filename.getAbsolutePath();
+	}
+
+	private File getOutputMediaFile() {
+		// To be safe, you should check that the SDCard is mounted
+		// using Environment.getExternalStorageState() before doing this.
+
+		File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+				"threemins");
+		// This location works best if you want the created images to be shared
+		// between applications and persist after your app has been uninstalled.
+
+		// Create the storage directory if it does not exist
+		if (!mediaStorageDir.exists()) {
+			if (!mediaStorageDir.mkdirs()) {
+				Log.d("MyCameraApp", "failed to create directory");
+				return null;
+			}
+		}
+
+		// Create a media file name
+		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+		File mediaFile;
+		mediaFile = new File(mediaStorageDir.getPath() + File.separator + "IMG_" + timeStamp + ".jpg");
+
+		return mediaFile;
+	}
+	
 }
