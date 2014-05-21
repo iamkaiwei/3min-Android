@@ -32,6 +32,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewCallback;
@@ -239,15 +240,18 @@ public class ImageViewActivity extends Activity {
 		String price = etPrice.getText().toString();
 		
 		ProductModel result=new ProductModel();
+		if(imageModels.isEmpty()){
+			Toast.makeText(mContext, R.string.error_empty_image, Toast.LENGTH_SHORT).show();
+		}
 		if(TextUtils.isEmpty(name)){
-			//notify
+			Toast.makeText(mContext, R.string.error_miss_field, Toast.LENGTH_SHORT).show();
 			return null;
 		} else {
 			result.setName(name);
 		}
 		
 		if(TextUtils.isEmpty(price)){
-			//notify
+			Toast.makeText(mContext, R.string.error_miss_field, Toast.LENGTH_SHORT).show();
 			return null;
 		} else {
 			result.setPrice(price);
