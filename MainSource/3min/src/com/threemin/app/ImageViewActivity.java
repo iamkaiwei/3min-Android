@@ -46,49 +46,94 @@ public class ImageViewActivity extends Activity  {
 		public void onClick(final View v) {
 			final CharSequence[] items = { "Take a photo",
 					"Select from Gallery", "Delete" };
+			final CharSequence[] itemsWithoutDelete = {"Take a photo",
+					"Select from Gallery"};
 			AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
 			builder.setTitle("Add photo...");
-			builder.setItems(items, new DialogInterface.OnClickListener() {
+			if ( ((ImageView) v).getDrawable() != null ) {
+				builder.setItems(items, new DialogInterface.OnClickListener() {
 
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					// which imageView is tapped
-					int requestCode_Camera = 0;
-					int requestCode_SelectFile = 0;
-					switch (v.getId()) {
-					case R.id.activity_imageview_img_1:
-						requestCode_Camera = REQUEST_CAMERA_IMG_1;
-						requestCode_SelectFile = REQUEST_SELECT_FILE_IMG_1;
-						break;
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// which imageView is tapped
+						int requestCode_Camera = 0;
+						int requestCode_SelectFile = 0;
+						switch (v.getId()) {
+						case R.id.activity_imageview_img_1:
+							requestCode_Camera = REQUEST_CAMERA_IMG_1;
+							requestCode_SelectFile = REQUEST_SELECT_FILE_IMG_1;
+							break;
 
-					case R.id.activity_imageview_img_2:
-						requestCode_Camera = REQUEST_CAMERA_IMG_2;
-						requestCode_SelectFile = REQUEST_SELECT_FILE_IMG_2;
-						break;
+						case R.id.activity_imageview_img_2:
+							requestCode_Camera = REQUEST_CAMERA_IMG_2;
+							requestCode_SelectFile = REQUEST_SELECT_FILE_IMG_2;
+							break;
 
-					case R.id.activity_imageview_img_3:
-						requestCode_Camera = REQUEST_CAMERA_IMG_3;
-						requestCode_SelectFile = REQUEST_SELECT_FILE_IMG_3;
-						break;
+						case R.id.activity_imageview_img_3:
+							requestCode_Camera = REQUEST_CAMERA_IMG_3;
+							requestCode_SelectFile = REQUEST_SELECT_FILE_IMG_3;
+							break;
 
-					case R.id.activity_imageview_img_4:
-						requestCode_Camera = REQUEST_CAMERA_IMG_4;
-						requestCode_SelectFile = REQUEST_SELECT_FILE_IMG_4;
-						break;
+						case R.id.activity_imageview_img_4:
+							requestCode_Camera = REQUEST_CAMERA_IMG_4;
+							requestCode_SelectFile = REQUEST_SELECT_FILE_IMG_4;
+							break;
 
-					default:
-						break;
+						default:
+							break;
+						}
+						if (items[which].equals("Take a photo")) {
+							startActivityForResult(new Intent(ImageViewActivity.this, ActivityCamera.class), requestCode_Camera);
+						} else if (items[which].equals("Select from Gallery")) {
+							openGallery(requestCode_SelectFile);
+						} else if (items[which].equals("Delete")) {
+							deleteImage(v.getId());
+						}
 					}
-					if (items[which].equals("Take a photo")) {
-						startActivityForResult(new Intent(ImageViewActivity.this, ActivityCamera.class), requestCode_Camera);
-					} else if (items[which].equals("Select from Gallery")) {
-						openGallery(requestCode_SelectFile);
-					} else if (items[which].equals("Delete")) {
-						deleteImage(v.getId());
+				});
+				builder.show();
+			} else {
+				builder.setItems(itemsWithoutDelete, new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// which imageView is tapped
+						int requestCode_Camera = 0;
+						int requestCode_SelectFile = 0;
+						switch (v.getId()) {
+						case R.id.activity_imageview_img_1:
+							requestCode_Camera = REQUEST_CAMERA_IMG_1;
+							requestCode_SelectFile = REQUEST_SELECT_FILE_IMG_1;
+							break;
+
+						case R.id.activity_imageview_img_2:
+							requestCode_Camera = REQUEST_CAMERA_IMG_2;
+							requestCode_SelectFile = REQUEST_SELECT_FILE_IMG_2;
+							break;
+
+						case R.id.activity_imageview_img_3:
+							requestCode_Camera = REQUEST_CAMERA_IMG_3;
+							requestCode_SelectFile = REQUEST_SELECT_FILE_IMG_3;
+							break;
+
+						case R.id.activity_imageview_img_4:
+							requestCode_Camera = REQUEST_CAMERA_IMG_4;
+							requestCode_SelectFile = REQUEST_SELECT_FILE_IMG_4;
+							break;
+
+						default:
+							break;
+						}
+						if (itemsWithoutDelete[which].equals("Take a photo")) {
+							startActivityForResult(new Intent(ImageViewActivity.this, ActivityCamera.class), requestCode_Camera);
+						} else if (itemsWithoutDelete[which].equals("Select from Gallery")) {
+							openGallery(requestCode_SelectFile);
+						}
 					}
-				}
-			});
-			builder.show();
+				});
+				builder.show();
+			}
+			
 		}
 	};
 	
@@ -136,6 +181,7 @@ public class ImageViewActivity extends Activity  {
 		initSpiner();
 		setEvents();
 		initActionBar();
+		
 	}
 	
 	public void initWidgets() {
