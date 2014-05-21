@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -47,33 +48,76 @@ import com.threemins.R;
 
 public class ImageViewActivity extends Activity {
 
-	public final static int REQUEST_CAMERA = 1;
-	public final static int REQUEST_SELECT_FILE = 2;
+	
+	
+	public final static int REQUEST_CAMERA_IMG_1 = 11;
+	public final static int REQUEST_CAMERA_IMG_2 = 12;
+	public final static int REQUEST_CAMERA_IMG_3 = 13;
+	public final static int REQUEST_CAMERA_IMG_4 = 14;
+	
+
+	public final static int REQUEST_SELECT_FILE_IMG_1 = 21;
+	public final static int REQUEST_SELECT_FILE_IMG_2 = 22;
+	public final static int REQUEST_SELECT_FILE_IMG_3 = 23;
+	public final static int REQUEST_SELECT_FILE_IMG_4 = 24;
 
 	ImageView mImg1, mImg2, mImg3, mImg4;
-	private int mNumOfImage;
 	Context mContext;
+	
+	//variables for spinner
+		Spinner mSpnCategory;
+		List<CategoryModel> mListCategory;
+		ArrayAdapter<CategoryModel> mAdapter;
+		CategoryModel mSelectedCategory;
+		EditText etName, etPrice, etDescription;
+		List<ImageModel> imageModels;
 
 	OnClickListener onImageViewClicked = new OnClickListener() {
 
 		@Override
-		public void onClick(View v) {
-			if (mNumOfImage >= 4) {
-				return;
-			}
-			final CharSequence[] items = { "Take a photo", "Select from Gallery", "Cancel" };
-			AlertDialog.Builder builder = new AlertDialog.Builder(ImageViewActivity.this);
+
+		public void onClick(final View v) {
+			final CharSequence[] items = { "Take a photo",
+					"Select from Gallery", "Delete" };
+			AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
 			builder.setTitle("Add photo...");
 			builder.setItems(items, new DialogInterface.OnClickListener() {
 
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
+					// which imageView is tapped
+					int requestCode_Camera = 0;
+					int requestCode_SelectFile = 0;
+					switch (v.getId()) {
+					case R.id.activity_imageview_img_1:
+						requestCode_Camera = REQUEST_CAMERA_IMG_1;
+						requestCode_SelectFile = REQUEST_SELECT_FILE_IMG_1;
+						break;
+
+					case R.id.activity_imageview_img_2:
+						requestCode_Camera = REQUEST_CAMERA_IMG_2;
+						requestCode_SelectFile = REQUEST_SELECT_FILE_IMG_2;
+						break;
+
+					case R.id.activity_imageview_img_3:
+						requestCode_Camera = REQUEST_CAMERA_IMG_3;
+						requestCode_SelectFile = REQUEST_SELECT_FILE_IMG_3;
+						break;
+
+					case R.id.activity_imageview_img_4:
+						requestCode_Camera = REQUEST_CAMERA_IMG_4;
+						requestCode_SelectFile = REQUEST_SELECT_FILE_IMG_4;
+						break;
+
+					default:
+						break;
+					}
 					if (items[which].equals("Take a photo")) {
-						startActivityForResult(new Intent(ImageViewActivity.this, ActivityCamera.class), REQUEST_CAMERA);
+						startActivityForResult(new Intent(ImageViewActivity.this, ActivityCamera.class), requestCode_Camera);
 					} else if (items[which].equals("Select from Gallery")) {
-						openGallery();
-					} else if (items[which].equals("Cancel")) {
-						dialog.dismiss();
+						openGallery(requestCode_SelectFile);
+					} else if (items[which].equals("Delete")) {
+						deleteImage(v.getId());
 					}
 				}
 			});
@@ -82,12 +126,16 @@ public class ImageViewActivity extends Activity {
 	};
 
 	// variables for spinner
-	Spinner mSpnCategory;
-	List<CategoryModel> mListCategory;
-	ArrayAdapter<CategoryModel> mAdapter;
-	CategoryModel mSelectedCategory;
-	EditText etName, etPrice, etDescription;
-	List<ImageModel> imageModels;
+	
+	public void deleteImage (int resId) {
+		ImageView img = (ImageView) findViewById(resId);
+		imageModels.remove((ImageModel)img.getTag());
+		if (img.getDrawable() != null) {
+			img.setImageDrawable(null);
+		}
+	}
+	
+	
 
 	OnItemSelectedListener onItemSpinnerSelected = new OnItemSelectedListener() {
 
@@ -101,30 +149,24 @@ public class ImageViewActivity extends Activity {
 
 		}
 	};
-
-	private void openGallery() {
-		// Intent i = new
-		// Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-		// i.setType("image/*");
+	
+	private void openGallery(int requestCode) {
 		Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
 		photoPickerIntent.setType("image/*");
-		startActivityForResult(photoPickerIntent, REQUEST_SELECT_FILE);
-	}
-
+		startActivityForResult(photoPickerIntent, requestCode);
+	 }
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_imageview);
 
-		mNumOfImage = 0;
 		mContext = ImageViewActivity.this;
 		imageModels=new ArrayList<ImageModel>();
 		initActionBar();
 		initWidgets();
 		initSpiner();
 		setEvents();
-
-		// startActivityForResult(new Intent(this,ActivityCamera.class), 1);
 	}
 
 	public void initWidgets() {
@@ -150,6 +192,15 @@ public class ImageViewActivity extends Activity {
 					setResult(RESULT_OK, intent);
 					finish();
 				}
+			}
+
+		});
+		
+		findViewById(R.id.activity_imageview_btn_cancel).setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				finish();
 			}
 
 		});
@@ -216,8 +267,8 @@ public class ImageViewActivity extends Activity {
 			if (result != null) {
 				Log.i("tructran", "Set adapter");
 				mListCategory = result;
-				mAdapter = new ArrayAdapter<CategoryModel>(mContext, android.R.layout.simple_spinner_item,
-						mListCategory);
+				mSelectedCategory = mListCategory.get(0);
+				mAdapter = new ArrayAdapter<CategoryModel>(mContext, android.R.layout.simple_spinner_item, mListCategory);
 				mAdapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
 				mSpnCategory.setAdapter(mAdapter);
 				mSpnCategory.setOnItemSelectedListener(onItemSpinnerSelected);
@@ -238,20 +289,28 @@ public class ImageViewActivity extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode == RESULT_OK) {
-			if (requestCode == REQUEST_CAMERA) {
+			if (requestCode >= REQUEST_CAMERA_IMG_1 && requestCode <= REQUEST_CAMERA_IMG_4) {
 				Uri uri = Uri.parse(data.getStringExtra("imageUri"));
-				setImageURI(uri);
-			} else if (requestCode == REQUEST_SELECT_FILE) {
-				Uri selectedFileUri = data.getData();
-				// String tempPath = getPath(selectedFileUri,
-				// ImageViewActivity.this);
-				// Bitmap bm;
-				// BitmapFactory.Options btmapOptions = new
-				// BitmapFactory.Options();
-				// bm = BitmapFactory.decodeFile(tempPath, btmapOptions);
-				// setImageBitmap(bm);
-				Log.d("image", selectedFileUri.toString());
-				setImageURI(selectedFileUri);
+				if (requestCode == REQUEST_CAMERA_IMG_1) {
+					setImageURI(uri,mImg1);
+				} else if (requestCode == REQUEST_CAMERA_IMG_2) {
+					setImageURI(uri,mImg2);
+				} else if (requestCode == REQUEST_CAMERA_IMG_3) {
+					setImageURI(uri,mImg3);
+				} else if (requestCode == REQUEST_CAMERA_IMG_4) {
+					setImageURI(uri,mImg4);
+				}
+			} else if (requestCode >= REQUEST_SELECT_FILE_IMG_1 && requestCode <= REQUEST_SELECT_FILE_IMG_4) {
+				Uri uri = data.getData();
+				if (requestCode == REQUEST_SELECT_FILE_IMG_1) {
+					setImageURI(uri,mImg1);
+				} else if (requestCode == REQUEST_SELECT_FILE_IMG_2) {
+					setImageURI(uri,mImg2);
+				} else if (requestCode == REQUEST_SELECT_FILE_IMG_3) {
+					setImageURI(uri,mImg3);
+				} else if (requestCode == REQUEST_SELECT_FILE_IMG_4) {
+					setImageURI(uri,mImg4);
+				}
 			}
 
 		}
@@ -270,34 +329,8 @@ public class ImageViewActivity extends Activity {
 		return null;
 	}
 
-	public void setImageURI(Uri uri) {
-		switch (mNumOfImage) {
-		case 0:
-			// mImg1.setImageURI(uri);
-			UrlImageViewHelper.setUrlDrawable(mImg1, uri.toString(), getImageCallback());
-			mNumOfImage++;
-			break;
-
-		case 1:
-			// mImg2.setImageURI(uri);
-			UrlImageViewHelper.setUrlDrawable(mImg2, uri.toString(), getImageCallback());
-			mNumOfImage++;
-			break;
-
-		case 2:
-			// mImg3.setImageURI(uri);
-			UrlImageViewHelper.setUrlDrawable(mImg3, uri.toString(), getImageCallback());
-			mNumOfImage++;
-			break;
-
-		case 3:
-			// mImg4.setImageURI(uri);
-			UrlImageViewHelper.setUrlDrawable(mImg4, uri.toString(), getImageCallback());
-			mNumOfImage++;
-			break;
-		default:
-			break;
-		}
+	public void setImageURI(Uri uri,ImageView imageView) {
+			UrlImageViewHelper.setUrlDrawable(imageView, uri.toString(), getImageCallback());
 
 	}
 
@@ -316,6 +349,7 @@ public class ImageViewActivity extends Activity {
 					Log.d("path", pathImage)
 ;					imageModel.setUrl(pathImage);
 				}
+				imageView.setTag(imageModel);
 				imageModels.add(imageModel);
 			}
 		};
