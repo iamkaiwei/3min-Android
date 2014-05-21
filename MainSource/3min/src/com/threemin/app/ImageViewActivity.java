@@ -140,11 +140,13 @@ public class ImageViewActivity extends Activity {
 			default:
 				break;
 			}
-			if (items[which].equals( getResources().getString(R.string.activity_imageview_take_a_photo) )) {
-				startActivityForResult(new Intent(ImageViewActivity.this, ActivityCamera.class), requestCode_Camera);
-			} else if (items[which].equals( getResources().getString(R.string.activity_imageview_select_from_gallery) )) {
+			
+			if (which == 0) {
+				startActivityForResult(new Intent(ImageViewActivity.this,
+						ActivityCamera.class), requestCode_Camera);
+			} else if (which == 1) {
 				openGallery(requestCode_SelectFile);
-			} else if (items[which].equals( getResources().getString(R.string.activity_imageview_delete) )) {
+			} else if (which == 2) {
 				deleteImage(v.getId());
 			}
 		}
