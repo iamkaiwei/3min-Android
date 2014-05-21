@@ -1,6 +1,9 @@
 package com.threemin.app;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import android.app.ActionBar;
 import android.app.AlertDialog;
@@ -26,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.Session;
+import com.facebook.widget.LoginButton;
 import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.auth.UserRecoverableAuthException;
@@ -61,7 +65,7 @@ public class LoginActivity extends FragmentActivity implements ConnectionCallbac
 	// Variables for login G+
 	// Button login
 	SignInButton mBtnLoginGooglePlus;
-
+	LoginButton btn_login_facebook;
 	// Track whether the sign-in button has been clicked
 	private boolean mSignInClicked;
 
@@ -119,6 +123,9 @@ public class LoginActivity extends FragmentActivity implements ConnectionCallbac
 		if (mAdapter == null) {
 			Toast.makeText(this, "Null", Toast.LENGTH_LONG).show();
 		}
+		btn_login_facebook=(LoginButton) findViewById(R.id.btn_login_facebook);
+		btn_login_facebook.setPublishPermissions(Arrays.asList("email","user_photos","publish_stream"));
+//		btn_login_facebook.setReadPermissions(Arrays.asList("basic_info"));
 		mViewPager.setAdapter(mAdapter);
 		mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
