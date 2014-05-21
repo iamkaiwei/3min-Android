@@ -50,7 +50,8 @@
         <activity
             android:name="com.threemin.app.ImageViewActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/CustomActionBarTheme" >
+            android:theme="@style/CustomActionBarTheme"
+            android:windowSoftInputMode="stateHidden" >
            
         </activity>
 
