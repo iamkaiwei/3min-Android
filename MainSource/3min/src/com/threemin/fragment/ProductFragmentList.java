@@ -1,13 +1,6 @@
 package com.threemin.fragment;
 
-import java.util.List;
-
 import za.co.immedia.pinnedheaderlistview.PinnedHeaderListView;
-
-import com.threemin.adapter.ProductAdapter;
-import com.threemin.model.ProductModel;
-import com.threemins.R;
-
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
@@ -18,6 +11,9 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListView;
+
+import com.threemin.adapter.ProductAdapter;
+import com.threemins.R;
 
 public class ProductFragmentList extends BaseProductFragment {
 	ListView list;

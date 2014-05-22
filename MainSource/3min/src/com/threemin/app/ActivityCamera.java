@@ -22,13 +22,12 @@ import java.util.Date;
 import java.util.List;
 
 import jp.co.cyberagent.android.gpuimage.GPUImage;
+import jp.co.cyberagent.android.gpuimage.GPUImage.OnPictureSavedListener;
 import jp.co.cyberagent.android.gpuimage.GPUImageContrastFilter;
+import jp.co.cyberagent.android.gpuimage.GPUImageFilter;
 import jp.co.cyberagent.android.gpuimage.GPUImageGrayscaleFilter;
 import jp.co.cyberagent.android.gpuimage.GPUImageLookupFilter;
 import jp.co.cyberagent.android.gpuimage.GPUImageSepiaFilter;
-import jp.co.cyberagent.android.gpuimage.GPUImageSobelEdgeDetection;
-import jp.co.cyberagent.android.gpuimage.GPUImage.OnPictureSavedListener;
-import jp.co.cyberagent.android.gpuimage.GPUImageFilter;
 import jp.co.cyberagent.android.gpuimage.GPUImageVignetteFilter;
 import android.app.Activity;
 import android.content.Intent;
@@ -55,9 +54,7 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import com.threemin.adapter.FilterAdapter;
 import com.threemin.uti.CameraHelper;
 import com.threemin.uti.CameraHelper.CameraInfo2;
-import com.threemin.uti.GPUImageFilterTools;
 import com.threemin.uti.GPUImageFilterTools.FilterAdjuster;
-import com.threemin.uti.GPUImageFilterTools.OnGpuImageFilterChosenListener;
 import com.threemin.view.HorizontalListView;
 import com.threemins.R;
 

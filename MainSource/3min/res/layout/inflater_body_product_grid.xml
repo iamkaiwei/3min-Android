@@ -10,7 +10,7 @@
         android:id="@+id/inflater_body_product_grid_image"
         android:layout_width="match_parent"
         android:layout_height="120dp"
-        android:scaleType="fitXY" />
+        android:scaleType="centerCrop" />
 
     <LinearLayout
         android:layout_width="match_parent"

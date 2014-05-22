@@ -1,31 +1,24 @@
 package com.threemin.webservice;
 
 import java.io.File;
-import java.io.IOException;
 
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.HttpMultipartMode;
-import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.FileBody;
-import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.params.HttpParams;
-import org.apache.http.util.EntityUtils;
-
-import com.threemin.model.ImageModel;
-import com.threemin.model.ProductModel;
 
 import android.text.TextUtils;
 import android.util.Log;
+
+import com.threemin.model.ImageModel;
+import com.threemin.model.ProductModel;
 
 public class UploaderImageUlti {
 	private DefaultHttpClient mHttpClient;
@@ -60,16 +53,12 @@ public class UploaderImageUlti {
 			 builder.addTextBody("name", model.getName());
 			 builder.addTextBody("price", model.getPrice());
 			 builder.addTextBody("category_id", model.getCategory().getId()+"");
-			//
-			// if (!TextUtils.isEmpty(twitterScrecetToken)) {
-			// builder.addTextBody("twitter_secret", twitterScrecetToken);
-			// }
-			//
-			// if (!TextUtils.isEmpty(caption)) {
-			// builder.addTextBody("caption", caption);
-			// } else {
-			// builder.addTextBody("caption", " ");
-			// }
+			 if(model.getVenueName()!=null){
+				 builder.addTextBody("venue_id", model.getVenueId()+"");
+				 builder.addTextBody("venue_name", model.getVenueName());
+				 builder.addTextBody("venue_long", model.getVenueLong()+"");
+				 builder.addTextBody("venue_lat", model.getVenueLat()+"");
+			 }
 
 			httppost.setEntity(builder.build());
 

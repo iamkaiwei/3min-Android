@@ -1,7 +1,6 @@
 package com.threemin.app;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.List;
 
 import org.apache.http.HttpEntity;
@@ -36,7 +35,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.threemin.adapter.CategoryAdapter;
 import com.threemin.fragment.BaseProductFragment;
 import com.threemin.fragment.ProductFragmentGrid;

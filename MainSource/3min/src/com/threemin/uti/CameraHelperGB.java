@@ -16,11 +16,11 @@
 
 package com.threemin.uti;
 
-import com.threemin.uti.CameraHelper.CameraInfo2;
-
 import android.annotation.TargetApi;
 import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
+
+import com.threemin.uti.CameraHelper.CameraInfo2;
 
 @TargetApi(9)
 public class CameraHelperGB implements CameraHelperImpl {

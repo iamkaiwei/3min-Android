@@ -1,11 +1,8 @@
 package com.threemin.fragment;
 
-import java.util.List;
-
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +10,7 @@ import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.GridView;
 
-import com.threemin.adapter.ProductAdapter;
 import com.threemin.adapter.ProductGridAdapter;
-import com.threemin.fragment.BaseProductFragment.GetProductTaks;
-import com.threemin.model.ProductModel;
 import com.threemins.R;
 
 public class ProductFragmentGrid extends BaseProductFragment {

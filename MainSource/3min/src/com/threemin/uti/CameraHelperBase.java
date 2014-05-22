@@ -16,12 +16,12 @@
 
 package com.threemin.uti;
 
-import com.threemin.uti.CameraHelper.CameraInfo2;
-
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
+
+import com.threemin.uti.CameraHelper.CameraInfo2;
 
 public class CameraHelperBase implements CameraHelperImpl {
 

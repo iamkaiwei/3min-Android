@@ -3,13 +3,14 @@ package com.threemin.fragment;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Fragment;
+import android.os.AsyncTask;
+import android.support.v4.widget.SwipeRefreshLayout;
+
 import com.threemin.model.CategoryModel;
 import com.threemin.model.ProductModel;
 import com.threemin.uti.PreferenceHelper;
 import com.threemin.webservice.ProductWebservice;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.app.Fragment;
-import android.os.AsyncTask;
 
 public abstract class BaseProductFragment extends Fragment {
 

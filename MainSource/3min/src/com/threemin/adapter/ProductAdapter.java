@@ -2,22 +2,20 @@ package com.threemin.adapter;
 
 import java.util.List;
 
-import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
-import com.threemin.model.ProductModel;
-import com.threemin.uti.CommonConstant;
-import com.threemins.R;
-
+import za.co.immedia.pinnedheaderlistview.SectionedBaseAdapter;
 import android.content.Context;
 import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import za.co.immedia.pinnedheaderlistview.SectionedBaseAdapter;
+
+import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
+import com.threemin.model.ProductModel;
+import com.threemin.uti.CommonConstant;
+import com.threemins.R;
 
 public class ProductAdapter extends SectionedBaseAdapter {
 	List<ProductModel> data;

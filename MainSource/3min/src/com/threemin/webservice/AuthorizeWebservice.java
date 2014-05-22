@@ -1,11 +1,8 @@
 package com.threemin.webservice;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
-import android.util.Log;
-import android.widget.HeterogeneousExpandableList;
 
 import com.google.gson.Gson;
 import com.threemin.model.UserModel;

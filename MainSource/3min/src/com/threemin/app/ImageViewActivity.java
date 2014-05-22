@@ -22,7 +22,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
-
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -32,7 +31,9 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
+import br.com.condesales.models.Venue;
 
 import com.google.gson.Gson;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewCallback;
@@ -42,9 +43,7 @@ import com.threemin.model.ImageModel;
 import com.threemin.model.ProductModel;
 import com.threemin.uti.CommonConstant;
 import com.threemin.uti.PreferenceHelper;
-import com.threemin.uti.WebserviceConstant;
 import com.threemin.webservice.CategoryWebservice;
-import com.threemin.webservice.UploaderImageUlti;
 import com.threemins.R;
 
 public class ImageViewActivity extends Activity {
@@ -61,6 +60,8 @@ public class ImageViewActivity extends Activity {
 	public final static int REQUEST_SELECT_FILE_IMG_2 = 22;
 	public final static int REQUEST_SELECT_FILE_IMG_3 = 23;
 	public final static int REQUEST_SELECT_FILE_IMG_4 = 24;
+	
+	private final static int REQUEST_LOCATION = 31;
 
 	ImageView mImg1, mImg2, mImg3, mImg4;
 	Context mContext;
@@ -72,6 +73,8 @@ public class ImageViewActivity extends Activity {
 	CategoryModel mSelectedCategory;
 	EditText etName, etPrice, etDescription;
 	List<ImageModel> imageModels;
+	TextView locationName;
+	Venue venue;
 
 	OnClickListener onImageViewClicked = new OnClickListener() {
 
@@ -206,6 +209,9 @@ public class ImageViewActivity extends Activity {
 		etPrice = (EditText) findViewById(R.id.activity_imageview_et_price);
 
 		mSpnCategory = (Spinner) findViewById(R.id.activity_imageview_spn_category);
+		
+		locationName=(TextView) findViewById(R.id.activity_imageview_tv_location);
+		
 		findViewById(R.id.activity_imageview_btn_submit).setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -229,6 +235,14 @@ public class ImageViewActivity extends Activity {
 				finish();
 			}
 
+		});
+		
+		findViewById(R.id.ln_location).setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				startActivityForResult(new Intent(mContext, LocationActivity.class), REQUEST_LOCATION);
+			}
 		});
 	}
 
@@ -258,6 +272,13 @@ public class ImageViewActivity extends Activity {
 		if(!TextUtils.isEmpty(description)){
 			result.setDescription(description);
 		} 
+		if(venue!=null){
+			result.setVenueId(venue.getId());
+			result.setVenueLat(venue.getLocation().getLat());
+			result.setVenueLong(venue.getLocation().getLng());
+			result.setVenueName(venue.getName());
+		}
+		
 		result.setCategory(mSelectedCategory);
 		result.setOwner(PreferenceHelper.getInstance(mContext).getCurrentUser());
 		result.setImages(imageModels);
@@ -339,6 +360,12 @@ public class ImageViewActivity extends Activity {
 					setImageURI(uri,mImg3);
 				} else if (requestCode == REQUEST_SELECT_FILE_IMG_4) {
 					setImageURI(uri,mImg4);
+				}
+			} else if(requestCode== REQUEST_LOCATION){
+				String result=data.getStringExtra(CommonConstant.INTENT_PRODUCT_DATA);
+				venue=new Gson().fromJson(result, Venue.class);
+				if(venue!=null){
+					locationName.setText(venue.getName());
 				}
 			}
 
