@@ -382,9 +382,13 @@ public class ImageViewActivity extends Activity {
 		String[] projection = { MediaStore.MediaColumns.DATA };
 		Cursor cur = cr.query(uri, projection, null, null, null);
 		if (cur != null) {
-			cur.moveToFirst();
-			String filePath = cur.getString(0);
-			return filePath;
+			if (cur.moveToFirst()) {
+				String filePath = cur.getString(0);
+				cur.close();
+				return filePath;
+			} else {
+				cur.close();
+			}
 		}
 		return null;
 	}
