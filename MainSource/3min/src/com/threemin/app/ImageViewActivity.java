@@ -48,7 +48,7 @@ import com.threemins.R;
 
 public class ImageViewActivity extends Activity {
 
-	
+	public final static int REQUEST_CAMERA_ON_CREATE = 10;
 	
 	public final static int REQUEST_CAMERA_IMG_1 = 11;
 	public final static int REQUEST_CAMERA_IMG_2 = 12;
@@ -144,18 +144,17 @@ public class ImageViewActivity extends Activity {
 			default:
 				break;
 			}
-			if (items[which].equals( getResources().getString(R.string.activity_imageview_take_a_photo) )) {
+			
+			if (which == 0) {
 				startActivityForResult(new Intent(ImageViewActivity.this, ActivityCamera.class), requestCode_Camera);
-			} else if (items[which].equals( getResources().getString(R.string.activity_imageview_select_from_gallery) )) {
+			} else if (which == 1) {
 				openGallery(requestCode_SelectFile);
-			} else if (items[which].equals( getResources().getString(R.string.activity_imageview_delete) )) {
+			} else if (which == 2) {
 				deleteImage(v.getId());
 			}
 		}
 	};
 
-	// variables for spinner
-	
 	public void deleteImage (int resId) {
 		ImageView img = (ImageView) findViewById(resId);
 		imageModels.remove((ImageModel)img.getTag());
@@ -196,6 +195,8 @@ public class ImageViewActivity extends Activity {
 		initWidgets();
 		initSpiner();
 		setEvents();
+		
+		startActivityForResult(new Intent(ImageViewActivity.this, ActivityCamera.class), REQUEST_CAMERA_ON_CREATE);
 	}
 
 	public void initWidgets() {
@@ -367,6 +368,9 @@ public class ImageViewActivity extends Activity {
 				if(venue!=null){
 					locationName.setText(venue.getName());
 				}
+			} else if (requestCode == REQUEST_CAMERA_ON_CREATE) {
+				Uri uri = Uri.parse(data.getStringExtra("imageUri"));
+				setImageURI(uri,mImg1);
 			}
 
 		}

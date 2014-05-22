@@ -12,6 +12,7 @@ import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.CoreProtocolPNames;
+import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 
 import android.text.TextUtils;
@@ -22,6 +23,7 @@ import com.threemin.model.ProductModel;
 
 public class UploaderImageUlti {
 	private DefaultHttpClient mHttpClient;
+	private final int TIMEOUT = 60000;
 
 	public UploaderImageUlti() {
 		HttpParams params = new BasicHttpParams();
@@ -29,7 +31,7 @@ public class UploaderImageUlti {
 		mHttpClient = new DefaultHttpClient(params);
 	}
 
-	public HttpResponse uploadUserPhoto(String url, ProductModel model,String tokken) {
+	public HttpResponse uploadUserPhoto(String url, ProductModel model, String tokken) {
 
 		try {
 
@@ -45,26 +47,25 @@ public class UploaderImageUlti {
 				FileBody fileBody = new FileBody(imageFile, contentType, imageFile.getName());
 				builder.addPart("images[]", fileBody);
 			}
-			 if (!TextUtils.isEmpty(model.getDescription())) {
-			 builder.addTextBody("description", model.getDescription());
-			 }
-			 builder.addTextBody("access_token", tokken);
-			 builder.addTextBody("user_id", model.getOwner().getId()+"");
-			 builder.addTextBody("name", model.getName());
-			 builder.addTextBody("price", model.getPrice());
-			 builder.addTextBody("category_id", model.getCategory().getId()+"");
-			 if(model.getVenueName()!=null){
-				 builder.addTextBody("venue_id", model.getVenueId()+"");
-				 builder.addTextBody("venue_name", model.getVenueName());
-				 builder.addTextBody("venue_long", model.getVenueLong()+"");
-				 builder.addTextBody("venue_lat", model.getVenueLat()+"");
-			 }
+			if (!TextUtils.isEmpty(model.getDescription())) {
+				builder.addTextBody("description", model.getDescription());
+			}
+			builder.addTextBody("access_token", tokken);
+			builder.addTextBody("user_id", model.getOwner().getId() + "");
+			builder.addTextBody("name", model.getName());
+			builder.addTextBody("price", model.getPrice());
+			builder.addTextBody("category_id", model.getCategory().getId() + "");
+			if (model.getVenueName() != null) {
+				builder.addTextBody("venue_id", model.getVenueId() + "");
+				builder.addTextBody("venue_name", model.getVenueName());
+				builder.addTextBody("venue_long", model.getVenueLong() + "");
+				builder.addTextBody("venue_lat", model.getVenueLat() + "");
+			}
 
 			httppost.setEntity(builder.build());
-
 			return mHttpClient.execute(httppost);
 		} catch (Exception e) {
-			Log.e(UploaderImageUlti.class.getName(), e.getLocalizedMessage(), e);
+			e.printStackTrace();
 			return null;
 		}
 	}
