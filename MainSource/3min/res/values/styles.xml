@@ -59,6 +59,7 @@
         <item name="android:singleLine">true</item>
         <item name="android:maxLength">30</item>
         <item name="android:textSize">@dimen/activity_imageview_edittext_textsize</item>
+        <item name="android:gravity">right</item>
     </style>
 
 </resources>

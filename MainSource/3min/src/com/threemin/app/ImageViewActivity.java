@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -16,6 +17,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -28,13 +32,21 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import br.com.condesales.models.Venue;
 
+import com.facebook.Request;
+import com.facebook.RequestBatch;
+import com.facebook.Response;
+import com.facebook.Session;
+import com.facebook.widget.LoginButton;
 import com.google.gson.Gson;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewCallback;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
@@ -75,14 +87,17 @@ public class ImageViewActivity extends Activity {
 	List<ImageModel> imageModels;
 	TextView locationName;
 	Venue venue;
+    Switch mSwShareOnFacebook;
+    Button mBtnSubmit, mBtnCancel;
+    LoginButton mBtnLoginFacebook;
+    
+    String[] permissions = {"email","user_photos","publish_stream"};
+
 
 	OnClickListener onImageViewClicked = new OnClickListener() {
 
 		@Override
 		public void onClick(final View v) {
-//			final CharSequence[] items = { "Take a photo",
-//											"Select from Gallery", 
-//											"Delete" };
 			
 			final CharSequence[] items = { 	getResources().getString(R.string.activity_imageview_take_a_photo),
 											getResources().getString(R.string.activity_imageview_select_from_gallery), 
@@ -204,6 +219,12 @@ public class ImageViewActivity extends Activity {
 		mImg2 = (ImageView) findViewById(R.id.activity_imageview_img_2);
 		mImg3 = (ImageView) findViewById(R.id.activity_imageview_img_3);
 		mImg4 = (ImageView) findViewById(R.id.activity_imageview_img_4);
+        mBtnSubmit = (Button) findViewById(R.id.activity_imageview_btn_submit);
+        mBtnCancel = (Button) findViewById(R.id.activity_imageview_btn_cancel);
+        mBtnLoginFacebook = (LoginButton) findViewById(R.id.activity_imageview_btn_login_facebook);
+        mBtnLoginFacebook.setPublishPermissions(Arrays.asList("email","user_photos","publish_stream"));
+        mSwShareOnFacebook = (Switch) findViewById(R.id.activity_imageview_switch_share_on_facebook);
+
 
 		etDescription = (EditText) findViewById(R.id.activity_imageview_et_description);
 		etName = (EditText) findViewById(R.id.activity_imageview_et_item);
@@ -291,6 +312,67 @@ public class ImageViewActivity extends Activity {
 		mImg2.setOnClickListener(onImageViewClicked);
 		mImg3.setOnClickListener(onImageViewClicked);
 		mImg4.setOnClickListener(onImageViewClicked);
+		
+        
+        mSwShareOnFacebook.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    Session session = Session.getActiveSession();
+                    if (session == null || !session.isOpened()) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                        builder.setTitle("Login Facebook");
+                        builder.setMessage("Please login Facebook to share on it.");
+                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                mBtnLoginFacebook.performClick();
+                                dialog.dismiss();
+                            }
+                        });
+                        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                mSwShareOnFacebook.setChecked(false);
+                                dialog.dismiss();
+                            }
+                        });
+                        builder.show();
+                    }
+                }
+            }
+        });
+        
+        mBtnSubmit.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                ProductModel result=validateInput();
+                if(result!=null){
+                    String data=new Gson().toJson(result);
+                    Intent intent=new Intent();
+                    intent.putExtra(CommonConstant.INTENT_PRODUCT_DATA, data);
+                    setResult(RESULT_OK, intent);
+                    if (mSwShareOnFacebook.isChecked()) {
+                        doShareOnFacebook();
+                    }
+                    finish();
+                }
+            }
+
+        });
+        mBtnCancel.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+
+        });
+
 	}
 
 	public void initSpiner() {
@@ -461,5 +543,76 @@ public class ImageViewActivity extends Activity {
 
 		return mediaFile;
 	}
+	
+    public void doShareOnFacebook() {
+        Session session = Session.getActiveSession();
+        if (session != null && session.isOpened()) {
+            postToFacebookWall();
+        }
+        
+    }
+    
+    public void postToFacebookWall() {
+        Log.i("tructran", "Post to facebook");
+        Drawable draw1 = mImg1.getDrawable();
+        Drawable draw2 = mImg2.getDrawable();
+        Drawable draw3 = mImg3.getDrawable();
+        Drawable draw4 = mImg4.getDrawable();
+        if (draw1 == null && draw2 == null && draw3 == null && draw4 == null) {
+            return;
+        }
+        RequestBatch batch = new RequestBatch();
+        String item = etName.getText().toString();
+        String price = etPrice.getText().toString();
+        String description = etDescription.getText().toString();
+        String caption = "Name: " + item +
+                        "\nPrice: " + price + 
+                        "\nDescription: " + description;        
+        if (draw1 != null) {
+            batch.add(createRequest(draw1, caption));
+        }
+        if (draw2 != null) {
+            batch.add(createRequest(draw2, caption));
+        }
+        if (draw3 != null) {
+            batch.add(createRequest(draw3, caption));
+        }
+        if (draw4 != null) {
+            batch.add(createRequest(draw4, caption));
+        }
+        
+        batch.executeAsync();
+        Log.i("tructran", "Post to facebook: done");
+    }
+    
+    public Request createRequest(Drawable draw, String capion) {
+        
+        Request request = Request.newUploadPhotoRequest(Session.getActiveSession(), getBitmap(draw), new Request.Callback() {
+
+            @Override
+            public void onCompleted(Response response) {
+                Toast.makeText(ImageViewActivity.this, "Post photo success", Toast.LENGTH_LONG).show();
+            }
+        });
+        Bundle params = request.getParameters();
+        params.putString("message", capion);
+        request.setParameters(params);
+        return request;
+    }
+    
+    public Bitmap getBitmap(Drawable draw) {
+        Bitmap bitmap;
+        if (draw instanceof BitmapDrawable) {
+            bitmap = ((BitmapDrawable) draw).getBitmap();
+        } else {
+            Drawable d = draw;
+            bitmap = Bitmap.createBitmap(d.getIntrinsicWidth(), d.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(bitmap);
+            d.draw(canvas);
+        }
+        return bitmap;
+    }
+    
+
 	
 }

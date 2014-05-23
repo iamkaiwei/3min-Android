@@ -226,6 +226,12 @@
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true" />
         </RelativeLayout>
+        
+        <com.facebook.widget.LoginButton 
+            android:id="@+id/activity_imageview_btn_login_facebook"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone"/>
     </LinearLayout>
 
 </ScrollView>
