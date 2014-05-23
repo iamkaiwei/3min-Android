@@ -82,6 +82,23 @@
             android:layout_height="match_parent"
             android:layout_below="@+id/ln_topbar" >
         </FrameLayout>
+
+        <RelativeLayout
+            android:id="@+id/bottom"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bottom_gradient"
+             android:layout_alignParentBottom="true" >
+
+            <ImageView
+                android:id="@+id/home_camera"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/camera"
+                
+                 />
+        </RelativeLayout>
     </RelativeLayout>
     <!-- The navigation drawer -->
 

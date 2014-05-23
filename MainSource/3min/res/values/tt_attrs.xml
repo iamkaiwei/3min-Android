@@ -17,4 +17,12 @@
         <attr name="customTypeface" format="reference|string" />
     </declare-styleable>
 
+    <declare-styleable name="MaskImage">
+        <!-- Identifier for the image that represents the Imageview's content. -->
+        <attr name="image" format="reference" />
+        <!-- crop Imageview's content same as mask -->
+        <attr name="mask" format="reference" />
+        <!-- Background Image -->
+        <attr name="frame" format="reference" />
+    </declare-styleable>
 </resources>

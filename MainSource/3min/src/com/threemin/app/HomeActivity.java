@@ -77,6 +77,7 @@ public class HomeActivity extends Activity {
 	int page;
 	View vHighlightList, vHighlightThumb;
 	View tabList, tabThumb;
+	View bottomView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +91,7 @@ public class HomeActivity extends Activity {
 		vHighlightList = findViewById(R.id.highlight_list);
 		vHighlightThumb = findViewById(R.id.highlight_thumbnail);
 		vHighlightList.setVisibility(View.INVISIBLE);
+		bottomView=findViewById(R.id.bottom);
 		tabList = findViewById(R.id.tab_list);
 		tabThumb = findViewById(R.id.tab_thumb);
 		initActionBar();
@@ -97,8 +99,8 @@ public class HomeActivity extends Activity {
 
 		// init: list of products is shown in list view:
 		mModeView = MODE_GRID_VIEW;
-		productFragmentList = new ProductFragmentList();
-		productFragmentGrid = new ProductFragmentGrid();
+		productFragmentList = new ProductFragmentList(bottomView);
+		productFragmentGrid = new ProductFragmentGrid(bottomView);
 		getFragmentManager().beginTransaction().replace(R.id.content_fragment, productFragmentGrid).commit();
 		currentFragment = productFragmentGrid;
 
@@ -115,6 +117,8 @@ public class HomeActivity extends Activity {
 				getActionBar().setTitle(categoryModel.getName());
 			}
 		});
+		
+		findViewById(R.id.home_camera).setOnClickListener(onSellClick());
 		new GetProductTaks(currentFragment).execute(STEP_INIT);
 
 		tabList.setOnClickListener(onTabSwitch());

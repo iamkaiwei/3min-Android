@@ -4,11 +4,11 @@
     android:layout_height="match_parent"
     android:id="@+id/swipe" >
 
-    <za.co.immedia.pinnedheaderlistview.PinnedHeaderListView
+    <com.threemin.view.QuickReturnListView
         android:id="@+id/lv_product"
         android:layout_width="match_parent"
         android:layout_height="match_parent" 
         android:divider="@android:color/darker_gray">
-    </za.co.immedia.pinnedheaderlistview.PinnedHeaderListView>
+    </com.threemin.view.QuickReturnListView>
 
 </android.support.v4.widget.SwipeRefreshLayout>

@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListView;
@@ -17,22 +18,33 @@ import android.widget.ListView;
 import com.threemin.adapter.ProductAdapter;
 import com.threemin.app.HomeActivity;
 import com.threemin.app.HomeActivity.GetProductTaks;
+import com.threemin.view.QuickReturnListView;
 import com.threemins.R;
 
 public class ProductFragmentList extends BaseProductFragment {
-	ListView list;
+	QuickReturnListView list;
 	ProductAdapter adapter;
 	int thelasttotalCount;
 	HomeActivity homeActivity;
-	public ProductFragmentList() {
-		super();
-	}
+	private int mQuickReturnHeight;
 
+	private static final int STATE_ONSCREEN = 0;
+	private static final int STATE_OFFSCREEN = 1;
+	private static final int STATE_RETURNING = 2;
+	private int mState = STATE_ONSCREEN;
+	private int mScrollY;
+	private int mMinRawY = 0;
+	View bottomView;
+
+	public ProductFragmentList(View bottomView) {
+		super();
+		this.bottomView=bottomView;
+	}
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_product_listview, null);
 		swipeLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe);
-		list = (PinnedHeaderListView) v.findViewById(R.id.lv_product);
+		list = (QuickReturnListView) v.findViewById(R.id.lv_product);
 		if (adapter == null) {
 			adapter = new ProductAdapter(productModels);
 		}
@@ -41,6 +53,20 @@ public class ProductFragmentList extends BaseProductFragment {
 		initListner();
 
 		return v;
+	}
+	
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onActivityCreated(savedInstanceState);
+		list.getViewTreeObserver().addOnGlobalLayoutListener(
+				new ViewTreeObserver.OnGlobalLayoutListener() {
+					@Override
+					public void onGlobalLayout() {
+						mQuickReturnHeight = list.getHeight();
+						list.computeScrollY();
+					}
+				});
 	}
 
 	private void initListner() {
@@ -65,6 +91,7 @@ public class ProductFragmentList extends BaseProductFragment {
 					thelasttotalCount=totalItemCount;
 					homeActivity.new GetProductTaks(ProductFragmentList.this).execute(HomeActivity.STEP_ADDMORE);
 				}
+				handleQuickReturn();
 			}
 		});
 	}
@@ -75,5 +102,58 @@ public class ProductFragmentList extends BaseProductFragment {
 			adapter = new ProductAdapter(productModels);
 		} 
 		adapter.updateData(productModels);
+	}
+	
+	private void handleQuickReturn() {
+		mScrollY = 0;
+		int translationY = 0;
+
+		if (list.scrollYIsComputed()) {
+			mScrollY = list.getComputedScrollY();
+		}
+
+		int rawY = mScrollY;
+
+		switch (mState) {
+		case STATE_OFFSCREEN:
+			if (rawY >= mMinRawY) {
+				mMinRawY = rawY;
+			} else {
+				mState = STATE_RETURNING;
+			}
+			translationY = rawY;
+			break;
+
+		case STATE_ONSCREEN:
+			if (rawY > mQuickReturnHeight) {
+				mState = STATE_OFFSCREEN;
+				mMinRawY = rawY;
+			}
+			translationY = rawY;
+			break;
+
+		case STATE_RETURNING:
+
+			translationY = (rawY - mMinRawY) + mQuickReturnHeight;
+
+			System.out.println(translationY);
+			if (translationY < 0) {
+				translationY = 0;
+				mMinRawY = rawY + mQuickReturnHeight;
+			}
+
+			if (rawY == 0) {
+				mState = STATE_ONSCREEN;
+				translationY = 0;
+			}
+
+			if (translationY > mQuickReturnHeight) {
+				mState = STATE_OFFSCREEN;
+				mMinRawY = rawY;
+			}
+			break;
+		}
+
+			bottomView.setTranslationY(translationY);
 	}
 }
