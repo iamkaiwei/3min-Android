@@ -1,8 +1,6 @@
 package com.threemin.app;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import android.app.ActionBar;
@@ -26,7 +24,6 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,7 +42,6 @@ import com.threemin.fragment.SlidePageFragment;
 import com.threemin.model.UserModel;
 import com.threemin.uti.CommonConstant;
 import com.threemin.uti.CommonUti;
-import com.threemin.uti.PreferenceHelper;
 import com.threemin.webservice.AuthorizeWebservice;
 import com.threemin.webservice.CategoryWebservice;
 import com.threemins.R;

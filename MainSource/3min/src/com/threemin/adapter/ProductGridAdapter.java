@@ -2,11 +2,6 @@ package com.threemin.adapter;
 
 import java.util.List;
 
-import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
-import com.threemin.model.ProductModel;
-import com.threemin.uti.CommonConstant;
-import com.threemins.R;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +10,11 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
+import com.threemin.model.ProductModel;
+import com.threemin.uti.CommonConstant;
+import com.threemins.R;
 
 public class ProductGridAdapter extends BaseAdapter {
 	private List<ProductModel> mData;

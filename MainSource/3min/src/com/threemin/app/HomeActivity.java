@@ -1,7 +1,6 @@
 package com.threemin.app;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.List;
 
 import org.apache.http.HttpEntity;
@@ -36,7 +35,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.threemin.adapter.CategoryAdapter;
 import com.threemin.fragment.BaseProductFragment;
 import com.threemin.fragment.ProductFragmentGrid;
@@ -47,6 +45,7 @@ import com.threemin.uti.CommonConstant;
 import com.threemin.uti.PreferenceHelper;
 import com.threemin.uti.WebserviceConstant;
 import com.threemin.webservice.CategoryWebservice;
+import com.threemin.webservice.ProductWebservice;
 import com.threemin.webservice.UploaderImageUlti;
 import com.threemins.R;
 
@@ -60,15 +59,24 @@ public class HomeActivity extends Activity {
 	BaseProductFragment currentFragment;
 
 	ImageButton btn_browse, btn_search, btn_sell, btn_activity, btn_me;
-	
-	//add grid view
+
+	// add grid view
 	ProductFragmentGrid productFragmentGrid;
-	
-	//view mode: list view or grid view
+
+	// view mode: list view or grid view
 	public static final int MODE_LIST_VIEW = 1;
 	public static final int MODE_GRID_VIEW = 2;
-	private static final int REQUEST_UPLOAD=3;
+	private static final int REQUEST_UPLOAD = 3;
+
+	public static int STEP_INIT = 0;
+	public static int STEP_ADDMORE = 1;
+	public static int STEP_REFRESH = 2;
+
 	public int mModeView;
+
+	protected CategoryModel currentCate;
+	protected List<ProductModel> productModels;
+	int page;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -80,30 +88,30 @@ public class HomeActivity extends Activity {
 		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		initActionBar();
 		new InitCategory().execute();
-		
-		//init: list of products is shown in list view:
+
+		// init: list of products is shown in list view:
 		mModeView = MODE_LIST_VIEW;
 		productFragmentList = new ProductFragmentList();
-		getFragmentManager().beginTransaction()
-				.replace(R.id.content_fragment, productFragmentList).commit();
+		getFragmentManager().beginTransaction().replace(R.id.content_fragment, productFragmentList).commit();
 		currentFragment = productFragmentList;
-		
-		//create the fragment to switch between grid view and list view
+
+		// create the fragment to switch between grid view and list view
 		productFragmentGrid = new ProductFragmentGrid();
-		
+
 		lvCategory.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
-				CategoryModel categoryModel = (CategoryModel) lvCategory
-						.getItemAtPosition(arg2);
-				currentFragment.setCategoryData(categoryModel);
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+				CategoryModel categoryModel = (CategoryModel) lvCategory.getItemAtPosition(arg2);
+				currentCate = categoryModel;
+				new GetProductTaks(currentFragment).execute(STEP_INIT);
 				drawerLayout.closeDrawer(lvCategory);
 				getActionBar().setTitle(categoryModel.getName());
 			}
 		});
 		intitNavigation();
+		new GetProductTaks(currentFragment).execute(STEP_INIT);
+
 	}
 
 	private void intitNavigation() {
@@ -122,8 +130,7 @@ public class HomeActivity extends Activity {
 		btn_browse.setSelected(true);
 	}
 
-	private class InitCategory extends
-			AsyncTask<Void, Void, List<CategoryModel>> {
+	private class InitCategory extends AsyncTask<Void, Void, List<CategoryModel>> {
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
@@ -132,8 +139,7 @@ public class HomeActivity extends Activity {
 		@Override
 		protected List<CategoryModel> doInBackground(Void... arg0) {
 			try {
-				return CategoryWebservice.getInstance()
-						.getAllCategory(mContext);
+				return CategoryWebservice.getInstance().getAllCategory(mContext);
 			} catch (Exception e) {
 				e.printStackTrace();
 				return null;
@@ -169,20 +175,22 @@ public class HomeActivity extends Activity {
 		getActionBar().setHomeButtonEnabled(true);
 
 		ActionBar bar = getActionBar();
-//		bar.setBackgroundDrawable(new ColorDrawable(Color
-//				.parseColor(getString(R.color.orange))));
+		// bar.setBackgroundDrawable(new ColorDrawable(Color
+		// .parseColor(getString(R.color.orange))));
 		bar.setIcon(new ColorDrawable(Color.TRANSPARENT));
-		
-//		int actionBarTitleId = Resources.getSystem().getIdentifier("action_bar_title", "id", "android");
-//		if (actionBarTitleId > 0) {
-//		    TextView title = (TextView) findViewById(actionBarTitleId);
-//		    if (title != null) {
-//		        title.setTextColor(Color.WHITE);
-//		    }
-//		}
-		
-		//set padding between home icon and the title
-		ImageView view = (ImageView)findViewById(android.R.id.home);
+
+		// int actionBarTitleId =
+		// Resources.getSystem().getIdentifier("action_bar_title", "id",
+		// "android");
+		// if (actionBarTitleId > 0) {
+		// TextView title = (TextView) findViewById(actionBarTitleId);
+		// if (title != null) {
+		// title.setTextColor(Color.WHITE);
+		// }
+		// }
+
+		// set padding between home icon and the title
+		ImageView view = (ImageView) findViewById(android.R.id.home);
 		view.setPadding(0, 0, 20, 0);
 	}
 
@@ -199,7 +207,7 @@ public class HomeActivity extends Activity {
 		// Pass any configuration change to the drawer toggls
 		mDrawerToggle.onConfigurationChanged(newConfig);
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
@@ -214,23 +222,19 @@ public class HomeActivity extends Activity {
 		if (mDrawerToggle.onOptionsItemSelected(item)) {
 			return true;
 		}
-		
+
 		if (item.getItemId() == R.id.action_switch_view) {
-			if (mModeView == MODE_LIST_VIEW) { 
+			if (mModeView == MODE_LIST_VIEW) {
 				mModeView = MODE_GRID_VIEW;
 				item.setIcon(R.drawable.ic_listview);
-				productFragmentGrid.setCategoryData(productFragmentList.getcurrenCate());
-				productFragmentGrid.setProductModels(productFragmentList.getListpProductModels());
-				productFragmentGrid.setCurrentPage(productFragmentList.getCurrentPage());
+				productFragmentGrid.setProductModels(productModels);
 				getFragmentManager().beginTransaction().replace(R.id.content_fragment, productFragmentGrid).commit();
 				currentFragment = productFragmentGrid;
-			} else { 
+			} else {
 				mModeView = MODE_LIST_VIEW;
 				item.setIcon(R.drawable.ic_gridview);
 
-				productFragmentList.setCategoryData(productFragmentGrid.getcurrenCate());
-				productFragmentList.setProductModels(productFragmentGrid.getListpProductModels());
-				productFragmentList.setCurrentPage(productFragmentGrid.getCurrentPage());
+				productFragmentList.setProductModels(productModels);
 				getFragmentManager().beginTransaction().replace(R.id.content_fragment, productFragmentList).commit();
 				currentFragment = productFragmentList;
 			}
@@ -244,74 +248,149 @@ public class HomeActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				if (v == btn_sell) {
-					startActivityForResult(new Intent(mContext, ImageViewActivity.class),REQUEST_UPLOAD);
+					startActivityForResult(new Intent(mContext, ImageViewActivity.class), REQUEST_UPLOAD);
 				} else {
-					Toast.makeText(mContext, "to be continue",
-							Toast.LENGTH_SHORT).show();
+					Toast.makeText(mContext, "to be continue", Toast.LENGTH_SHORT).show();
 				}
 			}
 		};
 	}
-	
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if(requestCode==REQUEST_UPLOAD){
-			if(resultCode==RESULT_OK){
-				ProductModel productModel=new Gson().fromJson(data.getStringExtra(CommonConstant.INTENT_PRODUCT_DATA), ProductModel.class);
+		if (requestCode == REQUEST_UPLOAD) {
+			if (resultCode == RESULT_OK) {
+				ProductModel productModel = new Gson().fromJson(
+						data.getStringExtra(CommonConstant.INTENT_PRODUCT_DATA), ProductModel.class);
 				new UploadProduct(this).execute(productModel);
 			}
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
-	private static class UploadProduct extends AsyncTask<ProductModel, Void, ProductModel>{
-		HomeActivity activity;
+
+	private class UploadProduct extends AsyncTask<ProductModel, Void, ProductModel> {
 		CategoryModel categoryModel;
-		public UploadProduct(HomeActivity activity){
-			this.activity=activity;
+
+		public UploadProduct(HomeActivity activity) {
 		}
-		
+
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			activity.currentFragment.getRefreshLayout().setRefreshing(true);
+			currentFragment.getRefreshLayout().setRefreshing(true);
 		}
-		
+
 		@Override
 		protected void onPostExecute(ProductModel result) {
 			// TODO Auto-generated method stub
 			super.onPostExecute(result);
-			if(activity!=null && activity.currentFragment!=null){
-			activity.currentFragment.getRefreshLayout().setRefreshing(false);
-			activity.currentFragment.addNewProducts(result,categoryModel);
+			if (mContext != null && currentFragment != null) {
+				currentFragment.getRefreshLayout().setRefreshing(false);
+				if(result!=null){
+				addNewProducts(result, categoryModel);
+				} else {
+					Toast.makeText(mContext, R.string.error_upload, Toast.LENGTH_SHORT).show();
+				}
 			}
 		}
-		
+
 		@Override
 		protected ProductModel doInBackground(ProductModel... params) {
-			ProductModel model=params[0];
-			String tokken=PreferenceHelper.getInstance(activity).getTokken();
-			categoryModel=model.getCategory();
-			HttpResponse reponese=new UploaderImageUlti().uploadUserPhoto(WebserviceConstant.CREATE_PRODUCT, model,tokken);
-			HttpEntity r_entity = reponese.getEntity();
-			String responseString;
-			try {
-				responseString = EntityUtils.toString(r_entity);
-				JSONObject resultObject=new JSONObject(responseString);
-				
-				ProductModel list = new Gson().fromJson(resultObject.optJSONObject("product").toString(), ProductModel.class);
-				Log.d("UPLOAD", responseString);
-				return list;
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			catch (JSONException e) {
-				// TODO: handle exception
+			ProductModel model = params[0];
+			String tokken = PreferenceHelper.getInstance(mContext).getTokken();
+			categoryModel = model.getCategory();
+			HttpResponse reponese = new UploaderImageUlti().uploadUserPhoto(WebserviceConstant.CREATE_PRODUCT, model,
+					tokken);
+			if (reponese != null) {
+				HttpEntity r_entity = reponese.getEntity();
+				String responseString;
+				try {
+					responseString = EntityUtils.toString(r_entity);
+					Log.d("UPLOAD", responseString);
+					JSONObject resultObject = new JSONObject(responseString);
+
+					ProductModel list = new Gson().fromJson(resultObject.optJSONObject("product").toString(),
+							ProductModel.class);
+					return list;
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (JSONException e) {
+					// TODO: handle exception
+				}
 			}
 			return null;
+		}
+	}
+
+	public class GetProductTaks extends AsyncTask<Integer, Void, List<ProductModel>> {
+		int currentStep;
+
+		BaseProductFragment baseProductFragment;
+
+		// flag check if asynctask is proccessing or not
+
+		// constructor
+		public GetProductTaks(BaseProductFragment baseProductFragment) {
+			this.baseProductFragment = baseProductFragment;
+		}
+
+		@Override
+		protected void onPreExecute() {
+			// TODO Auto-generated method stub
+			super.onPreExecute();
+			if (baseProductFragment.swipeLayout != null) {
+				baseProductFragment.swipeLayout.setRefreshing(true);
+			}
+		}
+
+		@Override
+		protected List<ProductModel> doInBackground(Integer... params) {
+			currentStep = params[0];
+			if (currentStep == STEP_INIT || currentStep == STEP_REFRESH) {
+				page = 1;
+			}
+			if (currentStep == STEP_ADDMORE) {
+				page++;
+			}
+			String tokken = PreferenceHelper.getInstance(baseProductFragment.getActivity()).getTokken();
+			try {
+				return new ProductWebservice().getProduct(tokken, currentCate, page);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+		}
+
+		@Override
+		protected void onPostExecute(List<ProductModel> result) {
+			super.onPostExecute(result);
+			if (baseProductFragment.swipeLayout != null) {
+				baseProductFragment.swipeLayout.setRefreshing(false);
+			}
+			if (result != null && result.size() > 0) {
+				if (currentStep == STEP_INIT || currentStep == STEP_REFRESH) {
+					productModels = result;
+					baseProductFragment.setProductModels(result);
+				} else if (currentStep == STEP_ADDMORE) {
+					productModels.addAll(result);
+					baseProductFragment.setProductModels(productModels);
+				} else {
+				}
+
+			} else if (currentStep == STEP_INIT) {
+				baseProductFragment.setProductModels(result);
+				productModels = result;
+			}
+		}
+	}
+
+	public void addNewProducts(ProductModel result, CategoryModel categoryModel) {
+		if (currentCate == null || currentCate.getId() == categoryModel.getId()) {
+			productModels.add(0, result);
 		}
 	}
 }

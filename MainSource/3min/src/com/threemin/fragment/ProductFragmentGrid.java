@@ -1,11 +1,8 @@
 package com.threemin.fragment;
 
-import java.util.List;
-
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,17 +10,18 @@ import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.GridView;
 
-import com.threemin.adapter.ProductAdapter;
 import com.threemin.adapter.ProductGridAdapter;
-import com.threemin.fragment.BaseProductFragment.GetProductTaks;
-import com.threemin.model.ProductModel;
+import com.threemin.app.HomeActivity;
+import com.threemin.app.HomeActivity.GetProductTaks;
 import com.threemins.R;
 
 public class ProductFragmentGrid extends BaseProductFragment {
 	
 	private GridView mGrid;
 	private ProductGridAdapter mAdapter;
-	
+	int thelasttotalCount;
+	HomeActivity homeActivity;
+
 	public ProductFragmentGrid() {
 		super();
 	}	
@@ -39,13 +37,9 @@ public class ProductFragmentGrid extends BaseProductFragment {
 		}
 		mGrid.setAdapter(mAdapter);
 		
-		page = 1;
 
-		if(productModels==null||productModels.isEmpty()){
-			new GetProductTaks(ProductFragmentGrid.this).execute(BaseProductFragment.STEP_INIT);
-		}
-		
 		initListner();
+		homeActivity=(HomeActivity) getActivity();
 		return v;
 	}
 
@@ -54,7 +48,7 @@ public class ProductFragmentGrid extends BaseProductFragment {
 
 			@Override
 			public void onRefresh() {
-				new GetProductTaks(ProductFragmentGrid.this).execute(BaseProductFragment.STEP_REFRESH);
+				homeActivity.new GetProductTaks(ProductFragmentGrid.this).execute(HomeActivity.STEP_REFRESH);
 			}
 		});
 		
@@ -68,20 +62,15 @@ public class ProductFragmentGrid extends BaseProductFragment {
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 				boolean loadMore = firstVisibleItem + visibleItemCount >= totalItemCount - 1;
-//				if (loadMore) {
-//					page++;
-//					new GetProductTaks().execute(BaseProductFragment.STEP_ADDMORE);
-//				}
-				if (loadMore && GetProductTaks.getIsProccessingFlag() == false) {
-					page++;
-					new GetProductTaks(ProductFragmentGrid.this).execute(BaseProductFragment.STEP_ADDMORE);
+				if (loadMore && totalItemCount>1 && thelasttotalCount!=totalItemCount) {
+					homeActivity.new GetProductTaks(ProductFragmentGrid.this).execute(HomeActivity.STEP_ADDMORE);
 				}
 			}
 		});
 	}
 
 	@Override
-	protected void updateUI() {
+	public void updateUI() {
 		if (mAdapter == null) {
 			mAdapter = new ProductGridAdapter(productModels);
 		} 

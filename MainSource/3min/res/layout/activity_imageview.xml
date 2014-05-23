@@ -160,11 +160,17 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1" >
+                    android:layout_weight="1" 
+                    android:id="@+id/ln_location">
 
                     <TextView
                         style="@style/activity_imageview_textview_style"
                         android:text="@string/activity_imageview_location" />
+                    <TextView
+                        android:id="@+id/activity_imageview_tv_location"
+                        style="@style/activity_imageview_edittext_style"
+                     
+                         />
                 </RelativeLayout>
             </LinearLayout>
         </LinearLayout>

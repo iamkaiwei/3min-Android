@@ -1,12 +1,12 @@
 package com.threemin.uti;
 
-import com.google.gson.Gson;
-import com.threemin.model.UserModel;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.util.Log;
+
+import com.google.gson.Gson;
+import com.threemin.model.UserModel;
 
 
 public class PreferenceHelper {

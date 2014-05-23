@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -17,9 +16,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -32,19 +28,13 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
+import br.com.condesales.models.Venue;
 
-import com.facebook.Request;
-import com.facebook.RequestBatch;
-import com.facebook.Response;
-import com.facebook.Session;
-import com.facebook.widget.LoginButton;
 import com.google.gson.Gson;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewCallback;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
@@ -70,14 +60,11 @@ public class ImageViewActivity extends Activity {
 	public final static int REQUEST_SELECT_FILE_IMG_2 = 22;
 	public final static int REQUEST_SELECT_FILE_IMG_3 = 23;
 	public final static int REQUEST_SELECT_FILE_IMG_4 = 24;
+	
+	private final static int REQUEST_LOCATION = 31;
 
 	ImageView mImg1, mImg2, mImg3, mImg4;
-	Switch mSwShareOnFacebook;
-	Button mBtnSubmit, mBtnCancel;
 	Context mContext;
-	LoginButton mBtnLoginFacebook;
-	
-	String[] permissions = {"email","user_photos","publish_stream"};
 	
 	//variables for spinner
 	Spinner mSpnCategory;
@@ -86,14 +73,16 @@ public class ImageViewActivity extends Activity {
 	CategoryModel mSelectedCategory;
 	EditText etName, etPrice, etDescription;
 	List<ImageModel> imageModels;
-	
-	//var for login facebook
-	boolean isFetching = false;
+	TextView locationName;
+	Venue venue;
 
 	OnClickListener onImageViewClicked = new OnClickListener() {
 
 		@Override
 		public void onClick(final View v) {
+//			final CharSequence[] items = { "Take a photo",
+//											"Select from Gallery", 
+//											"Delete" };
 			
 			final CharSequence[] items = { 	getResources().getString(R.string.activity_imageview_take_a_photo),
 											getResources().getString(R.string.activity_imageview_select_from_gallery), 
@@ -215,8 +204,6 @@ public class ImageViewActivity extends Activity {
 		mImg2 = (ImageView) findViewById(R.id.activity_imageview_img_2);
 		mImg3 = (ImageView) findViewById(R.id.activity_imageview_img_3);
 		mImg4 = (ImageView) findViewById(R.id.activity_imageview_img_4);
-		
-		mSwShareOnFacebook = (Switch) findViewById(R.id.activity_imageview_switch_share_on_facebook);
 
 		etDescription = (EditText) findViewById(R.id.activity_imageview_et_description);
 		etName = (EditText) findViewById(R.id.activity_imageview_et_item);
@@ -224,10 +211,40 @@ public class ImageViewActivity extends Activity {
 
 		mSpnCategory = (Spinner) findViewById(R.id.activity_imageview_spn_category);
 		
-		mBtnSubmit = (Button) findViewById(R.id.activity_imageview_btn_submit);
-		mBtnCancel = (Button) findViewById(R.id.activity_imageview_btn_cancel);
-		mBtnLoginFacebook = (LoginButton) findViewById(R.id.activity_imageview_btn_login_facebook);
-		mBtnLoginFacebook.setPublishPermissions(Arrays.asList("email","user_photos","publish_stream"));
+		locationName=(TextView) findViewById(R.id.activity_imageview_tv_location);
+		
+		findViewById(R.id.activity_imageview_btn_submit).setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				ProductModel result=validateInput();
+				if(result!=null){
+					String data=new Gson().toJson(result);
+					Intent intent=new Intent();
+					intent.putExtra(CommonConstant.INTENT_PRODUCT_DATA, data);
+					setResult(RESULT_OK, intent);
+					finish();
+				}
+			}
+
+		});
+		
+		findViewById(R.id.activity_imageview_btn_cancel).setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				finish();
+			}
+
+		});
+		
+		findViewById(R.id.ln_location).setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				startActivityForResult(new Intent(mContext, LocationActivity.class), REQUEST_LOCATION);
+			}
+		});
 	}
 
 	private ProductModel validateInput() {
@@ -256,6 +273,13 @@ public class ImageViewActivity extends Activity {
 		if(!TextUtils.isEmpty(description)){
 			result.setDescription(description);
 		} 
+		if(venue!=null){
+			result.setVenueId(venue.getId());
+			result.setVenueLat(venue.getLocation().getLat());
+			result.setVenueLong(venue.getLocation().getLng());
+			result.setVenueName(venue.getName());
+		}
+		
 		result.setCategory(mSelectedCategory);
 		result.setOwner(PreferenceHelper.getInstance(mContext).getCurrentUser());
 		result.setImages(imageModels);
@@ -267,65 +291,6 @@ public class ImageViewActivity extends Activity {
 		mImg2.setOnClickListener(onImageViewClicked);
 		mImg3.setOnClickListener(onImageViewClicked);
 		mImg4.setOnClickListener(onImageViewClicked);
-		
-		mSwShareOnFacebook.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-			
-			@Override
-			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				if (isChecked) {
-					Session session = Session.getActiveSession();
-					if (session == null || !session.isOpened()) {
-						AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-						builder.setTitle("Login Facebook");
-						builder.setMessage("Please login Facebook to share on it.");
-						builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-							
-							@Override
-							public void onClick(DialogInterface dialog, int which) {
-								mBtnLoginFacebook.performClick();
-								dialog.dismiss();
-							}
-						});
-						builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-							
-							@Override
-							public void onClick(DialogInterface dialog, int which) {
-								mSwShareOnFacebook.setChecked(false);
-								dialog.dismiss();
-							}
-						});
-						builder.show();
-					}
-				}
-			}
-		});
-		
-		mBtnSubmit.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				ProductModel result=validateInput();
-				if(result!=null){
-					String data=new Gson().toJson(result);
-					Intent intent=new Intent();
-					intent.putExtra(CommonConstant.INTENT_PRODUCT_DATA, data);
-					setResult(RESULT_OK, intent);
-					if (mSwShareOnFacebook.isChecked()) {
-						doShareOnFacebook();
-					}
-					finish();
-				}
-			}
-
-		});
-		mBtnCancel.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				finish();
-			}
-
-		});
 	}
 
 	public void initSpiner() {
@@ -377,66 +342,38 @@ public class ImageViewActivity extends Activity {
 		if (resultCode == RESULT_OK) {
 			if (requestCode >= REQUEST_CAMERA_IMG_1 && requestCode <= REQUEST_CAMERA_IMG_4) {
 				Uri uri = Uri.parse(data.getStringExtra("imageUri"));
-				
-				switch (requestCode) {
-				case REQUEST_CAMERA_IMG_1:
+				if (requestCode == REQUEST_CAMERA_IMG_1) {
 					setImageURI(uri,mImg1);
-					break;
-					
-				case REQUEST_CAMERA_IMG_2:
+				} else if (requestCode == REQUEST_CAMERA_IMG_2) {
 					setImageURI(uri,mImg2);
-					break;
-
-				case REQUEST_CAMERA_IMG_3:
+				} else if (requestCode == REQUEST_CAMERA_IMG_3) {
 					setImageURI(uri,mImg3);
-					break;
-
-				case REQUEST_CAMERA_IMG_4:
+				} else if (requestCode == REQUEST_CAMERA_IMG_4) {
 					setImageURI(uri,mImg4);
-					break;
-
-				default:
-					break;
 				}
-				
 			} else if (requestCode >= REQUEST_SELECT_FILE_IMG_1 && requestCode <= REQUEST_SELECT_FILE_IMG_4) {
 				Uri uri = data.getData();
-				
-				switch (requestCode) {
-				case REQUEST_SELECT_FILE_IMG_1:
+				if (requestCode == REQUEST_SELECT_FILE_IMG_1) {
 					setImageURI(uri,mImg1);
-					break;
-					
-				case REQUEST_SELECT_FILE_IMG_2:
+				} else if (requestCode == REQUEST_SELECT_FILE_IMG_2) {
 					setImageURI(uri,mImg2);
-					break;
-
-				case REQUEST_SELECT_FILE_IMG_3:
+				} else if (requestCode == REQUEST_SELECT_FILE_IMG_3) {
 					setImageURI(uri,mImg3);
-					break;
-
-				case REQUEST_SELECT_FILE_IMG_4:
+				} else if (requestCode == REQUEST_SELECT_FILE_IMG_4) {
 					setImageURI(uri,mImg4);
-					break;
-
-				default:
-					break;
 				}
-				
+			} else if(requestCode== REQUEST_LOCATION){
+				String result=data.getStringExtra(CommonConstant.INTENT_PRODUCT_DATA);
+				venue=new Gson().fromJson(result, Venue.class);
+				if(venue!=null){
+					locationName.setText(venue.getName());
+				}
 			} else if (requestCode == REQUEST_CAMERA_ON_CREATE) {
 				Uri uri = Uri.parse(data.getStringExtra("imageUri"));
 				setImageURI(uri,mImg1);
 			}
 
 		}
-		Log.i("tructran", "Result Code is - " + resultCode +"");
-		Session session = Session.getActiveSession();
-		if (session != null) {
-			session.onActivityResult(ImageViewActivity.this, requestCode, resultCode, data);
-		} else {
-			Log.i("tructran", "session null");
-		}
-		
 	}
 
 	public String getPath(Uri uri) {
@@ -445,9 +382,13 @@ public class ImageViewActivity extends Activity {
 		String[] projection = { MediaStore.MediaColumns.DATA };
 		Cursor cur = cr.query(uri, projection, null, null, null);
 		if (cur != null) {
-			cur.moveToFirst();
-			String filePath = cur.getString(0);
-			return filePath;
+			if (cur.moveToFirst()) {
+				String filePath = cur.getString(0);
+				cur.close();
+				return filePath;
+			} else {
+				cur.close();
+			}
 		}
 		return null;
 	}
@@ -469,8 +410,8 @@ public class ImageViewActivity extends Activity {
 					Log.d("path", imageModel.getUrl());
 				} else {
 					String pathImage=getPath(Uri.parse(url));
-					Log.d("path", pathImage);
-					imageModel.setUrl(pathImage);
+					Log.d("path", pathImage)
+;					imageModel.setUrl(pathImage);
 				}
 				imageView.setTag(imageModel);
 				imageModels.add(imageModel);
@@ -519,75 +460,6 @@ public class ImageViewActivity extends Activity {
 		mediaFile = new File(mediaStorageDir.getPath() + File.separator + "IMG_" + timeStamp + ".jpg");
 
 		return mediaFile;
-	}
-	
-	public void doShareOnFacebook() {
-		Session session = Session.getActiveSession();
-		if (session != null && session.isOpened()) {
-			postToFacebookWall();
-		}
-		
-	}
-	
-	public void postToFacebookWall() {
-		Log.i("tructran", "Post to facebook");
-		Drawable draw1 = mImg1.getDrawable();
-		Drawable draw2 = mImg2.getDrawable();
-		Drawable draw3 = mImg3.getDrawable();
-		Drawable draw4 = mImg4.getDrawable();
-		if (draw1 == null && draw2 == null && draw3 == null && draw4 == null) {
-			return;
-		}
-		RequestBatch batch = new RequestBatch();
-		String item = etName.getText().toString();
-		String price = etPrice.getText().toString();
-		String description = etDescription.getText().toString();
-		String caption = "Name: " + item +
-						"\nPrice: " + price + 
-						"\nDescription: " + description;		
-		if (draw1 != null) {
-			batch.add(createRequest(draw1, caption));
-		}
-		if (draw2 != null) {
-			batch.add(createRequest(draw2, caption));
-		}
-		if (draw3 != null) {
-			batch.add(createRequest(draw3, caption));
-		}
-		if (draw4 != null) {
-			batch.add(createRequest(draw4, caption));
-		}
-		
-		batch.executeAsync();
-		Log.i("tructran", "Post to facebook: done");
-	}
-	
-	public Request createRequest(Drawable draw, String capion) {
-		
-		Request request = Request.newUploadPhotoRequest(Session.getActiveSession(), getBitmap(draw), new Request.Callback() {
-
-			@Override
-			public void onCompleted(Response response) {
-				Toast.makeText(ImageViewActivity.this, "Post photo success", Toast.LENGTH_LONG).show();
-			}
-		});
-		Bundle params = request.getParameters();
-		params.putString("message", capion);
-		request.setParameters(params);
-		return request;
-	}
-	
-	public Bitmap getBitmap(Drawable draw) {
-		Bitmap bitmap;
-		if (draw instanceof BitmapDrawable) {
-		    bitmap = ((BitmapDrawable) draw).getBitmap();
-		} else {
-		    Drawable d = draw;
-		    bitmap = Bitmap.createBitmap(d.getIntrinsicWidth(), d.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-		    Canvas canvas = new Canvas(bitmap);
-		    d.draw(canvas);
-		}
-		return bitmap;
 	}
 	
 }

@@ -1,13 +1,8 @@
 package com.threemin.fragment;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import za.co.immedia.pinnedheaderlistview.PinnedHeaderListView;
-
-import com.threemin.adapter.ProductAdapter;
-import com.threemin.model.ProductModel;
-import com.threemins.R;
-
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
@@ -19,10 +14,16 @@ import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListView;
 
+import com.threemin.adapter.ProductAdapter;
+import com.threemin.app.HomeActivity;
+import com.threemin.app.HomeActivity.GetProductTaks;
+import com.threemins.R;
+
 public class ProductFragmentList extends BaseProductFragment {
 	ListView list;
 	ProductAdapter adapter;
 	int thelasttotalCount;
+	HomeActivity homeActivity;
 	public ProductFragmentList() {
 		super();
 	}
@@ -32,18 +33,13 @@ public class ProductFragmentList extends BaseProductFragment {
 		View v = inflater.inflate(R.layout.fragment_product_listview, null);
 		swipeLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe);
 		list = (PinnedHeaderListView) v.findViewById(R.id.lv_product);
-		
 		if (adapter == null) {
 			adapter = new ProductAdapter(productModels);
 		}
 		list.setAdapter(adapter);
-		
-		page = 1;
+		homeActivity=(HomeActivity) getActivity();
 		initListner();
 
-		if(productModels==null||productModels.isEmpty()){
-			new GetProductTaks(this).execute(BaseProductFragment.STEP_INIT);
-		}
 		return v;
 	}
 
@@ -52,7 +48,7 @@ public class ProductFragmentList extends BaseProductFragment {
 
 			@Override
 			public void onRefresh() {
-				new GetProductTaks(ProductFragmentList.this).execute(BaseProductFragment.STEP_REFRESH);
+				homeActivity.new GetProductTaks(ProductFragmentList.this).execute(HomeActivity.STEP_REFRESH);
 			}
 		});
 		list.setOnScrollListener(new OnScrollListener() {
@@ -66,17 +62,15 @@ public class ProductFragmentList extends BaseProductFragment {
 			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 				boolean loadMore = firstVisibleItem + visibleItemCount >= totalItemCount - 1;
 				if (loadMore && totalItemCount>1 && thelasttotalCount!=totalItemCount) {
-					page++;
-					Log.d("loadmore", "loadmore page="+page);
 					thelasttotalCount=totalItemCount;
-					new GetProductTaks(ProductFragmentList.this).execute(BaseProductFragment.STEP_ADDMORE);
+					homeActivity.new GetProductTaks(ProductFragmentList.this).execute(HomeActivity.STEP_ADDMORE);
 				}
 			}
 		});
 	}
 
 	@Override
-	protected void updateUI() {
+	public void updateUI() {
 		if (adapter == null) {
 			adapter = new ProductAdapter(productModels);
 		} 
