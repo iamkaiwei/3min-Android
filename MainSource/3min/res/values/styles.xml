@@ -61,5 +61,11 @@
         <item name="android:textSize">@dimen/activity_imageview_edittext_textsize</item>
         <item name="android:gravity">right</item>
     </style>
-
+    
+    <!-- activity_login.xml -->
+    <style name="activity_login_btn_login_facebook">
+        <item name="android:background">@drawable/bt_login_facebook</item>
+        <item name="android:textSize">0dp</item>
+    </style>
+    
 </resources>
