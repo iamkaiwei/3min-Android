@@ -2,13 +2,13 @@
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
     <style name="AppBaseTheme" parent="android:Theme.Holo.Light">
         <!--
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
+            backward-compatibility can go here.
         -->
     </style>
 
@@ -25,15 +25,16 @@
     <!-- ActionBar styles -->
     <style name="MyActionBar" parent="android:style/Widget.Holo.Light.ActionBar">
         <item name="android:titleTextStyle">@style/MyTitleTextStyle</item>
-        <item name="android:background">@color/orange</item>
+        <item name="android:background">@color/red_background</item>
+        <item name="android:icon">@android:color/transparent</item>
     </style>
-    
+
     <!-- TitleTextStyle -->
     <style name="MyTitleTextStyle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:textSize">@dimen/action_bar_title_text_size</item>
+        <item name="android:textSize">@dimen/textsize_large</item>
     </style>
-    
+
     <!-- activity_imageview.xml -->
     <style name="activity_imageview_img_style">
         <item name="android:layout_width">0dp</item>
@@ -42,7 +43,7 @@
         <item name="android:scaleType">centerCrop</item>
         <item name="android:background">@drawable/ic_add_photo</item>
     </style>
-    
+
     <style name="activity_imageview_textview_style">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -50,7 +51,7 @@
         <item name="android:layout_centerVertical">true</item>
         <item name="android:textSize">@dimen/activity_imageview_textview_textsize</item>
     </style>
-    
+
     <style name="activity_imageview_edittext_style">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>

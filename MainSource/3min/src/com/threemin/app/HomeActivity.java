@@ -52,13 +52,11 @@ import com.threemins.R;
 public class HomeActivity extends Activity {
 
 	Context mContext;
-	ListView lvCategory;
+	ListView lvCategory,lvfilter;
 	ProductFragmentList productFragmentList;
 	DrawerLayout drawerLayout;
 	ActionBarDrawerToggle mDrawerToggle;
 	BaseProductFragment currentFragment;
-
-	ImageButton btn_browse, btn_search, btn_sell, btn_activity, btn_me;
 
 	// add grid view
 	ProductFragmentGrid productFragmentGrid;
@@ -77,6 +75,8 @@ public class HomeActivity extends Activity {
 	protected CategoryModel currentCate;
 	protected List<ProductModel> productModels;
 	int page;
+	View vHighlightList, vHighlightThumb;
+	View tabList, tabThumb;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -85,18 +85,24 @@ public class HomeActivity extends Activity {
 		setContentView(R.layout.activity_home);
 		mContext = this;
 		lvCategory = (ListView) findViewById(R.id.home_left_drawer);
+		lvfilter=(ListView) findViewById(R.id.home_right_drawer);
 		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+		vHighlightList = findViewById(R.id.highlight_list);
+		vHighlightThumb = findViewById(R.id.highlight_thumbnail);
+		vHighlightList.setVisibility(View.INVISIBLE);
+		tabList = findViewById(R.id.tab_list);
+		tabThumb = findViewById(R.id.tab_thumb);
 		initActionBar();
 		new InitCategory().execute();
 
 		// init: list of products is shown in list view:
-		mModeView = MODE_LIST_VIEW;
+		mModeView = MODE_GRID_VIEW;
 		productFragmentList = new ProductFragmentList();
-		getFragmentManager().beginTransaction().replace(R.id.content_fragment, productFragmentList).commit();
-		currentFragment = productFragmentList;
+		productFragmentGrid = new ProductFragmentGrid();
+		getFragmentManager().beginTransaction().replace(R.id.content_fragment, productFragmentGrid).commit();
+		currentFragment = productFragmentGrid;
 
 		// create the fragment to switch between grid view and list view
-		productFragmentGrid = new ProductFragmentGrid();
 
 		lvCategory.setOnItemClickListener(new OnItemClickListener() {
 
@@ -109,25 +115,12 @@ public class HomeActivity extends Activity {
 				getActionBar().setTitle(categoryModel.getName());
 			}
 		});
-		intitNavigation();
 		new GetProductTaks(currentFragment).execute(STEP_INIT);
 
-	}
-
-	private void intitNavigation() {
-		btn_browse = (ImageButton) findViewById(R.id.img_navigation_browse);
-		btn_search = (ImageButton) findViewById(R.id.img_navigation_search);
-		btn_me = (ImageButton) findViewById(R.id.img_navigation_me);
-		btn_sell = (ImageButton) findViewById(R.id.img_navigation_sell);
-		btn_activity = (ImageButton) findViewById(R.id.img_navigation_activity);
-
-		btn_browse.setOnClickListener(onNavigationClick());
-		btn_search.setOnClickListener(onNavigationClick());
-		btn_me.setOnClickListener(onNavigationClick());
-		btn_sell.setOnClickListener(onNavigationClick());
-		btn_sell.setOnClickListener(onNavigationClick());
-
-		btn_browse.setSelected(true);
+		tabList.setOnClickListener(onTabSwitch());
+		tabThumb.setOnClickListener(onTabSwitch());
+		tabThumb.setSelected(true);
+		tabList.setSelected(false);
 	}
 
 	private class InitCategory extends AsyncTask<Void, Void, List<CategoryModel>> {
@@ -159,7 +152,7 @@ public class HomeActivity extends Activity {
 	private void initActionBar() {
 		mDrawerToggle = new ActionBarDrawerToggle(this, /* host Activity */
 		drawerLayout, /* DrawerLayout object */
-		R.drawable.layer_list, /* nav drawer image to replace 'Up' caret */
+		R.drawable.ic_menu, /* nav drawer image to replace 'Up' caret */
 		R.string.app_name, /* "open drawer" description for accessibility */
 		R.string.app_name /* "close drawer" description for accessibility */
 		) {
@@ -174,20 +167,7 @@ public class HomeActivity extends Activity {
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setHomeButtonEnabled(true);
 
-		ActionBar bar = getActionBar();
-		// bar.setBackgroundDrawable(new ColorDrawable(Color
-		// .parseColor(getString(R.color.orange))));
-		bar.setIcon(new ColorDrawable(Color.TRANSPARENT));
 
-		// int actionBarTitleId =
-		// Resources.getSystem().getIdentifier("action_bar_title", "id",
-		// "android");
-		// if (actionBarTitleId > 0) {
-		// TextView title = (TextView) findViewById(actionBarTitleId);
-		// if (title != null) {
-		// title.setTextColor(Color.WHITE);
-		// }
-		// }
 
 		// set padding between home icon and the title
 		ImageView view = (ImageView) findViewById(android.R.id.home);
@@ -224,34 +204,59 @@ public class HomeActivity extends Activity {
 		}
 
 		if (item.getItemId() == R.id.action_switch_view) {
-			if (mModeView == MODE_LIST_VIEW) {
-				mModeView = MODE_GRID_VIEW;
-				item.setIcon(R.drawable.ic_listview);
-				productFragmentGrid.setProductModels(productModels);
-				getFragmentManager().beginTransaction().replace(R.id.content_fragment, productFragmentGrid).commit();
-				currentFragment = productFragmentGrid;
+			if(drawerLayout.isDrawerOpen(lvfilter)){
+				drawerLayout.closeDrawer(lvfilter);
 			} else {
-				mModeView = MODE_LIST_VIEW;
-				item.setIcon(R.drawable.ic_gridview);
-
-				productFragmentList.setProductModels(productModels);
-				getFragmentManager().beginTransaction().replace(R.id.content_fragment, productFragmentList).commit();
-				currentFragment = productFragmentList;
+				drawerLayout.openDrawer(lvfilter);
 			}
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
-	private OnClickListener onNavigationClick() {
+	private OnClickListener onTabSwitch() {
 		return new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				if (v == btn_sell) {
-					startActivityForResult(new Intent(mContext, ImageViewActivity.class), REQUEST_UPLOAD);
-				} else {
-					Toast.makeText(mContext, "to be continue", Toast.LENGTH_SHORT).show();
+				if(v==tabList && mModeView==MODE_LIST_VIEW){
+					return;
 				}
+				if(v==tabThumb && mModeView==MODE_GRID_VIEW){
+					return;
+				}
+				switchMode();
+			}
+		};
+	}
+
+	private void switchMode() {
+		if (mModeView == MODE_LIST_VIEW) {
+			mModeView = MODE_GRID_VIEW;
+			vHighlightThumb.setVisibility(View.VISIBLE);
+			vHighlightList.setVisibility(View.INVISIBLE);
+			tabThumb.setSelected(true);
+			tabList.setSelected(false);
+			productFragmentGrid.setProductModels(productModels);
+			getFragmentManager().beginTransaction().replace(R.id.content_fragment, productFragmentGrid).commit();
+			currentFragment = productFragmentGrid;
+		} else {
+			mModeView = MODE_LIST_VIEW;
+			vHighlightThumb.setVisibility(View.INVISIBLE);
+			vHighlightList.setVisibility(View.VISIBLE);
+			tabList.setSelected(true);
+			tabThumb.setSelected(false);
+			productFragmentList.setProductModels(productModels);
+			getFragmentManager().beginTransaction().replace(R.id.content_fragment, productFragmentList).commit();
+			currentFragment = productFragmentList;
+		}
+	}
+
+	private OnClickListener onSellClick() {
+		return new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				startActivityForResult(new Intent(mContext, ImageViewActivity.class), REQUEST_UPLOAD);
 			}
 		};
 	}
@@ -286,8 +291,8 @@ public class HomeActivity extends Activity {
 			super.onPostExecute(result);
 			if (mContext != null && currentFragment != null) {
 				currentFragment.getRefreshLayout().setRefreshing(false);
-				if(result!=null){
-				addNewProducts(result, categoryModel);
+				if (result != null) {
+					addNewProducts(result, categoryModel);
 				} else {
 					Toast.makeText(mContext, R.string.error_upload, Toast.LENGTH_SHORT).show();
 				}

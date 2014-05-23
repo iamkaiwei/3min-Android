@@ -24,6 +24,8 @@
     <dimen name="textsize_medium">17sp</dimen>
     <dimen name="textsize_small">12.5sp</dimen>
     
+    <dimen name="home_height_tab">37.5dp</dimen>
+    
     <!-- fragment_product_gridview.xml -->
     <dimen name="fragment_product_grudview_spacing">10dp</dimen>
     

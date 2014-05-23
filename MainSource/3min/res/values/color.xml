@@ -4,6 +4,8 @@
     <color name="red_background">#ff401a</color>
     <color name="gridview_orange">#FC3308</color>
     <color name="fragment_product_gridview_bg">#E6E6E6</color>
+    <color name="text_color_grouplayout">#333333</color>
+     <color name="text_color_grouplayout_disable">#a9a9a9</color>
     
     <!-- inflater_header.xml -->
     <color name="inflater_header_text_color">#71706F</color>

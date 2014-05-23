@@ -16,6 +16,10 @@
     <string name="login_bestdeal_sub">\nGet the best value shopping in town from \nreviewed sellers all from your phone. </string>
     <string name="login_chatapp">Buy with private chat in app </string>
     <string name="login_chatapp_sub">\nBuy securely with an in app chat \nthat protects your identity.</string>
+    
+    <string name="home_list">List</string>
+    <string name="home_thumbnail">Thumbnails</string>
+    
     <string name="app_name">3 phút</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
