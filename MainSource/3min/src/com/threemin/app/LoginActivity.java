@@ -12,6 +12,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -50,6 +52,15 @@ import com.threemins.R;
 
 public class LoginActivity extends FragmentActivity implements ConnectionCallbacks, OnConnectionFailedListener,
 		OnClickListener {
+	
+	//public const:
+	public static final String PREF_NAME = "3MinsPref";
+	public static final String LOGIN_KEY = "LoginWith";
+	public static final int LOGIN_KEY_FB = 11;
+	public static final int LOGIN_KEY_GG = 22;
+	
+	//preference to track user login with facebook or google+
+	SharedPreferences mSharedPreferences;
 
 	Context mContext;
 
@@ -103,6 +114,7 @@ public class LoginActivity extends FragmentActivity implements ConnectionCallbac
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
+		mSharedPreferences = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
 
 		// Hide the action bar
 		ActionBar actionBar = getActionBar();
@@ -178,9 +190,12 @@ public class LoginActivity extends FragmentActivity implements ConnectionCallbac
         	.build();
 
         //check if user has logged in with facebook
-        Session session = Session.getActiveSession();
-        if (session != null && session.isOpened()) {
-        	doLogin(session.getAccessToken());
+        if (mSharedPreferences.contains(LOGIN_KEY)) {
+			int loggedWith = mSharedPreferences.getInt(LOGIN_KEY, 0);
+			Session session = Session.getActiveSession();
+	        if (session != null && session.isOpened() && loggedWith == LOGIN_KEY_FB) {
+				doLogin(session.getAccessToken());
+			}
 		}
 	}
 
@@ -280,6 +295,11 @@ public class LoginActivity extends FragmentActivity implements ConnectionCallbac
 				dialog.dismiss();
 			}
 			if(result!=null){
+				//save that user has logged in with facebook
+				Editor editor = mSharedPreferences.edit();
+				editor.putInt(LOGIN_KEY, LOGIN_KEY_FB);
+				editor.commit();
+				
 				Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
 				startActivity(intent);
 				finish();
@@ -431,6 +451,11 @@ public class LoginActivity extends FragmentActivity implements ConnectionCallbac
 			}
 			try {
 				if (result != null) {
+					//save that user has logged with google plus
+					Editor editor = mSharedPreferences.edit();
+					editor.putInt(LOGIN_KEY, LOGIN_KEY_GG);
+					editor.commit();
+					
 					Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
 					startActivity(intent);
 					finish();
