@@ -110,9 +110,9 @@ public class LoginActivity extends FragmentActivity implements ConnectionCallbac
 		mImgLoading2 = (ImageView) findViewById(R.id.img_login_loading_2);
 		mImgLoading3 = (ImageView) findViewById(R.id.img_login_loading_3);
 
-		mImgLoading1.setImageResource(R.drawable.loading_1);
-		mImgLoading2.setImageResource(R.drawable.loading_2);
-		mImgLoading3.setImageResource(R.drawable.loading_2);
+		mImgLoading1.setImageResource(R.drawable.page_ctr_on);
+		mImgLoading2.setImageResource(R.drawable.page_ctr_off);
+		mImgLoading3.setImageResource(R.drawable.page_ctr_off);
 
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mAdapter = new SlidePagerAdapter(getSupportFragmentManager());
@@ -127,23 +127,24 @@ public class LoginActivity extends FragmentActivity implements ConnectionCallbac
 
 			@Override
 			public void onPageSelected(int position) {
+				mViewPager.getChildAt(position).setAlpha(1);
 				switch (position) {
 				case 0:
-					mImgLoading1.setImageResource(R.drawable.loading_1);
-					mImgLoading2.setImageResource(R.drawable.loading_2);
-					mImgLoading3.setImageResource(R.drawable.loading_2);
+					mImgLoading1.setImageResource(R.drawable.page_ctr_on);
+					mImgLoading2.setImageResource(R.drawable.page_ctr_off);
+					mImgLoading3.setImageResource(R.drawable.page_ctr_off);
 					break;
 
 				case 1:
-					mImgLoading1.setImageResource(R.drawable.loading_2);
-					mImgLoading2.setImageResource(R.drawable.loading_1);
-					mImgLoading3.setImageResource(R.drawable.loading_2);
+					mImgLoading1.setImageResource(R.drawable.page_ctr_off);
+					mImgLoading2.setImageResource(R.drawable.page_ctr_on);
+					mImgLoading3.setImageResource(R.drawable.page_ctr_off);
 					break;
 
 				case 2:
-					mImgLoading1.setImageResource(R.drawable.loading_2);
-					mImgLoading2.setImageResource(R.drawable.loading_2);
-					mImgLoading3.setImageResource(R.drawable.loading_1);
+					mImgLoading1.setImageResource(R.drawable.page_ctr_off);
+					mImgLoading2.setImageResource(R.drawable.page_ctr_off);
+					mImgLoading3.setImageResource(R.drawable.page_ctr_on);
 					break;
 
 				default:
@@ -152,8 +153,7 @@ public class LoginActivity extends FragmentActivity implements ConnectionCallbac
 			}
 
 			@Override
-			public void onPageScrolled(int arg0, float arg1, int arg2) {
-
+			public void onPageScrolled (int position, float positionOffset, int positionOffsetPixels){
 			}
 
 			@Override

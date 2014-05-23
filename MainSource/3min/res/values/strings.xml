@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="font_semibold">OpenSans-Semibold.ttf</string>
+    <string name="font_bold">OpenSans-Bold.ttf</string>
+    <string name="font_extrabold">OpenSans-ExtraBold.ttf</string>
+    <string name="font_extraBoldItalic">OpenSans-ExtraBoldItalic.ttf</string>
+    <string name="font_italic">OpenSans-Italic.ttf</string>
+    <string name="font_light">OpenSans-Light.ttf</string>
+    <string name="font_lightItalic">OpenSans-LightItalic.ttf</string>
+    <string name="font_regular">OpenSans-Regular.ttf</string>
+    <string name="font_semibolditalic">OpenSans-SemiboldItalic.ttf</string>
+    
+    <string name="login_3mins">Snap a photo to start \nselling in 3 mins !</string>
+    <string name="login_bestdeal">Find the best deals in town</string>
+    <string name="login_bestdeal_sub">\nGet the best value shopping in town from \nreviewed sellers all from your phone. </string>
+    <string name="login_chatapp">Buy with private chat in app </string>
+    <string name="login_chatapp_sub">\nBuy securely with an in app chat \nthat protects your identity.</string>
     <string name="app_name">3 phút</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>

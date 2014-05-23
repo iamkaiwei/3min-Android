@@ -1,12 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    xmlns:threemins="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/red_background"
     android:orientation="vertical" >
-    
-    <ImageView 
-    android:id="@+id/img_slide_page"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+
+    <ImageView
+        android:id="@+id/img_slide_page"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/login_margin_top_image" />
+
+    <com.lanna.droidlib.view.CustomTextView
+        android:id="@+id/tv_title1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/login_margin_top_text"
+        threemins:customTypeface="@string/font_semibold"
+        android:textColor="@android:color/white" 
+        android:textSize="@dimen/textsize_large"
+        android:gravity="center_horizontal"/>
+    <com.lanna.droidlib.view.CustomTextView
+        android:id="@+id/tv_title2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        threemins:customTypeface="@string/font_semibold" 
+         android:textColor="@android:color/white"
+         android:textSize="@dimen/textsize_medium"
+         android:gravity="center_horizontal"/>
 
 </LinearLayout>

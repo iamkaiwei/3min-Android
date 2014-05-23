@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.threemins.R;
 
@@ -36,17 +37,25 @@ public class SlidePageFragment extends Fragment {
 
       // Set the title view to show the page number.
 		ImageView img = (ImageView) rootView.findViewById(R.id.img_slide_page);
+		TextView tvTitle1=(TextView) rootView.findViewById(R.id.tv_title1);
+		TextView tvTitle2=(TextView) rootView.findViewById(R.id.tv_title2);
 		switch (mPageNumber) {
 			case 0:
-				img.setImageResource(R.drawable.login1);
+				img.setImageResource(R.drawable.ic_3mins);
+				tvTitle1.setText(R.string.login_3mins);
+				tvTitle2.setText("");
 				break;
 				
 			case 1:
-				img.setImageResource(R.drawable.login2);
+				img.setImageResource(R.drawable.ic_best_deals);
+				tvTitle1.setText(R.string.login_bestdeal);
+				tvTitle2.setText(R.string.login_bestdeal_sub);
 				break;
 				
 			case 2:
-				img.setImageResource(R.drawable.login3);
+				img.setImageResource(R.drawable.ic_chat);
+				tvTitle1.setText(R.string.login_chatapp);
+				tvTitle2.setText(R.string.login_chatapp_sub);
 				break;
 	
 			default:
