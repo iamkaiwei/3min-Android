@@ -234,31 +234,6 @@ public class ImageViewActivity extends Activity {
 		
 		locationName=(TextView) findViewById(R.id.activity_imageview_tv_location);
 		
-		findViewById(R.id.activity_imageview_btn_submit).setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				ProductModel result=validateInput();
-				if(result!=null){
-					String data=new Gson().toJson(result);
-					Intent intent=new Intent();
-					intent.putExtra(CommonConstant.INTENT_PRODUCT_DATA, data);
-					setResult(RESULT_OK, intent);
-					finish();
-				}
-			}
-
-		});
-		
-		findViewById(R.id.activity_imageview_btn_cancel).setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				finish();
-			}
-
-		});
-		
 		findViewById(R.id.ln_location).setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -421,6 +396,14 @@ public class ImageViewActivity extends Activity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
+        Log.i("tructran", "Result Code is - " + resultCode +"");
+        Session session = Session.getActiveSession();
+        if (session != null) {
+            session.onActivityResult(ImageViewActivity.this, requestCode, resultCode, data);
+        } else {
+            Log.i("tructran", "session null");
+        }
+        
 		if (resultCode == RESULT_OK) {
 			if (requestCode >= REQUEST_CAMERA_IMG_1 && requestCode <= REQUEST_CAMERA_IMG_4) {
 				Uri uri = Uri.parse(data.getStringExtra("imageUri"));
@@ -492,8 +475,8 @@ public class ImageViewActivity extends Activity {
 					Log.d("path", imageModel.getUrl());
 				} else {
 					String pathImage=getPath(Uri.parse(url));
-					Log.d("path", pathImage)
-;					imageModel.setUrl(pathImage);
+					Log.d("path", pathImage);
+					imageModel.setUrl(pathImage);
 				}
 				imageView.setTag(imageModel);
 				imageModels.add(imageModel);
@@ -545,15 +528,23 @@ public class ImageViewActivity extends Activity {
 	}
 	
     public void doShareOnFacebook() {
+    	Log.i("tructran", "doShareOnFacebook start");
         Session session = Session.getActiveSession();
         if (session != null && session.isOpened()) {
-            postToFacebookWall();
-        }
-        
+        	postToFacebookWall();
+        } else {
+        	if (session == null) {
+        		Log.i("tructran", "Session null");
+			} else {
+				Log.i("tructran", "Session closed");
+			}
+			
+		}
+        Log.i("tructran", "doShareOnFacebook done");
     }
     
     public void postToFacebookWall() {
-        Log.i("tructran", "Post to facebook");
+        Log.i("tructran", "Post to facebook start");
         Drawable draw1 = mImg1.getDrawable();
         Drawable draw2 = mImg2.getDrawable();
         Drawable draw3 = mImg3.getDrawable();
@@ -586,7 +577,7 @@ public class ImageViewActivity extends Activity {
     }
     
     public Request createRequest(Drawable draw, String capion) {
-        
+    	Log.i("tructran", "createRequest: start");
         Request request = Request.newUploadPhotoRequest(Session.getActiveSession(), getBitmap(draw), new Request.Callback() {
 
             @Override
@@ -597,6 +588,7 @@ public class ImageViewActivity extends Activity {
         Bundle params = request.getParameters();
         params.putString("message", capion);
         request.setParameters(params);
+        Log.i("tructran", "createRequest: done");
         return request;
     }
     

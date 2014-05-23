@@ -23,6 +23,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -72,6 +73,8 @@ public class LoginActivity extends FragmentActivity implements ConnectionCallbac
 	// Variables for login G+
 	// Button login
 	SignInButton mBtnLoginGooglePlus;
+	// Virtual button to call onClick of btn Sign In with GG+
+	Button mImgBtnLoginGooglePlus_Virtual;
 	LoginButton btn_login_facebook;
 	// Track whether the sign-in button has been clicked
 	private boolean mSignInClicked;
@@ -176,8 +179,11 @@ public class LoginActivity extends FragmentActivity implements ConnectionCallbac
         
         //prepare for login G+
         mBtnLoginGooglePlus = (SignInButton) findViewById(R.id.btn_login_google_plus);
+        mImgBtnLoginGooglePlus_Virtual = (Button) findViewById(R.id.btn_login_google_plus_virtual);
+        //create a virtual buttong and link it with button login with google+
+        mImgBtnLoginGooglePlus_Virtual.setOnClickListener(this);
+        
         mBtnLoginGooglePlus.setOnClickListener(this);
-        setGooglePlusButtonText(mBtnLoginGooglePlus, getResources().getString(R.string.activity_login_btn_login_gg));
         mGoogleApiClient = new GoogleApiClient.Builder(this)
         	.addConnectionCallbacks(this)
         	.addOnConnectionFailedListener(this)
@@ -368,6 +374,9 @@ public class LoginActivity extends FragmentActivity implements ConnectionCallbac
 	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.btn_login_google_plus && !mGoogleApiClient.isConnecting()) {
+			mSignInClicked = true;
+			resolveSignInError();
+		} else if (view.getId() == R.id.btn_login_google_plus_virtual && !mGoogleApiClient.isConnecting()) {
 			mSignInClicked = true;
 			resolveSignInError();
 		}

@@ -7,8 +7,9 @@
     <dimen name="common_spacing">5dp</dimen>
     
     <!-- login screen -->
-    <dimen name="login_margin_top_image">95dp</dimen>
-    <dimen name="login_margin_top_text">65dp</dimen>
+    <dimen name="login_margin_top_image">70dp</dimen>
+    <dimen name="login_margin_top_text">55dp</dimen>
+    <dimen name="login_screen_btn_height">45dp</dimen>
     <dimen name="login_screen_group_button_margin_bottom">10dp</dimen>
     <dimen name="login_screen_group_button_width">250dp</dimen>
     
@@ -18,10 +19,10 @@
     <dimen name="login_screen_btn_login_google_plus_text_size">10sp</dimen>
     
     <dimen name="login_screen_img_loading_margin_left_right">10dp</dimen>
-    <dimen name="login_screen_img_loading_margin_bottom">35dp</dimen>
+    <dimen name="login_screen_img_loading_margin_bottom">40dp</dimen>
     
     <dimen name="textsize_large">21sp</dimen>
-    <dimen name="textsize_medium">17sp</dimen>
+    <dimen name="textsize_medium">15sp</dimen>
     <dimen name="textsize_small">12.5sp</dimen>
     
     <dimen name="home_height_tab">37.5dp</dimen>
