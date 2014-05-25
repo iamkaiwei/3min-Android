@@ -402,4 +402,9 @@ public class HomeActivity extends Activity {
 			productModels.add(0, result);
 		}
 	}
+
+	public void setBottomView() {
+		productFragmentList.setBottomView(bottomView);
+		productFragmentGrid.setBottomView(bottomView);
+	}
 }

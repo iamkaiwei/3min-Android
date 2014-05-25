@@ -40,6 +40,10 @@ public class ProductFragmentGrid extends BaseProductFragment {
 		super();
 		this.bottomView=bottomView;
 	}	
+	
+	public ProductFragmentGrid() {
+		super();
+	}	
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -55,6 +59,7 @@ public class ProductFragmentGrid extends BaseProductFragment {
 
 		initListner();
 		homeActivity=(HomeActivity) getActivity();
+		homeActivity.setBottomView();
 		return v;
 	}
 	
@@ -156,7 +161,12 @@ public class ProductFragmentGrid extends BaseProductFragment {
 			}
 			break;
 		}
-
+		if(bottomView!=null)
 			bottomView.setTranslationY(translationY);
+	}
+
+	@Override
+	public void setBottomView(View bottomView) {
+		this.bottomView=bottomView;
 	}
 }

@@ -40,6 +40,11 @@ public class ProductFragmentList extends BaseProductFragment {
 		super();
 		this.bottomView=bottomView;
 	}
+	
+	public ProductFragmentList(){
+		super();
+	}
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_product_listview, null);
@@ -50,8 +55,8 @@ public class ProductFragmentList extends BaseProductFragment {
 		}
 		list.setAdapter(adapter);
 		homeActivity=(HomeActivity) getActivity();
+		homeActivity.setBottomView();
 		initListner();
-
 		return v;
 	}
 	
@@ -153,7 +158,11 @@ public class ProductFragmentList extends BaseProductFragment {
 			}
 			break;
 		}
-
+		if(bottomView!=null)
 			bottomView.setTranslationY(translationY);
+	}
+	@Override
+	public void setBottomView(View bottomView) {
+		this.bottomView=bottomView;
 	}
 }

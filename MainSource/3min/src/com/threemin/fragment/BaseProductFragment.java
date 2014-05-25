@@ -6,6 +6,7 @@ import java.util.List;
 import android.app.Fragment;
 import android.os.AsyncTask;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.view.View;
 
 import com.threemin.model.CategoryModel;
 import com.threemin.model.ProductModel;
@@ -21,6 +22,8 @@ public abstract class BaseProductFragment extends Fragment {
 	public BaseProductFragment() {
 		productModels = new ArrayList<ProductModel>();
 	}
+	
+	public abstract void setBottomView(View bottomView);
 	
 	public SwipeRefreshLayout getRefreshLayout(){
 		return swipeLayout;
