@@ -2,13 +2,13 @@
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
     <style name="AppBaseTheme" parent="android:Theme.Holo.Light">
         <!--
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
+            backward-compatibility can go here.
         -->
     </style>
 
@@ -27,6 +27,7 @@
         <item name="android:titleTextStyle">@style/MyTitleTextStyle</item>
         <item name="android:background">@color/red_background</item>
         <item name="android:icon">@android:color/transparent</item>
+        <item name="android:homeAsUpIndicator">@drawable/ic_launcher</item>
     </style>
 
     <!-- TitleTextStyle -->
@@ -62,11 +63,11 @@
         <item name="android:textSize">@dimen/activity_imageview_edittext_textsize</item>
         <item name="android:gravity">right</item>
     </style>
-    
+
     <!-- activity_login.xml -->
     <style name="activity_login_btn_login_facebook">
         <item name="android:background">@drawable/bt_login_facebook</item>
         <item name="android:textSize">0dp</item>
     </style>
-    
+
 </resources>

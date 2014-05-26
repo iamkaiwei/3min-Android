@@ -22,10 +22,14 @@
     <dimen name="login_screen_img_loading_margin_bottom">40dp</dimen>
     
     <dimen name="textsize_large">21sp</dimen>
+    <dimen name="textsize_avatar">16sp</dimen>
     <dimen name="textsize_medium">15sp</dimen>
     <dimen name="textsize_small">12.5sp</dimen>
     
     <dimen name="home_height_tab">37.5dp</dimen>
+    
+    <dimen name="navigation_avatar_size">55dp</dimen>
+    <dimen name="navigation_avatar_margin">13dp</dimen>
     
     <!-- fragment_product_gridview.xml -->
     <dimen name="fragment_product_grudview_spacing">10dp</dimen>

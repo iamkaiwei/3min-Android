@@ -11,6 +11,7 @@ import com.google.gson.reflect.TypeToken;
 import com.threemin.model.CategoryModel;
 import com.threemin.uti.PreferenceHelper;
 import com.threemin.uti.WebserviceConstant;
+import com.threemins.R;
 
 public class CategoryWebservice {
 
@@ -62,10 +63,14 @@ public class CategoryWebservice {
 	}
 
 	public List<CategoryModel> getAllCategory(Context context) throws Exception {
-//		if (currCategoryModels.isEmpty()) {
+		if (currCategoryModels.isEmpty()) {
+			CategoryModel categoryModel = new CategoryModel();
+			categoryModel.setId(0);
+			categoryModel.setName(context.getString(R.string.browse));
+			currCategoryModels.add(0, categoryModel);
+		}
 			getDisplayCategory(context);
 			getTaggableCategory(context);
-//		}
 		return currCategoryModels;
 	}
 

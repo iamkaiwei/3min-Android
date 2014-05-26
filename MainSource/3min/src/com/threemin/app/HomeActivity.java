@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -32,9 +33,16 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.facebook.Session;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
+import com.google.android.gms.plus.Plus;
+import com.google.android.gms.plus.PlusClient;
 import com.google.gson.Gson;
+import com.threemin.adapter.AvatarAdapter;
 import com.threemin.adapter.CategoryAdapter;
 import com.threemin.fragment.BaseProductFragment;
 import com.threemin.fragment.ProductFragmentGrid;
@@ -52,7 +60,7 @@ import com.threemins.R;
 public class HomeActivity extends Activity {
 
 	Context mContext;
-	ListView lvCategory,lvfilter;
+	ListView lvCategory, lvfilter;
 	ProductFragmentList productFragmentList;
 	DrawerLayout drawerLayout;
 	ActionBarDrawerToggle mDrawerToggle;
@@ -78,6 +86,7 @@ public class HomeActivity extends Activity {
 	View vHighlightList, vHighlightThumb;
 	View tabList, tabThumb;
 	View bottomView;
+	GoogleApiClient mGoogleApiClient;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -85,13 +94,13 @@ public class HomeActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
 		mContext = this;
-		lvCategory = (ListView) findViewById(R.id.home_left_drawer);
-		lvfilter=(ListView) findViewById(R.id.home_right_drawer);
+		lvCategory = (ListView) findViewById(R.id.navigation_list);
+		lvfilter = (ListView) findViewById(R.id.home_right_drawer);
 		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		vHighlightList = findViewById(R.id.highlight_list);
 		vHighlightThumb = findViewById(R.id.highlight_thumbnail);
 		vHighlightList.setVisibility(View.INVISIBLE);
-		bottomView=findViewById(R.id.bottom);
+		bottomView = findViewById(R.id.bottom);
 		tabList = findViewById(R.id.tab_list);
 		tabThumb = findViewById(R.id.tab_thumb);
 		initActionBar();
@@ -109,15 +118,19 @@ public class HomeActivity extends Activity {
 		lvCategory.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-				CategoryModel categoryModel = (CategoryModel) lvCategory.getItemAtPosition(arg2);
-				currentCate = categoryModel;
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				CategoryModel categoryModel = (CategoryModel) lvCategory.getItemAtPosition(position);
+				if (position > 0) {
+					currentCate = categoryModel;
+				} else {
+					currentCate = null;
+				}
 				new GetProductTaks(currentFragment).execute(STEP_INIT);
-				drawerLayout.closeDrawer(lvCategory);
+				drawerLayout.closeDrawer(Gravity.START);
 				getActionBar().setTitle(categoryModel.getName());
 			}
 		});
-		
+
 		findViewById(R.id.home_camera).setOnClickListener(onSellClick());
 		new GetProductTaks(currentFragment).execute(STEP_INIT);
 
@@ -125,6 +138,15 @@ public class HomeActivity extends Activity {
 		tabThumb.setOnClickListener(onTabSwitch());
 		tabThumb.setSelected(true);
 		tabList.setSelected(false);
+		initAvatar();
+		mGoogleApiClient = new GoogleApiClient.Builder(this).addApi(Plus.API, null).addScope(Plus.SCOPE_PLUS_PROFILE)
+				.build();
+		mGoogleApiClient.connect();
+	}
+
+	private void initAvatar() {
+		Spinner mSpinner = (Spinner) findViewById(R.id.avatar);
+		mSpinner.setAdapter(new AvatarAdapter(mContext, PreferenceHelper.getInstance(mContext).getCurrentUser()));
 	}
 
 	private class InitCategory extends AsyncTask<Void, Void, List<CategoryModel>> {
@@ -146,7 +168,9 @@ public class HomeActivity extends Activity {
 		@Override
 		protected void onPostExecute(List<CategoryModel> result) {
 			if (result != null) {
+				
 				CategoryAdapter adapter = new CategoryAdapter(mContext, result);
+				adapter.setOnLogout(doLogout());
 				lvCategory.setAdapter(adapter);
 			}
 			super.onPostExecute(result);
@@ -170,8 +194,6 @@ public class HomeActivity extends Activity {
 		};
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setHomeButtonEnabled(true);
-
-
 
 		// set padding between home icon and the title
 		ImageView view = (ImageView) findViewById(android.R.id.home);
@@ -208,7 +230,7 @@ public class HomeActivity extends Activity {
 		}
 
 		if (item.getItemId() == R.id.action_switch_view) {
-			if(drawerLayout.isDrawerOpen(lvfilter)){
+			if (drawerLayout.isDrawerOpen(lvfilter)) {
 				drawerLayout.closeDrawer(lvfilter);
 			} else {
 				drawerLayout.openDrawer(lvfilter);
@@ -222,10 +244,10 @@ public class HomeActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				if(v==tabList && mModeView==MODE_LIST_VIEW){
+				if (v == tabList && mModeView == MODE_LIST_VIEW) {
 					return;
 				}
-				if(v==tabThumb && mModeView==MODE_GRID_VIEW){
+				if (v == tabThumb && mModeView == MODE_GRID_VIEW) {
 					return;
 				}
 				switchMode();
@@ -406,5 +428,26 @@ public class HomeActivity extends Activity {
 	public void setBottomView() {
 		productFragmentList.setBottomView(bottomView);
 		productFragmentGrid.setBottomView(bottomView);
+	}
+
+	public OnClickListener doLogout() {
+		return new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Session session = Session.getActiveSession();
+				if (session != null && session.isOpened()) {
+					session.closeAndClearTokenInformation();
+				}
+
+				if (mGoogleApiClient.isConnected()) {
+					Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
+					mGoogleApiClient.disconnect();
+					mGoogleApiClient.connect();
+				}
+				finish();
+				startActivity(new Intent(mContext, LoginActivity.class));
+			}
+		};
 	}
 }

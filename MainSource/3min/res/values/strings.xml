@@ -20,6 +20,10 @@
     <string name="home_list">List</string>
     <string name="home_thumbnail">Thumbnails</string>
     <string name="browse">Browse</string>
+    <string name="navigation_mylisting">My Listings</string>
+    <string name="navigation_offer">Offer I made</string>
+    <string name="navigation_like">Stuff I liked</string>
+    <string name="navigation_share_friends">Share with your friends</string>
     
     <string name="app_name">3 phút</string>
     <string name="hello_world">Hello world!</string>
