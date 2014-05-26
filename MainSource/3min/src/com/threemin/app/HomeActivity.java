@@ -1,6 +1,7 @@
 package com.threemin.app;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.http.HttpEntity;
@@ -16,12 +17,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.ImageSpan;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -29,13 +36,20 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.threemin.adapter.CategoryAdapter;
+import com.threemin.adapter.RightDrawerAdapter;
 import com.threemin.fragment.BaseProductFragment;
 import com.threemin.fragment.ProductFragmentGrid;
 import com.threemin.fragment.ProductFragmentList;
@@ -57,6 +71,10 @@ public class HomeActivity extends Activity {
 	DrawerLayout drawerLayout;
 	ActionBarDrawerToggle mDrawerToggle;
 	BaseProductFragment currentFragment;
+	
+	//right drawer
+	RelativeLayout layoutFilter;
+	RightDrawerAdapter adapterRightDrawer;
 
 	// add grid view
 	ProductFragmentGrid productFragmentGrid;
@@ -86,7 +104,38 @@ public class HomeActivity extends Activity {
 		setContentView(R.layout.activity_home);
 		mContext = this;
 		lvCategory = (ListView) findViewById(R.id.home_left_drawer);
-		lvfilter=(ListView) findViewById(R.id.home_right_drawer);
+		
+		//right drawer
+		lvfilter=(ListView) findViewById(R.id.home_right_drawer_listview);
+		layoutFilter = (RelativeLayout) findViewById(R.id.home_right_drawer_layout);
+		ArrayList<String> listFilter = new ArrayList();
+		listFilter.add("Popular");
+		listFilter.add("Recent");
+		listFilter.add("Lowest Price");
+		listFilter.add("Highest Price");
+		listFilter.add("Nearest");
+		adapterRightDrawer = new RightDrawerAdapter(mContext, R.layout.inflater_right_drawer_listview_item, listFilter);
+		lvfilter.setAdapter(adapterRightDrawer);
+		lvfilter.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> adapterView, View itemView, int position, long id) {
+				View v = (View) adapterView.getItemAtPosition(position);
+				TextView textview = (TextView) v.findViewById(R.id.inflater_right_drawer_listview_item_tv);
+				ImageView img = (ImageView) v.findViewById(R.id.inflater_right_drawer_listview_item_chk);
+				textview.setTypeface(Typeface.DEFAULT_BOLD);
+				textview.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24);
+				img.setVisibility(View.VISIBLE);
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+		
 		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		vHighlightList = findViewById(R.id.highlight_list);
 		vHighlightThumb = findViewById(R.id.highlight_thumbnail);
@@ -196,8 +245,26 @@ public class HomeActivity extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.menu_switch_view, menu);
+		MenuItem itemSearch = menu.findItem(R.id.action_search);
+		
+		SearchView searchView = (SearchView) itemSearch.getActionView();
+		
+		int searchButtonID = getResources().getIdentifier("android:id/search_button", null, null);
+		ImageView searchButtonImage = (ImageView) searchView.findViewById(searchButtonID);
+		searchButtonImage.setImageResource(R.drawable.ic_search);
+		
+		int closeButtonID = getResources().getIdentifier("android:id/search_close_btn", null, null);
+		ImageView closeButtonImage = (ImageView) searchView.findViewById(closeButtonID);
+		closeButtonImage.setImageResource(R.drawable.ic_search_close);
+		
+		int searchEditTextID = getResources().getIdentifier("android:id/search_src_text", null, null); 
+		EditText searchEditText = (EditText) searchView.findViewById(searchEditTextID);
+		searchEditText.setTextColor(Color.WHITE);
+		searchEditText.setHint("");
+		
 		return super.onCreateOptionsMenu(menu);
 	}
+
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -207,13 +274,22 @@ public class HomeActivity extends Activity {
 			return true;
 		}
 
+//		if (item.getItemId() == R.id.action_switch_view) {
+//			if(drawerLayout.isDrawerOpen(lvfilter)){
+//				drawerLayout.closeDrawer(lvfilter);
+//			} else {
+//				drawerLayout.openDrawer(lvfilter);
+//			}
+//		}
+		
 		if (item.getItemId() == R.id.action_switch_view) {
-			if(drawerLayout.isDrawerOpen(lvfilter)){
-				drawerLayout.closeDrawer(lvfilter);
+			if(drawerLayout.isDrawerOpen(layoutFilter)){
+				drawerLayout.closeDrawer(layoutFilter);
 			} else {
-				drawerLayout.openDrawer(lvfilter);
+				drawerLayout.openDrawer(layoutFilter);
 			}
 		}
+		
 		return super.onOptionsItemSelected(item);
 	}
 

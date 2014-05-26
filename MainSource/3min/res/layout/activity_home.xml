@@ -112,6 +112,38 @@
         android:divider="@android:color/transparent"
         android:dividerHeight="0dp" />
 
+    <!-- right navigation drawer -->
+    
+    <RelativeLayout
+        android:id="@+id/home_right_drawer_layout"
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:background="@android:color/white"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="0dp" >
+
+        <ListView
+            android:id="@+id/home_right_drawer_listview"
+            android:layout_width="240dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:background="@android:color/white"
+            android:choiceMode="singleChoice"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="0dp" />
+
+        <Button
+            android:id="@+id/home_right_drawer_btn_reset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/bt_reset_filters"
+            android:layout_marginBottom="10dp" />
+    </RelativeLayout>
+ 
+    <!-- 
     <ListView
         android:id="@+id/home_right_drawer"
         android:layout_width="240dp"
@@ -120,6 +152,8 @@
         android:background="@android:color/white"
         android:choiceMode="singleChoice"
         android:divider="@android:color/transparent"
-        android:dividerHeight="0dp" />
+        android:dividerHeight="0dp" /> 
+     -->
+    
 
 </android.support.v4.widget.DrawerLayout> <!-- </android.support.v4.widget.DrawerLayout> -->

@@ -6,6 +6,10 @@
     <color name="fragment_product_gridview_bg">#E6E6E6</color>
     <color name="text_color_grouplayout">#333333</color>
      <color name="text_color_grouplayout_disable">#a9a9a9</color>
+     
+     <color name="common_black">#333333</color>
+     <color name="common_orange">#ff401a</color>
+     <color name="common_grey">#a9a9a9</color>
     
     <!-- inflater_header.xml -->
     <color name="inflater_header_text_color">#71706F</color>
@@ -16,4 +20,7 @@
     
     <!-- activity_imageview.xml -->
     <color name="activity_imageview_grey">#DDDBDA</color>
+    
+    <color name="inflater_right_drawer_listview_item_line">#E4E4E4</color>
+    
 </resources>

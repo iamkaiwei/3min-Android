@@ -40,6 +40,11 @@
     <!-- inflater_header.xml -->
     <dimen name="inflater_header_margin_left">5dp</dimen>
     
+    <!-- inflater_header_grid -->
+    <dimen name="inflater_header_grid_margin_left">10dp</dimen>
+    <dimen name="inflater_header_grid_padding">10dp</dimen>
+    <dimen name="inflater_header_grid_avatar_size">35dp</dimen>
+    
     <!-- inflater_category.xml -->
     <dimen name="inflater_category_tv_padding_left">20dp</dimen>
     
@@ -56,5 +61,13 @@
     <dimen name="activity_imageview_textview_textsize">20sp</dimen>
     <dimen name="activity_imageview_edittext_textsize">15sp</dimen>
     <dimen name="activity_imageview_actionbar_textsize">20sp</dimen>
+    
+    <!-- inflater_right_drawer_listview_item.xml -->
+    <dimen name="inflater_right_drawer_listview_item_margin_left">15dp</dimen>
+    <dimen name="inflater_right_drawer_listview_item_margin_right">15dp</dimen>
+    <dimen name="inflater_right_drawer_listview_item_margin_top">15dp</dimen>
+    <dimen name="inflater_right_drawer_listview_item_margin_bot">15dp</dimen>
+    <dimen name="inflater_right_drawer_listview_item_text_size">19sp</dimen>
+    <dimen name="inflater_right_drawer_listview_item_selected_text_size">24sp</dimen>
 
 </resources>

@@ -29,6 +29,9 @@
     <string name="please_wait">Please wait</string>
     <string name="location">Location</string>
     
+    <!-- action bar -->
+    <string name="action_bar_search_title">Search</string>
+    
     <!-- activity_imageview.xml -->
     <string name="activity_imageview_category">Category</string>
     <string name="activity_imageview_item">Item</string>
