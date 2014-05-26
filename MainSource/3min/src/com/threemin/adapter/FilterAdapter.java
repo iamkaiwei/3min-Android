@@ -14,7 +14,7 @@ public class FilterAdapter extends BaseAdapter {
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
-		return 5;
+		return 6;
 	}
 
 	@Override
@@ -42,26 +42,30 @@ public class FilterAdapter extends BaseAdapter {
 	}
 
 	private void initItem(int position, ImageView image, TextView text) {
-		//it's just a dummy text and waiting for confrim from Kaiwei about the text
+		//it's just a dummy text and waiting for confirm from Kaiwei about the text
 		switch (position) {
 		case 0:
-			image.setImageResource(R.drawable.contrast_house);
-			text.setText("Contrast");
+			image.setImageResource(R.drawable.effect_original);
+			text.setText("Original");
 			break;
 		case 1:
-			image.setImageResource(R.drawable.sepia);
-			text.setText("Sepia");
+			image.setImageResource(R.drawable.effect_contrast);
+			text.setText("Contrast");
 			break;
 		case 2:
-			image.setImageResource(R.drawable.amatorka);
-			text.setText("Amatorka");
+			image.setImageResource(R.drawable.effect_sepia);
+			text.setText("Sepia");
 			break;
 		case 3:
-			image.setImageResource(R.drawable.grayscale);
-			text.setText("Grayscale");
+			image.setImageResource(R.drawable.effect_amatoka);
+			text.setText("Amatorka");
 			break;
 		case 4:
-			image.setImageResource(R.drawable.vignette);
+			image.setImageResource(R.drawable.effect_grayscale);
+			text.setText("Grayscale");
+			break;
+		case 5:
+			image.setImageResource(R.drawable.effect_vintage);
 			text.setText("Vignette");
 			break;
 

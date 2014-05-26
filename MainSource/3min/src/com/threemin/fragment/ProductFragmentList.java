@@ -38,13 +38,13 @@ public class ProductFragmentList extends BaseProductFragment {
 
 	public ProductFragmentList(View bottomView) {
 		super();
-		this.bottomView=bottomView;
+		this.bottomView = bottomView;
 	}
-	
-	public ProductFragmentList(){
+
+	public ProductFragmentList() {
 		super();
 	}
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_product_listview, null);
@@ -54,24 +54,29 @@ public class ProductFragmentList extends BaseProductFragment {
 			adapter = new ProductAdapter(productModels);
 		}
 		list.setAdapter(adapter);
-		homeActivity=(HomeActivity) getActivity();
+		homeActivity = (HomeActivity) getActivity();
 		homeActivity.setBottomView();
 		initListner();
 		return v;
 	}
-	
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
-		list.getViewTreeObserver().addOnGlobalLayoutListener(
-				new ViewTreeObserver.OnGlobalLayoutListener() {
+		list.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+			@Override
+			public void onGlobalLayout() {
+				mQuickReturnHeight = list.getHeight();
+				new Thread(new Runnable() {
+
 					@Override
-					public void onGlobalLayout() {
-						mQuickReturnHeight = list.getHeight();
+					public void run() {
 						list.computeScrollY();
 					}
-				});
+				}).start();
+			}
+		});
 	}
 
 	private void initListner() {
@@ -92,8 +97,8 @@ public class ProductFragmentList extends BaseProductFragment {
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 				boolean loadMore = firstVisibleItem + visibleItemCount >= totalItemCount - 1;
-				if (loadMore && totalItemCount>1 && thelasttotalCount!=totalItemCount) {
-					thelasttotalCount=totalItemCount;
+				if (loadMore && totalItemCount > 1 && thelasttotalCount != totalItemCount) {
+					thelasttotalCount = totalItemCount;
 					homeActivity.new GetProductTaks(ProductFragmentList.this).execute(HomeActivity.STEP_ADDMORE);
 				}
 				handleQuickReturn();
@@ -105,10 +110,10 @@ public class ProductFragmentList extends BaseProductFragment {
 	public void updateUI() {
 		if (adapter == null) {
 			adapter = new ProductAdapter(productModels);
-		} 
+		}
 		adapter.updateData(productModels);
 	}
-	
+
 	private void handleQuickReturn() {
 		mScrollY = 0;
 		int translationY = 0;
@@ -158,11 +163,12 @@ public class ProductFragmentList extends BaseProductFragment {
 			}
 			break;
 		}
-		if(bottomView!=null)
+		if (bottomView != null)
 			bottomView.setTranslationY(translationY);
 	}
+
 	@Override
 	public void setBottomView(View bottomView) {
-		this.bottomView=bottomView;
+		this.bottomView = bottomView;
 	}
 }

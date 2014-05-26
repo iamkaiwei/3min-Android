@@ -102,7 +102,7 @@
     </RelativeLayout>
     <!-- The navigation drawer -->
 
-    <ListView
+    <FrameLayout
         android:id="@+id/home_left_drawer"
         android:layout_width="240dp"
         android:layout_height="match_parent"
@@ -110,7 +110,11 @@
         android:background="@android:color/white"
         android:choiceMode="singleChoice"
         android:divider="@android:color/transparent"
-        android:dividerHeight="0dp" />
+        android:dividerHeight="0dp" >
+        <include layout="@layout/view_navigation_left"
+            android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+    </FrameLayout>
 
     <!-- right navigation drawer -->
     

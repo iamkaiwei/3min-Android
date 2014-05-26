@@ -1,37 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:threemins="http://schemas.android.com/apk/res-auto"
     android:id="@+id/RelativeLayout1"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:weightSum="6" >
+   >
 
     <ImageView
         android:id="@+id/inflater_cate_image"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentBottom="true"
         android:adjustViewBounds="true"
         android:scaleType="fitCenter" />
 
-    <TextView
+    <com.lanna.droidlib.view.CustomTextView
         android:id="@+id/inflater_cate_tv_name"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/inflater_cate_image"
         android:paddingLeft="@dimen/inflater_category_tv_padding_left"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <ImageView
-        android:id="@+id/ImageView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
-        android:src="@drawable/ic_arrow"
-        android:layout_marginRight="20dp" />
+        threemins:customTypeface="@string/font_regular"
+        android:textSize="@dimen/textsize_avatar"  />
 
 </RelativeLayout>

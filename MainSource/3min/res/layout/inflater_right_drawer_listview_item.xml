@@ -21,6 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
         android:src="@drawable/ic_ticked"
         android:layout_marginBottom="@dimen/inflater_right_drawer_listview_item_margin_bot"
         android:layout_marginRight="@dimen/inflater_right_drawer_listview_item_margin_right"

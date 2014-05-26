@@ -27,7 +27,9 @@ import jp.co.cyberagent.android.gpuimage.GPUImageContrastFilter;
 import jp.co.cyberagent.android.gpuimage.GPUImageFilter;
 import jp.co.cyberagent.android.gpuimage.GPUImageGrayscaleFilter;
 import jp.co.cyberagent.android.gpuimage.GPUImageLookupFilter;
+import jp.co.cyberagent.android.gpuimage.GPUImagePixelationFilter;
 import jp.co.cyberagent.android.gpuimage.GPUImageSepiaFilter;
+import jp.co.cyberagent.android.gpuimage.GPUImageView;
 import jp.co.cyberagent.android.gpuimage.GPUImageVignetteFilter;
 import android.app.Activity;
 import android.content.Intent;
@@ -44,9 +46,11 @@ import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
@@ -65,7 +69,9 @@ public class ActivityCamera extends Activity implements OnSeekBarChangeListener,
 	private CameraLoader mCamera;
 	private GPUImageFilter mFilter;
 	private FilterAdjuster mFilterAdjuster;
-
+	private GPUImageView gpuImageView;
+	private static final int REQUEST_PICK_IMAGE = 1;
+	View surface;
 	private HorizontalListView listfilters;
 
 	@Override
@@ -77,6 +83,7 @@ public class ActivityCamera extends Activity implements OnSeekBarChangeListener,
 
 		mGPUImage = new GPUImage(this);
 		mGPUImage.setGLSurfaceView((GLSurfaceView) findViewById(R.id.surfaceView));
+		surface = findViewById(R.id.surfaceView);
 
 		mCameraHelper = new CameraHelper(this);
 		mCamera = new CameraLoader();
@@ -89,31 +96,40 @@ public class ActivityCamera extends Activity implements OnSeekBarChangeListener,
 
 		listfilters = (HorizontalListView) findViewById(R.id.list_filter);
 		listfilters.setAdapter(new FilterAdapter());
+		getActionBar().setIcon(R.drawable.btn_back);
+		getActionBar().setHomeButtonEnabled(true);
+		gpuImageView = (GPUImageView) findViewById(R.id.gpuimage);
 
 		listfilters.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				resetAll();
+				view.setSelected(true);
 				switch (position) {
 				case 0:
-					switchFilterTo(new GPUImageContrastFilter(2.0f));
+					switchFilterTo(new GPUImagePixelationFilter());
 					break;
 				case 1:
-					switchFilterTo(new GPUImageSepiaFilter());
+					switchFilterTo(new GPUImageContrastFilter(2.0f));
 					break;
 				case 2:
+					switchFilterTo(new GPUImageSepiaFilter());
+					break;
+				case 3:
 					GPUImageLookupFilter amatorka = new GPUImageLookupFilter();
 					amatorka.setBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.lookup_amatorka));
 					switchFilterTo(amatorka);
 					break;
-				case 3:
+				case 4:
 					switchFilterTo(new GPUImageGrayscaleFilter());
 					break;
-				case 4:
+				case 5:
 					PointF centerPoint = new PointF();
-	                centerPoint.x = 0.5f;
-	                centerPoint.y = 0.5f;
-	                switchFilterTo(new GPUImageVignetteFilter(centerPoint, new float[] {0.0f, 0.0f, 0.0f}, 0.3f, 0.75f));
+					centerPoint.x = 0.5f;
+					centerPoint.y = 0.5f;
+					switchFilterTo(new GPUImageVignetteFilter(centerPoint, new float[] { 0.0f, 0.0f, 0.0f }, 0.3f,
+							0.75f));
 					break;
 
 				default:
@@ -121,6 +137,46 @@ public class ActivityCamera extends Activity implements OnSeekBarChangeListener,
 				}
 			}
 		});
+
+		findViewById(R.id.chooseGallery).setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+				photoPickerIntent.setType("image/*");
+				startActivityForResult(photoPickerIntent, REQUEST_PICK_IMAGE);
+			}
+		});
+	}
+	private void resetAll(){
+		for(int i=0;i<5;i++){
+			listfilters.getChildAt(i).setSelected(false);
+		}
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == REQUEST_PICK_IMAGE && resultCode == RESULT_OK) {
+			gpuImageView.setVisibility(View.VISIBLE);
+			surface.setVisibility(View.INVISIBLE);
+			handleImage(data.getData());
+		}
+	}
+
+	private void handleImage(final Uri selectedImage) {
+		gpuImageView.setImage(selectedImage);
+		resetAll();
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			onBackPressed();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
 
 	@Override
@@ -153,17 +209,32 @@ public class ActivityCamera extends Activity implements OnSeekBarChangeListener,
 		// break;
 
 		case R.id.button_capture:
-			if (mCamera.mCameraInstance.getParameters().getFocusMode()
-					.equals(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE)) {
-				takePicture();
-			} else {
-				mCamera.mCameraInstance.autoFocus(new Camera.AutoFocusCallback() {
+			if (surface.getVisibility() == View.VISIBLE) {
+				if (mCamera.mCameraInstance.getParameters().getFocusMode()
+						.equals(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE)) {
+					takePicture();
+				} else {
+					mCamera.mCameraInstance.autoFocus(new Camera.AutoFocusCallback() {
 
-					@Override
-					public void onAutoFocus(final boolean success, final Camera camera) {
-						takePicture();
-					}
-				});
+						@Override
+						public void onAutoFocus(final boolean success, final Camera camera) {
+							takePicture();
+						}
+					});
+				}
+			} else {
+				gpuImageView.saveToPictures("threemin", System.currentTimeMillis() + ".jpg",
+						new GPUImageView.OnPictureSavedListener() {
+
+							@Override
+							public void onPictureSaved(Uri uri) {
+								Intent intent = new Intent();
+								intent.putExtra("imageUri", uri.toString());
+								setResult(RESULT_OK, intent);
+								finish();
+							}
+						});
+
 			}
 			break;
 
@@ -282,7 +353,11 @@ public class ActivityCamera extends Activity implements OnSeekBarChangeListener,
 	private void switchFilterTo(final GPUImageFilter filter) {
 		if (mFilter == null || (filter != null && !mFilter.getClass().equals(filter.getClass()))) {
 			mFilter = filter;
-			mGPUImage.setFilter(mFilter);
+			if (surface.getVisibility() == View.VISIBLE) {
+				mGPUImage.setFilter(mFilter);
+			} else {
+				gpuImageView.setFilter(mFilter);
+			}
 			mFilterAdjuster = new FilterAdjuster(mFilter);
 		}
 	}

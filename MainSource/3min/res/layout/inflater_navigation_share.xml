@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:threemins="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="10dp"
+        android:background="@color/divider_color" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/common_spacing"
+        android:paddingTop="@dimen/common_spacing" >
+
+        <ImageButton
+            android:id="@+id/share_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="@dimen/common_spacing"
+            android:layout_marginRight="@dimen/common_spacing"
+            android:background="@android:color/transparent"
+            android:src="@drawable/selector_navigation_share_email" />
+
+        <ImageButton
+            android:id="@+id/share_facebook"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/common_spacing"
+            android:layout_marginRight="@dimen/common_spacing"
+            android:layout_toLeftOf="@+id/share_email"
+            android:background="@android:color/transparent"
+            android:src="@drawable/selector_navigation_share_facebook" />
+
+        <ImageButton
+            android:id="@+id/share_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/common_spacing"
+            android:layout_marginRight="@dimen/common_spacing"
+            android:layout_toRightOf="@+id/share_email"
+            android:background="@android:color/transparent"
+            android:src="@drawable/selector_navigation_share_message" />
+    </RelativeLayout>
+
+    <com.lanna.droidlib.view.CustomTextView
+        android:id="@+id/navigation_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:singleLine="true"
+        android:text="@string/navigation_share_friends"
+        android:textColor="@color/text_color_grouplayout_disable"
+        android:textSize="@dimen/textsize_medium"
+        threemins:customTypeface="@string/font_regular" />
+
+    <Button
+        android:layout_margin="@dimen/common_spacing"
+        android:id="@+id/btn_logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bt_logout" 
+                android:layout_gravity="center_horizontal"
+        />
+
+</LinearLayout>

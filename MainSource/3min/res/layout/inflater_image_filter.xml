@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:threemins="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -12,11 +13,14 @@
         android:layout_height="70dp"
         android:src="@drawable/contrast_house" />
 
-    <TextView
+    <com.lanna.droidlib.view.CustomTextView
         android:id="@+id/inflater_filter_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="contranst"
-        android:textColor="@android:color/white" />
+        android:textColor="@color/selector_text_filter" 
+        android:textSize="@dimen/textsize_medium"
+        threemins:customTypeface="@string/font_semibold"
+        android:layout_gravity="center_horizontal"/>
 
 </LinearLayout>
