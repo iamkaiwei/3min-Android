@@ -72,7 +72,13 @@ public class ProductFragmentGrid extends BaseProductFragment {
 					@Override
 					public void onGlobalLayout() {
 						mQuickReturnHeight = mGrid.getHeight();
-						mGrid.computeScrollY();
+						new Thread(new Runnable() {
+							
+							@Override
+							public void run() {
+								mGrid.computeScrollY();
+							}
+						}).start();
 					}
 				});
 	}
@@ -96,6 +102,7 @@ public class ProductFragmentGrid extends BaseProductFragment {
 			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 				boolean loadMore = firstVisibleItem + visibleItemCount >= totalItemCount - 1;
 				if (loadMore && totalItemCount>1 && thelasttotalCount!=totalItemCount) {
+					thelasttotalCount=totalItemCount;
 					homeActivity.new GetProductTaks(ProductFragmentGrid.this).execute(HomeActivity.STEP_ADDMORE);
 				}
 				

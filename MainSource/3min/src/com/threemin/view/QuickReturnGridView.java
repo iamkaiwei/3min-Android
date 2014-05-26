@@ -45,6 +45,7 @@ public class QuickReturnGridView extends GridView {
 	}
 
 	public void computeScrollY() {
+		scrollIsComputed = false;
 		mHeight = 0;
 		mItemCount = getAdapter().getCount();
 		if (mItemCount <= 0) {
@@ -59,7 +60,7 @@ public class QuickReturnGridView extends GridView {
 					MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
 			mItemOffsetY[i] = mHeight;
 			mHeight += view.getMeasuredHeight();
-			System.out.println(mHeight);
+//			System.out.println(mHeight);
 		}
 		scrollIsComputed = true;
 	}
