@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:threemins="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
-    android:orientation="vertical"
-    android:padding="@dimen/inflater_body_product_grid_padding" >
-    
+    android:background="@drawable/inflater_body_product_grid_bg"
+    android:orientation="vertical" >
+
     <!-- Header -->
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:padding="@dimen/inflater_header_grid_padding" >
 
         <ImageView
             android:id="@+id/inflater_header_product_grid_image"
             android:layout_width="@dimen/inflater_header_grid_avatar_size"
             android:layout_height="@dimen/inflater_header_grid_avatar_size"
+            android:layout_gravity="center_vertical"
             android:src="@drawable/ic_launcher" />
 
         <RelativeLayout
@@ -23,16 +26,18 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/inflater_header_grid_margin_left"
-            android:orientation="vertical">
+            android:orientation="vertical" >
 
-            <TextView
+            <com.lanna.droidlib.view.CustomTextView
                 android:id="@+id/inflater_header_product_grid_tv_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:text="Name"
                 android:textColor="@color/common_black"
-                android:textSize="@dimen/textsize_small" />
+                android:textSize="@dimen/textsize_small"
+                threemins:customTypeface="@string/font_regular"
+                android:layout_marginBottom="@dimen/inflater_header_grid_tv_name_margin_bottom" />
 
             <ImageView
                 android:id="@+id/inflater_header_product_grid_image_clock"
@@ -42,110 +47,114 @@
                 android:layout_below="@id/inflater_header_product_grid_tv_name"
                 android:src="@drawable/icon_clock" />
 
-            <TextView
+            <com.lanna.droidlib.view.CustomTextView
                 android:id="@+id/inflater_header_product_grid_tv_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/inflater_header_product_grid_tv_name"
-                android:layout_marginLeft="3dp"
+                android:layout_marginLeft="@dimen/inflater_body_product_grid_common_spacing"
                 android:layout_toRightOf="@+id/inflater_header_product_grid_image_clock"
                 android:text="2 days ago"
                 android:textColor="@color/common_grey"
-                android:textSize="@dimen/textsize_small" />
+                android:textSize="@dimen/textsize_small"
+                threemins:customTypeface="@string/font_regular" />
         </RelativeLayout>
     </LinearLayout>
 
     <ImageView
         android:id="@+id/inflater_body_product_grid_image"
         android:layout_width="match_parent"
-        android:layout_height="170dp"
+        android:layout_height="@dimen/inflater_body_product_grid_product_img"
         android:scaleType="centerCrop" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/inflater_body_product_grid_padding"
+        android:padding="@dimen/inflater_body_product_grid_padding"
         android:orientation="vertical" >
 
-        <TextView
+        <com.lanna.droidlib.view.CustomTextView
             android:id="@+id/inflater_body_product_grid_tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Medium Text"
             android:textColor="@color/common_black"
             android:textSize="@dimen/textsize_medium"
-            android:textStyle="bold" />
+            threemins:customTypeface="@string/font_semibold" />
 
-        <TextView
+        <com.lanna.droidlib.view.CustomTextView
             android:id="@+id/inflater_body_product_grid_tv_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="50 000 VND"
             android:textColor="@color/common_orange"
-            android:textSize="@dimen/textsize_small" />
+            android:textSize="@dimen/textsize_small"
+            threemins:customTypeface="@string/font_regular" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
 
-            <TextView
+            <com.lanna.droidlib.view.CustomTextView
                 android:id="@+id/inflater_body_product_grid_tv_like"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="6"
                 android:textColor="@color/common_grey"
-                android:textSize="@dimen/textsize_small" />
+                android:textSize="@dimen/textsize_small"
+                threemins:customTypeface="@string/font_regular" />
 
             <ImageView
                 android:id="@+id/inflater_body_product_grid_img_like"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/selector_like"
-                android:layout_marginLeft="3dp" />
-            
-            <View 
+                android:layout_marginLeft="@dimen/inflater_body_product_grid_common_spacing"
+                android:src="@drawable/selector_like" />
+
+            <View
                 android:layout_width="1dp"
                 android:layout_height="fill_parent"
-                android:background="@color/common_grey"
-                android:layout_marginLeft="15dp"/>
-            
+                android:layout_marginLeft="@dimen/inflater_body_product_grid_line_view_margin_left"
+                android:background="@color/common_grey" />
+
             <!-- avatar who liked your product -->
+
             <ImageView
                 android:id="@+id/inflater_body_product_grid_img_avatar_1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/inflater_body_product_grid_img_avatar_like"
+                android:layout_height="@dimen/inflater_body_product_grid_img_avatar_like"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/selector_like"
-                android:layout_marginLeft="3dp"  />
-            
+                android:layout_marginLeft="@dimen/inflater_body_product_grid_common_spacing"
+                android:src="@drawable/selector_like" />
+
             <ImageView
                 android:id="@+id/inflater_body_product_grid_img_avatar_2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/inflater_body_product_grid_img_avatar_like"
+                android:layout_height="@dimen/inflater_body_product_grid_img_avatar_like"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/selector_like"
-                android:layout_marginLeft="3dp"  />
-            
+                android:layout_marginLeft="@dimen/inflater_body_product_grid_common_spacing"
+                android:src="@drawable/selector_like" />
+
             <ImageView
                 android:id="@+id/inflater_body_product_grid_img_avatar_2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/inflater_body_product_grid_img_avatar_like"
+                android:layout_height="@dimen/inflater_body_product_grid_img_avatar_like"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/selector_like"
-                android:layout_marginLeft="3dp"  />
-            
+                android:layout_marginLeft="@dimen/inflater_body_product_grid_common_spacing"
+                android:src="@drawable/selector_like" />
+
             <!-- 3 dots -->
+
             <ImageView
                 android:id="@+id/inflater_body_product_grid_img_3_dots"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:src="@drawable/ic_3dots"
-                android:layout_marginLeft="3dp"  />
-            
+                android:layout_marginLeft="@dimen/inflater_body_product_grid_common_spacing"
+                android:src="@drawable/ic_3dots" />
         </LinearLayout>
     </LinearLayout>
 
