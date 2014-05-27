@@ -15,7 +15,7 @@
         android:horizontalSpacing="@dimen/fragment_product_spacing"
     	android:paddingLeft="@dimen/fragment_product_spacing"
     	android:paddingRight="@dimen/fragment_product_spacing"
-    	android:background="@color/fragment_product_bg" >
+    	android:background="@color/background_grey" >
     </com.threemin.view.QuickReturnGridView>
 
 </android.support.v4.widget.SwipeRefreshLayout>

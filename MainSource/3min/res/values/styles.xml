@@ -1,4 +1,5 @@
-<resources xmlns:android="http://schemas.android.com/apk/res/android">
+<resources xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:threemins="http://schemas.android.com/apk/res-auto">
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
@@ -50,7 +51,8 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_alignParentLeft">true</item>
         <item name="android:layout_centerVertical">true</item>
-        <item name="android:textSize">@dimen/activity_imageview_textview_textsize</item>
+        <item name="android:textSize">@dimen/textsize_medium</item>
+        <item name="android:textColor">@color/common_black</item>
     </style>
 
     <style name="activity_imageview_edittext_style">
@@ -60,8 +62,9 @@
         <item name="android:layout_centerVertical">true</item>
         <item name="android:singleLine">true</item>
         <item name="android:maxLength">30</item>
-        <item name="android:textSize">@dimen/activity_imageview_edittext_textsize</item>
         <item name="android:gravity">right</item>
+        <item name="android:textSize">@dimen/textsize_medium</item>
+        <item name="android:textColor">@color/common_grey</item>
     </style>
 
     <!-- activity_login.xml -->
