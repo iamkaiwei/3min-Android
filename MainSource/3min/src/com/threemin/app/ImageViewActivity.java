@@ -67,12 +67,6 @@ public class ImageViewActivity extends Activity {
 	public final static int REQUEST_CAMERA_IMG_3 = 13;
 	public final static int REQUEST_CAMERA_IMG_4 = 14;
 	
-
-	public final static int REQUEST_SELECT_FILE_IMG_1 = 21;
-	public final static int REQUEST_SELECT_FILE_IMG_2 = 22;
-	public final static int REQUEST_SELECT_FILE_IMG_3 = 23;
-	public final static int REQUEST_SELECT_FILE_IMG_4 = 24;
-	
 	private final static int REQUEST_LOCATION = 31;
 
 	ImageView mImg1, mImg2, mImg3, mImg4;
@@ -98,13 +92,9 @@ public class ImageViewActivity extends Activity {
 
 		@Override
 		public void onClick(final View v) {
-			
 			final CharSequence[] items = { 	getResources().getString(R.string.activity_imageview_take_a_photo),
-											getResources().getString(R.string.activity_imageview_select_from_gallery), 
 											getResources().getString(R.string.activity_imageview_delete) };
 			
-			final CharSequence[] itemsWithoutDelete = { getResources().getString(R.string.activity_imageview_take_a_photo),
-														getResources().getString(R.string.activity_imageview_select_from_gallery) };
 			
 			AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
 			builder.setTitle(getResources().getString(R.string.activity_imageview_add_photo));
@@ -119,14 +109,28 @@ public class ImageViewActivity extends Activity {
 				});
 				builder.show();
 			} else {
-				builder.setItems(itemsWithoutDelete, new DialogInterface.OnClickListener() {
+				int requestCode_Camera = 0;
+				switch (v.getId()) {
+				case R.id.activity_imageview_img_1:
+					requestCode_Camera = REQUEST_CAMERA_IMG_1;
+					break;
 
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						configDialog(v, itemsWithoutDelete, dialog, which);
-					}
-				});
-				builder.show();
+				case R.id.activity_imageview_img_2:
+					requestCode_Camera = REQUEST_CAMERA_IMG_2;
+					break;
+
+				case R.id.activity_imageview_img_3:
+					requestCode_Camera = REQUEST_CAMERA_IMG_3;
+					break;
+
+				case R.id.activity_imageview_img_4:
+					requestCode_Camera = REQUEST_CAMERA_IMG_4;
+					break;
+
+				default:
+					break;
+				}
+				startActivityForResult(new Intent(ImageViewActivity.this, ActivityCamera.class), requestCode_Camera);
 			}
 			
 		}
@@ -134,26 +138,21 @@ public class ImageViewActivity extends Activity {
 		public void configDialog(View v, CharSequence[] items, DialogInterface dialog, int which) {
 			// which imageView is tapped
 			int requestCode_Camera = 0;
-			int requestCode_SelectFile = 0;
 			switch (v.getId()) {
 			case R.id.activity_imageview_img_1:
 				requestCode_Camera = REQUEST_CAMERA_IMG_1;
-				requestCode_SelectFile = REQUEST_SELECT_FILE_IMG_1;
 				break;
 
 			case R.id.activity_imageview_img_2:
 				requestCode_Camera = REQUEST_CAMERA_IMG_2;
-				requestCode_SelectFile = REQUEST_SELECT_FILE_IMG_2;
 				break;
 
 			case R.id.activity_imageview_img_3:
 				requestCode_Camera = REQUEST_CAMERA_IMG_3;
-				requestCode_SelectFile = REQUEST_SELECT_FILE_IMG_3;
 				break;
 
 			case R.id.activity_imageview_img_4:
 				requestCode_Camera = REQUEST_CAMERA_IMG_4;
-				requestCode_SelectFile = REQUEST_SELECT_FILE_IMG_4;
 				break;
 
 			default:
@@ -162,9 +161,7 @@ public class ImageViewActivity extends Activity {
 			
 			if (which == 0) {
 				startActivityForResult(new Intent(ImageViewActivity.this, ActivityCamera.class), requestCode_Camera);
-			} else if (which == 1) {
-				openGallery(requestCode_SelectFile);
-			} else if (which == 2) {
+			} else {
 				deleteImage(v.getId());
 			}
 		}
@@ -192,12 +189,6 @@ public class ImageViewActivity extends Activity {
 
 		}
 	};
-	
-	private void openGallery(int requestCode) {
-		Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-		photoPickerIntent.setType("image/*");
-		startActivityForResult(photoPickerIntent, requestCode);
-	 }
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -416,18 +407,8 @@ public class ImageViewActivity extends Activity {
 				} else if (requestCode == REQUEST_CAMERA_IMG_4) {
 					setImageURI(uri,mImg4);
 				}
-			} else if (requestCode >= REQUEST_SELECT_FILE_IMG_1 && requestCode <= REQUEST_SELECT_FILE_IMG_4) {
-				Uri uri = data.getData();
-				if (requestCode == REQUEST_SELECT_FILE_IMG_1) {
-					setImageURI(uri,mImg1);
-				} else if (requestCode == REQUEST_SELECT_FILE_IMG_2) {
-					setImageURI(uri,mImg2);
-				} else if (requestCode == REQUEST_SELECT_FILE_IMG_3) {
-					setImageURI(uri,mImg3);
-				} else if (requestCode == REQUEST_SELECT_FILE_IMG_4) {
-					setImageURI(uri,mImg4);
-				}
-			} else if(requestCode== REQUEST_LOCATION){
+			} 
+			else if(requestCode== REQUEST_LOCATION){
 				String result=data.getStringExtra(CommonConstant.INTENT_PRODUCT_DATA);
 				venue=new Gson().fromJson(result, Venue.class);
 				if(venue!=null){
