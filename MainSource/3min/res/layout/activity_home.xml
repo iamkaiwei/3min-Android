@@ -3,7 +3,8 @@
     xmlns:threemins="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@color/fragment_product_bg" >
 
     <!-- The main content view -->
 
@@ -16,7 +17,7 @@
             android:id="@+id/ln_topbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/fragment_product_grudview_spacing"
+            android:layout_marginBottom="@dimen/fragment_product_spacing"
             android:background="@android:color/white"
             android:orientation="horizontal" >
 
@@ -80,7 +81,8 @@
             android:id="@+id/content_fragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/ln_topbar" >
+            android:layout_below="@+id/ln_topbar"
+            android:background="@color/fragment_product_bg" >
         </FrameLayout>
 
         <RelativeLayout

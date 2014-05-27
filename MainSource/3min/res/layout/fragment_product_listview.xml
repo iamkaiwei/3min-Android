@@ -2,6 +2,8 @@
 <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingLeft="@dimen/fragment_product_spacing"
+    android:paddingRight="@dimen/fragment_product_spacing"
     android:id="@+id/swipe" >
 
     <com.threemin.view.QuickReturnListView
