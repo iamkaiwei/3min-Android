@@ -268,6 +268,9 @@ public class HomeActivity extends Activity {
 		// Pass the event to ActionBarDrawerToggle, if it returns
 		// true, then it has handled the app icon touch event
 		if (mDrawerToggle.onOptionsItemSelected(item)) {
+			if(drawerLayout.isDrawerOpen(Gravity.END)){
+				drawerLayout.closeDrawer(Gravity.END);
+			}
 			return true;
 		}
 
