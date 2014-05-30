@@ -19,6 +19,11 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Gravity;
@@ -46,8 +51,10 @@ import com.threemin.adapter.CategoryAdapter;
 import com.threemin.adapter.RightDrawerAdapter;
 import com.threemin.fragment.BaseProductFragment;
 import com.threemin.fragment.HomeFragment;
+import com.threemin.fragment.LeftFragment;
 import com.threemin.fragment.ProductFragmentGrid;
 import com.threemin.fragment.ProductFragmentList;
+import com.threemin.fragment.RightFragment;
 import com.threemin.model.CategoryModel;
 import com.threemin.model.ProductModel;
 import com.threemin.uti.CommonConstant;
@@ -58,7 +65,16 @@ import com.threemin.webservice.ProductWebservice;
 import com.threemin.webservice.UploaderImageUlti;
 import com.threemins.R;
 
-public class HomeActivity extends Activity {
+public class HomeActivity extends FragmentActivity {
+	
+	//view pager
+	public static final int NUM_PAGES = 3;
+	public static final int PAGE_LEFT = 0;
+	public static final int PAGE_CENTER = 1;
+	public static final int PAGE_RIGHT = 2;
+	ViewPager mViewPagerMainContent;
+	PagerAdapter mViewPagerAdapter;
+	
 
 	Context mContext;
 	ListView lvCategory, lvfilter;
@@ -124,9 +140,16 @@ public class HomeActivity extends Activity {
 				.build();
 		mGoogleApiClient.connect();
 		initActionBar();
-		homeFragment=new HomeFragment();
-		getFragmentManager().beginTransaction().replace(R.id.content_layout, homeFragment).commit();
+//		homeFragment=new HomeFragment();
+//		getFragmentManager().beginTransaction().replace(R.id.content_layout, homeFragment).commit();
 
+		//view pager implementation
+		homeFragment=new HomeFragment();
+		mViewPagerMainContent = (ViewPager) findViewById(R.id.activity_home_view_pager);
+		mViewPagerAdapter = new PagerAdapter(getSupportFragmentManager());
+		mViewPagerMainContent.setAdapter(mViewPagerAdapter);
+		mViewPagerMainContent.setCurrentItem(1);
+		
 	}
 
 	private void initAvatar() {
@@ -334,5 +357,39 @@ public class HomeActivity extends Activity {
 				startActivity(new Intent(mContext, LoginActivity.class));
 			}
 		};
+	}
+	
+	//view pager implementation
+	
+	@Override
+	public void onBackPressed() {
+		if (mViewPagerMainContent.getCurrentItem() == PAGE_CENTER) {
+			super.onBackPressed();
+		} else {
+			mViewPagerMainContent.setCurrentItem(PAGE_CENTER);
+		}
+	}
+	private class PagerAdapter extends FragmentPagerAdapter {
+
+		public PagerAdapter(FragmentManager fm) {
+			super(fm);
+		}
+
+		@Override
+		public Fragment getItem(int position) {
+			if (position == 1) {
+				return homeFragment;
+			}
+			if (position == 0) {
+				return new LeftFragment();
+			}
+			return new RightFragment();
+		}
+
+		@Override
+		public int getCount() {
+			return NUM_PAGES;
+		}
+
 	}
 }

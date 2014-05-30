@@ -3,8 +3,8 @@ package com.threemin.fragment;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Fragment;
 import android.os.AsyncTask;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
