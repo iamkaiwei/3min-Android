@@ -45,6 +45,7 @@ import com.threemin.adapter.AvatarAdapter;
 import com.threemin.adapter.CategoryAdapter;
 import com.threemin.adapter.RightDrawerAdapter;
 import com.threemin.fragment.BaseProductFragment;
+import com.threemin.fragment.HomeFragment;
 import com.threemin.fragment.ProductFragmentGrid;
 import com.threemin.fragment.ProductFragmentList;
 import com.threemin.model.CategoryModel;
@@ -61,37 +62,17 @@ public class HomeActivity extends Activity {
 
 	Context mContext;
 	ListView lvCategory, lvfilter;
-	ProductFragmentList productFragmentList;
 	DrawerLayout drawerLayout;
 	ActionBarDrawerToggle mDrawerToggle;
 	BaseProductFragment currentFragment;
-	
+	private static final int REQUEST_UPLOAD = 3;
+
 	//right drawer
 	RelativeLayout layoutFilter;
 	RightDrawerAdapter adapterRightDrawer;
 
-	// add grid view
-	ProductFragmentGrid productFragmentGrid;
-
-	// view mode: list view or grid view
-	public static final int MODE_LIST_VIEW = 1;
-	public static final int MODE_GRID_VIEW = 2;
-	private static final int REQUEST_UPLOAD = 3;
-
-	public static int STEP_INIT = 0;
-	public static int STEP_ADDMORE = 1;
-	public static int STEP_REFRESH = 2;
-
-	public int mModeView;
-
-	protected CategoryModel currentCate;
-	protected List<ProductModel> productModels;
-	int page;
-	View vHighlightList, vHighlightThumb;
-	View tabList, tabThumb;
-	View bottomView;
 	GoogleApiClient mGoogleApiClient;
-
+	HomeFragment homeFragment;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -117,25 +98,10 @@ public class HomeActivity extends Activity {
 				adapterRightDrawer.setSelectedPosition(position);
 			}
 		});
-		
+		new InitCategory().execute();
 		
 		lvCategory = (ListView) findViewById(R.id.navigation_list);
 		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-		vHighlightList = findViewById(R.id.highlight_list);
-		vHighlightThumb = findViewById(R.id.highlight_thumbnail);
-		vHighlightList.setVisibility(View.INVISIBLE);
-		bottomView = findViewById(R.id.bottom);
-		tabList = findViewById(R.id.tab_list);
-		tabThumb = findViewById(R.id.tab_thumb);
-		initActionBar();
-		new InitCategory().execute();
-
-		// init: list of products is shown in list view:
-		mModeView = MODE_GRID_VIEW;
-		productFragmentList = new ProductFragmentList(bottomView);
-		productFragmentGrid = new ProductFragmentGrid(bottomView);
-		getFragmentManager().beginTransaction().replace(R.id.content_fragment, productFragmentGrid).commit();
-		currentFragment = productFragmentGrid;
 
 		// create the fragment to switch between grid view and list view
 
@@ -144,28 +110,23 @@ public class HomeActivity extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				CategoryModel categoryModel = (CategoryModel) lvCategory.getItemAtPosition(position);
-				if (position > 0) {
-					currentCate = categoryModel;
-				} else {
-					currentCate = null;
+				if (position == 0) {
+					categoryModel = null;
 				}
-				new GetProductTaks(currentFragment).execute(STEP_INIT);
+				homeFragment.onSwichCategory(categoryModel);
 				drawerLayout.closeDrawer(Gravity.START);
 				getActionBar().setTitle(categoryModel.getName());
 			}
 		});
 
-		findViewById(R.id.home_camera).setOnClickListener(onSellClick());
-		new GetProductTaks(currentFragment).execute(STEP_INIT);
-
-		tabList.setOnClickListener(onTabSwitch());
-		tabThumb.setOnClickListener(onTabSwitch());
-		tabThumb.setSelected(true);
-		tabList.setSelected(false);
 		initAvatar();
 		mGoogleApiClient = new GoogleApiClient.Builder(this).addApi(Plus.API, null).addScope(Plus.SCOPE_PLUS_PROFILE)
 				.build();
 		mGoogleApiClient.connect();
+		initActionBar();
+		homeFragment=new HomeFragment();
+		getFragmentManager().beginTransaction().replace(R.id.content_layout, homeFragment).commit();
+
 	}
 
 	private void initAvatar() {
@@ -268,16 +229,12 @@ public class HomeActivity extends Activity {
 		// Pass the event to ActionBarDrawerToggle, if it returns
 		// true, then it has handled the app icon touch event
 		if (mDrawerToggle.onOptionsItemSelected(item)) {
+			if(drawerLayout.isDrawerOpen(Gravity.END)){
+				drawerLayout.closeDrawer(Gravity.END);
+			}
 			return true;
 		}
 
-//		if (item.getItemId() == R.id.action_switch_view) {
-//			if(drawerLayout.isDrawerOpen(lvfilter)){
-//				drawerLayout.closeDrawer(lvfilter);
-//			} else {
-//				drawerLayout.openDrawer(lvfilter);
-//			}
-//		}
 		
 		if (item.getItemId() == R.id.action_switch_view) {
 			if(drawerLayout.isDrawerOpen(layoutFilter)){
@@ -290,53 +247,6 @@ public class HomeActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	private OnClickListener onTabSwitch() {
-		return new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				if (v == tabList && mModeView == MODE_LIST_VIEW) {
-					return;
-				}
-				if (v == tabThumb && mModeView == MODE_GRID_VIEW) {
-					return;
-				}
-				switchMode();
-			}
-		};
-	}
-
-	private void switchMode() {
-		if (mModeView == MODE_LIST_VIEW) {
-			mModeView = MODE_GRID_VIEW;
-			vHighlightThumb.setVisibility(View.VISIBLE);
-			vHighlightList.setVisibility(View.INVISIBLE);
-			tabThumb.setSelected(true);
-			tabList.setSelected(false);
-			productFragmentGrid.setProductModels(productModels);
-			getFragmentManager().beginTransaction().replace(R.id.content_fragment, productFragmentGrid).commit();
-			currentFragment = productFragmentGrid;
-		} else {
-			mModeView = MODE_LIST_VIEW;
-			vHighlightThumb.setVisibility(View.INVISIBLE);
-			vHighlightList.setVisibility(View.VISIBLE);
-			tabList.setSelected(true);
-			tabThumb.setSelected(false);
-			productFragmentList.setProductModels(productModels);
-			getFragmentManager().beginTransaction().replace(R.id.content_fragment, productFragmentList).commit();
-			currentFragment = productFragmentList;
-		}
-	}
-
-	private OnClickListener onSellClick() {
-		return new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				startActivityForResult(new Intent(mContext, ImageViewActivity.class), REQUEST_UPLOAD);
-			}
-		};
-	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -368,7 +278,7 @@ public class HomeActivity extends Activity {
 			if (mContext != null && currentFragment != null) {
 				currentFragment.getRefreshLayout().setRefreshing(false);
 				if (result != null) {
-					addNewProducts(result, categoryModel);
+					homeFragment.addNewProducts(result, categoryModel);
 				} else {
 					Toast.makeText(mContext, R.string.error_upload, Toast.LENGTH_SHORT).show();
 				}
@@ -404,77 +314,6 @@ public class HomeActivity extends Activity {
 		}
 	}
 
-	public class GetProductTaks extends AsyncTask<Integer, Void, List<ProductModel>> {
-		int currentStep;
-
-		BaseProductFragment baseProductFragment;
-
-		// flag check if asynctask is proccessing or not
-
-		// constructor
-		public GetProductTaks(BaseProductFragment baseProductFragment) {
-			this.baseProductFragment = baseProductFragment;
-		}
-
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-			if (baseProductFragment.swipeLayout != null) {
-				baseProductFragment.swipeLayout.setRefreshing(true);
-			}
-		}
-
-		@Override
-		protected List<ProductModel> doInBackground(Integer... params) {
-			currentStep = params[0];
-			if (currentStep == STEP_INIT || currentStep == STEP_REFRESH) {
-				page = 1;
-			}
-			if (currentStep == STEP_ADDMORE) {
-				page++;
-			}
-			String tokken = PreferenceHelper.getInstance(baseProductFragment.getActivity()).getTokken();
-			try {
-				return new ProductWebservice().getProduct(tokken, currentCate, page);
-			} catch (Exception e) {
-				e.printStackTrace();
-				return null;
-			}
-		}
-
-		@Override
-		protected void onPostExecute(List<ProductModel> result) {
-			super.onPostExecute(result);
-			if (baseProductFragment.swipeLayout != null) {
-				baseProductFragment.swipeLayout.setRefreshing(false);
-			}
-			if (result != null && result.size() > 0) {
-				if (currentStep == STEP_INIT || currentStep == STEP_REFRESH) {
-					productModels = result;
-					baseProductFragment.setProductModels(result);
-				} else if (currentStep == STEP_ADDMORE) {
-					productModels.addAll(result);
-					baseProductFragment.setProductModels(productModels);
-				} else {
-				}
-
-			} else if (currentStep == STEP_INIT) {
-				baseProductFragment.setProductModels(result);
-				productModels = result;
-			}
-		}
-	}
-
-	public void addNewProducts(ProductModel result, CategoryModel categoryModel) {
-		if (currentCate == null || currentCate.getId() == categoryModel.getId()) {
-			productModels.add(0, result);
-		}
-	}
-
-	public void setBottomView() {
-		productFragmentList.setBottomView(bottomView);
-		productFragmentGrid.setBottomView(bottomView);
-	}
 
 	public OnClickListener doLogout() {
 		return new OnClickListener() {

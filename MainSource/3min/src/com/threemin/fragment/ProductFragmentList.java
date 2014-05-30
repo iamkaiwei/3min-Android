@@ -17,7 +17,6 @@ import android.widget.ListView;
 
 import com.threemin.adapter.ProductAdapter;
 import com.threemin.app.HomeActivity;
-import com.threemin.app.HomeActivity.GetProductTaks;
 import com.threemin.view.QuickReturnListView;
 import com.threemins.R;
 
@@ -25,7 +24,6 @@ public class ProductFragmentList extends BaseProductFragment {
 	QuickReturnListView list;
 	ProductAdapter adapter;
 	int thelasttotalCount;
-	HomeActivity homeActivity;
 	private int mQuickReturnHeight;
 
 	private static final int STATE_ONSCREEN = 0;
@@ -54,8 +52,7 @@ public class ProductFragmentList extends BaseProductFragment {
 			adapter = new ProductAdapter(productModels);
 		}
 		list.setAdapter(adapter);
-		homeActivity = (HomeActivity) getActivity();
-		homeActivity.setBottomView();
+		homeFragment.setBottomView();
 		initListner();
 		return v;
 	}
@@ -84,7 +81,7 @@ public class ProductFragmentList extends BaseProductFragment {
 
 			@Override
 			public void onRefresh() {
-				homeActivity.new GetProductTaks(ProductFragmentList.this).execute(HomeActivity.STEP_REFRESH);
+				homeFragment.new GetProductTaks(ProductFragmentList.this).execute(HomeFragment.STEP_REFRESH);
 			}
 		});
 		list.setOnScrollListener(new OnScrollListener() {
@@ -99,7 +96,7 @@ public class ProductFragmentList extends BaseProductFragment {
 				boolean loadMore = firstVisibleItem + visibleItemCount >= totalItemCount - 1;
 				if (loadMore && totalItemCount > 1 && thelasttotalCount != totalItemCount) {
 					thelasttotalCount = totalItemCount;
-					homeActivity.new GetProductTaks(ProductFragmentList.this).execute(HomeActivity.STEP_ADDMORE);
+					homeFragment.new GetProductTaks(ProductFragmentList.this).execute(HomeFragment.STEP_ADDMORE);
 				}
 				handleQuickReturn();
 			}

@@ -69,8 +69,10 @@
     <ImageView
         android:id="@+id/inflater_body_product_grid_image"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/inflater_body_product_grid_product_img"
-        android:scaleType="centerCrop" />
+        android:layout_height="wrap_content"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
+         />
 
     <LinearLayout
         android:layout_width="match_parent"
