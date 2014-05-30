@@ -16,7 +16,6 @@ import android.widget.GridView;
 
 import com.threemin.adapter.ProductGridAdapter;
 import com.threemin.app.HomeActivity;
-import com.threemin.app.HomeActivity.GetProductTaks;
 import com.threemin.view.QuickReturnGridView;
 import com.threemins.R;
 
@@ -25,7 +24,6 @@ public class ProductFragmentGrid extends BaseProductFragment {
 	private QuickReturnGridView mGrid;
 	private ProductGridAdapter mAdapter;
 	int thelasttotalCount;
-	HomeActivity homeActivity;
 	View bottomView;
 	
 	private int mQuickReturnHeight;
@@ -58,8 +56,7 @@ public class ProductFragmentGrid extends BaseProductFragment {
 		
 
 		initListner();
-		homeActivity=(HomeActivity) getActivity();
-		homeActivity.setBottomView();
+		homeFragment.setBottomView();
 		return v;
 	}
 	
@@ -87,7 +84,7 @@ public class ProductFragmentGrid extends BaseProductFragment {
 
 			@Override
 			public void onRefresh() {
-				homeActivity.new GetProductTaks(ProductFragmentGrid.this).execute(HomeActivity.STEP_REFRESH);
+				homeFragment.new GetProductTaks(ProductFragmentGrid.this).execute(HomeFragment.STEP_REFRESH);
 			}
 		});
 		
@@ -103,7 +100,7 @@ public class ProductFragmentGrid extends BaseProductFragment {
 				boolean loadMore = firstVisibleItem + visibleItemCount >= totalItemCount - 1;
 				if (loadMore && totalItemCount>1 && thelasttotalCount!=totalItemCount) {
 					thelasttotalCount=totalItemCount;
-					homeActivity.new GetProductTaks(ProductFragmentGrid.this).execute(HomeActivity.STEP_ADDMORE);
+					homeFragment.new GetProductTaks(ProductFragmentGrid.this).execute(HomeFragment.STEP_ADDMORE);
 				}
 				
 				handleQuickReturn();
