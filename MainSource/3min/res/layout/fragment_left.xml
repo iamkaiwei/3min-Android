@@ -2,10 +2,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@android:color/black" >
+    android:background="@android:color/white"
+    android:orientation="vertical" >
 
-    <TextView
+    <!--
+         <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="50sp"
@@ -13,5 +14,12 @@
         android:textColor="@android:color/white"
         android:textStyle="bold"
         android:text="Fragment Left" />
+    -->
+
+    <ListView
+        android:id="@+id/list_cate"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+    </ListView>
 
 </RelativeLayout>
