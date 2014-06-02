@@ -64,6 +64,9 @@ public class ProductGridAdapter extends BaseAdapter {
 	}
 	
 	private void initBody(int position, View convertView) {
+		if (mData == null || mData.size() == 0) {
+			return;
+		}
 		ProductModel model = mData.get(position);
 
 		if (model != null) {

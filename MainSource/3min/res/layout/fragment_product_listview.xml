@@ -5,12 +5,28 @@
     android:paddingLeft="@dimen/fragment_product_spacing"
     android:paddingRight="@dimen/fragment_product_spacing"
     android:id="@+id/swipe" >
-
-    <com.threemin.view.QuickReturnListView
-        android:id="@+id/lv_product"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" 
-        android:divider="@android:color/darker_gray">
-    </com.threemin.view.QuickReturnListView>
+        android:layout_height="match_parent" >
+
+        <RelativeLayout
+            android:id="@+id/fragment_product_listview_layout_no_items"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" >
+
+            <include layout="@layout/fragment_product_no_items" />
+        </RelativeLayout>
+
+        <com.threemin.view.QuickReturnListView
+            android:id="@+id/lv_product"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@android:color/darker_gray" >
+        </com.threemin.view.QuickReturnListView>
+        
+    </FrameLayout>
+
+    
 
 </android.support.v4.widget.SwipeRefreshLayout>

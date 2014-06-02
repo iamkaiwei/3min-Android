@@ -44,7 +44,6 @@ public class HomeFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_home, null);
 		
-		
 		vHighlightList = v.findViewById(R.id.highlight_list);
 		vHighlightThumb = v.findViewById(R.id.highlight_thumbnail);
 		vHighlightList.setVisibility(View.INVISIBLE);
@@ -131,7 +130,9 @@ public class HomeFragment extends Fragment {
 			} else if (currentStep == STEP_INIT) {
 				baseProductFragment.setProductModels(result);
 				productModels = result;
-			}
+			} 
+			
+			baseProductFragment.changeIfNoItem();
 		}
 	}
 
@@ -170,6 +171,8 @@ public class HomeFragment extends Fragment {
 			tabThumb.setSelected(true);
 			tabList.setSelected(false);
 			productFragmentGrid.setProductModels(productModels);
+			productFragmentGrid.setIsSwitched(true);
+//			productFragmentGrid.changeIfNoItem();
 			getFragmentManager().beginTransaction().replace(R.id.content_fragment, productFragmentGrid).commit();
 			currentFragment = productFragmentGrid;
 		} else {
@@ -179,6 +182,8 @@ public class HomeFragment extends Fragment {
 			tabList.setSelected(true);
 			tabThumb.setSelected(false);
 			productFragmentList.setProductModels(productModels);
+			productFragmentList.setIsSwitched(true);
+//			productFragmentList.changeIfNoItem();
 			getFragmentManager().beginTransaction().replace(R.id.content_fragment, productFragmentList).commit();
 			currentFragment = productFragmentList;
 		}

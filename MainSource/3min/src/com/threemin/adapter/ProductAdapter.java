@@ -74,6 +74,9 @@ public class ProductAdapter extends SectionedBaseAdapter {
 	}
 
 	private void initBody(int section, View convertView) {
+		if (data == null || data.size() == 0) {
+			return;
+		}
 		ProductModel model = data.get(section);
 
 		ImageView image = (ImageView) convertView.findViewById(R.id.inflater_body_product_image);
@@ -117,6 +120,9 @@ public class ProductAdapter extends SectionedBaseAdapter {
 	}
 
 	private void initHeaderView(int section, View convertView) {
+		if (data == null || data.size() == 0) {
+			return;
+		}
 		ProductModel model = data.get(section);
 
 		ImageView image = (ImageView) convertView.findViewById(R.id.inflater_heeader_product_image);

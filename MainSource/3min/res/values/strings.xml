@@ -57,4 +57,8 @@
     <string name="error_miss_field">Please enter all require field</string>
     <string name="error_upload">Fail to upload product</string>
     <string name="google_map_API">AIzaSyA-qXZc5zoSAEOfb2EJ_7crPEwXpGAH-Js</string>
+    
+    <!-- no items -->
+    <string name="no_items_line_1">Tap on the icon below</string>
+    <string name="no_items_line_2">to start listing yours items for sell</string>
 </resources>
