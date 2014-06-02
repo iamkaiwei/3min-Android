@@ -1,8 +1,6 @@
 package com.threemin.app;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -11,32 +9,25 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.Spinner;
@@ -47,21 +38,15 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
 import com.google.gson.Gson;
 import com.threemin.adapter.AvatarAdapter;
-import com.threemin.adapter.CategoryAdapter;
-import com.threemin.adapter.RightDrawerAdapter;
 import com.threemin.fragment.BaseProductFragment;
 import com.threemin.fragment.HomeFragment;
 import com.threemin.fragment.LeftFragment;
-import com.threemin.fragment.ProductFragmentGrid;
-import com.threemin.fragment.ProductFragmentList;
 import com.threemin.fragment.RightFragment;
 import com.threemin.model.CategoryModel;
 import com.threemin.model.ProductModel;
 import com.threemin.uti.CommonConstant;
 import com.threemin.uti.PreferenceHelper;
 import com.threemin.uti.WebserviceConstant;
-import com.threemin.webservice.CategoryWebservice;
-import com.threemin.webservice.ProductWebservice;
 import com.threemin.webservice.UploaderImageUlti;
 import com.threemins.R;
 
@@ -77,65 +62,22 @@ public class HomeActivity extends FragmentActivity {
 	
 
 	Context mContext;
-	ListView lvCategory, lvfilter;
-	DrawerLayout drawerLayout;
-	ActionBarDrawerToggle mDrawerToggle;
 	BaseProductFragment currentFragment;
 	private static final int REQUEST_UPLOAD = 3;
 
 	//right drawer
 	RelativeLayout layoutFilter;
-	RightDrawerAdapter adapterRightDrawer;
 
 	GoogleApiClient mGoogleApiClient;
 	HomeFragment homeFragment;
+	LeftFragment leftFragment;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
 		mContext = this;
 		
-		//right drawer
-		lvfilter=(ListView) findViewById(R.id.home_right_drawer_listview);
-		layoutFilter = (RelativeLayout) findViewById(R.id.home_right_drawer_layout);
-		ArrayList<String> listFilter = new ArrayList<String>();
-		listFilter.add("Popular");
-		listFilter.add("Recent");
-		listFilter.add("Lowest Price");
-		listFilter.add("Highest Price");
-		listFilter.add("Nearest");
-		adapterRightDrawer = new RightDrawerAdapter(mContext, R.layout.inflater_right_drawer_listview_item, listFilter);
-		lvfilter.setAdapter(adapterRightDrawer);
-		lvfilter.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position,
-					long id) {
-				adapterRightDrawer.setSelectedPosition(position);
-			}
-		});
-		new InitCategory().execute();
-		
-		lvCategory = (ListView) findViewById(R.id.navigation_list);
-		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-		// create the fragment to switch between grid view and list view
-
-		lvCategory.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				CategoryModel categoryModel = (CategoryModel) lvCategory.getItemAtPosition(position);
-				if (position == 0) {
-					categoryModel = null;
-				}
-				homeFragment.onSwichCategory(categoryModel);
-				drawerLayout.closeDrawer(Gravity.START);
-				getActionBar().setTitle(categoryModel.getName());
-			}
-		});
-
-		initAvatar();
+//		initAvatar();
 		mGoogleApiClient = new GoogleApiClient.Builder(this).addApi(Plus.API, null).addScope(Plus.SCOPE_PLUS_PROFILE)
 				.build();
 		mGoogleApiClient.connect();
@@ -145,6 +87,7 @@ public class HomeActivity extends FragmentActivity {
 
 		//view pager implementation
 		homeFragment=new HomeFragment();
+		leftFragment=new LeftFragment();
 		mViewPagerMainContent = (ViewPager) findViewById(R.id.activity_home_view_pager);
 		mViewPagerAdapter = new PagerAdapter(getSupportFragmentManager());
 		mViewPagerMainContent.setAdapter(mViewPagerAdapter);
@@ -157,50 +100,9 @@ public class HomeActivity extends FragmentActivity {
 		mSpinner.setAdapter(new AvatarAdapter(mContext, PreferenceHelper.getInstance(mContext).getCurrentUser()));
 	}
 
-	private class InitCategory extends AsyncTask<Void, Void, List<CategoryModel>> {
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-		}
-
-		@Override
-		protected List<CategoryModel> doInBackground(Void... arg0) {
-			try {
-				return CategoryWebservice.getInstance().getAllCategory(mContext);
-			} catch (Exception e) {
-				e.printStackTrace();
-				return null;
-			}
-		}
-
-		@Override
-		protected void onPostExecute(List<CategoryModel> result) {
-			if (result != null) {
-				
-				CategoryAdapter adapter = new CategoryAdapter(mContext, result);
-				adapter.setOnLogout(doLogout());
-				lvCategory.setAdapter(adapter);
-			}
-			super.onPostExecute(result);
-		}
-	}
 
 	private void initActionBar() {
-		mDrawerToggle = new ActionBarDrawerToggle(this, /* host Activity */
-		drawerLayout, /* DrawerLayout object */
-		R.drawable.ic_menu, /* nav drawer image to replace 'Up' caret */
-		R.string.app_name, /* "open drawer" description for accessibility */
-		R.string.app_name /* "close drawer" description for accessibility */
-		) {
-			public void onDrawerClosed(View view) {
-				// onPrepareOptionsMenu()
-			}
-
-			public void onDrawerOpened(View drawerView) {
-				// onPrepareOptionsMenu()
-			}
-		};
-		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setDisplayHomeAsUpEnabled(false);
 		getActionBar().setHomeButtonEnabled(true);
 
 		// set padding between home icon and the title
@@ -212,14 +114,12 @@ public class HomeActivity extends FragmentActivity {
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
 		// Sync the toggle state after onRestoreInstanceState has occurred.
-		mDrawerToggle.syncState();
 	}
 
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
 		// Pass any configuration change to the drawer toggls
-		mDrawerToggle.onConfigurationChanged(newConfig);
 	}
 
 	@Override
@@ -251,22 +151,6 @@ public class HomeActivity extends FragmentActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Pass the event to ActionBarDrawerToggle, if it returns
 		// true, then it has handled the app icon touch event
-		if (mDrawerToggle.onOptionsItemSelected(item)) {
-			if(drawerLayout.isDrawerOpen(Gravity.END)){
-				drawerLayout.closeDrawer(Gravity.END);
-			}
-			return true;
-		}
-
-		
-		if (item.getItemId() == R.id.action_switch_view) {
-			if(drawerLayout.isDrawerOpen(layoutFilter)){
-				drawerLayout.closeDrawer(layoutFilter);
-			} else {
-				drawerLayout.openDrawer(layoutFilter);
-			}
-		}
-		
 		return super.onOptionsItemSelected(item);
 	}
 
@@ -381,7 +265,7 @@ public class HomeActivity extends FragmentActivity {
 				return homeFragment;
 			}
 			if (position == 0) {
-				return new LeftFragment();
+				return leftFragment;
 			}
 			return new RightFragment();
 		}
@@ -391,5 +275,15 @@ public class HomeActivity extends FragmentActivity {
 			return NUM_PAGES;
 		}
 
+	}
+	
+	public void onSwitchCate(CategoryModel categoryModel){
+		mViewPagerMainContent.setCurrentItem(PAGE_CENTER);
+		homeFragment.onSwichCategory(categoryModel);
+		if(categoryModel==null){
+			getActionBar().setTitle(R.string.browse);
+		} else {
+			getActionBar().setTitle(categoryModel.getName());
+		}
 	}
 }
