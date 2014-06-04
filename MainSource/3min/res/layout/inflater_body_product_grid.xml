@@ -49,6 +49,7 @@
             <!-- group like -->
 
             <LinearLayout
+                android:id="@+id/inflater_body_product_grid_group_like"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -67,7 +68,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="@dimen/inflater_body_product_grid_common_spacing"
-                    android:text="6"
+                    android:text="1000"
                     android:textColor="@color/common_grey"
                     android:textSize="@dimen/textsize_small"
                     threemins:customTypeface="@string/font_regular" />
@@ -76,9 +77,11 @@
             <!-- group comment -->
 
             <LinearLayout
+                android:id="@+id/inflater_body_product_grid_group_img_comment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
+                android:layout_toRightOf="@id/inflater_body_product_grid_group_like"
+                android:layout_marginLeft="@dimen/common_spacing"
                 android:orientation="horizontal" >
 
                 <ImageView
@@ -94,7 +97,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="@dimen/inflater_body_product_grid_common_spacing"
-                    android:text="12"
+                    android:text="1200"
                     android:textColor="@color/common_grey"
                     android:textSize="@dimen/textsize_small"
                     threemins:customTypeface="@string/font_regular" />
