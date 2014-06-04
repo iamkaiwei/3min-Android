@@ -23,7 +23,8 @@
             android:id="@+id/lv_product"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:divider="@android:color/darker_gray" >
+            android:divider="@color/background_grey"
+            android:dividerHeight="@dimen/fragment_product_spacing" >
         </com.threemin.view.QuickReturnListView>
     </android.support.v4.widget.SwipeRefreshLayout>
 
