@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:threemins="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/swipe_gridview"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <FrameLayout
+    <RelativeLayout
+        android:id="@+id/fragment_product_gridview_layout_no_items"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" >
+
+        <include layout="@layout/fragment_product_no_items" />
+    </RelativeLayout>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_gridview"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
-
-        <RelativeLayout
-            android:id="@+id/fragment_product_gridview_layout_no_items"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone" >
-
-            <include layout="@layout/fragment_product_no_items" />
-        </RelativeLayout>
 
         <com.threemin.view.QuickReturnGridView
             android:id="@+id/gv_product"
@@ -27,6 +27,7 @@
             threemins:column_count="2"
             threemins:item_margin="@dimen/fragment_product_spacing" >
         </com.threemin.view.QuickReturnGridView>
-    </FrameLayout>
+        
+    </android.support.v4.widget.SwipeRefreshLayout>
 
-</android.support.v4.widget.SwipeRefreshLayout>
+</FrameLayout>
