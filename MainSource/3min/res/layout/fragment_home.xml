@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
-        <LinearLayout
+        <!-- <LinearLayout
             android:id="@+id/ln_topbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -72,7 +72,7 @@
                     android:layout_centerHorizontal="true"
                     android:src="@drawable/bright_slider_bottom" />
             </RelativeLayout>
-        </LinearLayout>
+        </LinearLayout> -->
 
         <FrameLayout
             android:id="@+id/content_fragment"

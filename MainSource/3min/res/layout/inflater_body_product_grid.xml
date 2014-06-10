@@ -52,6 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
                 android:orientation="horizontal" >
 
                 <ImageView
@@ -88,7 +89,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/selector_like" />
+                    android:src="@drawable/ic_comment" />
 
                 <com.lanna.droidlib.view.CustomTextView
                     android:id="@+id/inflater_body_product_grid_tv_comment"

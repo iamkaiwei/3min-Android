@@ -60,7 +60,7 @@ public class CategoryAdapter extends BaseAdapter {
 				Log.d("postion", ""+position);
 				UrlImageViewHelper.setUrlDrawable(img, data.get(position).getImage().getUrl());
 			} else {
-				img.setImageResource(R.drawable.ic_browse);
+				img.setImageResource(R.drawable.ic_everything);
 			}
 
 			TextView tvName = (TextView) convertView.findViewById(R.id.inflater_cate_tv_name);

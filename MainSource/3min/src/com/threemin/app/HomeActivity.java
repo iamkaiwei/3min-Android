@@ -9,6 +9,7 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -20,6 +21,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -51,6 +53,10 @@ import com.threemin.webservice.UploaderImageUlti;
 import com.threemins.R;
 
 public class HomeActivity extends FragmentActivity {
+	
+	//action bar widgets
+	RelativeLayout mRLActionbarLeft, mRLActionbarCenter, mRLActionbarRight;
+	ImageView mImgActionbarLeftClose, mImgActionbarRightClose;
 	
 	//view pager
 	public static final int NUM_PAGES = 3;
@@ -92,6 +98,48 @@ public class HomeActivity extends FragmentActivity {
 		mViewPagerAdapter = new PagerAdapter(getSupportFragmentManager());
 		mViewPagerMainContent.setAdapter(mViewPagerAdapter);
 		mViewPagerMainContent.setCurrentItem(1);
+		mViewPagerMainContent.setOnPageChangeListener(new OnPageChangeListener() {
+			
+			@Override
+			public void onPageSelected(int position) {
+				// TODO Auto-generated method stub
+				switch (position) {
+				case PAGE_LEFT:
+					mRLActionbarLeft.setVisibility(View.VISIBLE);
+					mRLActionbarCenter.setVisibility(View.GONE);
+					mRLActionbarRight.setVisibility(View.GONE);
+					break;
+					
+				case PAGE_CENTER:
+					mRLActionbarLeft.setVisibility(View.GONE);
+					mRLActionbarCenter.setVisibility(View.VISIBLE);
+					mRLActionbarRight.setVisibility(View.GONE);
+					break;
+					
+				case PAGE_RIGHT:
+					mRLActionbarLeft.setVisibility(View.GONE);
+					mRLActionbarCenter.setVisibility(View.GONE);
+					mRLActionbarRight.setVisibility(View.VISIBLE);
+					break;
+
+				default:
+					break;
+				}
+				
+			}
+			
+			@Override
+			public void onPageScrolled(int arg0, float arg1, int arg2) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onPageScrollStateChanged(int arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		
 	}
 
@@ -102,12 +150,40 @@ public class HomeActivity extends FragmentActivity {
 
 
 	private void initActionBar() {
-		getActionBar().setDisplayHomeAsUpEnabled(false);
-		getActionBar().setHomeButtonEnabled(true);
+		ActionBar bar = getActionBar();
+		bar.setDisplayHomeAsUpEnabled(false);
+		bar.setHomeButtonEnabled(false);
+		bar.setCustomView(R.layout.layout_custom_action_bar);
+		bar.setDisplayShowCustomEnabled(true);
+		bar.setDisplayShowHomeEnabled(false);
+		bar.setDisplayShowTitleEnabled(false);
+		
+		mRLActionbarLeft = (RelativeLayout) findViewById(R.id.rl_actionbar_left);
+		mRLActionbarCenter = (RelativeLayout) findViewById(R.id.rl_actionbar_center);
+		mRLActionbarRight = (RelativeLayout) findViewById(R.id.rl_actionbar_right);
+		
+		mImgActionbarLeftClose = (ImageView) findViewById(R.id.home_activity_action_bar_left_close);
+		mImgActionbarRightClose = (ImageView) findViewById(R.id.home_activity_action_bar_right_close);
+		
+		mImgActionbarLeftClose.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				mViewPagerMainContent.setCurrentItem(PAGE_CENTER);
+			}
+		});
+		
+		mImgActionbarRightClose.setOnClickListener(new OnClickListener() {
 
-		// set padding between home icon and the title
-		ImageView view = (ImageView) findViewById(android.R.id.home);
-		view.setPadding(0, 0, 20, 0);
+			@Override
+			public void onClick(View v) {
+				mViewPagerMainContent.setCurrentItem(PAGE_CENTER);
+			}
+		});
+
+//		// set padding between home icon and the title
+//		ImageView view = (ImageView) findViewById(android.R.id.home);
+//		view.setPadding(0, 0, 20, 0);
 	}
 
 	@Override
@@ -124,24 +200,24 @@ public class HomeActivity extends FragmentActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.menu_switch_view, menu);
-		MenuItem itemSearch = menu.findItem(R.id.action_search);
-		
-		SearchView searchView = (SearchView) itemSearch.getActionView();
-		
-		int searchButtonID = getResources().getIdentifier("android:id/search_button", null, null);
-		ImageView searchButtonImage = (ImageView) searchView.findViewById(searchButtonID);
-		searchButtonImage.setImageResource(R.drawable.ic_search);
-		
-		int closeButtonID = getResources().getIdentifier("android:id/search_close_btn", null, null);
-		ImageView closeButtonImage = (ImageView) searchView.findViewById(closeButtonID);
-		closeButtonImage.setImageResource(R.drawable.ic_search_close);
-		
-		int searchEditTextID = getResources().getIdentifier("android:id/search_src_text", null, null); 
-		EditText searchEditText = (EditText) searchView.findViewById(searchEditTextID);
-		searchEditText.setTextColor(Color.WHITE);
-		searchEditText.setHint("");
+//		MenuInflater inflater = getMenuInflater();
+//		inflater.inflate(R.menu.menu_switch_view, menu);
+//		MenuItem itemSearch = menu.findItem(R.id.action_search);
+//		
+//		SearchView searchView = (SearchView) itemSearch.getActionView();
+//		
+//		int searchButtonID = getResources().getIdentifier("android:id/search_button", null, null);
+//		ImageView searchButtonImage = (ImageView) searchView.findViewById(searchButtonID);
+//		searchButtonImage.setImageResource(R.drawable.ic_search);
+//		
+//		int closeButtonID = getResources().getIdentifier("android:id/search_close_btn", null, null);
+//		ImageView closeButtonImage = (ImageView) searchView.findViewById(closeButtonID);
+//		closeButtonImage.setImageResource(R.drawable.ic_close);
+//		
+//		int searchEditTextID = getResources().getIdentifier("android:id/search_src_text", null, null); 
+//		EditText searchEditText = (EditText) searchView.findViewById(searchEditTextID);
+//		searchEditText.setTextColor(Color.WHITE);
+//		searchEditText.setHint("");
 		
 		return super.onCreateOptionsMenu(menu);
 	}
