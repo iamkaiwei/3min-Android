@@ -62,7 +62,6 @@ public class HomeActivity extends FragmentActivity {
 	
 
 	Context mContext;
-	BaseProductFragment currentFragment;
 	private static final int REQUEST_UPLOAD = 3;
 
 	//right drawer
@@ -155,71 +154,7 @@ public class HomeActivity extends FragmentActivity {
 	}
 
 
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == REQUEST_UPLOAD) {
-			if (resultCode == RESULT_OK) {
-				ProductModel productModel = new Gson().fromJson(
-						data.getStringExtra(CommonConstant.INTENT_PRODUCT_DATA), ProductModel.class);
-				new UploadProduct(this).execute(productModel);
-			}
-		}
-		super.onActivityResult(requestCode, resultCode, data);
-	}
-
-	private class UploadProduct extends AsyncTask<ProductModel, Void, ProductModel> {
-		CategoryModel categoryModel;
-
-		public UploadProduct(HomeActivity activity) {
-		}
-
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-			currentFragment.getRefreshLayout().setRefreshing(true);
-		}
-
-		@Override
-		protected void onPostExecute(ProductModel result) {
-			super.onPostExecute(result);
-			if (mContext != null && currentFragment != null) {
-				currentFragment.getRefreshLayout().setRefreshing(false);
-				if (result != null) {
-					homeFragment.addNewProducts(result, categoryModel);
-				} else {
-					Toast.makeText(mContext, R.string.error_upload, Toast.LENGTH_SHORT).show();
-				}
-			}
-		}
-
-		@Override
-		protected ProductModel doInBackground(ProductModel... params) {
-			ProductModel model = params[0];
-			String tokken = PreferenceHelper.getInstance(mContext).getTokken();
-			categoryModel = model.getCategory();
-			HttpResponse reponese = new UploaderImageUlti().uploadUserPhoto(WebserviceConstant.CREATE_PRODUCT, model,
-					tokken);
-			if (reponese != null) {
-				HttpEntity r_entity = reponese.getEntity();
-				String responseString;
-				try {
-					responseString = EntityUtils.toString(r_entity);
-					Log.d("UPLOAD", responseString);
-					JSONObject resultObject = new JSONObject(responseString);
-
-					ProductModel list = new Gson().fromJson(resultObject.optJSONObject("product").toString(),
-							ProductModel.class);
-					return list;
-				} catch (ParseException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				} catch (JSONException e) {
-				}
-			}
-			return null;
-		}
-	}
+	
 
 
 	public OnClickListener doLogout() {

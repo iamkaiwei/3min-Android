@@ -10,13 +10,11 @@
     <string name="font_lightItalic">OpenSans-LightItalic.ttf</string>
     <string name="font_regular">OpenSans-Regular.ttf</string>
     <string name="font_semibolditalic">OpenSans-SemiboldItalic.ttf</string>
-    
     <string name="login_3mins">Snap a photo to start \nselling in 3 mins !</string>
     <string name="login_bestdeal">Find the best deals in town</string>
     <string name="login_bestdeal_sub">\nGet the best value shopping in town from \nreviewed sellers all from your phone. </string>
     <string name="login_chatapp">Buy with private chat in app </string>
     <string name="login_chatapp_sub">\nBuy securely with an in app chat \nthat protects your identity.</string>
-    
     <string name="home_list">List</string>
     <string name="home_thumbnail">Thumbnails</string>
     <string name="browse">Browse</string>
@@ -24,7 +22,6 @@
     <string name="navigation_offer">Offer I made</string>
     <string name="navigation_like">Stuff I liked</string>
     <string name="navigation_share_friends">Share with your friends</string>
-    
     <string name="app_name">3 phút</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
@@ -32,10 +29,10 @@
     <string name="activity_login_btn_login_gg"></string>
     <string name="please_wait">Please wait</string>
     <string name="location">Location</string>
-    
+
     <!-- action bar -->
     <string name="action_bar_search_title">Search</string>
-    
+
     <!-- activity_imageview.xml -->
     <string name="activity_imageview_category">Category</string>
     <string name="activity_imageview_item">Item</string>
@@ -52,9 +49,10 @@
     <string name="activity_imageview_et_description_hint">Enter product description</string>
     <string name="activity_imageview_action_submit_title">Submit</string>
     <string name="activity_imageview_action_cancel_title">Cancel</string>
-    
     <string name="error_empty_image">Please enter at least one image</string>
     <string name="error_miss_field">Please enter all require field</string>
     <string name="error_upload">Fail to upload product</string>
     <string name="google_map_API">AIzaSyA-qXZc5zoSAEOfb2EJ_7crPEwXpGAH-Js</string>
+    <string name="title_activity_detail">DetailActivity</string>
+
 </resources>

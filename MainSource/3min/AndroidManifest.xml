@@ -58,7 +58,6 @@
             android:theme="@style/CustomActionBarTheme"
             android:windowSoftInputMode="stateHidden" >
         </activity>
-        
         <activity
             android:name="com.threemin.app.LocationActivity"
             android:label="@string/location"
@@ -72,6 +71,12 @@
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="@string/google_map_API" />
+
+        <activity
+            android:name="com.threemin.app.DetailActivity"
+            android:label="@string/title_activity_detail"
+              android:theme="@style/CustomActionBarTheme">
+        </activity>
     </application>
 
     <uses-feature
