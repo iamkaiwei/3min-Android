@@ -6,8 +6,7 @@
     android:background="@drawable/inflater_body_product_grid_bg_with_shadow"
     android:orientation="vertical" >
 
-    <ImageView
-        android:layout_marginTop="10dp"
+    <com.threemin.view.RoundedImageView
         android:id="@+id/inflater_body_product_grid_image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

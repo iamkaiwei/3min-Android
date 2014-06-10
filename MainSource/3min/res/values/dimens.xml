@@ -6,6 +6,7 @@
     
     <dimen name="common_spacing">5dp</dimen>
     <dimen name="common_radius">5dp</dimen>
+    <dimen name="common_radius_pixel">10px</dimen>
     
     <!-- login screen -->
     <dimen name="login_margin_top_image">70dp</dimen>
