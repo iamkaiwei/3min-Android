@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
@@ -17,7 +18,7 @@ import com.threemin.model.CategoryModel;
 import com.threemin.uti.CommonUti;
 import com.threemins.R;
 
-public class CategoryAdapter extends BaseAdapter {
+public class CategoryAdapter extends BaseAdapter implements SpinnerAdapter {
 
 	Context mContext;
 	List<CategoryModel> data;
@@ -52,6 +53,52 @@ public class CategoryAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+		
+		LayoutInflater inflater = LayoutInflater.from(mContext);
+		convertView = inflater.inflate(R.layout.inflater_category_spinner, parent, false);
+		TextView tvName = (TextView) convertView.findViewById(R.id.inflater_category_spinner_tv);
+//		ImageView img = (ImageView) convertView.findViewById(R.id.inflater_cate_image);
+//		if (position > 0) {
+//			Log.d("postion", ""+position);
+//			UrlImageViewHelper.setUrlDrawable(img, data.get(position).getImage().getUrl());
+//		} else {
+//			img.setImageResource(R.drawable.ic_everything);
+//		}
+//
+//		TextView tvName = (TextView) convertView.findViewById(R.id.inflater_cate_tv_name);
+		tvName.setText(data.get(position).getName());
+		return convertView;
+		
+		
+//		if (position < data.size()) {
+//			LayoutInflater inflater = LayoutInflater.from(mContext);
+//			convertView = inflater.inflate(R.layout.inflater_category, parent, false);
+//			ImageView img = (ImageView) convertView.findViewById(R.id.inflater_cate_image);
+//			if (position > 0) {
+//				Log.d("postion", ""+position);
+//				UrlImageViewHelper.setUrlDrawable(img, data.get(position).getImage().getUrl());
+//			} else {
+//				img.setImageResource(R.drawable.ic_everything);
+//			}
+//
+//			TextView tvName = (TextView) convertView.findViewById(R.id.inflater_cate_tv_name);
+//			tvName.setText(data.get(position).getName());
+//			return convertView;
+//		} else {
+//			LayoutInflater inflater = LayoutInflater.from(mContext);
+//			View v= inflater.inflate(R.layout.inflater_navigation_share, parent, false);
+//			v.findViewById(R.id.share_facebook).setOnClickListener(CommonUti.shareFacebook());
+//			v.findViewById(R.id.share_email).setOnClickListener(CommonUti.shareEmail(mContext));
+//			v.findViewById(R.id.share_message).setOnClickListener(CommonUti.shareMessage(mContext));
+//			if(onLogout!=null){
+//				v.findViewById(R.id.btn_logout).setOnClickListener(onLogout);
+//			}
+//			return v;
+//		}
+	}
+	
+	@Override
+	public View getDropDownView(int position, View convertView, ViewGroup parent) {
 		if (position < data.size()) {
 			LayoutInflater inflater = LayoutInflater.from(mContext);
 			convertView = inflater.inflate(R.layout.inflater_category, parent, false);

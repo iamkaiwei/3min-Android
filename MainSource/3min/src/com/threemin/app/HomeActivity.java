@@ -1,6 +1,7 @@
 package com.threemin.app;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -28,11 +29,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.Session;
@@ -40,6 +44,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
 import com.google.gson.Gson;
 import com.threemin.adapter.AvatarAdapter;
+import com.threemin.adapter.CategoryAdapter;
 import com.threemin.fragment.BaseProductFragment;
 import com.threemin.fragment.HomeFragment;
 import com.threemin.fragment.LeftFragment;
@@ -49,6 +54,7 @@ import com.threemin.model.ProductModel;
 import com.threemin.uti.CommonConstant;
 import com.threemin.uti.PreferenceHelper;
 import com.threemin.uti.WebserviceConstant;
+import com.threemin.webservice.CategoryWebservice;
 import com.threemin.webservice.UploaderImageUlti;
 import com.threemins.R;
 
@@ -57,6 +63,7 @@ public class HomeActivity extends FragmentActivity {
 	//action bar widgets
 	RelativeLayout mRLActionbarLeft, mRLActionbarCenter, mRLActionbarRight;
 	ImageView mImgActionbarLeftClose, mImgActionbarRightClose;
+	Spinner mSpnActionbarCenterTitle;
 	
 	//view pager
 	public static final int NUM_PAGES = 3;
@@ -180,10 +187,29 @@ public class HomeActivity extends FragmentActivity {
 				mViewPagerMainContent.setCurrentItem(PAGE_CENTER);
 			}
 		});
+		
+		mSpnActionbarCenterTitle = (Spinner) findViewById(R.id.home_activity_action_bar_center_title);
+		new InitCategory().execute();
+		
+		mSpnActionbarCenterTitle.setOnItemSelectedListener(new OnItemSelectedListener() {
 
-//		// set padding between home icon and the title
-//		ImageView view = (ImageView) findViewById(android.R.id.home);
-//		view.setPadding(0, 0, 20, 0);
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+				CategoryModel categoryModel;
+				if(position==0){
+					categoryModel=null;
+				} else {
+					categoryModel=(CategoryModel) parent.getItemAtPosition(position);
+				}
+				onSwitchCate(categoryModel);
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 	}
 
 	@Override
@@ -360,6 +386,35 @@ public class HomeActivity extends FragmentActivity {
 			getActionBar().setTitle(R.string.browse);
 		} else {
 			getActionBar().setTitle(categoryModel.getName());
+		}
+	}
+	
+	//create list category to add to spinner
+	private class InitCategory extends AsyncTask<Void, Void, List<CategoryModel>> {
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+		}
+
+		@Override
+		protected List<CategoryModel> doInBackground(Void... arg0) {
+			try {
+				return CategoryWebservice.getInstance().getAllCategory(HomeActivity.this);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+		}
+
+		@Override
+		protected void onPostExecute(List<CategoryModel> result) {
+			if (result != null) {
+				
+				CategoryAdapter adapter = new CategoryAdapter(HomeActivity.this, result);
+//				lvCategory.setAdapter(adapter);
+				mSpnActionbarCenterTitle.setAdapter(adapter);
+			}
+			super.onPostExecute(result);
 		}
 	}
 }
