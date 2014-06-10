@@ -1,16 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingLeft="@dimen/fragment_product_spacing"
-    android:paddingRight="@dimen/fragment_product_spacing"
-    android:id="@+id/swipe" >
+    android:layout_height="match_parent" >
 
-    <com.threemin.view.QuickReturnListView
-        android:id="@+id/lv_product"
+    <RelativeLayout
+        android:id="@+id/fragment_product_listview_layout_no_items"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" 
-        android:divider="@android:color/darker_gray">
-    </com.threemin.view.QuickReturnListView>
+        android:layout_height="match_parent"
+        android:visibility="gone" >
 
-</android.support.v4.widget.SwipeRefreshLayout>
+        <include layout="@layout/fragment_product_no_items" />
+    </RelativeLayout>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="@dimen/fragment_product_spacing"
+        android:paddingRight="@dimen/fragment_product_spacing" >
+
+        <com.threemin.view.QuickReturnListView
+            android:id="@+id/lv_product"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@color/background_grey"
+            android:dividerHeight="@dimen/fragment_product_spacing" >
+        </com.threemin.view.QuickReturnListView>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+</FrameLayout>

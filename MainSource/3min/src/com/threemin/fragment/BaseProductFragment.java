@@ -30,6 +30,8 @@ public abstract class BaseProductFragment extends Fragment {
 	}
 
 	public abstract void updateUI();
+	
+	public abstract void changeIfNoItem() ;
 
 
 	public void setProductModels(List<ProductModel> productModels) {

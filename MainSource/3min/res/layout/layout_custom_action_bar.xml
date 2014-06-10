@@ -1,0 +1,107 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/red_background" >
+
+    <!-- action bar in left page -->
+
+    <RelativeLayout
+        android:id="@+id/rl_actionbar_left"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:visibility="gone" >
+
+        <ImageView
+            android:id="@+id/home_activity_action_bar_left_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/common_spacing"
+            android:background="@drawable/ic_close" />
+        
+        <TextView
+            android:id="@+id/home_activity_action_bar_left_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="LEFT TITLE"
+            android:textSize="@dimen/textsize_large"
+            android:textColor="@android:color/white"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp" />
+    </RelativeLayout>
+
+    <!-- action bar in center page -->
+
+    <RelativeLayout
+        android:id="@+id/rl_actionbar_center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical" >
+
+        <ImageView
+            android:id="@+id/home_activity_action_bar_center_filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/common_spacing"
+            android:background="@drawable/ic_filter" />
+
+        <Spinner
+            android:id="@+id/home_activity_action_bar_center_title"
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:textSize="@dimen/textsize_large"
+            android:textColor="@android:color/white"
+            android:background="@drawable/background_white_stroke_rounded_corners"
+            android:layout_marginTop="@dimen/common_spacing"
+            android:layout_marginBottom="@dimen/common_spacing"
+            android:dropDownWidth="600dp"
+            android:dropDownVerticalOffset="1dp"/>
+
+        <ImageView
+            android:id="@+id/home_activity_action_bar_center_left_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/common_spacing"
+            android:background="@drawable/navigation_icon" />
+    </RelativeLayout>
+
+    <!-- action bar in right page -->
+
+    <RelativeLayout
+        android:id="@+id/rl_actionbar_right"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:visibility="gone" >
+
+        <ImageView
+            android:id="@+id/home_activity_action_bar_right_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/common_spacing"
+            android:background="@drawable/ic_close" />
+        
+        <TextView
+            android:id="@+id/home_activity_action_bar_right_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="RIGHT TITLE"
+            android:textSize="@dimen/textsize_large"
+            android:textColor="@android:color/white"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp" />
+
+    </RelativeLayout>
+
+</FrameLayout>

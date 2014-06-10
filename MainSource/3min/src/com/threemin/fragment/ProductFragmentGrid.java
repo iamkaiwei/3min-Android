@@ -12,6 +12,7 @@ import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.RelativeLayout;
 
 import com.google.gson.Gson;
 import com.threemin.adapter.ProductGridAdapter;
@@ -22,6 +23,10 @@ import com.threemin.view.QuickReturnGridView;
 import com.threemins.R;
 
 public class ProductFragmentGrid extends BaseProductFragment {
+	
+	//no items:
+	private RelativeLayout rlNoItems;
+	private boolean isSwitched;
 	
 	private QuickReturnGridView mGrid;
 	private ProductGridAdapter mAdapter;
@@ -39,16 +44,19 @@ public class ProductFragmentGrid extends BaseProductFragment {
 	public ProductFragmentGrid(View bottomView) {
 		super();
 		this.bottomView=bottomView;
+		this.isSwitched = false;
 	}	
 	
 	public ProductFragmentGrid() {
 		super();
+		this.isSwitched = false;
 	}	
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_product_gridview, null);
 		swipeLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_gridview);
+		rlNoItems = (RelativeLayout) v.findViewById(R.id.fragment_product_gridview_layout_no_items);
 		mGrid = (QuickReturnGridView) v.findViewById(R.id.gv_product);
 		
 		if (mAdapter == null) {
@@ -56,9 +64,11 @@ public class ProductFragmentGrid extends BaseProductFragment {
 		}
 		mGrid.setAdapter(mAdapter);
 		
-
 		initListner();
 		homeFragment.setBottomView();
+		if (isSwitched) {
+			changeIfNoItem();
+		}
 		return v;
 	}
 	
@@ -129,6 +139,21 @@ public class ProductFragmentGrid extends BaseProductFragment {
 			mAdapter = new ProductGridAdapter(productModels);
 		} 
 		mAdapter.updateData(productModels);
+		changeIfNoItem();
+	}
+	
+	@Override
+	public void changeIfNoItem() {
+		if (rlNoItems == null || mGrid == null) {
+			return;
+		}
+		if (mAdapter.getListProducts() == null || mAdapter.getListProducts().size() == 0) {
+			rlNoItems.setVisibility(View.VISIBLE);
+			mGrid.setVisibility(View.GONE);
+		} else {
+			rlNoItems.setVisibility(View.GONE);
+			mGrid.setVisibility(View.VISIBLE);
+		}
 	}
 
 	private void handleQuickReturn() {
@@ -187,5 +212,9 @@ public class ProductFragmentGrid extends BaseProductFragment {
 	@Override
 	public void setBottomView(View bottomView) {
 		this.bottomView=bottomView;
+	}
+	
+	public void setIsSwitched(boolean isSwitched) {
+		this.isSwitched = isSwitched;
 	}
 }

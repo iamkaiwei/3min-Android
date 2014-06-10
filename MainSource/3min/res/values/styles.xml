@@ -38,9 +38,17 @@
     </style>
 
     <!-- activity_imageview.xml -->
-    <style name="activity_imageview_img_style">
+    <!-- <style name="activity_imageview_img_style">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:scaleType">centerCrop</item>
+        <item name="android:background">@drawable/ic_add_photo</item>
+    </style> -->
+    
+    <style name="activity_imageview_img_style">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">0dp</item>
         <item name="android:layout_weight">1</item>
         <item name="android:scaleType">centerCrop</item>
         <item name="android:background">@drawable/ic_add_photo</item>

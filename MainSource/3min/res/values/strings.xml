@@ -17,7 +17,7 @@
     <string name="login_chatapp_sub">\nBuy securely with an in app chat \nthat protects your identity.</string>
     <string name="home_list">List</string>
     <string name="home_thumbnail">Thumbnails</string>
-    <string name="browse">Browse</string>
+    <string name="browse">Everything</string>
     <string name="navigation_mylisting">My Listings</string>
     <string name="navigation_offer">Offer I made</string>
     <string name="navigation_like">Stuff I liked</string>
@@ -54,5 +54,9 @@
     <string name="error_upload">Fail to upload product</string>
     <string name="google_map_API">AIzaSyA-qXZc5zoSAEOfb2EJ_7crPEwXpGAH-Js</string>
     <string name="title_activity_detail">DetailActivity</string>
+
+    <!-- no items -->
+    <string name="no_items_line_1">Tap on the icon below</string>
+    <string name="no_items_line_2">to start listing yours items for sell</string>
 
 </resources>

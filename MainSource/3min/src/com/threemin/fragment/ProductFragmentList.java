@@ -9,12 +9,18 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.RelativeLayout;
 
 import com.threemin.adapter.ProductAdapter;
 import com.threemin.view.QuickReturnListView;
 import com.threemins.R;
 
 public class ProductFragmentList extends BaseProductFragment {
+	
+	//no items
+	RelativeLayout rlNoItems;
+	private boolean isSwitched;
+	
 	QuickReturnListView list;
 	ProductAdapter adapter;
 	int thelasttotalCount;
@@ -31,16 +37,19 @@ public class ProductFragmentList extends BaseProductFragment {
 	public ProductFragmentList(View bottomView) {
 		super();
 		this.bottomView = bottomView;
+		this.isSwitched = false;
 	}
 
 	public ProductFragmentList() {
 		super();
+		this.isSwitched = false;
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_product_listview, null);
 		swipeLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe);
+		rlNoItems = (RelativeLayout) v.findViewById(R.id.fragment_product_listview_layout_no_items);
 		list = (QuickReturnListView) v.findViewById(R.id.lv_product);
 		if (adapter == null) {
 			adapter = new ProductAdapter(productModels);
@@ -48,6 +57,9 @@ public class ProductFragmentList extends BaseProductFragment {
 		list.setAdapter(adapter);
 		homeFragment.setBottomView();
 		initListner();
+		if (isSwitched) {
+			changeIfNoItem();
+		}
 		return v;
 	}
 
@@ -103,6 +115,20 @@ public class ProductFragmentList extends BaseProductFragment {
 			adapter = new ProductAdapter(productModels);
 		}
 		adapter.updateData(productModels);
+		changeIfNoItem();
+	}
+	
+	public  void changeIfNoItem()  {
+		if (rlNoItems == null || list == null) {
+			return;
+		}
+		if (adapter.getListProducts() == null || adapter.getListProducts().size() == 0) {
+			rlNoItems.setVisibility(View.VISIBLE);
+			list.setVisibility(View.GONE);
+		} else {
+			rlNoItems.setVisibility(View.GONE);
+			list.setVisibility(View.VISIBLE);
+		}
 	}
 
 	private void handleQuickReturn() {
@@ -161,5 +187,9 @@ public class ProductFragmentList extends BaseProductFragment {
 	@Override
 	public void setBottomView(View bottomView) {
 		this.bottomView = bottomView;
+	}
+
+	public void setIsSwitched(boolean isSwitched) {
+		this.isSwitched = isSwitched;
 	}
 }

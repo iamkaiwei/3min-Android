@@ -55,6 +55,7 @@ import com.threemin.model.ImageModel;
 import com.threemin.model.ProductModel;
 import com.threemin.uti.CommonConstant;
 import com.threemin.uti.PreferenceHelper;
+import com.threemin.view.SquareImageView;
 import com.threemin.webservice.CategoryWebservice;
 import com.threemins.R;
 
@@ -69,7 +70,7 @@ public class ImageViewActivity extends Activity {
 	
 	private final static int REQUEST_LOCATION = 31;
 
-	ImageView mImg1, mImg2, mImg3, mImg4;
+	SquareImageView mImg1, mImg2, mImg3, mImg4;
 	Context mContext;
 	
 	//variables for spinner
@@ -206,10 +207,11 @@ public class ImageViewActivity extends Activity {
 	}
 
 	public void initWidgets() {
-		mImg1 = (ImageView) findViewById(R.id.activity_imageview_img_1);
-		mImg2 = (ImageView) findViewById(R.id.activity_imageview_img_2);
-		mImg3 = (ImageView) findViewById(R.id.activity_imageview_img_3);
-		mImg4 = (ImageView) findViewById(R.id.activity_imageview_img_4);
+		mImg1 = (SquareImageView) findViewById(R.id.activity_imageview_img_1);
+		mImg2 = (SquareImageView) findViewById(R.id.activity_imageview_img_2);
+		mImg3 = (SquareImageView) findViewById(R.id.activity_imageview_img_3);
+		mImg4 = (SquareImageView) findViewById(R.id.activity_imageview_img_4);
+		
         mBtnSubmit = (Button) findViewById(R.id.activity_imageview_btn_submit);
         mBtnCancel = (Button) findViewById(R.id.activity_imageview_btn_cancel);
         mBtnLoginFacebook = (LoginButton) findViewById(R.id.activity_imageview_btn_login_facebook);

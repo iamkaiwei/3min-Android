@@ -5,6 +5,8 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     
     <dimen name="common_spacing">5dp</dimen>
+    <dimen name="common_radius">5dp</dimen>
+    <dimen name="common_radius_pixel">10px</dimen>
     
     <!-- login screen -->
     <dimen name="login_margin_top_image">70dp</dimen>
@@ -78,5 +80,11 @@
     <dimen name="inflater_right_drawer_listview_item_margin_bot">15dp</dimen>
     <dimen name="inflater_right_drawer_listview_item_text_size">19sp</dimen>
     <dimen name="inflater_right_drawer_listview_item_selected_text_size">24sp</dimen>
+    
+    <!-- no items -->
+    <dimen name="no_item_line_1_margin_top">40dp</dimen>
+    <dimen name="no_item_line_text_size">20sp</dimen>
+    <dimen name="no_item_img_arrows_margin_bot">30dp</dimen>
+    <dimen name="no_item_img_arrows_margin_right">30dp</dimen>
 
 </resources>
