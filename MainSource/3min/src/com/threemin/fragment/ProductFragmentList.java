@@ -1,23 +1,17 @@
 package com.threemin.fragment;
 
-import java.util.ArrayList;
-
-import za.co.immedia.pinnedheaderlistview.PinnedHeaderListView;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 import com.threemin.adapter.ProductAdapter;
-import com.threemin.app.HomeActivity;
 import com.threemin.view.QuickReturnListView;
 import com.threemins.R;
 

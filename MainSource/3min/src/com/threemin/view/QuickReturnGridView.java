@@ -16,16 +16,11 @@
 
 package com.threemin.view;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.etsy.android.grid.StaggeredGridView;
-
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.GridView;
-import android.widget.ListView;
+
+import com.etsy.android.grid.StaggeredGridView;
 
 public class QuickReturnGridView extends StaggeredGridView {
 

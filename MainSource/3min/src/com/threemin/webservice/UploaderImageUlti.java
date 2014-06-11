@@ -12,11 +12,9 @@ import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.CoreProtocolPNames;
-import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.threemin.model.ImageModel;
 import com.threemin.model.ProductModel;

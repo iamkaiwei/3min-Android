@@ -2,13 +2,6 @@ package com.threemin.fragment;
 
 import java.util.List;
 
-import com.threemin.adapter.CategoryAdapter;
-import com.threemin.app.HomeActivity;
-import com.threemin.model.CategoryModel;
-import com.threemin.webservice.CategoryWebservice;
-import com.threemins.R;
-
-import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -19,6 +12,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+
+import com.threemin.adapter.CategoryAdapter;
+import com.threemin.app.HomeActivity;
+import com.threemin.model.CategoryModel;
+import com.threemin.webservice.CategoryWebservice;
+import com.threemins.R;
 
 public class LeftFragment extends Fragment {
 
