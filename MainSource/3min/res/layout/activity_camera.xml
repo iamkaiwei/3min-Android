@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:threemins="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
@@ -53,23 +54,29 @@
                     android:background="@android:color/transparent"
                     android:src="@drawable/camera" />
 
-                <ImageView
+                <com.lanna.droidlib.view.CustomTextView
                     android:id="@+id/img_switch_camera"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="60dp"
-                    android:src="@drawable/rotate_camera" />
+                    android:drawableTop="@drawable/filter" 
+                    android:text="@string/camera_filter"
+                    threemins:customTypeface="@string/font_semibold" 
+                    android:textColor="@color/common_grey"/>
 
-                <ImageView
+                <com.lanna.droidlib.view.CustomTextView
                     android:id="@+id/chooseGallery"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="60dp"
-                    android:src="@drawable/choose_album" />
+                    android:drawableTop="@drawable/choose_album" 
+                    android:text="@string/camera_album"
+                    threemins:customTypeface="@string/font_semibold" 
+                    android:textColor="@color/common_grey"/>
             </RelativeLayout>
         </LinearLayout>
     </LinearLayout>

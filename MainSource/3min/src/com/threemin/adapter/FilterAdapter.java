@@ -65,7 +65,7 @@ public class FilterAdapter extends BaseAdapter {
 			text.setText("Grayscale");
 			break;
 		case 5:
-			image.setImageResource(R.drawable.effect_vintage);
+			image.setImageResource(R.drawable.effect_vignette);
 			text.setText("Vignette");
 			break;
 

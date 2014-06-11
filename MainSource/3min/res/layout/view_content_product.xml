@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:threemins="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/activity_imageview_spacing"
+    android:layout_marginLeft="@dimen/activity_imageview_spacing"
+    android:layout_marginRight="@dimen/activity_imageview_spacing"
+    android:orientation="vertical" >
+
+    <com.lanna.droidlib.view.CustomEditText
+        android:id="@+id/activity_imageview_et_item"
+        style="@style/activity_imageview_edittext_style"
+        android:layout_width="fill_parent"
+        android:background="@android:color/transparent"
+        android:gravity="left"
+        android:hint="@string/activity_imageview_item_hint"
+        android:padding="@dimen/common_spacing"
+        threemins:customTypeface="@string/font_regular" />
+
+    <EditText
+        android:id="@+id/activity_imageview_et_description"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/activity_imageview_et_description_height"
+        android:background="@color/activity_imageview_grey"
+        android:gravity="top|left"
+        android:hint="@string/activity_imageview_et_description_hint"
+        android:inputType="textMultiLine"
+        android:padding="@dimen/common_spacing" />
+
+    <RelativeLayout
+        android:id="@+id/ln_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            style="@style/activity_imageview_textview_style"
+            android:text="@string/activity_imageview_location" />
+
+        <TextView
+            android:id="@+id/activity_imageview_tv_location"
+            style="@style/activity_imageview_edittext_style"
+            android:layout_alignParentRight="true"
+             />
+    </RelativeLayout>
+
+</LinearLayout>

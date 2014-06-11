@@ -15,9 +15,11 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -27,12 +29,16 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -54,10 +60,12 @@ import com.threemin.model.CategoryModel;
 import com.threemin.model.ImageModel;
 import com.threemin.model.ProductModel;
 import com.threemin.uti.CommonConstant;
+import com.threemin.uti.CommonUti;
 import com.threemin.uti.PreferenceHelper;
 import com.threemin.view.SquareImageView;
 import com.threemin.webservice.CategoryWebservice;
 import com.threemins.R;
+import com.threemins.R.id;
 
 public class ImageViewActivity extends Activity {
 
@@ -69,13 +77,11 @@ public class ImageViewActivity extends Activity {
 	public final static int REQUEST_CAMERA_IMG_4 = 14;
 	
 	private final static int REQUEST_LOCATION = 31;
+	private final static int REQUEST_CATEGORY = 32;
 
 	SquareImageView mImg1, mImg2, mImg3, mImg4;
 	Context mContext;
 	
-	//variables for spinner
-	Spinner mSpnCategory;
-	List<CategoryModel> mListCategory;
 	ArrayAdapter<CategoryModel> mAdapter;
 	CategoryModel mSelectedCategory;
 	EditText etName, etPrice, etDescription;
@@ -83,9 +89,10 @@ public class ImageViewActivity extends Activity {
 	TextView locationName;
 	Venue venue;
     Switch mSwShareOnFacebook;
-    Button mBtnSubmit, mBtnCancel;
+    TextView tv_Category,tvName;
+//    Button mBtnSubmit, mBtnCancel;
     LoginButton mBtnLoginFacebook;
-    
+    View viewContentProduct;
     String[] permissions = {"email","user_photos","publish_stream"};
 
 
@@ -178,19 +185,6 @@ public class ImageViewActivity extends Activity {
 	
 	
 
-	OnItemSelectedListener onItemSpinnerSelected = new OnItemSelectedListener() {
-
-		@Override
-		public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long arg3) {
-			mSelectedCategory = mListCategory.get(position);
-		}
-
-		@Override
-		public void onNothingSelected(AdapterView<?> arg0) {
-
-		}
-	};
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -200,7 +194,6 @@ public class ImageViewActivity extends Activity {
 		imageModels=new ArrayList<ImageModel>();
 		initActionBar();
 		initWidgets();
-		initSpiner();
 		setEvents();
 		
 		startActivityForResult(new Intent(ImageViewActivity.this, ActivityCamera.class), REQUEST_CAMERA_ON_CREATE);
@@ -212,8 +205,8 @@ public class ImageViewActivity extends Activity {
 		mImg3 = (SquareImageView) findViewById(R.id.activity_imageview_img_3);
 		mImg4 = (SquareImageView) findViewById(R.id.activity_imageview_img_4);
 		
-        mBtnSubmit = (Button) findViewById(R.id.activity_imageview_btn_submit);
-        mBtnCancel = (Button) findViewById(R.id.activity_imageview_btn_cancel);
+//        mBtnSubmit = (Button) findViewById(R.id.activity_imageview_btn_submit);
+//        mBtnCancel = (Button) findViewById(R.id.activity_imageview_btn_cancel);
         mBtnLoginFacebook = (LoginButton) findViewById(R.id.activity_imageview_btn_login_facebook);
         mBtnLoginFacebook.setPublishPermissions(Arrays.asList("email","user_photos","publish_stream"));
         mSwShareOnFacebook = (Switch) findViewById(R.id.activity_imageview_switch_share_on_facebook);
@@ -222,8 +215,8 @@ public class ImageViewActivity extends Activity {
 		etDescription = (EditText) findViewById(R.id.activity_imageview_et_description);
 		etName = (EditText) findViewById(R.id.activity_imageview_et_item);
 		etPrice = (EditText) findViewById(R.id.activity_imageview_et_price);
-
-		mSpnCategory = (Spinner) findViewById(R.id.activity_imageview_spn_category);
+		tv_Category=(TextView) findViewById(R.id.activity_imageview_category);
+		tv_Category.setText("");
 		
 		locationName=(TextView) findViewById(R.id.activity_imageview_tv_location);
 		
@@ -234,6 +227,8 @@ public class ImageViewActivity extends Activity {
 				startActivityForResult(new Intent(mContext, LocationActivity.class), REQUEST_LOCATION);
 			}
 		});
+		tvName=(TextView) findViewById(id.activity_imageview_tv_item);
+		viewContentProduct=findViewById(R.id.view_product_content);
 	}
 
 	private ProductModel validateInput() {
@@ -314,76 +309,36 @@ public class ImageViewActivity extends Activity {
             }
         });
         
-        mBtnSubmit.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                ProductModel result=validateInput();
-                if(result!=null){
-                    String data=new Gson().toJson(result);
-                    Intent intent=new Intent();
-                    intent.putExtra(CommonConstant.INTENT_PRODUCT_DATA, data);
-                    setResult(RESULT_OK, intent);
-                    if (mSwShareOnFacebook.isChecked()) {
-                        doShareOnFacebook();
-                    }
-                    finish();
-                }
-            }
-
-        });
-        mBtnCancel.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-
-        });
-
-	}
-
-	public void initSpiner() {
-		new InitCategory().execute();
-	}
-
-	private class InitCategory extends AsyncTask<Void, Void, List<CategoryModel>> {
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-		}
-
-		@Override
-		protected List<CategoryModel> doInBackground(Void... arg0) {
-			try {
-				return CategoryWebservice.getInstance().getTaggableCategory(mContext);
-			} catch (Exception e) {
-				e.printStackTrace();
-				return null;
+        findViewById(R.id.view_cate).setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				startActivityForResult(new Intent(mContext,CategoryActivity.class), REQUEST_CATEGORY);
 			}
-		}
-
-		@Override
-		protected void onPostExecute(List<CategoryModel> result) {
-			if (result != null) {
-				Log.i("tructran", "Set adapter");
-				mListCategory = result;
-				mSelectedCategory = mListCategory.get(0);
-				mAdapter = new ArrayAdapter<CategoryModel>(mContext, android.R.layout.simple_spinner_item, mListCategory);
-				mAdapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
-				mSpnCategory.setAdapter(mAdapter);
-				mSpnCategory.setOnItemSelectedListener(onItemSpinnerSelected);
+		});
+        
+        findViewById(id.item_content).setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				if(viewContentProduct.getVisibility()==View.GONE){
+					viewContentProduct.setVisibility(View.VISIBLE);
+					CommonUti.showKeyboard(etName, mContext);
+				} else {
+					viewContentProduct.setVisibility(View.GONE);
+					CommonUti.hideKeyboard(etName, mContext);
+					tvName.setText(etName.getText());
+				}
 			}
-			super.onPostExecute(result);
-		}
+		});
 	}
+
 
 	public void initActionBar() {
-		ActionBar bar = getActionBar();
-		bar.setDisplayShowHomeEnabled(false);
-		bar.setDisplayShowTitleEnabled(false);
-		bar.setCustomView(R.layout.actionbar_activity_imageview_custom_view);
-		bar.setDisplayShowCustomEnabled(true);
+		getActionBar().setIcon(R.drawable.btn_back);
+		getActionBar().setHomeButtonEnabled(true);
+//		bar.setCustomView(R.layout.actionbar_activity_imageview_custom_view);
+//		bar.setDisplayShowCustomEnabled(true);
 	}
 
 	@Override
@@ -420,7 +375,11 @@ public class ImageViewActivity extends Activity {
 				Uri uri = Uri.parse(data.getStringExtra("imageUri"));
 				setImageURI(uri,mImg1);
 			}
-
+			else if(requestCode==REQUEST_CATEGORY){
+				String json=data.getStringExtra(CommonConstant.INTENT_CATEGORY_DATA);
+				mSelectedCategory=new Gson().fromJson(json, CategoryModel.class);
+				tv_Category.setText(mSelectedCategory.getName());
+			}
 		}
 	}
 
@@ -588,6 +547,35 @@ public class ImageViewActivity extends Activity {
         return bitmap;
     }
     
-
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			onBackPressed();
+			return true;
+		case R.id.action_submit:
+          ProductModel result=validateInput();
+          if(result!=null){
+              String data=new Gson().toJson(result);
+              Intent intent=new Intent();
+              intent.putExtra(CommonConstant.INTENT_PRODUCT_DATA, data);
+              setResult(RESULT_OK, intent);
+              if (mSwShareOnFacebook.isChecked()) {
+                  doShareOnFacebook();
+              }
+              finish();
+          }
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.menu_post_product, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
 	
 }

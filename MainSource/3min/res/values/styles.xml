@@ -57,7 +57,6 @@
     <style name="activity_imageview_textview_style">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_alignParentLeft">true</item>
         <item name="android:layout_centerVertical">true</item>
         <item name="android:textSize">@dimen/textsize_medium</item>
         <item name="android:textColor">@color/common_black</item>
@@ -66,7 +65,6 @@
     <style name="activity_imageview_edittext_style">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_alignParentRight">true</item>
         <item name="android:layout_centerVertical">true</item>
         <item name="android:singleLine">true</item>
         <item name="android:maxLength">30</item>
