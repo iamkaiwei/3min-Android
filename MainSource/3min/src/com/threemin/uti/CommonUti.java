@@ -84,7 +84,6 @@ public class CommonUti {
 			}
 		};
 	}
-
 	public static int getWidthInPixel(Activity activity) {
 		Display display = activity.getWindowManager().getDefaultDisplay();
 		DisplayMetrics outMetrics = new DisplayMetrics ();

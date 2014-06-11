@@ -222,42 +222,6 @@ public class HomeActivity extends FragmentActivity {
 		// Pass any configuration change to the drawer toggls
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-//		MenuInflater inflater = getMenuInflater();
-//		inflater.inflate(R.menu.menu_switch_view, menu);
-//		MenuItem itemSearch = menu.findItem(R.id.action_search);
-//		
-//		SearchView searchView = (SearchView) itemSearch.getActionView();
-//		
-//		int searchButtonID = getResources().getIdentifier("android:id/search_button", null, null);
-//		ImageView searchButtonImage = (ImageView) searchView.findViewById(searchButtonID);
-//		searchButtonImage.setImageResource(R.drawable.ic_search);
-//		
-//		int closeButtonID = getResources().getIdentifier("android:id/search_close_btn", null, null);
-//		ImageView closeButtonImage = (ImageView) searchView.findViewById(closeButtonID);
-//		closeButtonImage.setImageResource(R.drawable.ic_close);
-//		
-//		int searchEditTextID = getResources().getIdentifier("android:id/search_src_text", null, null); 
-//		EditText searchEditText = (EditText) searchView.findViewById(searchEditTextID);
-//		searchEditText.setTextColor(Color.WHITE);
-//		searchEditText.setHint("");
-		
-		return super.onCreateOptionsMenu(menu);
-	}
-
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Pass the event to ActionBarDrawerToggle, if it returns
-		// true, then it has handled the app icon touch event
-		return super.onOptionsItemSelected(item);
-	}
-
-
-	
-
-
 	public OnClickListener doLogout() {
 		return new OnClickListener() {
 
@@ -347,6 +311,7 @@ public class HomeActivity extends FragmentActivity {
 				 categoryAdapter = new CategoryAdapter(HomeActivity.this, result,true);
 //				lvCategory.setAdapter(adapter);
 				mSpnActionbarCenterTitle.setAdapter(categoryAdapter);
+
 			}
 			super.onPostExecute(result);
 		}
