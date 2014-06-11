@@ -70,7 +70,8 @@
             android:layout_marginTop="@dimen/common_spacing"
             android:layout_marginBottom="@dimen/common_spacing"
             android:dropDownWidth="600dp"
-            android:dropDownVerticalOffset="1dp"/>
+            android:dropDownVerticalOffset="-3dp"
+            />
 
         <ImageView
             android:id="@+id/home_activity_action_bar_center_left_img"
