@@ -72,7 +72,7 @@ public class HomeActivity extends FragmentActivity {
 	public static final int PAGE_RIGHT = 2;
 	ViewPager mViewPagerMainContent;
 	PagerAdapter mViewPagerAdapter;
-	
+	CategoryAdapter categoryAdapter;
 
 	Context mContext;
 	private static final int REQUEST_UPLOAD = 3;
@@ -149,10 +149,6 @@ public class HomeActivity extends FragmentActivity {
 		
 	}
 
-	private void initAvatar() {
-		Spinner mSpinner = (Spinner) findViewById(R.id.avatar);
-		mSpinner.setAdapter(new AvatarAdapter(mContext, PreferenceHelper.getInstance(mContext).getCurrentUser()));
-	}
 
 
 	private void initActionBar() {
@@ -194,13 +190,16 @@ public class HomeActivity extends FragmentActivity {
 
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-				CategoryModel categoryModel;
-				if(position==0){
-					categoryModel=null;
+//				if(position==0){
+//					categoryModel=null;
+//				} else {
+				CategoryModel categoryModel=(CategoryModel) parent.getItemAtPosition(position);
+				if(categoryModel.getName().equals(getString(R.string.browse))){
+					onSwitchCate(null);
 				} else {
-					categoryModel=(CategoryModel) parent.getItemAtPosition(position);
-				}
 				onSwitchCate(categoryModel);
+				}
+				categoryAdapter.swapView(position);
 			}
 
 			@Override
@@ -309,8 +308,10 @@ public class HomeActivity extends FragmentActivity {
 		protected void onPostExecute(List<CategoryModel> result) {
 			if (result != null) {
 				
-				CategoryAdapter adapter = new CategoryAdapter(HomeActivity.this, result);
-				mSpnActionbarCenterTitle.setAdapter(adapter);
+				 categoryAdapter = new CategoryAdapter(HomeActivity.this, result,true);
+//				lvCategory.setAdapter(adapter);
+				mSpnActionbarCenterTitle.setAdapter(categoryAdapter);
+
 			}
 			super.onPostExecute(result);
 		}

@@ -73,7 +73,7 @@ public class LeftFragment extends Fragment {
 		protected void onPostExecute(List<CategoryModel> result) {
 			if (result != null) {
 				
-				CategoryAdapter adapter = new CategoryAdapter(getActivity(), result);
+				CategoryAdapter adapter = new CategoryAdapter(getActivity(), result,false);
 				lvCategory.setAdapter(adapter);
 			}
 			super.onPostExecute(result);

@@ -55,6 +55,9 @@
     <string name="google_map_API">AIzaSyA-qXZc5zoSAEOfb2EJ_7crPEwXpGAH-Js</string>
     <string name="title_activity_detail">DetailActivity</string>
 
+    <string name="camera_filter">Filters</string>
+    <string name="camera_album">Album</string>
+    
     <!-- no items -->
     <string name="no_items_line_1">Tap on the icon below</string>
     <string name="no_items_line_2">to start listing yours items for sell</string>

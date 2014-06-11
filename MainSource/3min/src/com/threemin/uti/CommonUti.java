@@ -15,6 +15,8 @@ import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 
 public class CommonUti {
 
@@ -82,11 +84,21 @@ public class CommonUti {
 			}
 		};
 	}
-	
 	public static int getWidthInPixel(Activity activity) {
 		Display display = activity.getWindowManager().getDefaultDisplay();
 		DisplayMetrics outMetrics = new DisplayMetrics ();
 		display.getMetrics(outMetrics);
 		return outMetrics.widthPixels;
+	}
+	
+	public static void showKeyboard(EditText editText, Context context){
+		InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
+	}
+	
+	public static void hideKeyboard(View stuff, Context context){
+		InputMethodManager imm = (InputMethodManager)context.getSystemService(
+		      Context.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(stuff.getWindowToken(), 0);
 	}
 }

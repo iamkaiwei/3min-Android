@@ -59,7 +59,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/activity_imageview_linear_height"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/activity_imageview_spacing"
             android:layout_marginLeft="@dimen/activity_imageview_spacing"
             android:layout_marginRight="@dimen/activity_imageview_spacing"
@@ -68,31 +68,6 @@
 
             <!-- group of icons -->
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/activity_imageview_spacing"
-                android:orientation="vertical"
-                android:weightSum="4" >
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:src="@drawable/ic_category" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:src="@drawable/ic_item" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:src="@drawable/ic_price" />
-            </LinearLayout>
 
             <!-- group of textviews and editexts -->
 
@@ -100,83 +75,146 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="@dimen/activity_imageview_spacing"
-                android:orientation="vertical"
-                android:weightSum="4" >
+                android:orientation="vertical" >
 
                 <!-- category -->
 
                 <RelativeLayout
+                    android:id="@+id/view_cate"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/common_spacing"
+                    android:layout_marginTop="@dimen/common_spacing"
                     android:layout_weight="1" >
+
+                    <ImageView
+                        android:id="@+id/ic_cate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/common_spacing"
+                        android:src="@drawable/ic_category" />
+
+                    <ImageView
+                        android:id="@+id/imageView1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/common_spacing"
+                        android:src="@drawable/arrow_right" />
+
+                    <com.lanna.droidlib.view.CustomTextView
+                        android:id="@+id/activity_imageview_category"
+                        style="@style/activity_imageview_edittext_style"
+                        android:layout_marginRight="@dimen/common_spacing"
+                        android:layout_toLeftOf="@+id/imageView1"
+                        android:hint="@string/activity_imageview_category_hint"
+                        threemins:customTypeface="@string/font_regular" />
 
                     <com.lanna.droidlib.view.CustomTextView
                         android:id="@+id/activity_imageview_tv_category"
                         style="@style/activity_imageview_textview_style"
+                        android:layout_alignTop="@+id/imageView1"
+                        android:layout_toRightOf="@+id/ic_cate"
                         android:text="@string/activity_imageview_category"
                         threemins:customTypeface="@string/font_semibold" />
-
-                    <Spinner
-                        android:id="@+id/activity_imageview_spn_category"
-                        style="@style/activity_imageview_edittext_style"
-                        android:hint="@string/activity_imageview_category_hint" />
                 </RelativeLayout>
 
                 <!-- item -->
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1" >
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/common_spacing"
+                    android:layout_marginTop="@dimen/common_spacing"
+                    android:layout_weight="1" 
+                    android:id="@+id/item_content">
+
+                    <ImageView
+                        android:id="@+id/ic_item"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/common_spacing"
+                        android:src="@drawable/ic_item" />
+
+                    <com.lanna.droidlib.view.CustomTextView
+                        android:id="@+id/activity_imageview_tv_item"
+                        style="@style/activity_imageview_edittext_style"
+                        android:layout_marginRight="@dimen/common_spacing"
+                        android:layout_toLeftOf="@+id/imageView1"
+                        android:hint="@string/activity_imageview_item_hint"
+                        threemins:customTypeface="@string/font_regular" />
+
+                    <ImageView
+                        android:id="@+id/imageView1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/common_spacing"
+                        android:src="@drawable/arrow_right" />
 
                     <com.lanna.droidlib.view.CustomTextView
                         style="@style/activity_imageview_textview_style"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/ic_item"
                         android:text="@string/activity_imageview_item"
                         threemins:customTypeface="@string/font_semibold" />
-
-                    <com.lanna.droidlib.view.CustomEditText
-                        android:id="@+id/activity_imageview_et_item"
-                        style="@style/activity_imageview_edittext_style"
-                        android:hint="@string/activity_imageview_item_hint"
-                        threemins:customTypeface="@string/font_regular" />
                 </RelativeLayout>
 
+                <include
+                    android:id="@+id/view_product_content"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    layout="@layout/view_content_product"
+                    android:visibility="gone" />
                 <!-- price -->
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/common_spacing"
+                    android:layout_marginTop="@dimen/common_spacing"
                     android:layout_weight="1" >
 
-                    <com.lanna.droidlib.view.CustomTextView
-                        style="@style/activity_imageview_textview_style"
-                        android:text="@string/activity_imageview_price"
-                        threemins:customTypeface="@string/font_semibold" />
+                    <ImageView
+                        android:id="@+id/ic_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/common_spacing"
+                        android:src="@drawable/ic_price" />
 
                     <com.lanna.droidlib.view.CustomEditText
                         android:id="@+id/activity_imageview_et_price"
                         style="@style/activity_imageview_edittext_style"
+                        android:layout_marginRight="@dimen/common_spacing"
+                        android:layout_toLeftOf="@+id/imageView1"
                         android:hint="@string/activity_imageview_price_hint"
-                        threemins:customTypeface="@string/font_regular"
-                        android:inputType="number" />
+                        android:inputType="number"
+                        threemins:customTypeface="@string/font_regular" />
+
+                    <ImageView
+                        android:id="@+id/imageView1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/common_spacing"
+                        android:src="@drawable/arrow_right" />
+
+                    <com.lanna.droidlib.view.CustomTextView
+                        style="@style/activity_imageview_textview_style"
+                        android:layout_centerInParent="true"
+                        android:layout_toRightOf="@+id/ic_price"
+                        android:text="@string/activity_imageview_price"
+                        threemins:customTypeface="@string/font_semibold" />
                 </RelativeLayout>
 
                 <!-- Location -->
 
-                <RelativeLayout
-                    android:id="@+id/ln_location"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1" >
-
-                    <TextView
-                        style="@style/activity_imageview_textview_style"
-                        android:text="@string/activity_imageview_location" />
-
-                    <TextView
-                        android:id="@+id/activity_imageview_tv_location"
-                        style="@style/activity_imageview_edittext_style" />
-                </RelativeLayout>
             </LinearLayout>
         </LinearLayout>
 
@@ -188,9 +226,9 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/activity_imageview_spacing"
             android:layout_marginRight="@dimen/activity_imageview_spacing"
-            android:padding="@dimen/activity_imageview_spacing_a_half"
             android:background="@android:color/white"
-            android:orientation="horizontal" >
+            android:orientation="horizontal"
+            android:padding="@dimen/activity_imageview_spacing_a_half" >
 
             <ImageView
                 android:id="@+id/activity_imageview_img_share_on_facebook"
@@ -222,19 +260,6 @@
         </LinearLayout>
 
         <!-- description -->
-
-        <EditText
-            android:id="@+id/activity_imageview_et_description"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/activity_imageview_et_description_height"
-            android:layout_marginBottom="@dimen/activity_imageview_spacing"
-            android:layout_marginLeft="@dimen/activity_imageview_spacing"
-            android:layout_marginRight="@dimen/activity_imageview_spacing"
-            android:background="@color/activity_imageview_grey"
-            android:gravity="top|left"
-            android:hint="@string/activity_imageview_et_description_hint"
-            android:inputType="textMultiLine"
-            android:padding="@dimen/common_spacing" />
 
         <com.facebook.widget.LoginButton
             android:id="@+id/activity_imageview_btn_login_facebook"
