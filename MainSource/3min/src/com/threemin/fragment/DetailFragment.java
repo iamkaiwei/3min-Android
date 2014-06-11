@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,8 @@ public class DetailFragment extends Fragment {
 	View rootView;
 	ProductModel productModel;
 	ViewPager pager;
+	SlidePagerAdapter adapter;
+	ImageView img0, img1, img2, img3;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		productModel = new Gson().fromJson(
@@ -70,7 +73,38 @@ public class DetailFragment extends Fragment {
 			tv_time.setText(DateUtils.getRelativeTimeSpanString(productModel.getUpdateTime() * 1000, System.currentTimeMillis(),
 					0L, DateUtils.FORMAT_ABBREV_RELATIVE));
 			pager=(ViewPager) convertView.findViewById(R.id.pager);
-			pager.setAdapter(new SlidePagerAdapter(getFragmentManager()));
+			adapter = new SlidePagerAdapter(getFragmentManager());
+			pager.setAdapter(adapter);
+			int numPages = adapter.getCount();
+			
+			img0 = (ImageView) convertView.findViewById(R.id.fragment_detail_img_page_ctr_0);
+			img1 = (ImageView) convertView.findViewById(R.id.fragment_detail_img_page_ctr_1);
+			img2 = (ImageView) convertView.findViewById(R.id.fragment_detail_img_page_ctr_2);
+			img3 = (ImageView) convertView.findViewById(R.id.fragment_detail_img_page_ctr_3);
+			
+			initPageControl(numPages);
+			
+			pager.setOnPageChangeListener(new OnPageChangeListener() {
+				
+				@Override
+				public void onPageSelected(int position) {
+					// TODO Auto-generated method stub
+					doPageControl(position);
+				}
+				
+				@Override
+				public void onPageScrolled(int arg0, float arg1, int arg2) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void onPageScrollStateChanged(int arg0) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
+			
 		}
 
 	}
@@ -89,6 +123,83 @@ public class DetailFragment extends Fragment {
 		@Override
 		public int getCount() {
 			return productModel.getImages().size();
+		}
+	}
+	
+	public void initPageControl(int numPages) {
+		
+		img0.setBackgroundResource(R.drawable.page_ctr_on);
+		img1.setBackgroundResource(R.drawable.page_ctr_off);
+		img2.setBackgroundResource(R.drawable.page_ctr_off);
+		img3.setBackgroundResource(R.drawable.page_ctr_off);
+		
+		switch (numPages) {
+		
+		case 1:
+			img0.setVisibility(View.VISIBLE);
+			img1.setVisibility(View.GONE);
+			img2.setVisibility(View.GONE);
+			img3.setVisibility(View.GONE);
+			break;
+			
+		case 2:
+			img0.setVisibility(View.VISIBLE);
+			img1.setVisibility(View.VISIBLE);
+			img2.setVisibility(View.GONE);
+			img3.setVisibility(View.GONE);
+			break;
+			
+		case 3:
+			img0.setVisibility(View.VISIBLE);
+			img1.setVisibility(View.VISIBLE);
+			img2.setVisibility(View.VISIBLE);
+			img3.setVisibility(View.GONE);
+			break;
+			
+		case 4:
+			img0.setVisibility(View.VISIBLE);
+			img1.setVisibility(View.VISIBLE);
+			img2.setVisibility(View.VISIBLE);
+			img3.setVisibility(View.VISIBLE);
+			break;
+
+		default:
+			break;
+		}
+	}
+	
+	private void doPageControl(int position) {
+		switch (position) {
+		case 0:
+			img0.setBackgroundResource(R.drawable.page_ctr_on);
+			img1.setBackgroundResource(R.drawable.page_ctr_off);
+			img2.setBackgroundResource(R.drawable.page_ctr_off);
+			img3.setBackgroundResource(R.drawable.page_ctr_off);
+			break;
+			
+		case 1:
+			img0.setBackgroundResource(R.drawable.page_ctr_off);
+			img1.setBackgroundResource(R.drawable.page_ctr_on);
+			img2.setBackgroundResource(R.drawable.page_ctr_off);
+			img3.setBackgroundResource(R.drawable.page_ctr_off);
+			break;
+			
+		case 2:
+			img0.setBackgroundResource(R.drawable.page_ctr_off);
+			img1.setBackgroundResource(R.drawable.page_ctr_off);
+			img2.setBackgroundResource(R.drawable.page_ctr_on);
+			img3.setBackgroundResource(R.drawable.page_ctr_off);
+			break;
+			
+		case 3:
+			img0.setBackgroundResource(R.drawable.page_ctr_off);
+			img1.setBackgroundResource(R.drawable.page_ctr_off);
+			img2.setBackgroundResource(R.drawable.page_ctr_off);
+			img3.setBackgroundResource(R.drawable.page_ctr_on);
+			break;
+
+		default:
+			break;
 		}
 	}
 }
