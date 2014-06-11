@@ -70,7 +70,7 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/common_spacing"
-            android:background="@drawable/navigation_icon" />
+            android:background="@drawable/ic_profile" />
     </RelativeLayout>
 
     <!-- action bar in right page -->
