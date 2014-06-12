@@ -147,12 +147,6 @@ public class HomeFragment extends Fragment {
 	public void setBottomView() {
 		productFragmentGrid.setBottomView(bottomView);
 	}
-	
-<<<<<<< HEAD
-
-	
-=======
->>>>>>> 3f8d614d7edf8652568f6ce61374e084620198e8
 	private OnClickListener onSellClick() {
 		return new OnClickListener() {
 
