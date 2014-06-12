@@ -15,7 +15,8 @@ public abstract class BaseProductFragment extends Fragment {
 	
 	public SwipeRefreshLayout swipeLayout;
 	protected HomeFragment homeFragment;
-	
+	public int thelasttotalCount;
+
 	public BaseProductFragment() {
 		productModels = new ArrayList<ProductModel>();
 	}

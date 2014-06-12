@@ -51,6 +51,38 @@ public class WebServiceUtil {
 		Log.d(tag, result);
 		return result;
 	}
+	
+	protected static String deleteJson(String link, JSONObject jo) throws Exception {
+		Log.d(tag, link);
+		Log.d(tag, jo.toString());
+		URL url = new URL(link);
+		URLConnection conn = url.openConnection();
+		conn.setConnectTimeout(TIMEOUT_CONNECTION);
+		conn.setReadTimeout(TIMEOUT_CONNECTION);
+		((HttpURLConnection) conn).setRequestMethod("DELETE");
+		conn.setDoOutput(true);
+		conn.setDoInput(true);
+		conn.setRequestProperty("Content-Type", "application/json");
+		conn.setRequestProperty("Content-Length", ""
+				+ jo.toString().length());
+
+		OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+		wr.write(jo.toString());
+		wr.flush();
+
+		// Get the response
+		BufferedReader in = new BufferedReader(new InputStreamReader(
+				conn.getInputStream(), Charset.forName("UTF-8")));
+		String inputLine;
+
+		String result = "";
+		while ((inputLine = in.readLine()) != null) {
+			result += inputLine;
+		}
+		in.close();
+		Log.d(tag, result);
+		return result;
+	}
 
 	protected static String getData(String url) throws Exception {
 		Log.d(tag, url);

@@ -114,6 +114,7 @@ public class HomeFragment extends Fragment {
 			currentStep = params[0];
 			if (currentStep == STEP_INIT || currentStep == STEP_REFRESH) {
 				page = 1;
+				baseProductFragment.thelasttotalCount = 0;
 			}
 			if (currentStep == STEP_ADDMORE) {
 				page++;
@@ -159,49 +160,10 @@ public class HomeFragment extends Fragment {
 	}
 
 	public void setBottomView() {
-//		productFragmentList.setBottomView(bottomView);
 		productFragmentGrid.setBottomView(bottomView);
 	}
 	
-//	private OnClickListener onTabSwitch() {
-//		return new OnClickListener() {
-//
-//			@Override
-//			public void onClick(View v) {
-//				if (v == tabList && mModeView == MODE_LIST_VIEW) {
-//					return;
-//				}
-//				if (v == tabThumb && mModeView == MODE_GRID_VIEW) {
-//					return;
-//				}
-//				switchMode();
-//			}
-//		};
-//	}
 
-//	private void switchMode() {
-//		if (mModeView == MODE_LIST_VIEW) {
-//			mModeView = MODE_GRID_VIEW;
-//			vHighlightThumb.setVisibility(View.VISIBLE);
-//			vHighlightList.setVisibility(View.INVISIBLE);
-//			tabThumb.setSelected(true);
-//			tabList.setSelected(false);
-//			productFragmentGrid.setProductModels(productModels);
-//			productFragmentGrid.setIsSwitched(true);
-//			getFragmentManager().beginTransaction().replace(R.id.content_fragment, productFragmentGrid).commit();
-//			currentFragment = productFragmentGrid;
-//		} else {
-//			mModeView = MODE_LIST_VIEW;
-//			vHighlightThumb.setVisibility(View.INVISIBLE);
-//			vHighlightList.setVisibility(View.VISIBLE);
-//			tabList.setSelected(true);
-//			tabThumb.setSelected(false);
-//			productFragmentList.setProductModels(productModels);
-//			productFragmentList.setIsSwitched(true);
-//			getFragmentManager().beginTransaction().replace(R.id.content_fragment, productFragmentList).commit();
-//			currentFragment = productFragmentList;
-//		}
-//	}
 	
 	private OnClickListener onSellClick() {
 		return new OnClickListener() {

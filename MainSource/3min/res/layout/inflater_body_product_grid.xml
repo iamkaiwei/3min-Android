@@ -82,7 +82,8 @@
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/inflater_body_product_grid_group_like"
                 android:layout_marginLeft="@dimen/common_spacing"
-                android:orientation="horizontal" >
+                android:orientation="horizontal"
+                android:visibility="invisible" >
 
                 <ImageView
                     android:id="@+id/inflater_body_product_grid_img_comment"
