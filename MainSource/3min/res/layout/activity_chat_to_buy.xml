@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:threemins="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <!-- group product info -->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/common_spacing" >
+
+        <com.threemin.view.SquareImageView
+            android:id="@+id/activity_chat_img_product"
+            android:layout_width="@dimen/activity_chat_img_product_size"
+            android:layout_height="0dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/amatorka" />
+
+        <TextView
+            android:id="@+id/activity_chat_tv_product_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@id/activity_chat_img_product"
+            android:layout_marginLeft="@dimen/common_spacing_double"
+            android:text="Áo thun"
+            android:textColor="@color/common_black"
+            android:textSize="@dimen/textsize_medium"
+            android:textStyle="bold" />
+        
+        <com.lanna.droidlib.view.CustomTextView
+            android:id="@+id/activity_chat_tv_product_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/activity_chat_img_product"
+            android:layout_alignLeft="@id/activity_chat_tv_product_name"
+            android:layout_marginTop="@dimen/common_spacing"
+            android:singleLine="true"
+            android:text="200.000 Vnd"
+            android:textColor="@color/common_orange"
+            android:textSize="@dimen/textsize_medium"
+            threemins:customTypeface="@string/font_semibold" />
+        
+        <com.lanna.droidlib.view.CustomTextView
+            android:id="@+id/activity_chat_tv_product_price_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/activity_chat_tv_product_price"
+            android:layout_alignLeft="@id/activity_chat_tv_product_name"
+            android:text="@string/activity_chat_price_label"
+            android:textColor="@color/common_black"
+            android:textSize="@dimen/textsize_small"
+            threemins:customTypeface="@string/font_regular" />
+    </RelativeLayout>
+    
+    <!-- line divider -->
+    <View 
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/common_spacing_double"
+        android:background="@color/background_grey"/>
+    
+    <!-- price offerd, location, chat content, chat input -->
+    
+    <RelativeLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        
+        <!-- chat input -->
+        <RelativeLayout 
+            android:id="@+id/activity_chat_rl_chat_input"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/common_spacing_double"
+            android:background="@color/background_grey"
+            android:layout_alignParentBottom="true">
+            
+            <com.lanna.droidlib.view.CustomEditText
+                android:id="@+id/activity_chat_et_chat_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:background="@drawable/background_chat_input"
+                android:hint="@string/activity_chat_chat_input_hint"
+                android:paddingBottom="@dimen/common_spacing"
+                android:paddingLeft="@dimen/activity_chat_tv_radius"
+                android:paddingRight="@dimen/activity_chat_tv_radius"
+                android:paddingTop="@dimen/common_spacing"
+                android:textColor="@color/common_black"
+                android:textColorHint="@color/activity_chat_text_color_grey"
+                android:textSize="@dimen/textsize_medium"
+                threemins:customTypeface="@string/font_regular" />
+            
+        </RelativeLayout>
+        
+        <!-- others -->
+        <LinearLayout 
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_above="@id/activity_chat_rl_chat_input">
+            
+            <!-- price offerd -->
+            <RelativeLayout 
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/common_spacing"
+                android:paddingRight="@dimen/common_spacing"
+                android:paddingTop="@dimen/common_spacing_double"
+                android:paddingBottom="@dimen/common_spacing_double">
+
+                <com.lanna.droidlib.view.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="@string/activity_chat_price_offered_label"
+                    android:textColor="@color/common_black"
+                    android:textSize="@dimen/textsize_medium"
+                    threemins:customTypeface="@string/font_regular" />
+                
+                <TextView
+                    android:id="@+id/activity_chat_tv_offered_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:singleLine="true"
+                    android:text="150.000 Vnd"
+                    android:textColor="@color/activity_chat_text_color_grey"
+                    android:textSize="@dimen/textsize_medium"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+            
+            <!-- divider -->
+            <View 
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@color/background_grey"/>
+            
+            <!-- location -->
+            <LinearLayout 
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingRight="@dimen/common_spacing"
+                android:paddingTop="@dimen/common_spacing_double"
+                android:paddingBottom="@dimen/common_spacing_double">
+                
+                <ImageView 
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_location"
+                    android:layout_gravity="center_vertical"/>
+                
+                <com.lanna.droidlib.view.CustomTextView
+                    android:id="@+id/activity_chat_tv_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/common_spacing_double"
+                    android:singleLine="true"
+                    android:text="Shop halo, 20 Nguyen Van Cu"
+                    android:textColor="@color/common_black"
+                    android:textSize="@dimen/textsize_medium"
+                    threemins:customTypeface="@string/font_regular" />
+                
+            </LinearLayout>
+            
+            <!-- divider -->
+            <View 
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@color/background_grey"/>
+            
+            <!-- selling -->
+            <ImageView 
+                android:id="@+id/activity_chat_selling"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:src="@drawable/bt_selling"
+               android:layout_gravity="center_horizontal"
+               android:layout_marginTop="@dimen/common_spacing"
+               android:layout_marginBottom="@dimen/common_spacing"/>
+            
+            <!-- divider -->
+            <View 
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@color/background_grey"/>
+            
+            <!-- chat content -->
+            <LinearLayout 
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+                
+                <com.lanna.droidlib.view.CustomTextView
+                    android:id="@+id/activity_chat_tv_chat_content_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/common_spacing_double"
+                    android:layout_marginBottom="@dimen/common_spacing_double"
+                    android:layout_gravity="center_horizontal"
+                    android:singleLine="true"
+                    android:text="Chat privately with Kieu_nhu"
+                    android:textColor="@color/activity_chat_text_color_grey"
+                    android:textSize="@dimen/textsize_small"
+                    threemins:customTypeface="@string/font_regular" />
+                
+                <!-- list chat -->
+                <ListView 
+                    android:id="@+id/activity_chat_lv_chat_content"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent">
+                    
+                </ListView>
+                
+            </LinearLayout>
+            
+        </LinearLayout>
+        
+    </RelativeLayout>
+
+</LinearLayout>

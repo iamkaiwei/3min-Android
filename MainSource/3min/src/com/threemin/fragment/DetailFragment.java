@@ -2,10 +2,15 @@ package com.threemin.fragment;
 
 import com.google.gson.Gson;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
+import com.threemin.app.ChatToBuyActivity;
+import com.threemin.app.DetailActivity;
 import com.threemin.model.ProductModel;
+import com.threemin.model.UserModel;
 import com.threemin.uti.CommonConstant;
+import com.threemin.uti.PreferenceHelper;
 import com.threemins.R;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -14,7 +19,9 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,6 +31,7 @@ public class DetailFragment extends Fragment {
 	ViewPager pager;
 	SlidePagerAdapter adapter;
 	ImageView img0, img1, img2, img3;
+	Button btnChatToBuy, btnViewOffers;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		productModel = new Gson().fromJson(
@@ -104,6 +112,30 @@ public class DetailFragment extends Fragment {
 					
 				}
 			});
+			
+			btnChatToBuy = (Button) convertView.findViewById(R.id.fragment_detail_btn_chat_to_buy);
+			btnChatToBuy.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					String data=new Gson().toJson(productModel);
+					Intent intent=new Intent(getActivity(), ChatToBuyActivity.class);
+					intent.putExtra(CommonConstant.INTENT_PRODUCT_DATA, data);
+					getActivity().startActivity(intent);
+				}
+			});
+			
+			btnViewOffers = (Button) convertView.findViewById(R.id.fragment_detail_btn_view_offers);
+			
+			UserModel currentUser = PreferenceHelper.getInstance(getActivity()).getCurrentUser();
+			if (currentUser.getId() == productModel.getOwner().getId()) {
+				btnViewOffers.setVisibility(View.VISIBLE);
+				btnChatToBuy.setVisibility(View.GONE);
+			} else {
+				btnChatToBuy.setVisibility(View.VISIBLE);
+				btnViewOffers.setVisibility(View.GONE);
+			}
 			
 		}
 

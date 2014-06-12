@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.threemin.model.CategoryModel;
-import com.threemin.uti.CommonUti;
 import com.threemins.R;
 
 public class CategoryAdapter extends BaseAdapter implements SpinnerAdapter {
@@ -60,63 +59,22 @@ public class CategoryAdapter extends BaseAdapter implements SpinnerAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		if (isSpinner) {
-			LayoutInflater inflater = LayoutInflater.from(mContext);
-			convertView = inflater.inflate(R.layout.inflater_category_spinner, parent, false);
+			if (convertView == null) {
+				LayoutInflater inflater = LayoutInflater.from(mContext);
+				convertView = inflater.inflate(R.layout.inflater_category_spinner, parent, false);
+				
+			}
 			TextView tvName = (TextView) convertView.findViewById(R.id.inflater_category_spinner_tv);
 			tvName.setText(data.get(position).getName());
-			// data.remove(position);
-			// data.add(position, selectedCate);
 			return convertView;
 		} else {
 			return getDropDownView(position, convertView, parent);
 		}
-
-		// ImageView img = (ImageView)
-		// convertView.findViewById(R.id.inflater_cate_image);
-		// if (position > 0) {
-		// Log.d("postion", ""+position);
-		// UrlImageViewHelper.setUrlDrawable(img,
-		// data.get(position).getImage().getUrl());
-		// } else {
-		// img.setImageResource(R.drawable.ic_everything);
-		// }
-		//
-		// TextView tvName = (TextView)
-		// convertView.findViewById(R.id.inflater_cate_tv_name);
-		// if (position < data.size()) {
-		// LayoutInflater inflater = LayoutInflater.from(mContext);
-		// convertView = inflater.inflate(R.layout.inflater_category, parent,
-		// false);
-		// ImageView img = (ImageView)
-		// convertView.findViewById(R.id.inflater_cate_image);
-		// if (position > 0) {
-		// Log.d("postion", ""+position);
-		// UrlImageViewHelper.setUrlDrawable(img,
-		// data.get(position).getImage().getUrl());
-		// } else {
-		// img.setImageResource(R.drawable.ic_everything);
-		// }
-		//
-		// TextView tvName = (TextView)
-		// convertView.findViewById(R.id.inflater_cate_tv_name);
-		// tvName.setText(data.get(position).getName());
-		// return convertView;
-		// } else {
-		// LayoutInflater inflater = LayoutInflater.from(mContext);
-		// View v= inflater.inflate(R.layout.inflater_navigation_share, parent,
-		// false);
-		// v.findViewById(R.id.share_facebook).setOnClickListener(CommonUti.shareFacebook());
-		// v.findViewById(R.id.share_email).setOnClickListener(CommonUti.shareEmail(mContext));
-		// v.findViewById(R.id.share_message).setOnClickListener(CommonUti.shareMessage(mContext));
-		// if(onLogout!=null){
-		// v.findViewById(R.id.btn_logout).setOnClickListener(onLogout);
-		// }
-		// return v;
-		// }
 	}
 
 	@Override
 	public View getDropDownView(int position, View convertView, ViewGroup parent) {
+			
 		LayoutInflater inflater = LayoutInflater.from(mContext);
 		convertView = inflater.inflate(R.layout.inflater_category, parent, false);
 		ImageView img = (ImageView) convertView.findViewById(R.id.inflater_cate_image);

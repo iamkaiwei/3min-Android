@@ -29,6 +29,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.EditText;
@@ -41,6 +42,7 @@ import android.widget.Toast;
 
 import com.facebook.Session;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.internal.el;
 import com.google.android.gms.plus.Plus;
 import com.google.gson.Gson;
 import com.threemin.adapter.AvatarAdapter;
@@ -200,6 +202,7 @@ public class HomeActivity extends FragmentActivity {
 				onSwitchCate(categoryModel);
 				}
 				categoryAdapter.swapView(position);
+				mSpnActionbarCenterTitle.setSelected(false);
 			}
 
 			@Override
@@ -208,6 +211,7 @@ public class HomeActivity extends FragmentActivity {
 				
 			}
 		});
+		
 	}
 
 	@Override

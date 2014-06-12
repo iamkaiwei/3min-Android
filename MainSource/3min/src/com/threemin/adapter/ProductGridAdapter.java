@@ -73,7 +73,7 @@ public class ProductGridAdapter extends BaseAdapter {
 			ImageView image = (ImageView) convertView.findViewById(R.id.inflater_body_product_grid_image);
 			if (model.getImages().size() > 0) {
 				UrlImageViewHelper.setUrlDrawable(image,
-						model.getImages().get(0).getMedium(),R.drawable.stuff_img);
+						model.getImages().get(0).getOrigin(),R.drawable.stuff_img);
 			}
 
 			TextView tv_name = (TextView) convertView.findViewById(R.id.inflater_body_product_grid_tv_name);

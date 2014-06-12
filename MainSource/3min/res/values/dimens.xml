@@ -87,5 +87,10 @@
     <dimen name="no_item_line_text_size">20sp</dimen>
     <dimen name="no_item_img_arrows_margin_bot">30dp</dimen>
     <dimen name="no_item_img_arrows_margin_right">30dp</dimen>
+    
+    <!-- chat to buy -->
+    <dimen name="activity_chat_tv_radius">15dp</dimen>
+    <dimen name="activity_chat_img_product_size">70dp</dimen>
+    <dimen name="activity_chat_chat_input_height">50dp</dimen>
 
 </resources>

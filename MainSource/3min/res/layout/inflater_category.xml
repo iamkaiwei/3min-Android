@@ -14,6 +14,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
+        android:layout_marginLeft="@dimen/common_spacing_double"
         android:adjustViewBounds="true"
         android:scaleType="fitCenter" />
 

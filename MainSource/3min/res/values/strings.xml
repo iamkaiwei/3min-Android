@@ -61,5 +61,11 @@
     <!-- no items -->
     <string name="no_items_line_1">Tap on the icon below</string>
     <string name="no_items_line_2">to start listing yours items for sell</string>
+    
+    <!-- chat to buy -->
+    <string name="activity_chat_price_label">Listed Price</string>
+    <string name="activity_chat_price_offered_label">Price Offered</string>
+    <string name="activity_chat_chat_input_hint">Type message here to chat</string>
+    <string name="activity_chat_chat_content_label">Chat privately with</string>
 
 </resources>

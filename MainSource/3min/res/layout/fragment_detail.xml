@@ -293,15 +293,31 @@
         </LinearLayout>
     </ScrollView>
     
-    <!-- Button chat to buy -->
-    <Button 
-        android:id="@+id/fragment_detail_btn_chat_to_buy"
+    <!-- group button chat to buy, view offers -->
+    <FrameLayout 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/bt_chat_to_buy"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/common_spacing_double"/>
+        android:layout_marginBottom="@dimen/common_spacing_double">
+        
+        <!-- Button chat to buy -->
+        <Button
+            android:id="@+id/fragment_detail_btn_chat_to_buy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bt_chat_to_buy" />
+        
+        <!-- Button view offers -->
+        <Button
+            android:id="@+id/fragment_detail_btn_view_offers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bt_view_offers" />
+
+    </FrameLayout>
+    
+    
     
     <View
         android:layout_width="fill_parent"
