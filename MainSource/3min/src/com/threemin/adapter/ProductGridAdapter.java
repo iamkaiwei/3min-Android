@@ -19,11 +19,11 @@ import com.threemins.R;
 
 public class ProductGridAdapter extends BaseAdapter {
 	private List<ProductModel> mData;
-	
+
 	public ProductGridAdapter(List<ProductModel> data) {
 		this.mData = data;
 	}
-	
+
 	public List<ProductModel> getListProducts() {
 		return this.mData;
 	}
@@ -51,18 +51,19 @@ public class ProductGridAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		LinearLayout layout = null;
-		
+
 		if (convertView == null) {
-			LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService(
+					Context.LAYOUT_INFLATER_SERVICE);
 			layout = (LinearLayout) inflater.inflate(R.layout.inflater_body_product_grid, null);
 		} else {
 			layout = (LinearLayout) convertView;
 		}
-		
+
 		initBody(position, layout);
 		return layout;
 	}
-	
+
 	private void initBody(int position, View convertView) {
 		if (mData == null || mData.size() == 0) {
 			return;
@@ -72,8 +73,7 @@ public class ProductGridAdapter extends BaseAdapter {
 		if (model != null) {
 			ImageView image = (ImageView) convertView.findViewById(R.id.inflater_body_product_grid_image);
 			if (model.getImages().size() > 0) {
-				UrlImageViewHelper.setUrlDrawable(image,
-						model.getImages().get(0).getOrigin(),R.drawable.stuff_img);
+				UrlImageViewHelper.setUrlDrawable(image, model.getImages().get(0).getOrigin(), R.drawable.stuff_img);
 			}
 
 			TextView tv_name = (TextView) convertView.findViewById(R.id.inflater_body_product_grid_tv_name);
@@ -95,16 +95,18 @@ public class ProductGridAdapter extends BaseAdapter {
 			} else {
 				img_like.setSelected(false);
 			}
-			
-			ImageView imageAvatar = (ImageView) convertView.findViewById(R.id.inflater_header_product_grid_image);
-			UrlImageViewHelper.setUrlDrawable(imageAvatar, model.getOwner().getFacebook_avatar());
-			
-			TextView tv_name_owner = (TextView) convertView.findViewById(R.id.inflater_header_product_grid_tv_name);
-			tv_name_owner.setText(model.getOwner().getFullName());
-			
+			if (model.getOwner() == null) {
+				convertView.findViewById(R.id.owner_view).setVisibility(View.GONE);
+			} else {
+				ImageView imageAvatar = (ImageView) convertView.findViewById(R.id.inflater_header_product_grid_image);
+				UrlImageViewHelper.setUrlDrawable(imageAvatar, model.getOwner().getFacebook_avatar());
+
+				TextView tv_name_owner = (TextView) convertView.findViewById(R.id.inflater_header_product_grid_tv_name);
+				tv_name_owner.setText(model.getOwner().getFullName());
+			}
 			TextView tv_time = (TextView) convertView.findViewById(R.id.inflater_header_product_grid_tv_time);
-			tv_time.setText(DateUtils.getRelativeTimeSpanString(model.getUpdateTime() * 1000, System.currentTimeMillis(),
-					0L, DateUtils.FORMAT_ABBREV_RELATIVE));
+			tv_time.setText(DateUtils.getRelativeTimeSpanString(model.getUpdateTime() * 1000,
+					System.currentTimeMillis(), 0L, DateUtils.FORMAT_ABBREV_RELATIVE));
 
 		}
 

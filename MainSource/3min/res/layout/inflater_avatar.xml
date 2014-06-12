@@ -15,8 +15,9 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
         android:layout_toRightOf="@+id/nav_avatar"
+        android:layout_alignTop="@+id/nav_avatar"
         android:orientation="vertical" >
 
         <com.lanna.droidlib.view.CustomTextView
@@ -29,15 +30,6 @@
             android:textSize="@dimen/textsize_avatar"
             threemins:customTypeface="@string/font_semibold" />
 
-        <com.lanna.droidlib.view.CustomTextView
-            android:id="@+id/navigation_email"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:text="CustomTextView"
-            android:textColor="@color/text_color_grouplayout_disable"
-            android:textSize="@dimen/textsize_medium"
-            threemins:customTypeface="@string/font_regular" />
     </LinearLayout>
 
 </RelativeLayout>

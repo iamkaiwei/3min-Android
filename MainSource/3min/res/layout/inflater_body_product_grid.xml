@@ -122,6 +122,7 @@
         android:background="@color/background_grey"/>
 
     <LinearLayout
+        android:id="@+id/owner_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"

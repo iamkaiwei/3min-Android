@@ -1,9 +1,16 @@
 package com.threemin.webservice;
 
+import java.lang.reflect.Type;
+import java.util.List;
+
 import org.json.JSONObject;
 
 import android.text.TextUtils;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.threemin.model.CategoryModel;
+import com.threemin.model.ProductModel;
 import com.threemin.uti.WebserviceConstant;
 
 public class UserWebService {
@@ -20,7 +27,7 @@ public class UserWebService {
 				result = WebServiceUtil.deleteJson(requestURL, jsonTokken);
 			}
 			if (!TextUtils.isEmpty(result)) {
-				JSONObject jsonResult=new JSONObject(result);
+				JSONObject jsonResult = new JSONObject(result);
 				return jsonResult.getString("status").equals("success");
 			} else {
 				return false;
@@ -28,5 +35,32 @@ public class UserWebService {
 		} catch (Exception e) {
 			return false;
 		}
+	}
+
+	public List<ProductModel> getUserProduct(String accessToken, int page) throws Exception {
+		String requestLink = WebserviceConstant.GET_USER_PRODUCT + "?access_token=" + accessToken;
+		if (page > 0) {
+			requestLink += "&page=" + page;
+		}
+		String result = WebServiceUtil.getData(requestLink);
+		Type listType = new TypeToken<List<ProductModel>>() {
+		}.getType();
+		List<ProductModel> list = new Gson().fromJson(result, listType);
+		return list;
+	}
+
+	public List<ProductModel> getUserLikedProduct(String accessToken, int page) throws Exception {
+		String requestLink = WebserviceConstant.GET_USER_LIKED_PRODUCT + "?access_token=" + accessToken;
+		if (page > 0) {
+			requestLink += "&page=" + page;
+		}
+		String result = WebServiceUtil.getData(requestLink);
+		Type listType = new TypeToken<List<ProductModel>>() {
+		}.getType();
+		List<ProductModel> list = new Gson().fromJson(result, listType);
+		for (ProductModel productModel : list) {
+			productModel.setLiked(true);
+		}
+		return list;
 	}
 }
