@@ -83,6 +83,13 @@
              android:label=""
             android:screenOrientation="portrait"
             android:theme="@style/CustomActionBarTheme" ></activity>
+        <activity
+            android:name="com.threemin.app.ChatToBuyActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomActionBarTheme"
+            android:windowSoftInputMode="stateHidden" >
+        </activity>
+
     </application>
 
     <uses-feature

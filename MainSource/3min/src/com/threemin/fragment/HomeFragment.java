@@ -45,10 +45,7 @@ public class HomeFragment extends Fragment {
 	
 	ProductFragmentGrid productFragmentGrid;
 	BaseProductFragment currentFragment;
-//	ProductFragmentList productFragmentList;
 	int page;
-//	View vHighlightList, vHighlightThumb;
-//	View tabList, tabThumb;
 	View bottomView;
 	public int mModeView;
 	protected CategoryModel currentCate;
@@ -58,21 +55,13 @@ public class HomeFragment extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View v = inflater.inflate(R.layout.fragment_home, null);
-		
-//		vHighlightList = v.findViewById(R.id.highlight_list);
-//		vHighlightThumb = v.findViewById(R.id.highlight_thumbnail);
-//		vHighlightList.setVisibility(View.INVISIBLE);
+		View v = inflater.inflate(R.layout.fragment_home, null);		
 		bottomView = v.findViewById(R.id.bottom);
-//		tabList = v.findViewById(R.id.tab_list);
-//		tabThumb = v.findViewById(R.id.tab_thumb);
 
 		// init: list of products is shown in list view:
 		mModeView = MODE_GRID_VIEW;
-//		productFragmentList = new ProductFragmentList(bottomView);
 		productFragmentGrid = new ProductFragmentGrid(bottomView);
 		productFragmentGrid.setHomeFragment(this);
-//		productFragmentList.setHomeFragment(this);
 		getFragmentManager().beginTransaction().replace(R.id.content_fragment, productFragmentGrid).commit();
 		currentFragment = productFragmentGrid;
 
@@ -82,10 +71,6 @@ public class HomeFragment extends Fragment {
 		v.findViewById(R.id.home_camera).setOnClickListener(onSellClick());
 		new GetProductTaks(currentFragment).execute(STEP_INIT);
 
-//		tabList.setOnClickListener(onTabSwitch());
-//		tabThumb.setOnClickListener(onTabSwitch());
-//		tabThumb.setSelected(true);
-//		tabList.setSelected(false);
 		return v;
 	}
 	
@@ -159,49 +144,8 @@ public class HomeFragment extends Fragment {
 	}
 
 	public void setBottomView() {
-//		productFragmentList.setBottomView(bottomView);
 		productFragmentGrid.setBottomView(bottomView);
 	}
-	
-//	private OnClickListener onTabSwitch() {
-//		return new OnClickListener() {
-//
-//			@Override
-//			public void onClick(View v) {
-//				if (v == tabList && mModeView == MODE_LIST_VIEW) {
-//					return;
-//				}
-//				if (v == tabThumb && mModeView == MODE_GRID_VIEW) {
-//					return;
-//				}
-//				switchMode();
-//			}
-//		};
-//	}
-
-//	private void switchMode() {
-//		if (mModeView == MODE_LIST_VIEW) {
-//			mModeView = MODE_GRID_VIEW;
-//			vHighlightThumb.setVisibility(View.VISIBLE);
-//			vHighlightList.setVisibility(View.INVISIBLE);
-//			tabThumb.setSelected(true);
-//			tabList.setSelected(false);
-//			productFragmentGrid.setProductModels(productModels);
-//			productFragmentGrid.setIsSwitched(true);
-//			getFragmentManager().beginTransaction().replace(R.id.content_fragment, productFragmentGrid).commit();
-//			currentFragment = productFragmentGrid;
-//		} else {
-//			mModeView = MODE_LIST_VIEW;
-//			vHighlightThumb.setVisibility(View.INVISIBLE);
-//			vHighlightList.setVisibility(View.VISIBLE);
-//			tabList.setSelected(true);
-//			tabThumb.setSelected(false);
-//			productFragmentList.setProductModels(productModels);
-//			productFragmentList.setIsSwitched(true);
-//			getFragmentManager().beginTransaction().replace(R.id.content_fragment, productFragmentList).commit();
-//			currentFragment = productFragmentList;
-//		}
-//	}
 	
 	private OnClickListener onSellClick() {
 		return new OnClickListener() {

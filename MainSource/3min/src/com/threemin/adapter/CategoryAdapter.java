@@ -59,8 +59,11 @@ public class CategoryAdapter extends BaseAdapter implements SpinnerAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		if (isSpinner) {
-			LayoutInflater inflater = LayoutInflater.from(mContext);
-			convertView = inflater.inflate(R.layout.inflater_category_spinner, parent, false);
+			if (convertView == null) {
+				LayoutInflater inflater = LayoutInflater.from(mContext);
+				convertView = inflater.inflate(R.layout.inflater_category_spinner, parent, false);
+				
+			}
 			TextView tvName = (TextView) convertView.findViewById(R.id.inflater_category_spinner_tv);
 			tvName.setText(data.get(position).getName());
 			return convertView;
@@ -71,6 +74,7 @@ public class CategoryAdapter extends BaseAdapter implements SpinnerAdapter {
 
 	@Override
 	public View getDropDownView(int position, View convertView, ViewGroup parent) {
+			
 		LayoutInflater inflater = LayoutInflater.from(mContext);
 		convertView = inflater.inflate(R.layout.inflater_category, parent, false);
 		ImageView img = (ImageView) convertView.findViewById(R.id.inflater_cate_image);

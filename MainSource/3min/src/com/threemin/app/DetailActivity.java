@@ -63,8 +63,6 @@ public class DetailActivity extends FragmentActivity {
         int screenWidth = CommonUti.getWidthInPixel(this);
         txtTitle.setWidth(screenWidth);
 		
-		setTitle("hehe");
-		
 	}
 
 }
