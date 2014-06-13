@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android" >
     <item android:state_selected="true" android:drawable="@drawable/ic_search" />
-    <item android:state_selected="false" android:drawable="@drawable/ic_search_1" />
-    <item android:drawable="@android:color/transparent"/>
+    <item android:state_selected="false" android:drawable="@drawable/ic_search_hide" />
+    <item android:drawable="@drawable/ic_search_hide"/>
 
 </selector>

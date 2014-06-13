@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item android:state_selected="true" android:drawable="@drawable/bt_category" />
-    <item android:state_selected="false" android:drawable="@android:color/transparent" />
-    <item android:drawable="@android:color/transparent"/>
+    <item android:state_selected="true" android:drawable="@drawable/bt_arrow_down" />
+    <item android:state_selected="false" android:drawable="@drawable/bt_arrow_down_hide" />
+    <item android:drawable="@drawable/bt_arrow_down"/>
 
 </selector>

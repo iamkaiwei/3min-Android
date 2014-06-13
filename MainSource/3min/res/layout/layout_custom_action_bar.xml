@@ -20,18 +20,18 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/common_spacing_triple"
             android:background="@drawable/ic_close" />
-        
+
         <TextView
             android:id="@+id/home_activity_action_bar_left_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="LEFT TITLE"
-            android:textSize="@dimen/textsize_large"
-            android:textColor="@android:color/white"
             android:paddingLeft="20dp"
-            android:paddingRight="20dp" />
-        
+            android:paddingRight="20dp"
+            android:text="LEFT TITLE"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/textsize_large" />
+
         <ImageView
             android:id="@+id/home_activity_action_bar_left_setting"
             android:layout_width="wrap_content"
@@ -59,30 +59,53 @@
             android:layout_marginLeft="@dimen/common_spacing_triple"
             android:background="@drawable/selector_home_actoin_bar_search" />
 
-        <Spinner
-            android:id="@+id/home_activity_action_bar_center_title"
-            android:layout_width="150dp"
-            android:layout_height="match_parent"
+        <RelativeLayout
+            android:id="@+id/home_activity_action_bar_center_title_rl"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:textSize="@dimen/textsize_large"
-            android:textColor="@android:color/white"
-            android:background="@drawable/selector_home_action_bar_spn"
-            android:layout_marginTop="@dimen/common_spacing"
             android:layout_marginBottom="@dimen/common_spacing"
-            android:dropDownWidth="600dp"
-            android:dropDownVerticalOffset="-3dp"
-            android:dividerHeight="0dp"/>
-        
+            android:layout_marginTop="@dimen/common_spacing" >
+
+            <Spinner
+                android:id="@+id/home_activity_action_bar_center_title"
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:background="@android:color/transparent"
+                android:dividerHeight="0dp"
+                android:dropDownVerticalOffset="-3dp"
+                android:dropDownWidth="600dp"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/textsize_large" />
+
+            <Button
+                android:id="@+id/home_activity_action_bar_center_btn_title"
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:background="@android:color/transparent"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/home_activity_action_bar_center_title_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/common_spacing"
+                android:background="@drawable/selector_home_action_bar_spn" />
+        </RelativeLayout>
+
         <Button
             android:id="@+id/home_activity_action_bar_center_btn_title"
             android:layout_width="150dp"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
-            android:background="@android:color/transparent"
-            android:layout_marginTop="@dimen/common_spacing"
             android:layout_marginBottom="@dimen/common_spacing"
-            android:visibility="gone"/>
-
+            android:layout_marginTop="@dimen/common_spacing"
+            android:background="@android:color/transparent"
+            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/home_activity_action_bar_center_img_profile"
@@ -91,7 +114,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/common_spacing_triple"
-            android:background="@drawable/ic_profile" />
+            android:background="@drawable/selector_home_action_bar_profile" />
     </RelativeLayout>
 
     <!-- action bar in right page -->
@@ -111,18 +134,17 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/common_spacing"
             android:background="@drawable/ic_close" />
-        
+
         <TextView
             android:id="@+id/home_activity_action_bar_right_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="RIGHT TITLE"
-            android:textSize="@dimen/textsize_large"
-            android:textColor="@android:color/white"
             android:paddingLeft="20dp"
-            android:paddingRight="20dp" />
-
+            android:paddingRight="20dp"
+            android:text="RIGHT TITLE"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/textsize_large" />
     </RelativeLayout>
 
 </FrameLayout>

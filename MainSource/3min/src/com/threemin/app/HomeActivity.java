@@ -66,9 +66,14 @@ public class HomeActivity extends FragmentActivity {
 	//action bar widgets
 	RelativeLayout mRLActionbarLeft, mRLActionbarCenter, mRLActionbarRight;
 	ImageView mImgActionbarLeftClose, mImgActionbarRightClose;
-	Spinner mSpnActionbarCenterTitle;
 	ImageView mImgActionbarSearch, mImgActionbarProfile;
+	
+	RelativeLayout mRLActionbarCenterTitle;
+	Spinner mSpnActionbarCenterTitle;
 	Button mBtnActionbarCenterTitle;
+	ImageView mImgActionbarCenterTitleArrow;
+	
+	
 	
 	//view pager
 	public static final int NUM_PAGES = 3;
@@ -88,6 +93,7 @@ public class HomeActivity extends FragmentActivity {
 	GoogleApiClient mGoogleApiClient;
 	HomeFragment homeFragment;
 	LeftFragment leftFragment;
+	RightFragment rightFragment;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -105,11 +111,17 @@ public class HomeActivity extends FragmentActivity {
 		//view pager implementation
 		homeFragment=new HomeFragment();
 		leftFragment=new LeftFragment();
+		rightFragment = new RightFragment();
 		mViewPagerMainContent = (ViewPager) findViewById(R.id.activity_home_view_pager);
 		mViewPagerAdapter = new PagerAdapter(getSupportFragmentManager());
 		mViewPagerMainContent.setAdapter(mViewPagerAdapter);
 		mViewPagerMainContent.setCurrentItem(PAGE_CENTER);
+		
 		mSpnActionbarCenterTitle.setSelected(true);
+		mImgActionbarCenterTitleArrow.setSelected(true);
+		mImgActionbarProfile.setSelected(false);
+		mImgActionbarSearch.setSelected(false);
+		
 		mViewPagerMainContent.setOnPageChangeListener(new OnPageChangeListener() {
 			
 			@Override
@@ -120,8 +132,10 @@ public class HomeActivity extends FragmentActivity {
 					mImgActionbarSearch.setSelected(true);
 					
 					mSpnActionbarCenterTitle.setSelected(false);
+					mImgActionbarCenterTitleArrow.setSelected(false);
 					categoryAdapter.notifyDataSetChanged();
 					mSpnActionbarCenterTitle.setEnabled(false);
+					mRLActionbarCenterTitle.setEnabled(false);
 					mBtnActionbarCenterTitle.setVisibility(View.VISIBLE);
 					
 					mImgActionbarProfile.setSelected(false);
@@ -131,8 +145,10 @@ public class HomeActivity extends FragmentActivity {
 					mImgActionbarSearch.setSelected(false);
 					
 					mSpnActionbarCenterTitle.setSelected(true);
+					mImgActionbarCenterTitleArrow.setSelected(true);
 					categoryAdapter.notifyDataSetChanged();
 					mSpnActionbarCenterTitle.setEnabled(true);
+					mRLActionbarCenterTitle.setEnabled(true);
 					mBtnActionbarCenterTitle.setVisibility(View.GONE);
 					
 					mImgActionbarProfile.setSelected(false);
@@ -142,8 +158,10 @@ public class HomeActivity extends FragmentActivity {
 					mImgActionbarSearch.setSelected(false);
 					
 					mSpnActionbarCenterTitle.setSelected(false);
+					mImgActionbarCenterTitleArrow.setSelected(false);
 					categoryAdapter.notifyDataSetChanged();
 					mSpnActionbarCenterTitle.setEnabled(false);
+					mRLActionbarCenterTitle.setEnabled(false);
 					mBtnActionbarCenterTitle.setVisibility(View.VISIBLE);
 					
 					mImgActionbarProfile.setSelected(true);
@@ -235,7 +253,7 @@ public class HomeActivity extends FragmentActivity {
 				onSwitchCate(categoryModel);
 				}
 				categoryAdapter.swapView(position);
-				mSpnActionbarCenterTitle.setSelected(false);
+//				mSpnActionbarCenterTitle.setSelected(false);
 			}
 
 			@Override
@@ -254,7 +272,20 @@ public class HomeActivity extends FragmentActivity {
 				mSpnActionbarCenterTitle.setSelected(true);
 				categoryAdapter.notifyDataSetChanged();
 				mSpnActionbarCenterTitle.setEnabled(true);
+				mRLActionbarCenterTitle.setEnabled(true);
 				mBtnActionbarCenterTitle.setVisibility(View.GONE);
+			}
+		});
+		
+		mImgActionbarCenterTitleArrow = (ImageView) findViewById(R.id.home_activity_action_bar_center_title_arrow);
+		
+		mRLActionbarCenterTitle = (RelativeLayout) findViewById(R.id.home_activity_action_bar_center_title_rl);
+		mRLActionbarCenterTitle.setBackgroundResource(R.drawable.bt_category);
+		mRLActionbarCenterTitle.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				mSpnActionbarCenterTitle.performClick();
 			}
 		});
 		
@@ -317,7 +348,7 @@ public class HomeActivity extends FragmentActivity {
 			if (position == 0) {
 				return leftFragment;
 			}
-			return new RightFragment();
+			return rightFragment;
 		}
 
 		@Override
