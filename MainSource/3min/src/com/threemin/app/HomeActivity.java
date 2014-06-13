@@ -1,14 +1,6 @@
 package com.threemin.app;
 
-import java.io.IOException;
 import java.util.List;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.ParseException;
-import org.apache.http.util.EntityUtils;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import android.app.ActionBar;
 import android.content.Context;
@@ -24,41 +16,24 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnFocusChangeListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.SearchView;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.Session;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.internal.el;
 import com.google.android.gms.plus.Plus;
-import com.google.gson.Gson;
-import com.threemin.adapter.AvatarAdapter;
 import com.threemin.adapter.CategoryAdapter;
-import com.threemin.fragment.BaseProductFragment;
 import com.threemin.fragment.HomeFragment;
 import com.threemin.fragment.LeftFragment;
 import com.threemin.fragment.RightFragment;
 import com.threemin.model.CategoryModel;
-import com.threemin.model.ProductModel;
-import com.threemin.uti.CommonConstant;
-import com.threemin.uti.PreferenceHelper;
-import com.threemin.uti.WebserviceConstant;
+import com.threemin.view.CustomSpinner;
 import com.threemin.webservice.CategoryWebservice;
-import com.threemin.webservice.UploaderImageUlti;
 import com.threemins.R;
 
 public class HomeActivity extends FragmentActivity {
@@ -69,7 +44,7 @@ public class HomeActivity extends FragmentActivity {
 	ImageView mImgActionbarSearch, mImgActionbarProfile;
 	
 	RelativeLayout mRLActionbarCenterTitle;
-	Spinner mSpnActionbarCenterTitle;
+	CustomSpinner mSpnActionbarCenterTitle;
 	Button mBtnActionbarCenterTitle;
 	ImageView mImgActionbarCenterTitleArrow;
 	
@@ -126,7 +101,6 @@ public class HomeActivity extends FragmentActivity {
 			
 			@Override
 			public void onPageSelected(int position) {
-				// TODO Auto-generated method stub
 				switch (position) {
 				case PAGE_LEFT:
 					mImgActionbarSearch.setSelected(true);
@@ -240,7 +214,7 @@ public class HomeActivity extends FragmentActivity {
 			}
 		});
 		
-		mSpnActionbarCenterTitle = (Spinner) findViewById(R.id.home_activity_action_bar_center_title);
+		mSpnActionbarCenterTitle = (CustomSpinner) findViewById(R.id.home_activity_action_bar_center_title);
 		new InitCategory().execute();
 		mSpnActionbarCenterTitle.setOnItemSelectedListener(new OnItemSelectedListener() {
 
@@ -258,7 +232,6 @@ public class HomeActivity extends FragmentActivity {
 
 			@Override
 			public void onNothingSelected(AdapterView<?> parent) {
-				// TODO Auto-generated method stub
 				
 			}
 		});
@@ -280,7 +253,7 @@ public class HomeActivity extends FragmentActivity {
 		mImgActionbarCenterTitleArrow = (ImageView) findViewById(R.id.home_activity_action_bar_center_title_arrow);
 		
 		mRLActionbarCenterTitle = (RelativeLayout) findViewById(R.id.home_activity_action_bar_center_title_rl);
-		mRLActionbarCenterTitle.setBackgroundResource(R.drawable.bt_category);
+		disableSpinnerBackground();
 		mRLActionbarCenterTitle.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -390,11 +363,41 @@ public class HomeActivity extends FragmentActivity {
 			if (result != null) {
 				
 				 categoryAdapter = new CategoryAdapter(HomeActivity.this, result,true, mSpnActionbarCenterTitle);
-//				lvCategory.setAdapter(adapter);
 				mSpnActionbarCenterTitle.setAdapter(categoryAdapter);
 				mSpnActionbarCenterTitle.setSelected(true);
+				mImgActionbarCenterTitleArrow.setVisibility(View.VISIBLE);
 			}
 			super.onPostExecute(result);
 		}
+	}
+	
+	@Override
+	public void onWindowFocusChanged(boolean hasFocus) {
+		super.onWindowFocusChanged(hasFocus);
+		if (hasFocus && mSpnActionbarCenterTitle.isDropdownShowing()) {
+			mSpnActionbarCenterTitle.setDropdownShowing(false);
+			disableSpinnerBackground();
+		} else {
+			if (hasFocus) {
+				Log.i("tructran", "window has no focus");
+			} else {
+				Log.i("tructran", "window has focus");
+			}
+			
+			if (mSpnActionbarCenterTitle.isDropdownShowing()) {
+				Log.i("tructran", "drop down is showing");
+			} else {
+				Log.i("tructran", "drop down is not showing");
+			}
+		}
+	}
+	
+	//functions to set the background of spinner
+	public void enableSpinnerBackground() {
+		mRLActionbarCenterTitle.setBackgroundResource(R.drawable.bt_category);
+	}
+	
+	public void disableSpinnerBackground() {
+		mRLActionbarCenterTitle.setBackgroundColor(Color.TRANSPARENT);
 	}
 }
