@@ -1,5 +1,7 @@
 package com.threemin.app;
 
+import com.hannesdorfmann.swipeback.Position;
+import com.hannesdorfmann.swipeback.SwipeBack;
 import com.threemin.fragment.DetailFragment;
 import com.threemin.uti.CommonUti;
 import com.threemins.R;
@@ -36,11 +38,23 @@ public class DetailActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_detail);
 		
+		// Init the swipe back mechanism
+				SwipeBack.attach(this, Position.LEFT)
+				.setContentView(R.layout.activity_detail)
+				.setSwipeBackView(R.layout.swipeback_default);
+		
 		initActionBar();
 
 		if (savedInstanceState == null) {
 			getSupportFragmentManager().beginTransaction().add(R.id.container, new DetailFragment()).commit();
 		}
+	}
+	
+	@Override
+	public void onBackPressed(){
+		super.onBackPressed();
+		overridePendingTransition(R.anim.swipeback_stack_to_front,
+				R.anim.swipeback_stack_right_out);
 	}
 
 	private void initActionBar() {
