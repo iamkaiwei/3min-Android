@@ -1,21 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:threemins="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
     android:orientation="vertical" >
 
-    <!--
-         <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="Fragment Right"
-        android:textColor="@android:color/white"
-        android:textSize="50sp"
-        android:textStyle="bold" />
-    -->
-
     <include layout="@layout/inflater_avatar" />
 
-</RelativeLayout>
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/common_grey" >
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <com.lanna.droidlib.view.CustomTextView
+            android:id="@+id/btn_liked"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/ic_like"
+            android:gravity="center_horizontal"
+            android:singleLine="true"
+            android:text="@string/profile_liked"
+            android:textColor="@color/common_grey"
+            android:textSize="@dimen/textsize_medium"
+            threemins:customTypeface="@string/font_semibold" />
+
+        <FrameLayout
+            android:layout_width="1.5dp"
+            android:layout_height="fill_parent"
+            android:layout_marginBottom="@dimen/common_spacing"
+            android:layout_marginTop="@dimen/common_spacing"
+            android:background="@color/common_grey" >
+        </FrameLayout>
+
+        <com.lanna.droidlib.view.CustomTextView
+            android:id="@+id/btn_msg"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/ic_message"
+            android:gravity="center_horizontal"
+            android:singleLine="true"
+            android:text="@string/profile_message"
+            android:textColor="@color/common_grey"
+            android:textSize="@dimen/textsize_medium"
+            threemins:customTypeface="@string/font_semibold" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/common_grey" >
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/fragment_product_bg"
+        android:orientation="vertical" >
+
+        <com.lanna.droidlib.view.CustomTextView
+            android:id="@+id/navigation_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="@dimen/common_spacing"
+            android:singleLine="true"
+            android:text="@string/profile_mylist"
+            android:textColor="@color/text_color_grouplayout"
+            android:textSize="@dimen/textsize_large"
+            threemins:customTypeface="@string/font_regular" />
+
+        <FrameLayout
+            android:id="@+id/content_list"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" >
+        </FrameLayout>
+    </LinearLayout>
+
+</LinearLayout>

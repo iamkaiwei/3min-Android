@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.threemin.app.ChatToBuyActivity;
 import com.threemin.app.DetailActivity;
+import com.threemin.app.PostOfferActivity;
 import com.threemin.model.ProductModel;
 import com.threemin.model.UserModel;
 import com.threemin.uti.CommonConstant;
@@ -128,7 +129,8 @@ public class DetailFragment extends Fragment {
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
 					String data = new Gson().toJson(productModel);
-					Intent intent = new Intent(getActivity(), ChatToBuyActivity.class);
+//					Intent intent = new Intent(getActivity(), ChatToBuyActivity.class);
+					Intent intent = new Intent(getActivity(), PostOfferActivity.class);
 					intent.putExtra(CommonConstant.INTENT_PRODUCT_DATA, data);
 					getActivity().startActivity(intent);
 				}

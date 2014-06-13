@@ -11,4 +11,6 @@ public class WebserviceConstant {
 	public static final String GET_PRODUCT = URL_HOST + API + "/products.json";
 	public static final String CREATE_PRODUCT = URL_HOST + API + "/products";
 	public static final String LIKE=URL_HOST+API+"/products/%s/likes";
+	public static final String GET_USER_PRODUCT= URL_HOST + API + "/products/me.json";
+	public static final String GET_USER_LIKED_PRODUCT=URL_HOST + API + "/products/liked.json";
 }

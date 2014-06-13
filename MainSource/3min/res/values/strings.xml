@@ -54,18 +54,25 @@
     <string name="error_upload">Fail to upload product</string>
     <string name="google_map_API">AIzaSyA-qXZc5zoSAEOfb2EJ_7crPEwXpGAH-Js</string>
     <string name="title_activity_detail">DetailActivity</string>
-
     <string name="camera_filter">Filters</string>
     <string name="camera_album">Album</string>
-    
+
     <!-- no items -->
     <string name="no_items_line_1">Tap on the icon below</string>
     <string name="no_items_line_2">to start listing yours items for sell</string>
-    
+
     <!-- chat to buy -->
     <string name="activity_chat_price_label">Listed Price</string>
     <string name="activity_chat_price_offered_label">Price Offered</string>
     <string name="activity_chat_chat_input_hint">Type message here to chat</string>
     <string name="activity_chat_chat_content_label">Chat privately with</string>
+    <string name="profile_liked">Liked</string>
+    <string name="profile_message">Messages</string>
+    <string name="profile_mylist">My Listings</string>
+    <string name="mylike">My likes</string>
+    <string name="postOffer_your_offer">Your offer</string>
+    <string name="postoffer_start_chatting">Make an offer to start chatting</string>
+    <string name="postoffer_tap_to_change">tap to change</string>
+    <string formatted="false" name="postoffer_title">%s is selling it for %s VND</string>
 
 </resources>
