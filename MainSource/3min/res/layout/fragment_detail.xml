@@ -209,8 +209,8 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_comment"
-                            android:layout_marginRight="@dimen/common_spacing" />
+                            android:layout_marginRight="@dimen/common_spacing"
+                            android:src="@drawable/ic_comment" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -236,8 +236,8 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_share"
-                            android:layout_marginRight="@dimen/common_spacing" />
+                            android:layout_marginRight="@dimen/common_spacing"
+                            android:src="@drawable/ic_share" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -247,39 +247,22 @@
                     </LinearLayout>
                 </LinearLayout>
             </RelativeLayout>
-            
-            <View 
+
+            <View
                 android:layout_width="fill_parent"
-                android:layout_height="100dp"/>
+                android:layout_height="100dp" />
         </LinearLayout>
-    </ScrollView>
-    
-    <!-- group button chat to buy, view offers -->
-    <FrameLayout 
+    </ScrollView> <!-- Button chat to buy -->
+
+    <Button
+        android:id="@+id/fragment_detail_btn_chat_to_buy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/common_spacing_double">
-        
-        <!-- Button chat to buy -->
-        <Button
-            android:id="@+id/fragment_detail_btn_chat_to_buy"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bt_chat_to_buy" />
-        
-        <!-- Button view offers -->
-        <Button
-            android:id="@+id/fragment_detail_btn_view_offers"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bt_view_offers" />
+        android:layout_marginBottom="@dimen/common_spacing_double"
+        android:background="@drawable/bt_chat_to_buy" />
 
-    </FrameLayout>
-    
-    
-    
     <View
         android:layout_width="fill_parent"
         android:layout_height="100dp"

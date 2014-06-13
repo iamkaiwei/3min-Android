@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
@@ -25,12 +26,14 @@ public class CategoryAdapter extends BaseAdapter implements SpinnerAdapter {
 	OnClickListener onLogout;
 	int selectedCate;
 	boolean isSpinner;
+	Spinner spn;
 
-	public CategoryAdapter(Context context, List<CategoryModel> data, boolean isSpinner) {
+	public CategoryAdapter(Context context, List<CategoryModel> data, boolean isSpinner, Spinner spn) {
 		mContext = context;
 		selectedCate = 0;
 		this.data = data;
 		this.isSpinner=isSpinner;
+		this.spn = spn;
 	}
 
 	public void setOnLogout(OnClickListener onLogout) {
@@ -65,6 +68,11 @@ public class CategoryAdapter extends BaseAdapter implements SpinnerAdapter {
 				
 			}
 			TextView tvName = (TextView) convertView.findViewById(R.id.inflater_category_spinner_tv);
+			if (spn.isSelected()) {
+				tvName.setTextColor(mContext.getResources().getColor(android.R.color.white));
+			} else {
+				tvName.setTextColor(mContext.getResources().getColor(R.color.home_action_bar_text_color_disable));
+			}
 			tvName.setText(data.get(position).getName());
 			return convertView;
 		} else {

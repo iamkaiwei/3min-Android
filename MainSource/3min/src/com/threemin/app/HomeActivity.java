@@ -1,14 +1,6 @@
 package com.threemin.app;
 
-import java.io.IOException;
 import java.util.List;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.ParseException;
-import org.apache.http.util.EntityUtils;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import android.app.ActionBar;
 import android.content.Context;
@@ -24,40 +16,24 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnFocusChangeListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.EditText;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.SearchView;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.Session;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.internal.el;
 import com.google.android.gms.plus.Plus;
-import com.google.gson.Gson;
-import com.threemin.adapter.AvatarAdapter;
 import com.threemin.adapter.CategoryAdapter;
-import com.threemin.fragment.BaseProductFragment;
 import com.threemin.fragment.HomeFragment;
 import com.threemin.fragment.LeftFragment;
 import com.threemin.fragment.RightFragment;
 import com.threemin.model.CategoryModel;
-import com.threemin.model.ProductModel;
-import com.threemin.uti.CommonConstant;
-import com.threemin.uti.PreferenceHelper;
-import com.threemin.uti.WebserviceConstant;
+import com.threemin.view.CustomSpinner;
 import com.threemin.webservice.CategoryWebservice;
-import com.threemin.webservice.UploaderImageUlti;
 import com.threemins.R;
 
 public class HomeActivity extends FragmentActivity {
@@ -65,7 +41,14 @@ public class HomeActivity extends FragmentActivity {
 	//action bar widgets
 	RelativeLayout mRLActionbarLeft, mRLActionbarCenter, mRLActionbarRight;
 	ImageView mImgActionbarLeftClose, mImgActionbarRightClose;
-	Spinner mSpnActionbarCenterTitle;
+	ImageView mImgActionbarSearch, mImgActionbarProfile;
+	
+	RelativeLayout mRLActionbarCenterTitle;
+	CustomSpinner mSpnActionbarCenterTitle;
+	Button mBtnActionbarCenterTitle;
+	ImageView mImgActionbarCenterTitleArrow;
+	
+	
 	
 	//view pager
 	public static final int NUM_PAGES = 3;
@@ -85,6 +68,7 @@ public class HomeActivity extends FragmentActivity {
 	GoogleApiClient mGoogleApiClient;
 	HomeFragment homeFragment;
 	LeftFragment leftFragment;
+	RightFragment rightFragment;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -102,33 +86,60 @@ public class HomeActivity extends FragmentActivity {
 		//view pager implementation
 		homeFragment=new HomeFragment();
 		leftFragment=new LeftFragment();
+		rightFragment = new RightFragment();
 		mViewPagerMainContent = (ViewPager) findViewById(R.id.activity_home_view_pager);
 		mViewPagerAdapter = new PagerAdapter(getSupportFragmentManager());
 		mViewPagerMainContent.setOffscreenPageLimit(3);
 		mViewPagerMainContent.setAdapter(mViewPagerAdapter);
-		mViewPagerMainContent.setCurrentItem(1);
+		mViewPagerMainContent.setCurrentItem(PAGE_CENTER);
+		
+		mSpnActionbarCenterTitle.setSelected(true);
+		mImgActionbarCenterTitleArrow.setSelected(true);
+		mImgActionbarProfile.setSelected(false);
+		mImgActionbarSearch.setSelected(false);
+		
 		mViewPagerMainContent.setOnPageChangeListener(new OnPageChangeListener() {
 			
 			@Override
 			public void onPageSelected(int position) {
-				// TODO Auto-generated method stub
 				switch (position) {
 				case PAGE_LEFT:
-					mRLActionbarLeft.setVisibility(View.VISIBLE);
-					mRLActionbarCenter.setVisibility(View.GONE);
-					mRLActionbarRight.setVisibility(View.GONE);
+					mImgActionbarSearch.setSelected(true);
+					
+					mSpnActionbarCenterTitle.setSelected(false);
+					mImgActionbarCenterTitleArrow.setSelected(false);
+					categoryAdapter.notifyDataSetChanged();
+					mSpnActionbarCenterTitle.setEnabled(false);
+					mRLActionbarCenterTitle.setEnabled(false);
+					mBtnActionbarCenterTitle.setVisibility(View.VISIBLE);
+					
+					mImgActionbarProfile.setSelected(false);
 					break;
 					
-				case PAGE_CENTER:
-					mRLActionbarLeft.setVisibility(View.GONE);
-					mRLActionbarCenter.setVisibility(View.VISIBLE);
-					mRLActionbarRight.setVisibility(View.GONE);
+				case PAGE_CENTER:				
+					mImgActionbarSearch.setSelected(false);
+					
+					mSpnActionbarCenterTitle.setSelected(true);
+					mImgActionbarCenterTitleArrow.setSelected(true);
+					categoryAdapter.notifyDataSetChanged();
+					mSpnActionbarCenterTitle.setEnabled(true);
+					mRLActionbarCenterTitle.setEnabled(true);
+					mBtnActionbarCenterTitle.setVisibility(View.GONE);
+					
+					mImgActionbarProfile.setSelected(false);
 					break;
 					
 				case PAGE_RIGHT:
-					mRLActionbarLeft.setVisibility(View.GONE);
-					mRLActionbarCenter.setVisibility(View.GONE);
-					mRLActionbarRight.setVisibility(View.VISIBLE);
+					mImgActionbarSearch.setSelected(false);
+					
+					mSpnActionbarCenterTitle.setSelected(false);
+					mImgActionbarCenterTitleArrow.setSelected(false);
+					categoryAdapter.notifyDataSetChanged();
+					mSpnActionbarCenterTitle.setEnabled(false);
+					mRLActionbarCenterTitle.setEnabled(false);
+					mBtnActionbarCenterTitle.setVisibility(View.VISIBLE);
+					
+					mImgActionbarProfile.setSelected(true);
 					break;
 
 				default:
@@ -139,13 +150,11 @@ public class HomeActivity extends FragmentActivity {
 			
 			@Override
 			public void onPageScrolled(int arg0, float arg1, int arg2) {
-				// TODO Auto-generated method stub
 				
 			}
 			
 			@Override
 			public void onPageScrollStateChanged(int arg0) {
-				// TODO Auto-generated method stub
 				
 			}
 		});
@@ -186,16 +195,32 @@ public class HomeActivity extends FragmentActivity {
 			}
 		});
 		
-		mSpnActionbarCenterTitle = (Spinner) findViewById(R.id.home_activity_action_bar_center_title);
-		new InitCategory().execute();
 		
+		//action bar center
+		mImgActionbarProfile = (ImageView) findViewById(R.id.home_activity_action_bar_center_img_profile);
+		mImgActionbarProfile.setOnClickListener( new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				mViewPagerMainContent.setCurrentItem(PAGE_RIGHT);
+			}
+		});
+		
+		mImgActionbarSearch = (ImageView) findViewById(R.id.home_activity_action_bar_center_img_search);
+		mImgActionbarSearch.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				mViewPagerMainContent.setCurrentItem(PAGE_LEFT);
+			}
+		});
+		
+		mSpnActionbarCenterTitle = (CustomSpinner) findViewById(R.id.home_activity_action_bar_center_title);
+		new InitCategory().execute();
 		mSpnActionbarCenterTitle.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//				if(position==0){
-//					categoryModel=null;
-//				} else {
 				CategoryModel categoryModel=(CategoryModel) parent.getItemAtPosition(position);
 				if(categoryModel.getName().equals(getString(R.string.browse))){
 					onSwitchCate(null);
@@ -203,13 +228,38 @@ public class HomeActivity extends FragmentActivity {
 				onSwitchCate(categoryModel);
 				}
 				categoryAdapter.swapView(position);
-				mSpnActionbarCenterTitle.setSelected(false);
+//				mSpnActionbarCenterTitle.setSelected(false);
 			}
 
 			@Override
 			public void onNothingSelected(AdapterView<?> parent) {
-				// TODO Auto-generated method stub
 				
+			}
+		});
+		
+		mBtnActionbarCenterTitle = (Button) findViewById(R.id.home_activity_action_bar_center_btn_title);
+		mBtnActionbarCenterTitle.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				mViewPagerMainContent.setCurrentItem(PAGE_CENTER);
+				mSpnActionbarCenterTitle.setSelected(true);
+				categoryAdapter.notifyDataSetChanged();
+				mSpnActionbarCenterTitle.setEnabled(true);
+				mRLActionbarCenterTitle.setEnabled(true);
+				mBtnActionbarCenterTitle.setVisibility(View.GONE);
+			}
+		});
+		
+		mImgActionbarCenterTitleArrow = (ImageView) findViewById(R.id.home_activity_action_bar_center_title_arrow);
+		
+		mRLActionbarCenterTitle = (RelativeLayout) findViewById(R.id.home_activity_action_bar_center_title_rl);
+		disableSpinnerBackground();
+		mRLActionbarCenterTitle.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				mSpnActionbarCenterTitle.performClick();
 			}
 		});
 		
@@ -272,7 +322,7 @@ public class HomeActivity extends FragmentActivity {
 			if (position == 0) {
 				return leftFragment;
 			}
-			return new RightFragment();
+			return rightFragment;
 		}
 
 		@Override
@@ -313,12 +363,42 @@ public class HomeActivity extends FragmentActivity {
 		protected void onPostExecute(List<CategoryModel> result) {
 			if (result != null) {
 				
-				 categoryAdapter = new CategoryAdapter(HomeActivity.this, result,true);
-//				lvCategory.setAdapter(adapter);
+				 categoryAdapter = new CategoryAdapter(HomeActivity.this, result,true, mSpnActionbarCenterTitle);
 				mSpnActionbarCenterTitle.setAdapter(categoryAdapter);
-
+				mSpnActionbarCenterTitle.setSelected(true);
+				mImgActionbarCenterTitleArrow.setVisibility(View.VISIBLE);
 			}
 			super.onPostExecute(result);
 		}
+	}
+	
+	@Override
+	public void onWindowFocusChanged(boolean hasFocus) {
+		super.onWindowFocusChanged(hasFocus);
+		if (hasFocus && mSpnActionbarCenterTitle.isDropdownShowing()) {
+			mSpnActionbarCenterTitle.setDropdownShowing(false);
+			disableSpinnerBackground();
+		} else {
+			if (hasFocus) {
+				Log.i("tructran", "window has no focus");
+			} else {
+				Log.i("tructran", "window has focus");
+			}
+			
+			if (mSpnActionbarCenterTitle.isDropdownShowing()) {
+				Log.i("tructran", "drop down is showing");
+			} else {
+				Log.i("tructran", "drop down is not showing");
+			}
+		}
+	}
+	
+	//functions to set the background of spinner
+	public void enableSpinnerBackground() {
+		mRLActionbarCenterTitle.setBackgroundResource(R.drawable.bt_category);
+	}
+	
+	public void disableSpinnerBackground() {
+		mRLActionbarCenterTitle.setBackgroundColor(Color.TRANSPARENT);
 	}
 }

@@ -98,29 +98,27 @@ public class DetailFragment extends Fragment {
 			lnImgs = (LinearLayout) convertView.findViewById(R.id.ln_img);
 			initImage();
 			btnChatToBuy = (Button) convertView.findViewById(R.id.fragment_detail_btn_chat_to_buy);
-			btnChatToBuy.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					String data = new Gson().toJson(productModel);
-					// Intent intent = new Intent(getActivity(),
-					// ChatToBuyActivity.class);
-					Intent intent = new Intent(getActivity(), PostOfferActivity.class);
-					intent.putExtra(CommonConstant.INTENT_PRODUCT_DATA, data);
-					getActivity().startActivity(intent);
-				}
-			});
-
-			btnViewOffers = (Button) convertView.findViewById(R.id.fragment_detail_btn_view_offers);
-
 			UserModel currentUser = PreferenceHelper.getInstance(getActivity()).getCurrentUser();
-			if (currentUser.getId() == productModel.getOwner().getId()) {
-				btnViewOffers.setVisibility(View.VISIBLE);
-				btnChatToBuy.setVisibility(View.GONE);
+			
+			//if current user is not the owner of this product
+			if (currentUser.getId() != productModel.getOwner().getId()) {  
+				btnChatToBuy.setBackgroundResource(R.drawable.bt_chat_to_buy);
+				btnChatToBuy.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						String data = new Gson().toJson(productModel);
+						// Intent intent = new Intent(getActivity(),
+						// ChatToBuyActivity.class);
+						Intent intent = new Intent(getActivity(),
+								PostOfferActivity.class);
+						intent.putExtra(CommonConstant.INTENT_PRODUCT_DATA, data);
+						getActivity().startActivity(intent);
+					}
+				});
 			} else {
-				btnChatToBuy.setVisibility(View.VISIBLE);
-				btnViewOffers.setVisibility(View.GONE);
+				btnChatToBuy.setBackgroundResource(R.drawable.bt_view_offers);
 			}
 			btnLike=(LinearLayout) convertView.findViewById(R.id.btn_like);
 			btnLike.setSelected(productModel.isLiked());

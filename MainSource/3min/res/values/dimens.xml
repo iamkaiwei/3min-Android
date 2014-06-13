@@ -6,6 +6,7 @@
     
     <dimen name="common_spacing">5dp</dimen>
     <dimen name="common_spacing_double">10dp</dimen>
+    <dimen name="common_spacing_triple">15dp</dimen>
     <dimen name="common_radius">5dp</dimen>
     <dimen name="common_radius_pixel">10px</dimen>
     

@@ -1,7 +1,7 @@
 Libs/facebook/bin/
 *.apk
 MainSource/3min/bin/
-Libs/facebook/gen/com/facebook/android/R.java
+Libs/facebook/gen/
 MainSource/3min/gen/
 
 
@@ -9,3 +9,6 @@ Libs/google-play-services_lib/bin/
 Libs/UrlImageViewHelper/bin/
 Libs/easyFoursquare4Android/bin/
 Libs/MaskLibrary/bin/
+Libs/AndroidStaggeredGrid/bin/
+Libs/google-play-services_lib/gen/
+Libs/UrlImageViewHelper/gen/

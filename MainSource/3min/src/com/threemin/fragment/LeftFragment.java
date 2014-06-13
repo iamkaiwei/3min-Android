@@ -73,7 +73,7 @@ public class LeftFragment extends Fragment {
 		protected void onPostExecute(List<CategoryModel> result) {
 			if (result != null) {
 				
-				CategoryAdapter adapter = new CategoryAdapter(getActivity(), result,false);
+				CategoryAdapter adapter = new CategoryAdapter(getActivity(), result,false, null); //null parameter: because it is listview, not spinner
 				lvCategory.setAdapter(adapter);
 			}
 			super.onPostExecute(result);
