@@ -22,6 +22,7 @@ public class ProductGridAdapter extends BaseAdapter {
 
 	public ProductGridAdapter(List<ProductModel> data) {
 		this.mData = data;
+
 	}
 
 	public List<ProductModel> getListProducts() {
@@ -35,6 +36,9 @@ public class ProductGridAdapter extends BaseAdapter {
 
 	@Override
 	public int getCount() {
+		if(mData==null){
+			return 0;
+		}
 		return mData.size();
 	}
 
@@ -74,6 +78,7 @@ public class ProductGridAdapter extends BaseAdapter {
 			ImageView image = (ImageView) convertView.findViewById(R.id.inflater_body_product_grid_image);
 			if (model.getImages().size() > 0) {
 				UrlImageViewHelper.setUrlDrawable(image, model.getImages().get(0).getOrigin(), R.drawable.stuff_img);
+//				imageLoader.displayImage( model.getImages().get(0).getOrigin(),image,options);
 			}
 
 			TextView tv_name = (TextView) convertView.findViewById(R.id.inflater_body_product_grid_tv_name);

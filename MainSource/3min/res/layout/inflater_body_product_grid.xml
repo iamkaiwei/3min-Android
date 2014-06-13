@@ -11,8 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
-        android:background="@drawable/background_white_corners_top"
-        android:scaleType="fitXY" />
+        android:scaleType="fitXY" 
+        android:src="@drawable/stuff_img"/>
 
     <!-- name of product -->
 

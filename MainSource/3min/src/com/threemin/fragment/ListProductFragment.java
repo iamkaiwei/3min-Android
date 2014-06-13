@@ -97,6 +97,9 @@ public class ListProductFragment extends BaseProductFragment {
 			public void OnSingleTap(AdapterView parent, View view, int position, long id) {
 				ProductModel model = (ProductModel) mGrid.getItemAtPosition(position);
 				if (model != null) {
+					if(model.getOwner()==null){
+						model.setOwner(PreferenceHelper.getInstance(getActivity()).getCurrentUser());
+					}
 					String data = new Gson().toJson(model);
 					Intent intent = new Intent(getActivity(), DetailActivity.class);
 					intent.putExtra(CommonConstant.INTENT_PRODUCT_DATA, data);

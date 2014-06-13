@@ -104,6 +104,7 @@ public class HomeActivity extends FragmentActivity {
 		leftFragment=new LeftFragment();
 		mViewPagerMainContent = (ViewPager) findViewById(R.id.activity_home_view_pager);
 		mViewPagerAdapter = new PagerAdapter(getSupportFragmentManager());
+		mViewPagerMainContent.setOffscreenPageLimit(3);
 		mViewPagerMainContent.setAdapter(mViewPagerAdapter);
 		mViewPagerMainContent.setCurrentItem(1);
 		mViewPagerMainContent.setOnPageChangeListener(new OnPageChangeListener() {
