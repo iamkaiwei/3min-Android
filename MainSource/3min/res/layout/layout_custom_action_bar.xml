@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/common_spacing"
+            android:layout_marginRight="@dimen/common_spacing_triple"
             android:background="@drawable/ic_close" />
         
         <TextView
@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/common_spacing"
+            android:layout_marginLeft="@dimen/common_spacing_triple"
             android:background="@drawable/ic_setting" />
     </RelativeLayout>
 
@@ -51,13 +51,13 @@
         android:layout_gravity="center_vertical" >
 
         <ImageView
-            android:id="@+id/home_activity_action_bar_center_filter"
+            android:id="@+id/home_activity_action_bar_center_img_search"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/common_spacing"
-            android:background="@drawable/ic_filter" />
+            android:layout_marginLeft="@dimen/common_spacing_triple"
+            android:background="@drawable/selector_home_actoin_bar_search" />
 
         <Spinner
             android:id="@+id/home_activity_action_bar_center_title"
@@ -66,21 +66,31 @@
             android:layout_centerInParent="true"
             android:textSize="@dimen/textsize_large"
             android:textColor="@android:color/white"
-            android:background="@drawable/bt_category"
+            android:background="@drawable/selector_home_action_bar_spn"
             android:layout_marginTop="@dimen/common_spacing"
             android:layout_marginBottom="@dimen/common_spacing"
             android:dropDownWidth="600dp"
             android:dropDownVerticalOffset="-3dp"
             android:dividerHeight="0dp"/>
+        
+        <Button
+            android:id="@+id/home_activity_action_bar_center_btn_title"
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:background="@android:color/transparent"
+            android:layout_marginTop="@dimen/common_spacing"
+            android:layout_marginBottom="@dimen/common_spacing"
+            android:visibility="gone"/>
 
 
         <ImageView
-            android:id="@+id/home_activity_action_bar_center_left_img"
+            android:id="@+id/home_activity_action_bar_center_img_profile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/common_spacing"
+            android:layout_marginRight="@dimen/common_spacing_triple"
             android:background="@drawable/ic_profile" />
     </RelativeLayout>
 

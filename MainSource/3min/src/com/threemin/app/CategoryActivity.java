@@ -76,7 +76,7 @@ public class CategoryActivity extends ListActivity {
 //				mAdapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
 //				mSpnCategory.setAdapter(mAdapter);
 //				mSpnCategory.setOnItemSelectedListener(onItemSpinnerSelected);
-				CategoryAdapter adapter=new CategoryAdapter(CategoryActivity.this, result, false);
+				CategoryAdapter adapter=new CategoryAdapter(CategoryActivity.this, result, false, null);
 				getListView().setAdapter(adapter);
 			}
 			super.onPostExecute(result);

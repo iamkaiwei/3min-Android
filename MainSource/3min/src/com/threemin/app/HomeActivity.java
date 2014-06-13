@@ -32,6 +32,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -66,6 +67,8 @@ public class HomeActivity extends FragmentActivity {
 	RelativeLayout mRLActionbarLeft, mRLActionbarCenter, mRLActionbarRight;
 	ImageView mImgActionbarLeftClose, mImgActionbarRightClose;
 	Spinner mSpnActionbarCenterTitle;
+	ImageView mImgActionbarSearch, mImgActionbarProfile;
+	Button mBtnActionbarCenterTitle;
 	
 	//view pager
 	public static final int NUM_PAGES = 3;
@@ -105,7 +108,8 @@ public class HomeActivity extends FragmentActivity {
 		mViewPagerMainContent = (ViewPager) findViewById(R.id.activity_home_view_pager);
 		mViewPagerAdapter = new PagerAdapter(getSupportFragmentManager());
 		mViewPagerMainContent.setAdapter(mViewPagerAdapter);
-		mViewPagerMainContent.setCurrentItem(1);
+		mViewPagerMainContent.setCurrentItem(PAGE_CENTER);
+		mSpnActionbarCenterTitle.setSelected(true);
 		mViewPagerMainContent.setOnPageChangeListener(new OnPageChangeListener() {
 			
 			@Override
@@ -113,21 +117,36 @@ public class HomeActivity extends FragmentActivity {
 				// TODO Auto-generated method stub
 				switch (position) {
 				case PAGE_LEFT:
-					mRLActionbarLeft.setVisibility(View.VISIBLE);
-					mRLActionbarCenter.setVisibility(View.GONE);
-					mRLActionbarRight.setVisibility(View.GONE);
+					mImgActionbarSearch.setSelected(true);
+					
+					mSpnActionbarCenterTitle.setSelected(false);
+					categoryAdapter.notifyDataSetChanged();
+					mSpnActionbarCenterTitle.setEnabled(false);
+					mBtnActionbarCenterTitle.setVisibility(View.VISIBLE);
+					
+					mImgActionbarProfile.setSelected(false);
 					break;
 					
-				case PAGE_CENTER:
-					mRLActionbarLeft.setVisibility(View.GONE);
-					mRLActionbarCenter.setVisibility(View.VISIBLE);
-					mRLActionbarRight.setVisibility(View.GONE);
+				case PAGE_CENTER:				
+					mImgActionbarSearch.setSelected(false);
+					
+					mSpnActionbarCenterTitle.setSelected(true);
+					categoryAdapter.notifyDataSetChanged();
+					mSpnActionbarCenterTitle.setEnabled(true);
+					mBtnActionbarCenterTitle.setVisibility(View.GONE);
+					
+					mImgActionbarProfile.setSelected(false);
 					break;
 					
 				case PAGE_RIGHT:
-					mRLActionbarLeft.setVisibility(View.GONE);
-					mRLActionbarCenter.setVisibility(View.GONE);
-					mRLActionbarRight.setVisibility(View.VISIBLE);
+					mImgActionbarSearch.setSelected(false);
+					
+					mSpnActionbarCenterTitle.setSelected(false);
+					categoryAdapter.notifyDataSetChanged();
+					mSpnActionbarCenterTitle.setEnabled(false);
+					mBtnActionbarCenterTitle.setVisibility(View.VISIBLE);
+					
+					mImgActionbarProfile.setSelected(true);
 					break;
 
 				default:
@@ -138,13 +157,11 @@ public class HomeActivity extends FragmentActivity {
 			
 			@Override
 			public void onPageScrolled(int arg0, float arg1, int arg2) {
-				// TODO Auto-generated method stub
 				
 			}
 			
 			@Override
 			public void onPageScrollStateChanged(int arg0) {
-				// TODO Auto-generated method stub
 				
 			}
 		});
@@ -185,16 +202,32 @@ public class HomeActivity extends FragmentActivity {
 			}
 		});
 		
+		
+		//action bar center
+		mImgActionbarProfile = (ImageView) findViewById(R.id.home_activity_action_bar_center_img_profile);
+		mImgActionbarProfile.setOnClickListener( new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				mViewPagerMainContent.setCurrentItem(PAGE_RIGHT);
+			}
+		});
+		
+		mImgActionbarSearch = (ImageView) findViewById(R.id.home_activity_action_bar_center_img_search);
+		mImgActionbarSearch.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				mViewPagerMainContent.setCurrentItem(PAGE_LEFT);
+			}
+		});
+		
 		mSpnActionbarCenterTitle = (Spinner) findViewById(R.id.home_activity_action_bar_center_title);
 		new InitCategory().execute();
-		
 		mSpnActionbarCenterTitle.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//				if(position==0){
-//					categoryModel=null;
-//				} else {
 				CategoryModel categoryModel=(CategoryModel) parent.getItemAtPosition(position);
 				if(categoryModel.getName().equals(getString(R.string.browse))){
 					onSwitchCate(null);
@@ -209,6 +242,19 @@ public class HomeActivity extends FragmentActivity {
 			public void onNothingSelected(AdapterView<?> parent) {
 				// TODO Auto-generated method stub
 				
+			}
+		});
+		
+		mBtnActionbarCenterTitle = (Button) findViewById(R.id.home_activity_action_bar_center_btn_title);
+		mBtnActionbarCenterTitle.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				mViewPagerMainContent.setCurrentItem(PAGE_CENTER);
+				mSpnActionbarCenterTitle.setSelected(true);
+				categoryAdapter.notifyDataSetChanged();
+				mSpnActionbarCenterTitle.setEnabled(true);
+				mBtnActionbarCenterTitle.setVisibility(View.GONE);
 			}
 		});
 		
@@ -312,10 +358,10 @@ public class HomeActivity extends FragmentActivity {
 		protected void onPostExecute(List<CategoryModel> result) {
 			if (result != null) {
 				
-				 categoryAdapter = new CategoryAdapter(HomeActivity.this, result,true);
+				 categoryAdapter = new CategoryAdapter(HomeActivity.this, result,true, mSpnActionbarCenterTitle);
 //				lvCategory.setAdapter(adapter);
 				mSpnActionbarCenterTitle.setAdapter(categoryAdapter);
-
+				mSpnActionbarCenterTitle.setSelected(true);
 			}
 			super.onPostExecute(result);
 		}
