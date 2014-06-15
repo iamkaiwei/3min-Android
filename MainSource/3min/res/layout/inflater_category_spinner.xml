@@ -10,8 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:text="123456"
-        android:textColor="@android:color/white"
-        android:textSize="@dimen/textsize_large"
-        android:background="@android:color/transparent"/>
+        android:textColor="@color/selector_home_spn_text"
+        android:textSize="@dimen/textsize_large"/>
 
 </RelativeLayout>
