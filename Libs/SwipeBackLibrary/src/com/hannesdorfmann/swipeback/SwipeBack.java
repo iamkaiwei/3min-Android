@@ -691,7 +691,7 @@ public abstract class SwipeBack extends ViewGroup {
 		final Drawable contentBackground = a.getDrawable(R.styleable.SwipeBack_sbContentBackground);
 		final Drawable swipeBackBackground = a.getDrawable(R.styleable.SwipeBack_sbSwipeBackBackground);
 
-		mSwipeBackViewSize = a.getDimensionPixelSize(R.styleable.SwipeBack_sbSwipeBackSize, dpToPx(1));
+		mSwipeBackViewSize = a.getDimensionPixelSize(R.styleable.SwipeBack_sbSwipeBackSize, dpToPx(DEFAULT_SIZE));
 
 		mDividerEnabled = a.getBoolean(R.styleable.SwipeBack_sbDividerEnabled,
 				false);

@@ -6,6 +6,7 @@ import java.util.List;
 import org.json.JSONObject;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -24,15 +25,18 @@ public class UserWebService {
 			if (isLike) {
 				result = WebServiceUtil.postJson(requestURL, jsonTokken);
 			} else {
-				result = WebServiceUtil.deleteJson(requestURL, jsonTokken);
+				requestURL=requestURL+"?access_token="+tokken;
+				result = WebServiceUtil.deleteJson(requestURL);
 			}
 			if (!TextUtils.isEmpty(result)) {
+				Log.d("result", result);
 				JSONObject jsonResult = new JSONObject(result);
 				return jsonResult.getString("status").equals("success");
 			} else {
 				return false;
 			}
 		} catch (Exception e) {
+			Log.e("error", e.getMessage());
 			return false;
 		}
 	}

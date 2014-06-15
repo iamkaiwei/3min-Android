@@ -5,10 +5,12 @@ import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.threemin.app.ChatToBuyActivity;
 import com.threemin.app.DetailActivity;
 import com.threemin.app.PostOfferActivity;
+import com.threemin.model.ImageModel;
 import com.threemin.model.ProductModel;
 import com.threemin.model.UserModel;
 import com.threemin.uti.CommonConstant;
 import com.threemin.uti.PreferenceHelper;
+import com.threemin.webservice.UserWebService;
 import com.threemins.R;
 
 import android.content.Intent;
@@ -19,21 +21,24 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class DetailFragment extends Fragment {
 	View rootView;
 	ProductModel productModel;
 	ViewPager pager;
-	SlidePagerAdapter adapter;
-	ImageView img0, img1, img2, img3;
 	Button btnChatToBuy, btnViewOffers;
+	LinearLayout lnImgs,btnLike;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -89,41 +94,10 @@ public class DetailFragment extends Fragment {
 			TextView tv_time = (TextView) convertView.findViewById(R.id.inflater_header_product_tv_time);
 			tv_time.setText(DateUtils.getRelativeTimeSpanString(productModel.getUpdateTime() * 1000,
 					System.currentTimeMillis(), 0L, DateUtils.FORMAT_ABBREV_RELATIVE));
-			pager = (ViewPager) convertView.findViewById(R.id.pager);
-			adapter = new SlidePagerAdapter(getFragmentManager());
-			pager.setAdapter(adapter);
-			int numPages = adapter.getCount();
 
-			img0 = (ImageView) convertView.findViewById(R.id.fragment_detail_img_page_ctr_0);
-			img1 = (ImageView) convertView.findViewById(R.id.fragment_detail_img_page_ctr_1);
-			img2 = (ImageView) convertView.findViewById(R.id.fragment_detail_img_page_ctr_2);
-			img3 = (ImageView) convertView.findViewById(R.id.fragment_detail_img_page_ctr_3);
-
-			initPageControl(numPages);
-
-			pager.setOnPageChangeListener(new OnPageChangeListener() {
-
-				@Override
-				public void onPageSelected(int position) {
-					// TODO Auto-generated method stub
-					doPageControl(position);
-				}
-
-				@Override
-				public void onPageScrolled(int arg0, float arg1, int arg2) {
-					// TODO Auto-generated method stub
-
-				}
-
-				@Override
-				public void onPageScrollStateChanged(int arg0) {
-					// TODO Auto-generated method stub
-
-				}
-			});
-
+			lnImgs = (LinearLayout) convertView.findViewById(R.id.ln_img);
+			initImage();
 			btnChatToBuy = (Button) convertView.findViewById(R.id.fragment_detail_btn_chat_to_buy);
-			
 			UserModel currentUser = PreferenceHelper.getInstance(getActivity()).getCurrentUser();
 			
 			//if current user is not the owner of this product
@@ -146,107 +120,61 @@ public class DetailFragment extends Fragment {
 			} else {
 				btnChatToBuy.setBackgroundResource(R.drawable.bt_view_offers);
 			}
+			btnLike=(LinearLayout) convertView.findViewById(R.id.btn_like);
+			btnLike.setSelected(productModel.isLiked());
+			btnLike.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View arg0) {
+					requestLike();
+				}
+			});
+		}
+
+	}
+
+	private void initImage() {
+		for (ImageModel imageModel : productModel.getImages()) {
+			ImageView imageView=new ImageView(getActivity());
+			LayoutParams params=new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+			int spacing =(int) getResources().getDimension(R.dimen.common_spacing);
+			imageView.setScaleType(ScaleType.CENTER_INSIDE);
+			imageView.setPadding(0,spacing, 0, spacing);
+			lnImgs.addView(imageView);
+			UrlImageViewHelper.setUrlDrawable(imageView, imageModel.getOrigin());
+		}
+	}
+
+	private void requestLike(){
+		final String tokken=PreferenceHelper.getInstance(getActivity()).getTokken();
+		
+		
+		
+		productModel.setLiked(!productModel.isLiked());
+		if (productModel.isLiked()) {
+			productModel.setLike(productModel.getLike() + 1);
+		} else {
+			productModel.setLike(productModel.getLike() - 1);
+		}
+		
+
+		if (productModel.isLiked()) {
+			btnLike.setSelected(true);
+		} else {
+			btnLike.setSelected(false);
+		}
+		
+//		mAdapter.notifyDataSetChanged();
+		Thread t=new Thread(new Runnable() {
 			
-			
-
-
-			
-
-		}
-
+			@Override
+			public void run() {
+				boolean result=new UserWebService().productLike(productModel.getId(), tokken, productModel.isLiked());
+				Log.d("result", "result="+result);
+			}
+		});
+		t.start();
 	}
 
-	private class SlidePagerAdapter extends android.support.v4.app.FragmentStatePagerAdapter {
 
-		public SlidePagerAdapter(FragmentManager fm) {
-			super(fm);
-		}
-
-		@Override
-		public Fragment getItem(int position) {
-			return ProductImageFragment.create(productModel.getImages().get(position).getOrigin());
-		}
-
-		@Override
-		public int getCount() {
-			return productModel.getImages().size();
-		}
-	}
-
-	public void initPageControl(int numPages) {
-
-		img0.setBackgroundResource(R.drawable.page_ctr_on);
-		img1.setBackgroundResource(R.drawable.page_ctr_off);
-		img2.setBackgroundResource(R.drawable.page_ctr_off);
-		img3.setBackgroundResource(R.drawable.page_ctr_off);
-
-		switch (numPages) {
-
-		case 1:
-			img0.setVisibility(View.VISIBLE);
-			img1.setVisibility(View.GONE);
-			img2.setVisibility(View.GONE);
-			img3.setVisibility(View.GONE);
-			break;
-
-		case 2:
-			img0.setVisibility(View.VISIBLE);
-			img1.setVisibility(View.VISIBLE);
-			img2.setVisibility(View.GONE);
-			img3.setVisibility(View.GONE);
-			break;
-
-		case 3:
-			img0.setVisibility(View.VISIBLE);
-			img1.setVisibility(View.VISIBLE);
-			img2.setVisibility(View.VISIBLE);
-			img3.setVisibility(View.GONE);
-			break;
-
-		case 4:
-			img0.setVisibility(View.VISIBLE);
-			img1.setVisibility(View.VISIBLE);
-			img2.setVisibility(View.VISIBLE);
-			img3.setVisibility(View.VISIBLE);
-			break;
-
-		default:
-			break;
-		}
-	}
-
-	private void doPageControl(int position) {
-		switch (position) {
-		case 0:
-			img0.setBackgroundResource(R.drawable.page_ctr_on);
-			img1.setBackgroundResource(R.drawable.page_ctr_off);
-			img2.setBackgroundResource(R.drawable.page_ctr_off);
-			img3.setBackgroundResource(R.drawable.page_ctr_off);
-			break;
-
-		case 1:
-			img0.setBackgroundResource(R.drawable.page_ctr_off);
-			img1.setBackgroundResource(R.drawable.page_ctr_on);
-			img2.setBackgroundResource(R.drawable.page_ctr_off);
-			img3.setBackgroundResource(R.drawable.page_ctr_off);
-			break;
-
-		case 2:
-			img0.setBackgroundResource(R.drawable.page_ctr_off);
-			img1.setBackgroundResource(R.drawable.page_ctr_off);
-			img2.setBackgroundResource(R.drawable.page_ctr_on);
-			img3.setBackgroundResource(R.drawable.page_ctr_off);
-			break;
-
-		case 3:
-			img0.setBackgroundResource(R.drawable.page_ctr_off);
-			img1.setBackgroundResource(R.drawable.page_ctr_off);
-			img2.setBackgroundResource(R.drawable.page_ctr_off);
-			img3.setBackgroundResource(R.drawable.page_ctr_on);
-			break;
-
-		default:
-			break;
-		}
-	}
 }

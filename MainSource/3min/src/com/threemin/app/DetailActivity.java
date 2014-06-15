@@ -67,7 +67,7 @@ public class DetailActivity extends FragmentActivity {
 			
 			@Override
 			public void onClick(View v) {
-				finish();
+				onBackPressed();
 			}
 		});
 		

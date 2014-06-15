@@ -16,17 +16,17 @@ import com.hannesdorfmann.swipeback.util.MathUtils;
  */
 public class SlideSwipeBackTransformer implements SwipeBackTransformer {
 
-	protected View arrowTop;
-	protected View arrowBottom;
-	protected TextView textView;
+//	protected View arrowTop;
+//	protected View arrowBottom;
+//	protected TextView textView;
 
 	@Override
 	public void onSwipeBackViewCreated(SwipeBack swipeBack, Activity activity,
 			final View swipeBackView) {
 
-		arrowTop = swipeBackView.findViewById(R.id.arrowTop);
-		arrowBottom = swipeBackView.findViewById(R.id.arrowBottom);
-		textView = (TextView) swipeBackView.findViewById(R.id.text);
+//		arrowTop = swipeBackView.findViewById(R.id.arrowTop);
+//		arrowBottom = swipeBackView.findViewById(R.id.arrowBottom);
+//		textView = (TextView) swipeBackView.findViewById(R.id.text);
 
 		onSwipeBackReseted(swipeBack, activity);
 
@@ -45,7 +45,7 @@ public class SlideSwipeBackTransformer implements SwipeBackTransformer {
 
 		// Reset the values to the initial state
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			textView.setAlpha(0);
+//			textView.setAlpha(0);
 		} else {
 			// Pre Honeycomb
 		}
@@ -64,8 +64,8 @@ public class SlideSwipeBackTransformer implements SwipeBackTransformer {
 			// Android 3 and above
 
 			// Animate the textview
-			textView.setAlpha(MathUtils.mapPoint(openRatio, startAlphaAt, 1f,
-					0f, 1f));
+//			textView.setAlpha(MathUtils.mapPoint(openRatio, startAlphaAt, 1f,
+//					0f, 1f));
 
 		} else {
 			// Pre Honeycomb (Android 2.x)

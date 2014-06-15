@@ -85,52 +85,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" >
 
-                    <android.support.v4.view.ViewPager
-                        android:id="@+id/pager"
-                        android:layout_width="wrap_content"
-                        android:layout_height="250dp"
-                        android:layout_alignParentTop="true" />
 
-                    <!-- group dots page control -->
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:layout_centerHorizontal="true"
-                        android:orientation="horizontal"
-                        android:paddingBottom="@dimen/common_spacing_double" >
-
-                        <ImageView
-                            android:id="@+id/fragment_detail_img_page_ctr_0"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="@dimen/common_spacing"
-                            android:src="@drawable/page_ctr_off" />
-
-                        <ImageView
-                            android:id="@+id/fragment_detail_img_page_ctr_1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/common_spacing"
-                            android:layout_marginRight="@dimen/common_spacing"
-                            android:src="@drawable/page_ctr_off" />
-
-                        <ImageView
-                            android:id="@+id/fragment_detail_img_page_ctr_2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/common_spacing"
-                            android:layout_marginRight="@dimen/common_spacing"
-                            android:src="@drawable/page_ctr_off" />
-
-                        <ImageView
-                            android:id="@+id/fragment_detail_img_page_ctr_3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/common_spacing"
-                            android:src="@drawable/page_ctr_off" />
-                    </LinearLayout>
+					<LinearLayout 
+					    android:id="@+id/ln_img"
+					    android:layout_width="fill_parent"
+					    android:layout_height="wrap_content"
+					    android:orientation="vertical"></LinearLayout>
                 </RelativeLayout>
 
                 <com.lanna.droidlib.view.CustomTextView
@@ -216,13 +176,14 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
                         android:gravity="center_vertical|left"
-                        android:orientation="horizontal" >
+                        android:orientation="horizontal" 
+                        android:id="@+id/btn_like">
 
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="@dimen/common_spacing"
-                            android:src="@drawable/ic_like" />
+                            android:src="@drawable/selector_like"
+                            android:layout_marginRight="@dimen/common_spacing" />
 
                         <TextView
                             android:layout_width="wrap_content"

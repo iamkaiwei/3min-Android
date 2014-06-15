@@ -89,6 +89,7 @@ public class HomeActivity extends FragmentActivity {
 		rightFragment = new RightFragment();
 		mViewPagerMainContent = (ViewPager) findViewById(R.id.activity_home_view_pager);
 		mViewPagerAdapter = new PagerAdapter(getSupportFragmentManager());
+		mViewPagerMainContent.setOffscreenPageLimit(3);
 		mViewPagerMainContent.setAdapter(mViewPagerAdapter);
 		mViewPagerMainContent.setCurrentItem(PAGE_CENTER);
 		
