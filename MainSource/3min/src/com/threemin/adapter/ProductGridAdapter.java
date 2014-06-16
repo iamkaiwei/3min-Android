@@ -102,6 +102,7 @@ public class ProductGridAdapter extends BaseAdapter {
 			}
 			if (model.getOwner() == null) {
 				convertView.findViewById(R.id.owner_view).setVisibility(View.GONE);
+				convertView.findViewById(R.id.inflater_body_product_grid_divider).setVisibility(View.GONE);
 			} else {
 				ImageView imageAvatar = (ImageView) convertView.findViewById(R.id.inflater_header_product_grid_image);
 				UrlImageViewHelper.setUrlDrawable(imageAvatar, model.getOwner().getFacebook_avatar());

@@ -49,8 +49,6 @@ public class LeftFragment extends Fragment implements OnClickListener {
 		}
 	}
 
-
-
 	private void initWidgets(ViewGroup rootView) {
 		
 		etSearch = (EditText) rootView.findViewById(R.id.fm_filter_et_search);
