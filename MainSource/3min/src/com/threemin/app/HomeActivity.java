@@ -22,6 +22,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.facebook.Session;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -31,6 +32,7 @@ import com.threemin.fragment.HomeFragment;
 import com.threemin.fragment.LeftFragment;
 import com.threemin.fragment.RightFragment;
 import com.threemin.model.CategoryModel;
+import com.threemin.model.FilterModel;
 import com.threemin.view.CustomSpinner;
 import com.threemin.webservice.CategoryWebservice;
 import com.threemins.R;
@@ -52,6 +54,14 @@ public class HomeActivity extends FragmentActivity {
 	ViewPager mViewPagerMainContent;
 	PagerAdapter mViewPagerAdapter;
 	CategoryAdapter categoryAdapter;
+	int currentPage, prevPage;
+	
+	//filter:
+	public static final int POPULAR_ID = R.id.fm_filter_rl_popular;
+	public static final int LOWEST_ID = R.id.fm_filter_rl_lowest;
+	public static final int HIGHEST_ID = R.id.fm_filter_rl_highest;
+	public static final int RECENT_ID = R.id.fm_filter_rl_recent;
+	public static final int NEAREST_ID = R.id.fm_filter_rl_nearest;
 
 	Context mContext;
 	//right drawer
@@ -73,6 +83,8 @@ public class HomeActivity extends FragmentActivity {
 		initActionBar();
 
 		//view pager implementation
+		currentPage = PAGE_CENTER;
+		prevPage = -1;
 		homeFragment=new HomeFragment();
 		leftFragment=new LeftFragment();
 		rightFragment = new RightFragment();
@@ -107,6 +119,8 @@ public class HomeActivity extends FragmentActivity {
 	}
 
 	public void doPageChange(int position) {
+		prevPage  = currentPage;
+		currentPage = position;
 		switch (position) {
 		case PAGE_LEFT:
 			mImgActionbarSearch.setSelected(true);
@@ -118,6 +132,11 @@ public class HomeActivity extends FragmentActivity {
 			mImgActionbarSearch.setSelected(false);
 			setSpinnerSelected(true);
 			mImgActionbarProfile.setSelected(false);
+			
+			if (prevPage == PAGE_LEFT) {
+				doFilter();
+			}
+			
 			break;
 
 		case PAGE_RIGHT:
@@ -132,6 +151,29 @@ public class HomeActivity extends FragmentActivity {
 		}
 	}
 	
+	public void doFilter() {
+		FilterModel model = leftFragment.getFilterModel();
+		switch (model.getFilterID()) {
+		case POPULAR_ID:
+			break;
+
+		case RECENT_ID:
+			break;
+
+		case LOWEST_ID:
+			break;
+
+		case HIGHEST_ID:
+			break;
+
+		case NEAREST_ID:
+			break;
+
+		default:
+			break;
+		}
+	}
+
 	public void setSpinnerSelected(boolean isSelected) {
 		if (isSelected) {
 			mSpnActionbarCenterTitle.setSelected(true);

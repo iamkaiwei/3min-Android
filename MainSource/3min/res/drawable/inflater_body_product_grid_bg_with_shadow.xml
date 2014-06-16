@@ -5,6 +5,6 @@
      android:drawable="@drawable/background_shadow" /> 
      
    <item android:drawable="@drawable/inflater_body_product_grid_bg"
-     android:bottom="2px"/>
+     android:bottom="4px"/>
 
 </layer-list>

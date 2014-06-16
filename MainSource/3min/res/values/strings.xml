@@ -74,5 +74,16 @@
     <string name="postoffer_start_chatting">Make an offer to start chatting</string>
     <string name="postoffer_tap_to_change">tap to change</string>
     <string formatted="false" name="postoffer_title">%s is selling it for %s VND</string>
+    
+    <!-- fragment filter -->
+    <string name="fm_filter_search_hint">Search for products</string>
+    <string name="fm_filter_popular">Popular</string>
+    <string name="fm_filter_recent">Recent</string>
+    <string name="fm_filter_lowest">Lowest Price</string>
+    <string name="fm_filter_highest">Highest Price</string>
+    <string name="fm_filter_nearest">Nearest</string>
+    <string name="fm_filter_price_range">PRICE RANGE</string>
+    <string name="fm_filter_min">Minimum</string>
+    <string name="fm_filter_max">Maximum</string>
 
 </resources>

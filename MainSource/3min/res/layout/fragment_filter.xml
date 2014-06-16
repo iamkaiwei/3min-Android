@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:threemins="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <!-- search -->
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/fm_filter_row_height"
+            android:background="@color/background_grey"
+            android:paddingBottom="@dimen/common_spacing"
+            android:paddingLeft="@dimen/common_spacing_a_half"
+            android:paddingRight="@dimen/common_spacing_a_half"
+            android:paddingTop="@dimen/common_spacing" >
+
+            <EditText
+                android:id="@+id/fm_filter_et_search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_white_rounded_corners"
+                android:hint="@string/fm_filter_search_hint"
+                android:padding="@dimen/common_spacing_double"
+                android:textColorHint="@color/common_grey" />
+        </RelativeLayout>
+
+        <!-- popular -->
+
+        <RelativeLayout 
+            android:id="@+id/fm_filter_rl_popular"
+            style="@style/fm_filter_row_layout" >
+
+            <com.lanna.droidlib.view.CustomTextView
+                android:id="@+id/fm_filter_tv_popular"
+                style="@style/fm_filter_textview"
+                android:text="@string/fm_filter_popular"
+                threemins:customTypeface="@string/font_regular" />
+
+            <ImageView
+                android:id="@+id/fm_filter_img_check_popular"
+                style="@style/fm_filter_imageview" />
+        </RelativeLayout>
+
+        <!-- line divider -->
+
+        <View style="@style/fm_filter_divider" />
+
+        <!-- Recent -->
+
+        <RelativeLayout 
+            android:id="@+id/fm_filter_rl_recent"
+             style="@style/fm_filter_row_layout" >
+
+            <com.lanna.droidlib.view.CustomTextView
+                android:id="@+id/fm_filter_tv_recent"
+                style="@style/fm_filter_textview"
+                android:text="@string/fm_filter_recent"
+                threemins:customTypeface="@string/font_regular" />
+
+            <ImageView
+                android:id="@+id/fm_filter_img_check_recent"
+                style="@style/fm_filter_imageview" />
+        </RelativeLayout>
+
+        <!-- line divider -->
+
+        <View style="@style/fm_filter_divider" />
+
+        <!-- lowest price -->
+
+        <RelativeLayout 
+            android:id="@+id/fm_filter_rl_lowest"
+             style="@style/fm_filter_row_layout" >
+
+            <com.lanna.droidlib.view.CustomTextView
+                android:id="@+id/fm_filter_tv_lowest"
+                style="@style/fm_filter_textview"
+                android:text="@string/fm_filter_lowest"
+                threemins:customTypeface="@string/font_regular" />
+
+            <ImageView
+                android:id="@+id/fm_filter_img_check_lowest"
+                style="@style/fm_filter_imageview" />
+        </RelativeLayout>
+
+        <!-- line divider -->
+
+        <View style="@style/fm_filter_divider" />
+
+        <!-- highest price -->
+
+        <RelativeLayout 
+            android:id="@+id/fm_filter_rl_highest"
+             style="@style/fm_filter_row_layout" >
+
+            <com.lanna.droidlib.view.CustomTextView
+                android:id="@+id/fm_filter_tv_highest"
+                style="@style/fm_filter_textview"
+                android:text="@string/fm_filter_highest"
+                threemins:customTypeface="@string/font_regular" />
+
+            <ImageView
+                android:id="@+id/fm_filter_img_check_highest"
+                style="@style/fm_filter_imageview" />
+        </RelativeLayout>
+
+        <!-- line divider -->
+
+        <View style="@style/fm_filter_divider" />
+
+        <!-- nearest -->
+
+        <RelativeLayout  
+            android:id="@+id/fm_filter_rl_nearest"
+            style="@style/fm_filter_row_layout" >
+
+            <com.lanna.droidlib.view.CustomTextView
+                android:id="@+id/fm_filter_tv_nearest"
+                style="@style/fm_filter_textview"
+                android:text="@string/fm_filter_nearest"
+                threemins:customTypeface="@string/font_regular" />
+
+            <ImageView
+                android:id="@+id/fm_filter_img_check_nearest"
+                style="@style/fm_filter_imageview" />
+        </RelativeLayout>
+
+        <!-- price range -->
+
+        <com.lanna.droidlib.view.CustomTextView
+            style="@style/fm_filter_textview"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/fm_filter_row_height"
+            android:background="@color/background_grey"
+            android:gravity="center_vertical"
+            android:text="@string/fm_filter_price_range"
+            threemins:customTypeface="@string/font_regular" />
+
+        <!-- minimum -->
+
+        <RelativeLayout style="@style/fm_filter_row_layout" >
+
+            <com.lanna.droidlib.view.CustomTextView
+                android:id="@+id/fm_filter_tv_min"
+                style="@style/fm_filter_textview"
+                android:text="@string/fm_filter_min"
+                threemins:customTypeface="@string/font_regular" />
+            
+            <EditText 
+                android:id="@+id/fm_filter_et_min"
+                style="@style/fm_filter_edittext"/>
+        </RelativeLayout>
+
+        <!-- line divider -->
+
+        <View style="@style/fm_filter_divider" />
+
+        <!-- maximum -->
+
+        <RelativeLayout style="@style/fm_filter_row_layout" >
+
+            <com.lanna.droidlib.view.CustomTextView
+                android:id="@+id/fm_filter_tv_max"
+                style="@style/fm_filter_textview"
+                android:text="@string/fm_filter_max"
+                threemins:customTypeface="@string/font_regular" />
+            
+            <EditText 
+                android:id="@+id/fm_filter_et_max"
+                style="@style/fm_filter_edittext"/>
+        </RelativeLayout>
+
+        <!-- reset filter -->
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/fm_filter_reset_filter_height"
+            android:background="@color/background_grey"
+            android:paddingBottom="@dimen/common_spacing_double" >
+
+            <ImageView
+                android:id="@+id/fm_filter_img_reset_filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/bt_reset_filter" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</ScrollView>

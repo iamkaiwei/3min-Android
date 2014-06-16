@@ -5,6 +5,7 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     
     <dimen name="common_spacing">5dp</dimen>
+    <dimen name="common_spacing_a_half">7.5dp</dimen>
     <dimen name="common_spacing_double">10dp</dimen>
     <dimen name="common_spacing_triple">15dp</dimen>
     <dimen name="common_radius">5dp</dimen>
@@ -93,5 +94,11 @@
     <dimen name="activity_chat_tv_radius">15dp</dimen>
     <dimen name="activity_chat_img_product_size">70dp</dimen>
     <dimen name="activity_chat_chat_input_height">50dp</dimen>
+    
+    <!-- fragment filter -->
+    <dimen name="fm_filter_row_height">50dp</dimen>
+    <dimen name="fm_filter_reset_filter_height">70dp</dimen>
+    <dimen name="fm_filter_et_width">170dp</dimen>
+    <dimen name="fm_filter_et_height">35dp</dimen>
 
 </resources>
