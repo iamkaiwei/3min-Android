@@ -117,6 +117,7 @@
     </LinearLayout>
     
     <View 
+        android:id="@+id/inflater_body_product_grid_divider"
         android:layout_width="fill_parent"
         android:layout_height="1dp"
         android:background="@color/background_grey"/>

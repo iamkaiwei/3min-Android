@@ -1,151 +1,46 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_actionbar_center"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@color/red_background" >
 
-    <!-- action bar in left page -->
-
-    <RelativeLayout
-        android:id="@+id/rl_actionbar_left"
-        android:layout_width="match_parent"
+    <ImageView
+        android:id="@+id/home_activity_action_bar_center_img_search"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:visibility="gone" >
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/common_spacing_triple"
+        android:background="@drawable/selector_home_actoin_bar_search" />
 
-        <ImageView
-            android:id="@+id/home_activity_action_bar_left_close"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/common_spacing_triple"
-            android:background="@drawable/ic_close" />
+    <com.threemin.view.CustomSpinner
+        android:id="@+id/home_activity_action_bar_center_title"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="@dimen/common_spacing"
+        android:layout_marginTop="@dimen/common_spacing"
+        android:dividerHeight="0dp"
+        android:dropDownVerticalOffset="-3dp"
+        android:textColor="@android:color/white" />
 
-        <TextView
-            android:id="@+id/home_activity_action_bar_left_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:text="LEFT TITLE"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/textsize_large" />
+    <Button
+        android:id="@+id/home_activity_action_bar_center_btn_title"
+        android:layout_width="150dp"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="@dimen/common_spacing"
+        android:layout_marginTop="@dimen/common_spacing"
+        android:background="@android:color/transparent"
+        android:visibility="gone" />
 
-        <ImageView
-            android:id="@+id/home_activity_action_bar_left_setting"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/common_spacing_triple"
-            android:background="@drawable/ic_setting" />
-    </RelativeLayout>
-
-    <!-- action bar in center page -->
-
-    <RelativeLayout
-        android:id="@+id/rl_actionbar_center"
-        android:layout_width="match_parent"
+    <ImageView
+        android:id="@+id/home_activity_action_bar_center_img_profile"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical" >
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/common_spacing_triple"
+        android:background="@drawable/selector_home_action_bar_profile" />
 
-        <ImageView
-            android:id="@+id/home_activity_action_bar_center_img_search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/common_spacing_triple"
-            android:background="@drawable/selector_home_actoin_bar_search" />
-
-        <RelativeLayout
-            android:id="@+id/home_activity_action_bar_center_title_rl"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginBottom="@dimen/common_spacing"
-            android:layout_marginTop="@dimen/common_spacing" >
-
-            <com.threemin.view.CustomSpinner
-                android:id="@+id/home_activity_action_bar_center_title"
-                android:layout_width="150dp"
-                android:layout_height="match_parent"
-                android:layout_centerInParent="true"
-                android:background="@android:color/transparent"
-                android:dividerHeight="0dp"
-                android:dropDownVerticalOffset="-3dp"
-                android:dropDownWidth="600dp"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/textsize_large" />
-
-            <Button
-                android:id="@+id/home_activity_action_bar_center_btn_title"
-                android:layout_width="150dp"
-                android:layout_height="match_parent"
-                android:layout_centerInParent="true"
-                android:background="@android:color/transparent"
-                android:visibility="gone" />
-
-            <ImageView
-                android:id="@+id/home_activity_action_bar_center_title_arrow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/common_spacing"
-                android:background="@drawable/selector_home_action_bar_spn"
-                android:visibility="invisible" />
-        </RelativeLayout>
-
-        <Button
-            android:id="@+id/home_activity_action_bar_center_btn_title"
-            android:layout_width="150dp"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true"
-            android:layout_marginBottom="@dimen/common_spacing"
-            android:layout_marginTop="@dimen/common_spacing"
-            android:background="@android:color/transparent"
-            android:visibility="gone" />
-
-        <ImageView
-            android:id="@+id/home_activity_action_bar_center_img_profile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/common_spacing_triple"
-            android:background="@drawable/selector_home_action_bar_profile" />
-    </RelativeLayout>
-
-    <!-- action bar in right page -->
-
-    <RelativeLayout
-        android:id="@+id/rl_actionbar_right"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:visibility="gone" >
-
-        <ImageView
-            android:id="@+id/home_activity_action_bar_right_close"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/common_spacing"
-            android:background="@drawable/ic_close" />
-
-        <TextView
-            android:id="@+id/home_activity_action_bar_right_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:text="RIGHT TITLE"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/textsize_large" />
-    </RelativeLayout>
-
-</FrameLayout>
+</RelativeLayout>

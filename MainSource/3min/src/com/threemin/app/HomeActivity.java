@@ -6,7 +6,6 @@ import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -23,6 +22,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.facebook.Session;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -32,6 +32,7 @@ import com.threemin.fragment.HomeFragment;
 import com.threemin.fragment.LeftFragment;
 import com.threemin.fragment.RightFragment;
 import com.threemin.model.CategoryModel;
+import com.threemin.model.FilterModel;
 import com.threemin.view.CustomSpinner;
 import com.threemin.webservice.CategoryWebservice;
 import com.threemins.R;
@@ -39,14 +40,9 @@ import com.threemins.R;
 public class HomeActivity extends FragmentActivity {
 	
 	//action bar widgets
-	RelativeLayout mRLActionbarLeft, mRLActionbarCenter, mRLActionbarRight;
-	ImageView mImgActionbarLeftClose, mImgActionbarRightClose;
 	ImageView mImgActionbarSearch, mImgActionbarProfile;
-	
-	RelativeLayout mRLActionbarCenterTitle;
 	CustomSpinner mSpnActionbarCenterTitle;
 	Button mBtnActionbarCenterTitle;
-	ImageView mImgActionbarCenterTitleArrow;
 	
 	
 	
@@ -58,10 +54,16 @@ public class HomeActivity extends FragmentActivity {
 	ViewPager mViewPagerMainContent;
 	PagerAdapter mViewPagerAdapter;
 	CategoryAdapter categoryAdapter;
+	int currentPage, prevPage;
+	
+	//filter:
+	public static final int POPULAR_ID = R.id.fm_filter_rl_popular;
+	public static final int LOWEST_ID = R.id.fm_filter_rl_lowest;
+	public static final int HIGHEST_ID = R.id.fm_filter_rl_highest;
+	public static final int RECENT_ID = R.id.fm_filter_rl_recent;
+	public static final int NEAREST_ID = R.id.fm_filter_rl_nearest;
 
 	Context mContext;
-	private static final int REQUEST_UPLOAD = 3;
-
 	//right drawer
 	RelativeLayout layoutFilter;
 
@@ -75,15 +77,14 @@ public class HomeActivity extends FragmentActivity {
 		setContentView(R.layout.activity_home);
 		mContext = this;
 		
-//		initAvatar();
 		mGoogleApiClient = new GoogleApiClient.Builder(this).addApi(Plus.API, null).addScope(Plus.SCOPE_PLUS_PROFILE)
 				.build();
 		mGoogleApiClient.connect();
 		initActionBar();
-//		homeFragment=new HomeFragment();
-//		getFragmentManager().beginTransaction().replace(R.id.content_layout, homeFragment).commit();
 
 		//view pager implementation
+		currentPage = PAGE_CENTER;
+		prevPage = -1;
 		homeFragment=new HomeFragment();
 		leftFragment=new LeftFragment();
 		rightFragment = new RightFragment();
@@ -94,7 +95,6 @@ public class HomeActivity extends FragmentActivity {
 		mViewPagerMainContent.setCurrentItem(PAGE_CENTER);
 		
 		mSpnActionbarCenterTitle.setSelected(true);
-		mImgActionbarCenterTitleArrow.setSelected(true);
 		mImgActionbarProfile.setSelected(false);
 		mImgActionbarSearch.setSelected(false);
 		
@@ -102,50 +102,7 @@ public class HomeActivity extends FragmentActivity {
 			
 			@Override
 			public void onPageSelected(int position) {
-				switch (position) {
-				case PAGE_LEFT:
-					mImgActionbarSearch.setSelected(true);
-					
-					mSpnActionbarCenterTitle.setSelected(false);
-					mImgActionbarCenterTitleArrow.setSelected(false);
-					categoryAdapter.notifyDataSetChanged();
-					mSpnActionbarCenterTitle.setEnabled(false);
-					mRLActionbarCenterTitle.setEnabled(false);
-					mBtnActionbarCenterTitle.setVisibility(View.VISIBLE);
-					
-					mImgActionbarProfile.setSelected(false);
-					break;
-					
-				case PAGE_CENTER:				
-					mImgActionbarSearch.setSelected(false);
-					
-					mSpnActionbarCenterTitle.setSelected(true);
-					mImgActionbarCenterTitleArrow.setSelected(true);
-					categoryAdapter.notifyDataSetChanged();
-					mSpnActionbarCenterTitle.setEnabled(true);
-					mRLActionbarCenterTitle.setEnabled(true);
-					mBtnActionbarCenterTitle.setVisibility(View.GONE);
-					
-					mImgActionbarProfile.setSelected(false);
-					break;
-					
-				case PAGE_RIGHT:
-					mImgActionbarSearch.setSelected(false);
-					
-					mSpnActionbarCenterTitle.setSelected(false);
-					mImgActionbarCenterTitleArrow.setSelected(false);
-					categoryAdapter.notifyDataSetChanged();
-					mSpnActionbarCenterTitle.setEnabled(false);
-					mRLActionbarCenterTitle.setEnabled(false);
-					mBtnActionbarCenterTitle.setVisibility(View.VISIBLE);
-					
-					mImgActionbarProfile.setSelected(true);
-					break;
-
-				default:
-					break;
-				}
-				
+				doPageChange(position);
 			}
 			
 			@Override
@@ -161,7 +118,75 @@ public class HomeActivity extends FragmentActivity {
 		
 	}
 
+	public void doPageChange(int position) {
+		prevPage  = currentPage;
+		currentPage = position;
+		switch (position) {
+		case PAGE_LEFT:
+			mImgActionbarSearch.setSelected(true);
+			setSpinnerSelected(false);
+			mImgActionbarProfile.setSelected(false);
+			break;
 
+		case PAGE_CENTER:
+			mImgActionbarSearch.setSelected(false);
+			setSpinnerSelected(true);
+			mImgActionbarProfile.setSelected(false);
+			
+			if (prevPage == PAGE_LEFT) {
+				doFilter();
+			}
+			
+			break;
+
+		case PAGE_RIGHT:
+			mImgActionbarSearch.setSelected(false);
+			setSpinnerSelected(false);
+			mImgActionbarProfile.setSelected(true);
+			break;
+
+		default:
+			Log.i("tructran", "Page position: " + position);
+			break;
+		}
+	}
+	
+	public void doFilter() {
+		FilterModel model = leftFragment.getFilterModel();
+		switch (model.getFilterID()) {
+		case POPULAR_ID:
+			break;
+
+		case RECENT_ID:
+			break;
+
+		case LOWEST_ID:
+			break;
+
+		case HIGHEST_ID:
+			break;
+
+		case NEAREST_ID:
+			break;
+
+		default:
+			break;
+		}
+	}
+
+	public void setSpinnerSelected(boolean isSelected) {
+		if (isSelected) {
+			mSpnActionbarCenterTitle.setSelected(true);
+			categoryAdapter.notifyDataSetChanged();
+			mSpnActionbarCenterTitle.setEnabled(true);
+			mBtnActionbarCenterTitle.setVisibility(View.GONE);
+		} else {
+			mSpnActionbarCenterTitle.setSelected(false);
+			categoryAdapter.notifyDataSetChanged();
+			mSpnActionbarCenterTitle.setEnabled(false);
+			mBtnActionbarCenterTitle.setVisibility(View.VISIBLE);
+		}
+	}
 
 	private void initActionBar() {
 		ActionBar bar = getActionBar();
@@ -171,29 +196,6 @@ public class HomeActivity extends FragmentActivity {
 		bar.setDisplayShowCustomEnabled(true);
 		bar.setDisplayShowHomeEnabled(false);
 		bar.setDisplayShowTitleEnabled(false);
-		
-		mRLActionbarLeft = (RelativeLayout) findViewById(R.id.rl_actionbar_left);
-		mRLActionbarCenter = (RelativeLayout) findViewById(R.id.rl_actionbar_center);
-		mRLActionbarRight = (RelativeLayout) findViewById(R.id.rl_actionbar_right);
-		
-		mImgActionbarLeftClose = (ImageView) findViewById(R.id.home_activity_action_bar_left_close);
-		mImgActionbarRightClose = (ImageView) findViewById(R.id.home_activity_action_bar_right_close);
-		mImgActionbarLeftClose.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				mViewPagerMainContent.setCurrentItem(PAGE_CENTER,true);
-			}
-		});
-		
-		mImgActionbarRightClose.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				mViewPagerMainContent.setCurrentItem(PAGE_CENTER,true);
-			}
-		});
-		
 		
 		//action bar center
 		mImgActionbarProfile = (ImageView) findViewById(R.id.home_activity_action_bar_center_img_profile);
@@ -210,7 +212,7 @@ public class HomeActivity extends FragmentActivity {
 			
 			@Override
 			public void onClick(View v) {
-				mViewPagerMainContent.setCurrentItem(PAGE_LEFT);
+				mViewPagerMainContent.setCurrentItem(PAGE_LEFT,true);
 			}
 		});
 		
@@ -220,6 +222,7 @@ public class HomeActivity extends FragmentActivity {
 
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+				
 				CategoryModel categoryModel=(CategoryModel) parent.getItemAtPosition(position);
 				if(categoryModel.getName().equals(getString(R.string.browse))){
 					onSwitchCate(null);
@@ -227,7 +230,6 @@ public class HomeActivity extends FragmentActivity {
 				onSwitchCate(categoryModel);
 				}
 				categoryAdapter.swapView(position);
-//				mSpnActionbarCenterTitle.setSelected(false);
 			}
 
 			@Override
@@ -241,26 +243,12 @@ public class HomeActivity extends FragmentActivity {
 			
 			@Override
 			public void onClick(View v) {
-				mViewPagerMainContent.setCurrentItem(PAGE_CENTER);
-				mSpnActionbarCenterTitle.setSelected(true);
-				categoryAdapter.notifyDataSetChanged();
-				mSpnActionbarCenterTitle.setEnabled(true);
-				mRLActionbarCenterTitle.setEnabled(true);
-				mBtnActionbarCenterTitle.setVisibility(View.GONE);
+				mViewPagerMainContent.setCurrentItem(PAGE_CENTER,true);
+				setSpinnerSelected(true);
 			}
 		});
 		
-		mImgActionbarCenterTitleArrow = (ImageView) findViewById(R.id.home_activity_action_bar_center_title_arrow);
-		
-		mRLActionbarCenterTitle = (RelativeLayout) findViewById(R.id.home_activity_action_bar_center_title_rl);
 		disableSpinnerBackground();
-		mRLActionbarCenterTitle.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				mSpnActionbarCenterTitle.performClick();
-			}
-		});
 		
 	}
 
@@ -365,12 +353,13 @@ public class HomeActivity extends FragmentActivity {
 				 categoryAdapter = new CategoryAdapter(HomeActivity.this, result,true, mSpnActionbarCenterTitle);
 				mSpnActionbarCenterTitle.setAdapter(categoryAdapter);
 				mSpnActionbarCenterTitle.setSelected(true);
-				mImgActionbarCenterTitleArrow.setVisibility(View.VISIBLE);
+				mSpnActionbarCenterTitle.setBackgroundResource(R.drawable.selector_home_action_bar_spn_bg);
 			}
 			super.onPostExecute(result);
 		}
 	}
 	
+	//use to hide the spinner border when the  drop down list is closed
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus) {
 		super.onWindowFocusChanged(hasFocus);
@@ -393,11 +382,7 @@ public class HomeActivity extends FragmentActivity {
 	}
 	
 	//functions to set the background of spinner
-	public void enableSpinnerBackground() {
-		mRLActionbarCenterTitle.setBackgroundResource(R.drawable.bt_category);
-	}
-	
 	public void disableSpinnerBackground() {
-		mRLActionbarCenterTitle.setBackgroundColor(Color.TRANSPARENT);
+		mSpnActionbarCenterTitle.setBackgroundResource(R.drawable.selector_home_action_bar_spn_bg);
 	}
 }

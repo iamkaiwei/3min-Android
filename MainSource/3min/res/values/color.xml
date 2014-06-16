@@ -15,6 +15,7 @@
     <!-- inflater_header.xml -->
     <color name="inflater_header_text_color">#71706F</color>
     <color name="divider_color">#e4e4e4</color>
+    
     <!-- inflater_body_product.xml -->
     <color name="inflater_body_product_tv_name_text_color">#8B8A89</color>
     <color name="inflater_body_product_tv_like_text_color">#71706F</color>
@@ -28,7 +29,7 @@
     <color name="activity_chat_text_color_grey">#AAAAAA</color>
     
     <!-- home action bar -->
-    <color name="home_action_bar_text_color_enable">#111111</color>
-    <color name="home_action_bar_text_color_disable">#FFA097</color>
+    <color name="home_action_bar_text_color_enable">#ffffff</color> <!-- white no transparent -->
+    <color name="home_action_bar_text_color_disable">#66ffffff</color> <!-- white transparent 40% -->
     
 </resources>

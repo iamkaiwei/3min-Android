@@ -39,7 +39,8 @@ public class CustomSpinner extends Spinner {
 	public boolean performClick() {
 		Log.i("tructran", "" + "performClick");
 		this.isDropDownShown = true;
-		((View)getParent()).setBackgroundResource(R.drawable.bt_category);
+//		((View)getParent()).setBackgroundResource(R.drawable.bt_category);
+		setBackgroundResource(R.drawable.bg_spn_border_enable_arrow_enable);
 		return super.performClick();
 	}
 

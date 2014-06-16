@@ -78,5 +78,51 @@
         <item name="android:background">@drawable/bt_login_facebook</item>
         <item name="android:textSize">0dp</item>
     </style>
+    
+    <!-- fragment filter -->
+    <style name="fm_filter_row_layout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/fm_filter_row_height</item>
+    </style>
+    
+    <style name="fm_filter_textview">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">@dimen/common_spacing_triple</item>
+        <item name="android:layout_alignParentLeft">true</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:textSize">@dimen/textsize_avatar</item>
+    </style>
+    
+    <style name="fm_filter_imageview">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginRight">@dimen/common_spacing_triple</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:src">@drawable/ic_ticked</item>
+        <item name="android:visibility">invisible</item>
+    </style>
+    
+    <style name="fm_filter_divider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/background_grey</item>
+    </style>
+    
+    <style name="fm_filter_edittext">
+        <item name="android:layout_width">@dimen/fm_filter_et_width</item>
+        <item name="android:layout_height">@dimen/fm_filter_et_height</item>
+        <item name="android:background">@drawable/background_fm_filter_et</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_marginRight">@dimen/common_spacing_triple</item>
+        <item name="android:gravity">right|center_vertical</item>
+        <item name="android:paddingLeft">@dimen/common_spacing</item>
+        <item name="android:paddingRight">@dimen/common_spacing</item>
+        <item name="android:textSize">@dimen/textsize_avatar</item>
+        <item name="android:inputType">number</item>
+        <item name="android:singleLine">true</item>
+    </style>
 
 </resources>

@@ -23,7 +23,6 @@ public class CategoryAdapter extends BaseAdapter implements SpinnerAdapter {
 
 	Context mContext;
 	List<CategoryModel> data;
-	OnClickListener onLogout;
 	int selectedCate;
 	boolean isSpinner;
 	Spinner spn;
@@ -36,9 +35,6 @@ public class CategoryAdapter extends BaseAdapter implements SpinnerAdapter {
 		this.spn = spn;
 	}
 
-	public void setOnLogout(OnClickListener onLogout) {
-		this.onLogout = onLogout;
-	}
 
 	@Override
 	public int getCount() {
@@ -68,11 +64,12 @@ public class CategoryAdapter extends BaseAdapter implements SpinnerAdapter {
 				
 			}
 			TextView tvName = (TextView) convertView.findViewById(R.id.inflater_category_spinner_tv);
-			if (spn.isSelected()) {
-				tvName.setTextColor(mContext.getResources().getColor(android.R.color.white));
-			} else {
-				tvName.setTextColor(mContext.getResources().getColor(R.color.home_action_bar_text_color_disable));
-			}
+//			if (spn.isSelected()) {
+//				tvName.setTextColor(mContext.getResources().getColor(android.R.color.white));
+//			} else {
+//				tvName.setTextColor(mContext.getResources().getColor(R.color.home_action_bar_text_color_disable));
+//			}
+			tvName.setSelected(spn.isSelected());
 			tvName.setText(data.get(position).getName());
 			return convertView;
 		} else {
