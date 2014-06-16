@@ -178,12 +178,11 @@ public class HomeActivity extends FragmentActivity {
 		
 		mImgActionbarLeftClose = (ImageView) findViewById(R.id.home_activity_action_bar_left_close);
 		mImgActionbarRightClose = (ImageView) findViewById(R.id.home_activity_action_bar_right_close);
-		
 		mImgActionbarLeftClose.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				mViewPagerMainContent.setCurrentItem(PAGE_CENTER);
+				mViewPagerMainContent.setCurrentItem(PAGE_CENTER,true);
 			}
 		});
 		
@@ -191,7 +190,7 @@ public class HomeActivity extends FragmentActivity {
 
 			@Override
 			public void onClick(View v) {
-				mViewPagerMainContent.setCurrentItem(PAGE_CENTER);
+				mViewPagerMainContent.setCurrentItem(PAGE_CENTER,true);
 			}
 		});
 		
@@ -202,7 +201,7 @@ public class HomeActivity extends FragmentActivity {
 			
 			@Override
 			public void onClick(View v) {
-				mViewPagerMainContent.setCurrentItem(PAGE_RIGHT);
+				mViewPagerMainContent.setCurrentItem(PAGE_RIGHT,true);
 			}
 		});
 		
