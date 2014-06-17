@@ -107,7 +107,7 @@
         </activity>
         <activity
             android:name="com.threemin.app.ListOfferActivty"
-            android:label="@string/title_activity_detail"
+            android:label="@string/offer"
             android:screenOrientation="portrait"
             android:theme="@style/CustomActionBarTheme" >
         </activity>

@@ -85,5 +85,7 @@
     <string name="fm_filter_price_range">PRICE RANGE</string>
     <string name="fm_filter_min">Minimum</string>
     <string name="fm_filter_max">Maximum</string>
+    
+    <string name="offer">Offers</string>
 
 </resources>
