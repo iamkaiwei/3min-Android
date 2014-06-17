@@ -5,16 +5,21 @@ import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.threemin.app.ChatToBuyActivity;
 import com.threemin.app.DetailActivity;
 import com.threemin.app.PostOfferActivity;
+import com.threemin.model.Conversation;
 import com.threemin.model.ImageModel;
 import com.threemin.model.ProductModel;
 import com.threemin.model.UserModel;
 import com.threemin.uti.CommonConstant;
 import com.threemin.uti.PreferenceHelper;
+import com.threemin.webservice.ConversationWebService;
 import com.threemin.webservice.UserWebService;
 import com.threemins.R;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
@@ -34,11 +39,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class DetailFragment extends Fragment {
+	private final int SHOW_DIALOG = 1;
+	private final int HIDE_DIALOG = 2;
+	private final int REQUEST_CHECK_OFFER_EXIST = 3;
+	private final int REQUEST_GET_LIST_OFFER = 4;
 	View rootView;
 	ProductModel productModel;
 	ViewPager pager;
 	Button btnChatToBuy, btnViewOffers;
-	LinearLayout lnImgs,btnLike;
+	LinearLayout lnImgs, btnLike;
+	ProgressDialog dialog;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -99,31 +109,33 @@ public class DetailFragment extends Fragment {
 			initImage();
 			btnChatToBuy = (Button) convertView.findViewById(R.id.fragment_detail_btn_chat_to_buy);
 			UserModel currentUser = PreferenceHelper.getInstance(getActivity()).getCurrentUser();
-			
-			//if current user is not the owner of this product
-			if (currentUser.getId() != productModel.getOwner().getId()) {  
+
+			// if current user is not the owner of this product
+			if (currentUser.getId() != productModel.getOwner().getId()) {
 				btnChatToBuy.setBackgroundResource(R.drawable.bt_chat_to_buy);
 				btnChatToBuy.setOnClickListener(new OnClickListener() {
 
 					@Override
 					public void onClick(View v) {
 						// TODO Auto-generated method stub
-						String data = new Gson().toJson(productModel);
+						// String data = new Gson().toJson(productModel);
+						// // Intent intent = new Intent(getActivity(),
+						// // ChatToBuyActivity.class);
 						// Intent intent = new Intent(getActivity(),
-						// ChatToBuyActivity.class);
-						Intent intent = new Intent(getActivity(),
-								PostOfferActivity.class);
-						intent.putExtra(CommonConstant.INTENT_PRODUCT_DATA, data);
-						getActivity().startActivity(intent);
+						// PostOfferActivity.class);
+						// intent.putExtra(CommonConstant.INTENT_PRODUCT_DATA,
+						// data);
+						// getActivity().startActivity(intent);
+						checkOffer();
 					}
 				});
 			} else {
 				btnChatToBuy.setBackgroundResource(R.drawable.bt_view_offers);
 			}
-			btnLike=(LinearLayout) convertView.findViewById(R.id.btn_like);
+			btnLike = (LinearLayout) convertView.findViewById(R.id.btn_like);
 			btnLike.setSelected(productModel.isLiked());
 			btnLike.setOnClickListener(new OnClickListener() {
-				
+
 				@Override
 				public void onClick(View arg0) {
 					requestLike();
@@ -135,46 +147,95 @@ public class DetailFragment extends Fragment {
 
 	private void initImage() {
 		for (ImageModel imageModel : productModel.getImages()) {
-			ImageView imageView=new ImageView(getActivity());
-			LayoutParams params=new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-			int spacing =(int) getResources().getDimension(R.dimen.common_spacing);
+			ImageView imageView = new ImageView(getActivity());
+			LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+			int spacing = (int) getResources().getDimension(R.dimen.common_spacing);
 			imageView.setScaleType(ScaleType.CENTER_INSIDE);
-			imageView.setPadding(0,spacing, 0, spacing);
+			imageView.setPadding(0, spacing, 0, spacing);
 			lnImgs.addView(imageView);
 			UrlImageViewHelper.setUrlDrawable(imageView, imageModel.getOrigin());
 		}
 	}
 
-	private void requestLike(){
-		final String tokken=PreferenceHelper.getInstance(getActivity()).getTokken();
-		
-		
-		
+	private void requestLike() {
+		final String tokken = PreferenceHelper.getInstance(getActivity()).getTokken();
+
 		productModel.setLiked(!productModel.isLiked());
 		if (productModel.isLiked()) {
 			productModel.setLike(productModel.getLike() + 1);
 		} else {
 			productModel.setLike(productModel.getLike() - 1);
 		}
-		
 
 		if (productModel.isLiked()) {
 			btnLike.setSelected(true);
 		} else {
 			btnLike.setSelected(false);
 		}
-		
-//		mAdapter.notifyDataSetChanged();
-		Thread t=new Thread(new Runnable() {
-			
+
+		// mAdapter.notifyDataSetChanged();
+		Thread t = new Thread(new Runnable() {
+
 			@Override
 			public void run() {
-				boolean result=new UserWebService().productLike(productModel.getId(), tokken, productModel.isLiked());
-				Log.d("result", "result="+result);
+				boolean result = new UserWebService().productLike(productModel.getId(), tokken, productModel.isLiked());
+				Log.d("result", "result=" + result);
 			}
 		});
 		t.start();
 	}
 
+	Handler mHandler = new Handler() {
+		public void handleMessage(android.os.Message msg) {
+			switch (msg.what) {
+			case SHOW_DIALOG:
+				dialog = new ProgressDialog(getActivity());
+				dialog.setMessage(getString(R.string.please_wait));
+				dialog.show();
+				break;
+			case HIDE_DIALOG:
+				if (dialog != null && dialog.isShowing()) {
+					dialog.dismiss();
+				}
+				break;
+			case REQUEST_CHECK_OFFER_EXIST:
+				Conversation conversation = (Conversation) msg.obj;
+				String data = new Gson().toJson(productModel);
+				if (conversation == null || conversation.getChannel_Name() == null) {
+					Intent intent = new Intent(getActivity(), PostOfferActivity.class);
+					intent.putExtra(CommonConstant.INTENT_PRODUCT_DATA, data);
+					getActivity().startActivity(intent);
+				} else {
+					String conversationData = new Gson().toJson(conversation);
+					Intent intent = new Intent(getActivity(), ChatToBuyActivity.class);
+					intent.putExtra(CommonConstant.INTENT_PRODUCT_DATA, data);
+					intent.putExtra(CommonConstant.INTENT_CONVERSATION_DATA, conversationData);
+					getActivity().startActivity(intent);
+				}
+				break;
+			default:
+				break;
+			}
+		};
+	};
 
+	private void checkOffer() {
+		mHandler.sendEmptyMessage(SHOW_DIALOG);
+		Thread t = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				String tokken = PreferenceHelper.getInstance(getActivity()).getTokken();
+				int product_id = productModel.getId();
+				int to = productModel.getOwner().getId();
+				Conversation conversation = new ConversationWebService().getConversation(tokken, product_id, to);
+				Message msg = new Message();
+				msg.what = REQUEST_CHECK_OFFER_EXIST;
+				msg.obj = conversation;
+				mHandler.sendEmptyMessage(HIDE_DIALOG);
+				mHandler.sendMessage(msg);
+			}
+		});
+		t.start();
+	}
 }

@@ -1,15 +1,6 @@
 package com.threemin.app;
 
-import com.google.gson.Gson;
-import com.threemin.fragment.DetailFragment;
-import com.threemin.fragment.PostOfferFragment;
-import com.threemin.model.ProductModel;
-import com.threemin.uti.CommonConstant;
-import com.threemin.uti.CommonUti;
-import com.threemins.R;
-
 import android.app.ActionBar;
-import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -22,17 +13,22 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class PostOfferActivity extends FragmentActivity {
+import com.threemin.fragment.PostOfferFragment;
+import com.threemin.uti.CommonUti;
+import com.threemins.R;
 
+public class PostOfferActivity extends FragmentActivity {
+	PostOfferFragment postOfferFragment;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_detail);
 		
 		initActionBar();
-
+		
 		if (savedInstanceState == null) {
-			getSupportFragmentManager().beginTransaction().add(R.id.container, new PostOfferFragment()).commit();
+			postOfferFragment=new PostOfferFragment();
+			getSupportFragmentManager().beginTransaction().add(R.id.container, postOfferFragment).commit();
 		}
 	}
 
@@ -66,6 +62,7 @@ public class PostOfferActivity extends FragmentActivity {
 				onBackPressed();
 				return true;
 			case R.id.action_submit:
+				postOfferFragment.postOffer();
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);

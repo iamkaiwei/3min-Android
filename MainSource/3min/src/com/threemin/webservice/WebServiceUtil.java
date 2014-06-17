@@ -32,8 +32,6 @@ public class WebServiceUtil {
 		conn.setDoOutput(true);
 		conn.setDoInput(true);
 		conn.setRequestProperty("Content-Type", "application/json");
-		conn.setRequestProperty("Content-Length", ""
-				+ jo.toString().length());
 
 		OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
 		wr.write(jo.toString());

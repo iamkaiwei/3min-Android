@@ -39,8 +39,10 @@
         android:text="@string/postoffer_start_chatting"
         android:textColor="@color/common_grey"
         android:textSize="@dimen/textsize_large"
-        threemins:customTypeface="@string/font_regular" >
+        threemins:customTypeface="@string/font_regular" 
+        android:inputType="numberDecimal">
     </com.lanna.droidlib.view.CustomEditText>
+
 
     <FrameLayout
         android:id="@+id/view_change"

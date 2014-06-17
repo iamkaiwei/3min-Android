@@ -10,6 +10,9 @@ public class CommonConstant {
 	public static final String KEY_GRANT_TYPE = "grant_type";
 	public static final String KEY_ACCESS_TOKEN = "access_token";
 	public static final String KEY_USER = "user";
+	public static final String KEY_PRODUCT_ID = "product_id";
+	public static final String KEY_TO = "to";
+	public static final String KEY_OFFER = "offer";
 
 	// Facebook token or Google Plus Token???
 	public static final int TYPE_FACEBOOK_TOKEN = 0;
@@ -25,5 +28,6 @@ public class CommonConstant {
 	public static final String CURRENCY = " VND";
 
 	public static final String INTENT_PRODUCT_DATA = "productData";
+	public static final String INTENT_CONVERSATION_DATA="conversationData";
 	public static final String INTENT_CATEGORY_DATA = "cateData";
 }
