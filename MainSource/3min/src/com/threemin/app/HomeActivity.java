@@ -132,6 +132,7 @@ public class HomeActivity extends FragmentActivity {
 			mImgActionbarSearch.setSelected(false);
 			setSpinnerSelected(true);
 			mImgActionbarProfile.setSelected(false);
+			leftFragment.hideKeyboard();
 			
 			if (prevPage == PAGE_LEFT) {
 				doFilter();
@@ -143,6 +144,7 @@ public class HomeActivity extends FragmentActivity {
 			mImgActionbarSearch.setSelected(false);
 			setSpinnerSelected(false);
 			mImgActionbarProfile.setSelected(true);
+			leftFragment.hideKeyboard();
 			break;
 
 		default:

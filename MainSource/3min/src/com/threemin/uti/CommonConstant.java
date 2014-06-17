@@ -25,5 +25,6 @@ public class CommonConstant {
 	public static final String CURRENCY = " VND";
 
 	public static final String INTENT_PRODUCT_DATA = "productData";
+	public static final String INTENT_PRODUCT_OFFER = "productOffer";
 	public static final String INTENT_CATEGORY_DATA = "cateData";
 }

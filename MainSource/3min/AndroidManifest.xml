@@ -89,7 +89,7 @@
             android:name="com.threemin.app.ChatToBuyActivity"
             android:screenOrientation="portrait"
             android:theme="@style/CustomActionBarTheme"
-            android:windowSoftInputMode="stateHidden|adjustResize" >
+            android:windowSoftInputMode="stateHidden|adjustPan" >
         </activity>
         <activity
             android:name="com.threemin.app.UserLikeProductActivity"

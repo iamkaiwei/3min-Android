@@ -84,4 +84,12 @@ public class PostOfferFragment extends Fragment {
 		rotateImg = (ImageView) rootView.findViewById(R.id.rotate_img);
 		changeView = rootView.findViewById(R.id.view_change);
 	}
+	
+	public ProductModel getProductModel() {
+		return mProductModel;
+	}
+	
+	public String getOffer() {
+		return price.getText().toString();
+	}
 }

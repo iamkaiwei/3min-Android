@@ -23,6 +23,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class PostOfferActivity extends FragmentActivity {
+	
+	PostOfferFragment postOfferFragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +34,8 @@ public class PostOfferActivity extends FragmentActivity {
 		initActionBar();
 
 		if (savedInstanceState == null) {
-			getSupportFragmentManager().beginTransaction().add(R.id.container, new PostOfferFragment()).commit();
+			postOfferFragment = new PostOfferFragment();
+			getSupportFragmentManager().beginTransaction().add(R.id.container, postOfferFragment).commit();
 		}
 	}
 
@@ -66,12 +69,24 @@ public class PostOfferActivity extends FragmentActivity {
 				onBackPressed();
 				return true;
 			case R.id.action_submit:
+				Intent intent = new Intent(PostOfferActivity.this, ChatToBuyActivity.class);
+				ProductModel model = postOfferFragment.getProductModel();
+				String product = new Gson().toJson(model);
+				String offer = postOfferFragment.getOffer();
+				intent.putExtra(CommonConstant.INTENT_PRODUCT_DATA, product);
+				intent.putExtra(CommonConstant.INTENT_PRODUCT_OFFER, offer);
+				startActivity(intent);
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
 			}
 		}
 		
+		private Gson Gson() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
 		@Override
 		public boolean onCreateOptionsMenu(Menu menu) {
 			MenuInflater inflater = getMenuInflater();
