@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:threemins="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/common_spacing" >
+    
+	<LinearLayout 
+	    android:orientation="horizontal"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentTop="true"
+	    android:layout_alignParentLeft="true"
+	    android:paddingLeft="@dimen/common_spacing"
+	    android:paddingTop="@dimen/common_spacing_double">
+	    
+	    <com.meg7.widget.SvgImageView
+            android:id="@+id/layout_chat_theirs_avatar"
+            android:layout_width="@dimen/inflater_header_grid_avatar_size"
+            android:layout_height="@dimen/inflater_header_grid_avatar_size"
+            android:layout_gravity="center_vertical"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_launcher"
+            threemins:svg_raw_resource="@raw/shape_avatar" />
+	    
+	    <com.lanna.droidlib.view.CustomTextView
+	        android:id="@+id/layout_chat_theirs_tv_time_chat"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="1 day ago"
+	        android:layout_marginLeft="@dimen/common_spacing"
+	        android:layout_gravity="center_vertical"
+            android:textSize="@dimen/textsize_small"
+            android:textColor="@color/common_grey"
+            threemins:customTypeface="@string/font_regular" />
+	</LinearLayout>
+	
+	<com.lanna.droidlib.view.CustomTextView
+	    android:id="@+id/layout_chat_theirs_tv_chat"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:background="@drawable/bg_chat_theirs"
+	    android:layout_alignParentTop="true"
+	    android:layout_alignParentLeft="true"
+	    android:layout_marginTop="@dimen/inflater_header_grid_avatar_size"
+        android:textSize="@dimen/textsize_medium"
+        threemins:customTypeface="@string/font_regular" />
+</RelativeLayout>

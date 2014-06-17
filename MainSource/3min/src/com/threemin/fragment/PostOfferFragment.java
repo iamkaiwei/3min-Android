@@ -10,18 +10,16 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.animation.Animation.AnimationListener;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.threemin.app.ChatToBuyActivity;
-import com.threemin.app.PostOfferActivity;
 import com.threemin.model.Conversation;
 import com.threemin.model.ProductModel;
 import com.threemin.uti.CommonConstant;
@@ -158,5 +156,12 @@ public class PostOfferFragment extends Fragment {
 			});
 			t.start();
 		}
+	}
+	public ProductModel getProductModel() {
+		return mProductModel;
+	}
+	
+	public String getOffer() {
+		return price.getText().toString();
 	}
 }

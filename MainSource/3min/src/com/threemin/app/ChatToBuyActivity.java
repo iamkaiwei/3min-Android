@@ -1,5 +1,7 @@
 package com.threemin.app;
 
+import java.util.ArrayList;
+
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.res.Resources;
@@ -14,6 +16,8 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
+import com.threemin.adapter.MessageAdapter;
+import com.threemin.model.MessageModel;
 import com.threemin.model.ProductModel;
 import com.threemin.uti.CommonConstant;
 import com.threemin.uti.CommonUti;
@@ -29,9 +33,14 @@ public class ChatToBuyActivity extends Activity {
 	TextView mTvLocation;
 	ImageView mImgSelling;
 	TextView mTvChatContentLabel;
+	
+	
 	ListView mLvChatContent;
+	ArrayList<MessageModel> mListMessage;
+	MessageAdapter mMessageAdapter;
 	
 	ProductModel mProductModel;
+	String mOfferedPrice;
 	
 	
 	@Override
@@ -54,14 +63,29 @@ public class ChatToBuyActivity extends Activity {
 		 mImgSelling = (ImageView) findViewById(R.id.activity_chat_selling);
 		 mTvChatContentLabel = (TextView) findViewById(R.id.activity_chat_tv_chat_content_label);
 		 mLvChatContent = (ListView) findViewById(R.id.activity_chat_lv_chat_content);
+		 
+		 initListview();
 	}
 	
+	//demo data
+	private void initListview() {
+		mListMessage = new ArrayList<MessageModel>();
+		MessageModel temp1 = new MessageModel("Hello,  how are you?", true);
+		MessageModel temp2 = new MessageModel("I'm fine, thanks", false);
+		mListMessage.add(temp1);
+		mListMessage.add(temp2);
+		mMessageAdapter = new MessageAdapter(this, mListMessage);
+		mLvChatContent.setAdapter(mMessageAdapter);
+	}
+
 	private void initData() {
 		mProductModel = new Gson().fromJson(this.getIntent().getStringExtra(CommonConstant.INTENT_PRODUCT_DATA), ProductModel.class);
+		mOfferedPrice = this.getIntent().getStringExtra(CommonConstant.INTENT_PRODUCT_OFFER);
 		
 		UrlImageViewHelper.setUrlDrawable(mImgProduct, mProductModel.getImages().get(0).getOrigin());
 		mTvProductName.setText(mProductModel.getName());
-		mTvProductPrice.setText(mProductModel.getPrice());
+		mTvProductPrice.setText(mProductModel.getPrice() + CommonConstant.CURRENCY);
+		mTvOfferedPrice.setText(mOfferedPrice + CommonConstant.CURRENCY);
 		mTvLocation.setText(mProductModel.getVenueName());
 		mTvChatContentLabel.setText(getString(R.string.activity_chat_chat_content_label) + " " + mProductModel.getOwner().getFullName());
 		getActionBar().setTitle(mProductModel.getOwner().getFullName());

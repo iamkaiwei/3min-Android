@@ -27,7 +27,7 @@ public class PostOfferActivity extends FragmentActivity {
 		initActionBar();
 		
 		if (savedInstanceState == null) {
-			postOfferFragment=new PostOfferFragment();
+			postOfferFragment = new PostOfferFragment();
 			getSupportFragmentManager().beginTransaction().add(R.id.container, postOfferFragment).commit();
 		}
 	}
@@ -68,7 +68,7 @@ public class PostOfferActivity extends FragmentActivity {
 				return super.onOptionsItemSelected(item);
 			}
 		}
-		
+
 		@Override
 		public boolean onCreateOptionsMenu(Menu menu) {
 			MenuInflater inflater = getMenuInflater();

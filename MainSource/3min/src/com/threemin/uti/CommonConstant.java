@@ -28,6 +28,12 @@ public class CommonConstant {
 	public static final String CURRENCY = " VND";
 
 	public static final String INTENT_PRODUCT_DATA = "productData";
-	public static final String INTENT_CONVERSATION_DATA="conversationData";
+	public static final String INTENT_CONVERSATION_DATA = "conversationData";
+	public static final String INTENT_PRODUCT_OFFER = "productOffer";
 	public static final String INTENT_CATEGORY_DATA = "cateData";
+
+	public static final String PUSHER_CHAT_EVENT_NAME = "client-chat";
+	public static final String PUSHER_CHAT_EVENT_TYPING = "client-typing";
+	public static final String PUSHER_CHAT_EVENT_UNTYPING = "client-untyping";
+	public static final String PUSHER_KEY = "ce3898cbc04d99f952cd";
 }

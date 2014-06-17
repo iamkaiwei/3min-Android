@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.threemin.app.HomeActivity;
 import com.threemin.model.FilterModel;
+import com.threemin.uti.CommonUti;
 import com.threemins.R;
 
 public class LeftFragment extends Fragment implements OnClickListener {
@@ -22,6 +23,9 @@ public class LeftFragment extends Fragment implements OnClickListener {
 	public static final String FONT_REGULAR = "OpenSans-Regular.ttf";
 	public static final String FONT_BOLD = "OpenSans-Bold.ttf";
 	public static final int FILTER_ID_NULL = -1;
+	
+	public  Typeface typeface;
+	public  Typeface typeface_disable;
 	
 	EditText etSearch, etMinPrice, etMaxPrice;
 	
@@ -37,6 +41,8 @@ public class LeftFragment extends Fragment implements OnClickListener {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_filter, container, false);
 		selectedFilterID = -1;
+		typeface = Typeface.createFromAsset(getActivity().getAssets(), FONT_BOLD);
+		typeface_disable = Typeface.createFromAsset(getActivity().getAssets(), FONT_REGULAR);
 		initWidgets(rootView);
 		
 		return rootView;
@@ -97,12 +103,11 @@ public class LeftFragment extends Fragment implements OnClickListener {
 
 	public void setUnselectedAll() {
 		
-		Typeface typeface = Typeface.createFromAsset(getActivity().getAssets(), FONT_REGULAR);
-		tvPopular.setTypeface(typeface);
-		tvRecent.setTypeface(typeface);
-		tvLowest.setTypeface(typeface);
-		tvHighest.setTypeface(typeface);
-		tvNearest.setTypeface(typeface);
+		tvPopular.setTypeface(typeface_disable);
+		tvRecent.setTypeface(typeface_disable);
+		tvLowest.setTypeface(typeface_disable);
+		tvHighest.setTypeface(typeface_disable);
+		tvNearest.setTypeface(typeface_disable);
 		
 		imgPopular.setVisibility(View.INVISIBLE);
 		imgRecent.setVisibility(View.INVISIBLE);
@@ -154,8 +159,6 @@ public class LeftFragment extends Fragment implements OnClickListener {
 	}
 	
 	public void setRowSelected(View v, TextView tv, ImageView img) {
-		Typeface typeface = Typeface.createFromAsset(getActivity().getAssets(), FONT_BOLD);
-		Typeface typeface_disable = Typeface.createFromAsset(getActivity().getAssets(), FONT_REGULAR);
 		if (v.isSelected()) {
 			v.setSelected(false);
 			selectedFilterID = FILTER_ID_NULL;
@@ -177,5 +180,11 @@ public class LeftFragment extends Fragment implements OnClickListener {
 		model.setMaxPrice(etMaxPrice.getText().toString());
 		model.setMinPrice(etMinPrice.getText().toString());
 		return model;
+	}
+	
+	public void hideKeyboard() {
+		CommonUti.hideKeyboard(etMaxPrice, getActivity());
+		CommonUti.hideKeyboard(etMinPrice, getActivity());
+		CommonUti.hideKeyboard(etSearch, getActivity());
 	}
 }
