@@ -13,7 +13,7 @@ public class ConversationWebService {
 
 	public Conversation getConversation(String tokken, int product_id, int to) {
 		String url = WebserviceConstant.CONVERSATION_EXIST + "?" + CommonConstant.KEY_ACCESS_TOKEN + "=" + tokken + "&"
-				+ CommonConstant.KEY_PRODUCT_ID + "=" + product_id + "&"+CommonConstant.KEY_TO + "=" + to;
+				+ CommonConstant.KEY_PRODUCT_ID + "=" + product_id + "&" + CommonConstant.KEY_TO + "=" + to;
 		Log.d("conversation", url);
 		try {
 			String result = WebServiceUtil.getData(url);
@@ -41,5 +41,18 @@ public class ConversationWebService {
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	public String getDetailConversation(String tokken, int conversationId) {
+		String url = WebserviceConstant.CONVERSATION_GET_DETAIL + conversationId + ".json?"
+				+ CommonConstant.KEY_ACCESS_TOKEN + "=" + tokken;
+		try {
+			String result = WebServiceUtil.getData(url);
+			return result;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

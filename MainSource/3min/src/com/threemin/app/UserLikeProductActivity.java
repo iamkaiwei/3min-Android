@@ -1,6 +1,5 @@
 package com.threemin.app;
 
-import com.threemin.fragment.DetailFragment;
 import com.threemin.fragment.ListProductFragment;
 import com.threemin.uti.CommonUti;
 import com.threemins.R;

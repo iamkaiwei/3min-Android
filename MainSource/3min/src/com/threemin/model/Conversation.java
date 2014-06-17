@@ -25,7 +25,14 @@ public class Conversation {
 	private long lastest_update;
 	private String lastest_message;
 	private ProductModel product;
+	private float offer;
 	
+	public float getOffer() {
+		return offer;
+	}
+	public void setOffer(float offer) {
+		this.offer = offer;
+	}
 	public int getId() {
 		return id;
 	}
@@ -39,7 +46,8 @@ public class Conversation {
 		this.productId = productId;
 	}
 	public String getChannel_Name() {
-		return channel_Name;
+		String realChannel="presence-"+channel_Name;
+		return realChannel;
 	}
 	public void setChannel_Name(String channel_Name) {
 		this.channel_Name = channel_Name;

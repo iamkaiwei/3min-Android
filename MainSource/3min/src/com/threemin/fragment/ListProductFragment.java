@@ -2,32 +2,28 @@ package com.threemin.fragment;
 
 import java.util.List;
 
-import com.google.gson.Gson;
-import com.threemin.adapter.ProductGridAdapter;
-import com.threemin.app.DetailActivity;
-import com.threemin.fragment.HomeFragment.GetProductTaks;
-import com.threemin.model.ProductModel;
-import com.threemin.uti.CommonConstant;
-import com.threemin.uti.PreferenceHelper;
-import com.threemin.view.QuickReturnGridView;
-import com.threemin.view.QuickReturnGridView.OnItemDoubleTapLister;
-import com.threemin.webservice.ProductWebservice;
-import com.threemin.webservice.UserWebService;
-import com.threemins.R;
-
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.AdapterView;
-import android.widget.RelativeLayout;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.AdapterView;
+
+import com.google.gson.Gson;
+import com.threemin.adapter.ProductGridAdapter;
+import com.threemin.app.DetailActivity;
+import com.threemin.model.ProductModel;
+import com.threemin.uti.CommonConstant;
+import com.threemin.uti.PreferenceHelper;
+import com.threemin.view.QuickReturnGridView;
+import com.threemin.view.QuickReturnGridView.OnItemDoubleTapLister;
+import com.threemin.webservice.UserWebService;
+import com.threemins.R;
 
 public class ListProductFragment extends BaseProductFragment {
 

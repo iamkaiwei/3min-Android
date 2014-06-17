@@ -81,7 +81,7 @@
             
             <com.lanna.droidlib.view.CustomEditText
                 android:id="@+id/activity_chat_et_chat_input"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:background="@drawable/background_chat_input"
@@ -93,8 +93,18 @@
                 android:textColor="@color/common_black"
                 android:textColorHint="@color/activity_chat_text_color_grey"
                 android:textSize="@dimen/textsize_medium"
-                threemins:customTypeface="@string/font_regular" />
-            
+                threemins:customTypeface="@string/font_regular" 
+                android:layout_centerVertical="true"/>
+
+            <Button
+                android:id="@+id/button1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text="ok"
+                android:onClick="onSendChat" />
+
         </RelativeLayout>
         
         <!-- others -->

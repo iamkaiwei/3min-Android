@@ -62,5 +62,10 @@ public class MessageAdapter extends BaseAdapter {
 		tvChat.setText(mData.get(position).getMsg());
 		return convertView;
 	}
+	
+	public void addData(MessageModel messageModel){
+		mData.add(messageModel);
+		notifyDataSetChanged();
+	}
 
 }

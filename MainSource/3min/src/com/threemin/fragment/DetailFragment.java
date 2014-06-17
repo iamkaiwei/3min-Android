@@ -1,19 +1,6 @@
 package com.threemin.fragment;
 
-import com.google.gson.Gson;
-import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
-import com.threemin.app.ChatToBuyActivity;
-import com.threemin.app.DetailActivity;
-import com.threemin.app.PostOfferActivity;
-import com.threemin.model.Conversation;
-import com.threemin.model.ImageModel;
-import com.threemin.model.ProductModel;
-import com.threemin.model.UserModel;
-import com.threemin.uti.CommonConstant;
-import com.threemin.uti.PreferenceHelper;
-import com.threemin.webservice.ConversationWebService;
-import com.threemin.webservice.UserWebService;
-import com.threemins.R;
+import java.util.List;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -21,9 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.util.Log;
@@ -38,6 +23,22 @@ import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
+import com.threemin.app.ChatToBuyActivity;
+import com.threemin.app.ListOfferActivty;
+import com.threemin.app.PostOfferActivity;
+import com.threemin.model.Conversation;
+import com.threemin.model.ImageModel;
+import com.threemin.model.ProductModel;
+import com.threemin.model.UserModel;
+import com.threemin.uti.CommonConstant;
+import com.threemin.uti.PreferenceHelper;
+import com.threemin.webservice.ConversationWebService;
+import com.threemin.webservice.ProductWebservice;
+import com.threemin.webservice.UserWebService;
+import com.threemins.R;
+
 public class DetailFragment extends Fragment {
 	private final int SHOW_DIALOG = 1;
 	private final int HIDE_DIALOG = 2;
@@ -49,6 +50,8 @@ public class DetailFragment extends Fragment {
 	Button btnChatToBuy, btnViewOffers;
 	LinearLayout lnImgs, btnLike;
 	ProgressDialog dialog;
+	String conversationData;
+	List<Conversation> conversations;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -114,7 +117,7 @@ public class DetailFragment extends Fragment {
 			if (currentUser.getId() != productModel.getOwner().getId()) {
 				btnChatToBuy.setBackgroundResource(R.drawable.bt_chat_to_buy);
 				btnChatToBuy.setOnClickListener(new OnClickListener() {
-
+					
 					@Override
 					public void onClick(View v) {
 						// TODO Auto-generated method stub
@@ -130,7 +133,19 @@ public class DetailFragment extends Fragment {
 					}
 				});
 			} else {
+				checkListOffer();
 				btnChatToBuy.setBackgroundResource(R.drawable.bt_view_offers);
+				btnChatToBuy.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						String data = new Gson().toJson(productModel);
+						Intent intent = new Intent(getActivity(), ListOfferActivty.class);
+						intent.putExtra(CommonConstant.INTENT_PRODUCT_DATA, data);
+						intent.putExtra(CommonConstant.INTENT_CONVERSATION_DATA, conversationData);
+						getActivity().startActivity(intent);
+					}
+				});
 			}
 			btnLike = (LinearLayout) convertView.findViewById(R.id.btn_like);
 			btnLike.setSelected(productModel.isLiked());
@@ -213,6 +228,11 @@ public class DetailFragment extends Fragment {
 					getActivity().startActivity(intent);
 				}
 				break;
+			case REQUEST_GET_LIST_OFFER:
+				if(conversations==null || conversations.isEmpty()){
+					btnChatToBuy.setBackgroundResource(R.drawable.bt_no_offer_yet);
+				}
+				break;
 			default:
 				break;
 			}
@@ -232,6 +252,26 @@ public class DetailFragment extends Fragment {
 				Message msg = new Message();
 				msg.what = REQUEST_CHECK_OFFER_EXIST;
 				msg.obj = conversation;
+				mHandler.sendEmptyMessage(HIDE_DIALOG);
+				mHandler.sendMessage(msg);
+			}
+		});
+		t.start();
+	}
+	
+	private void checkListOffer(){
+		mHandler.sendEmptyMessage(SHOW_DIALOG);
+		Thread t = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				String tokken = PreferenceHelper.getInstance(getActivity()).getTokken();
+				int product_id = productModel.getId();
+				conversationData = new ProductWebservice().getListOffer(tokken, product_id);
+				conversations=new ProductWebservice().parseListConversation(conversationData);
+				Message msg = new Message();
+				msg.what = REQUEST_GET_LIST_OFFER;
+				msg.obj = conversations;
 				mHandler.sendEmptyMessage(HIDE_DIALOG);
 				mHandler.sendMessage(msg);
 			}

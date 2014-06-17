@@ -1,8 +1,5 @@
 package com.threemin.fragment;
 
-import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
-import com.threemins.R;
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -10,7 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
+
+import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
+import com.threemins.R;
 
 public class ProductImageFragment extends Fragment{
 	public static final String ARG_PAGE = "page";

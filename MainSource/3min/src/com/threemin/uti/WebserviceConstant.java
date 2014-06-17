@@ -15,4 +15,7 @@ public class WebserviceConstant {
 	public static final String GET_USER_LIKED_PRODUCT = URL_HOST + API + "/products/liked.json";
 	public static final String CONVERSATION_EXIST = URL_HOST + API + "/conversations/exist.json";
 	public static final String CONVERSATION = URL_HOST + API + "/conversations.json";
+	public static final String CONVERSATION_GET_DETAIL= URL_HOST + API + "/conversations/";
+	public static final String PUSH_AUTHORIZE = URL_HOST + API + "/pushers/auth";
+	public static final String GET_LIST_OFFER = URL_HOST + API + "/products/%s/show_offer.json";
 }
