@@ -84,7 +84,7 @@ public class ChatToBuyActivity extends Activity {
 		
 		UrlImageViewHelper.setUrlDrawable(mImgProduct, mProductModel.getImages().get(0).getOrigin());
 		mTvProductName.setText(mProductModel.getName());
-		mTvProductPrice.setText(mProductModel.getPrice());
+		mTvProductPrice.setText(mProductModel.getPrice() + CommonConstant.CURRENCY);
 		mTvOfferedPrice.setText(mOfferedPrice + CommonConstant.CURRENCY);
 		mTvLocation.setText(mProductModel.getVenueName());
 		mTvChatContentLabel.setText(getString(R.string.activity_chat_chat_content_label) + " " + mProductModel.getOwner().getFullName());

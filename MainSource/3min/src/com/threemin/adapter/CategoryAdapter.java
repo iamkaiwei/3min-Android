@@ -23,7 +23,6 @@ public class CategoryAdapter extends BaseAdapter implements SpinnerAdapter {
 
 	Context mContext;
 	List<CategoryModel> data;
-	OnClickListener onLogout;
 	int selectedCate;
 	boolean isSpinner;
 	Spinner spn;
@@ -36,9 +35,6 @@ public class CategoryAdapter extends BaseAdapter implements SpinnerAdapter {
 		this.spn = spn;
 	}
 
-	public void setOnLogout(OnClickListener onLogout) {
-		this.onLogout = onLogout;
-	}
 
 	@Override
 	public int getCount() {

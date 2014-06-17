@@ -205,7 +205,7 @@ public class HomeActivity extends FragmentActivity {
 			
 			@Override
 			public void onClick(View v) {
-				mViewPagerMainContent.setCurrentItem(PAGE_RIGHT);
+				mViewPagerMainContent.setCurrentItem(PAGE_RIGHT,true);
 			}
 		});
 		
@@ -214,7 +214,7 @@ public class HomeActivity extends FragmentActivity {
 			
 			@Override
 			public void onClick(View v) {
-				mViewPagerMainContent.setCurrentItem(PAGE_LEFT);
+				mViewPagerMainContent.setCurrentItem(PAGE_LEFT,true);
 			}
 		});
 		
@@ -245,7 +245,7 @@ public class HomeActivity extends FragmentActivity {
 			
 			@Override
 			public void onClick(View v) {
-				mViewPagerMainContent.setCurrentItem(PAGE_CENTER);
+				mViewPagerMainContent.setCurrentItem(PAGE_CENTER,true);
 				setSpinnerSelected(true);
 			}
 		});
