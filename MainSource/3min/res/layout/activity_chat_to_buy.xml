@@ -81,9 +81,11 @@
             
             <com.lanna.droidlib.view.CustomEditText
                 android:id="@+id/activity_chat_et_chat_input"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
+                android:layout_toLeftOf="@+id/button1"
+                android:layout_marginRight="@dimen/common_spacing_double"
                 android:background="@drawable/background_chat_input"
                 android:hint="@string/activity_chat_chat_input_hint"
                 android:paddingBottom="@dimen/common_spacing"
@@ -99,11 +101,11 @@
             <Button
                 android:id="@+id/button1"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/activity_chat_btn_send_height"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:text="ok"
-                android:onClick="onSendChat" />
+                android:onClick="onSendChat"
+                android:background="@drawable/bt_send" />
 
         </RelativeLayout>
         

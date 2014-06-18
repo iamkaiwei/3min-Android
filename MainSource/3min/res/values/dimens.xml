@@ -94,6 +94,7 @@
     <dimen name="activity_chat_tv_radius">15dp</dimen>
     <dimen name="activity_chat_img_product_size">70dp</dimen>
     <dimen name="activity_chat_chat_input_height">50dp</dimen>
+    <dimen name="activity_chat_btn_send_height">30dp</dimen>
     
     <!-- fragment filter -->
     <dimen name="fm_filter_row_height">50dp</dimen>

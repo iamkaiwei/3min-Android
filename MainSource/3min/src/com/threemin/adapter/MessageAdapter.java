@@ -72,7 +72,9 @@ public class MessageAdapter extends BaseAdapter {
 		tvChat.setText(mData.get(position).getMsg());
 		
 		ImageView avatar=(ImageView) convertView.findViewById(R.id.layout_chat_theirs_avatar);
-		UrlImageViewHelper.setUrlDrawable(avatar, mData.get(position).getUserModel().getFacebook_avatar());
+		if (mData.get(position).getUserModel() != null) {
+			UrlImageViewHelper.setUrlDrawable(avatar, mData.get(position).getUserModel().getFacebook_avatar());
+		}
 		
 		TextView tv_time = (TextView) convertView.findViewById(R.id.layout_chat_theirs_tv_time_chat);
 		tv_time.setText(DateUtils.getRelativeTimeSpanString(mData.get(position).getTimestamp() * 1000,

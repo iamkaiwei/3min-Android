@@ -60,7 +60,7 @@ public class CategoryAdapter extends BaseAdapter implements SpinnerAdapter {
 		if (isSpinner) {
 			if (convertView == null) {
 				LayoutInflater inflater = LayoutInflater.from(mContext);
-				convertView = inflater.inflate(R.layout.inflater_category_spinner, parent, false);
+				convertView = inflater.inflate(R.layout.inflater_category_spinner, parent,false);
 				
 			}
 			TextView tvName = (TextView) convertView.findViewById(R.id.inflater_category_spinner_tv);
