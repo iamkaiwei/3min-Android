@@ -58,6 +58,16 @@
                 android:textColor="@color/common_grey"
                 android:textSize="@dimen/textsize_small"
                 threemins:customTypeface="@string/font_regular" />
+            <com.lanna.droidlib.view.CustomTextView
+                android:id="@+id/inflater_heeader_product_tv_last_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/inflater_heeader_product_tv_time"
+                android:layout_marginLeft="@dimen/inflater_body_product_grid_common_spacing"
+                android:textColor="@color/common_black"
+                android:textSize="@dimen/textsize_medium"
+                threemins:customTypeface="@string/font_regular"
+                 />
         </RelativeLayout>
 
         <ImageView

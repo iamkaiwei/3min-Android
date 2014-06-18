@@ -1,11 +1,17 @@
 package com.threemin.webservice;
 
+import java.lang.reflect.Type;
+import java.util.List;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.threemin.model.Conversation;
+import com.threemin.model.MessageModel;
 import com.threemin.uti.CommonConstant;
 import com.threemin.uti.WebserviceConstant;
 
@@ -54,5 +60,55 @@ public class ConversationWebService {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public boolean postMessageOffline(int conversationId, String tokken, String message) {
+		try {
+			String url = String.format(WebserviceConstant.POST_MESSAGE_OFFLINE, "" + conversationId);
+			JSONObject jsonObject = new JSONObject();
+			jsonObject.put(CommonConstant.KEY_ACCESS_TOKEN, tokken);
+			jsonObject.put("message", message);
+			String result = WebServiceUtil.postJson(url, jsonObject);
+			Log.d("postOffline", result);
+			JSONObject resultObject = new JSONObject(result);
+			return resultObject.getString("status").equals("success");
+		} catch (Exception e) {
+			Log.e("error", e.getMessage());
+			return false;
+		}
+	}
+
+	public boolean postBulkMessage(int conversationId, String tokken, List<MessageModel> messageModels) {
+		try {
+			String url = String.format(WebserviceConstant.POST_BUNDLE_MESSAGE, "" + conversationId);
+			JSONObject jsonObject = new JSONObject();
+			jsonObject.put(CommonConstant.KEY_ACCESS_TOKEN, tokken);
+			JSONArray array = new JSONArray();
+			for (MessageModel messageModel : messageModels) {
+				array.put(messageModel.getbukMessage());
+			}
+			jsonObject.put("messages", array);
+			String result = WebServiceUtil.postJson(url, jsonObject);
+			Log.d("postOffline", result);
+			JSONObject resultObject = new JSONObject(result);
+			return resultObject.getString("status").equals("success");
+		} catch (Exception e) {
+			Log.e("error", e.getMessage());
+			return false;
+		}
+	}
+
+	public List<Conversation> getListMessage(String tokken) {
+		String url = WebserviceConstant.CONVERSATION + "?access_token=" + tokken;
+		try {
+			String result = WebServiceUtil.getData(url);
+			Type listType = new TypeToken<List<Conversation>>() {
+			}.getType();
+			List<Conversation> list = new Gson().fromJson(result, listType);
+			return list;
+		} catch (Exception e) {
+			Log.e("error", e.getMessage());
+			return null;
+		}
 	}
 }

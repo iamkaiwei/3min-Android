@@ -216,7 +216,7 @@ public class DetailFragment extends Fragment {
 			case REQUEST_CHECK_OFFER_EXIST:
 				Conversation conversation = (Conversation) msg.obj;
 				String data = new Gson().toJson(productModel);
-				if (conversation == null || conversation.getChannel_Name() == null) {
+				if (conversation == null || conversation.getId() == 0) {
 					Intent intent = new Intent(getActivity(), PostOfferActivity.class);
 					intent.putExtra(CommonConstant.INTENT_PRODUCT_DATA, data);
 					getActivity().startActivity(intent);

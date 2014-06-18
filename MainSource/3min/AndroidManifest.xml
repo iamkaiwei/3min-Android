@@ -111,6 +111,13 @@
             android:screenOrientation="portrait"
             android:theme="@style/CustomActionBarTheme" >
         </activity>
+        
+        <activity
+            android:name="com.threemin.app.ListMessageActivity"
+            android:label="@string/profile_message"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomActionBarTheme" >
+        </activity>
     </application>
 
     <uses-feature

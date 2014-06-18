@@ -1,5 +1,7 @@
 package com.threemin.model;
 
+import java.util.List;
+
 import com.google.gson.annotations.SerializedName;
 
 public class CategoryModel {
@@ -13,6 +15,7 @@ public class CategoryModel {
 	@SerializedName("specific_type")
 	private String specificType;
 	private ImageModel image;
+	
 	public int getId() {
 		return id;
 	}
@@ -57,7 +60,6 @@ public class CategoryModel {
 	}
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
 		return this.name;
 	}
 	

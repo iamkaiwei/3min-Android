@@ -125,6 +125,7 @@ public class PostOfferFragment extends Fragment {
 					intent.putExtra(CommonConstant.INTENT_PRODUCT_DATA, data);
 					intent.putExtra(CommonConstant.INTENT_CONVERSATION_DATA, conversationData);
 					getActivity().startActivity(intent);
+					getActivity().finish();
 				}
 				break;
 			default:

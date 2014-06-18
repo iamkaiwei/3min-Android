@@ -1,14 +1,19 @@
 package com.threemin.app;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -26,19 +31,25 @@ import com.pusher.client.PusherOptions;
 import com.pusher.client.channel.PresenceChannel;
 import com.pusher.client.channel.PresenceChannelEventListener;
 import com.pusher.client.channel.User;
+import com.pusher.client.connection.ConnectionState;
 import com.pusher.client.util.HttpAuthorizer;
 import com.threemin.adapter.MessageAdapter;
 import com.threemin.model.Conversation;
 import com.threemin.model.MessageModel;
 import com.threemin.model.ProductModel;
+import com.threemin.model.ReplyModel;
 import com.threemin.model.UserModel;
 import com.threemin.uti.CommonConstant;
 import com.threemin.uti.CommonUti;
 import com.threemin.uti.PreferenceHelper;
 import com.threemin.uti.WebserviceConstant;
+import com.threemin.webservice.ConversationWebService;
 import com.threemins.R;
 
 public class ChatToBuyActivity extends Activity {
+	private final int SHOW_DIALOG = 1;
+	private final int HIDE_DIALOG = 2;
+	private final int REQUEST_CHECK_OFFER_EXIST = 3;
 	private final int MESSAGE_TOTAL = 20;
 	ImageView mImgProduct;
 	TextView mTvProductName;
@@ -60,6 +71,7 @@ public class ChatToBuyActivity extends Activity {
 	UserModel currentUser;
 	Pusher pusher;
 	List<MessageModel> userChats;
+	ProgressDialog dialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -115,8 +127,8 @@ public class ChatToBuyActivity extends Activity {
 		mTvOfferedPrice.setText(mOfferedPrice + CommonConstant.CURRENCY);
 		mTvLocation.setText(mProductModel.getVenueName());
 		mTvChatContentLabel.setText(getString(R.string.activity_chat_chat_content_label) + " "
-				+ mProductModel.getOwner().getFullName());
-		getActionBar().setTitle(mProductModel.getOwner().getFullName());
+				+ conversation.getUser().getFullName());
+		getActionBar().setTitle(conversation.getUser().getFullName());
 		currentUser = PreferenceHelper.getInstance(this).getCurrentUser();
 	}
 
@@ -202,10 +214,13 @@ public class ChatToBuyActivity extends Activity {
 		JsonObject data = new JsonObject();
 		data.addProperty("name", currentUser.getFullName());
 		data.addProperty("message", msg);
-		data.addProperty("timestamp", System.currentTimeMillis());
+		data.addProperty("timestamp", System.currentTimeMillis() / 1000);
 		// Log.d("size",""+ presenceChannel.getUsers().size());
 		MessageModel messageModel = new MessageModel(data.toString(), currentUser, true);
 		if (presenceChannel.getUsers().size() > 1) {
+			if(pusher.getConnection().getState()==ConnectionState.DISCONNECTED){
+				pusher.connect();
+			}
 			presenceChannel.trigger(CommonConstant.PUSHER_CHAT_EVENT_NAME, data.toString());
 			handleLocalData(messageModel);
 		} else {
@@ -218,7 +233,7 @@ public class ChatToBuyActivity extends Activity {
 
 	private void handleLocalData(MessageModel messageModel) {
 		userChats.add(messageModel);
-		if(userChats.size()==MESSAGE_TOTAL){
+		if (userChats.size() == MESSAGE_TOTAL) {
 			postBundleMessageToServer();
 		}
 	}
@@ -226,22 +241,99 @@ public class ChatToBuyActivity extends Activity {
 	@Override
 	protected void onStop() {
 		super.onStop();
-		pusher.disconnect();
 		postBundleMessageToServer();
 	}
+	
+	@Override
+	protected void onDestroy() {
+		pusher.disconnect();
+		super.onDestroy();
+	}
 
-	
-	
-	private void sendOfflineMessage(MessageModel messageModel) {
+	private void sendOfflineMessage(final MessageModel messageModel) {
+		Thread t = new Thread(new Runnable() {
 
+			@Override
+			public void run() {
+				String tokken = PreferenceHelper.getInstance(ChatToBuyActivity.this).getTokken();
+				String message = messageModel.getMsg();
+				boolean result = new ConversationWebService().postMessageOffline(conversation.getId(), tokken, message);
+				Log.d("resultPostMessage", "" + result);
+			}
+		});
+		t.start();
 	}
-	
-	private void postBundleMessageToServer(){
-		
+
+	private void postBundleMessageToServer() {
+		Thread t = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				String tokken = PreferenceHelper.getInstance(ChatToBuyActivity.this).getTokken();
+				boolean result = new ConversationWebService().postBulkMessage(conversation.getId(), tokken, userChats);
+				userChats.clear();
+				Log.d("resultPostMessage", "" + result);
+			}
+		});
+		t.start();
 	}
-	
-	private void initHistory(){
-		
+
+	private void initHistory() {
+		mHandler.sendEmptyMessage(SHOW_DIALOG);
+		Thread t = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				String tokken = PreferenceHelper.getInstance(ChatToBuyActivity.this).getTokken();
+				String conversationData = new ConversationWebService().getDetailConversation(tokken,
+						conversation.getId());
+				Message msg = new Message();
+				msg.what = REQUEST_CHECK_OFFER_EXIST;
+				msg.obj = conversationData;
+				mHandler.sendEmptyMessage(HIDE_DIALOG);
+				mHandler.sendMessage(msg);
+			}
+		});
+		t.start();
 	}
+
+	Handler mHandler = new Handler() {
+		public void handleMessage(android.os.Message msg) {
+			switch (msg.what) {
+			case SHOW_DIALOG:
+				dialog = new ProgressDialog(ChatToBuyActivity.this);
+				dialog.setMessage(getString(R.string.please_wait));
+				dialog.show();
+				break;
+			case HIDE_DIALOG:
+				if (dialog != null && dialog.isShowing()) {
+					dialog.dismiss();
+				}
+				break;
+			case REQUEST_CHECK_OFFER_EXIST:
+				String conversationData = (String) msg.obj;
+				conversation = new Gson().fromJson(conversationData, Conversation.class);
+				initLogChat();
+				break;
+			default:
+				break;
+			}
+		}
+
+		private void initLogChat() {
+			ArrayList<MessageModel> historyChat=new ArrayList<MessageModel>();
+			for (ReplyModel replyModel : conversation.getReplies()) {
+				if (replyModel.getUser_id() == currentUser.getId()) {
+					MessageModel messageModel = new MessageModel(replyModel, currentUser, true);
+					historyChat.add(messageModel);
+				} else {
+					MessageModel messageModel = new MessageModel(replyModel, conversation.getUser(), false);
+					historyChat.add(messageModel);
+				}
+			}
+			Collections.reverse(historyChat); 
+			mMessageAdapter.addListData(historyChat);
+		};
+	};
 
 }
