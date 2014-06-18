@@ -40,6 +40,10 @@ import com.threemins.R;
 
 public class ChatToBuyActivity extends Activity {
 	private final int MESSAGE_TOTAL = 20;
+	
+	public static final boolean IS_THEIR_MESSAGE = true;
+	public static final boolean IS_MY_MESSAGE = false;
+	
 	ImageView mImgProduct;
 	TextView mTvProductName;
 	TextView mTvProductPrice;
@@ -164,7 +168,7 @@ public class ChatToBuyActivity extends Activity {
 				Log.d("onEvent", "arg1=" + arg2);
 				runOnUiThread(new Runnable() {
 					public void run() {
-						MessageModel messageModel = new MessageModel(arg2, conversation.getUser(), false);
+						MessageModel messageModel = new MessageModel(arg2, conversation.getUser(), IS_THEIR_MESSAGE);
 						mMessageAdapter.addData(messageModel);
 					}
 				});
@@ -204,7 +208,7 @@ public class ChatToBuyActivity extends Activity {
 		data.addProperty("message", msg);
 		data.addProperty("timestamp", System.currentTimeMillis());
 		// Log.d("size",""+ presenceChannel.getUsers().size());
-		MessageModel messageModel = new MessageModel(data.toString(), currentUser, true);
+		MessageModel messageModel = new MessageModel(data.toString(), currentUser, IS_MY_MESSAGE);
 		if (presenceChannel.getUsers().size() > 1) {
 			presenceChannel.trigger(CommonConstant.PUSHER_CHAT_EVENT_NAME, data.toString());
 			handleLocalData(messageModel);
