@@ -30,6 +30,7 @@
     <dimen name="textsize_avatar">16sp</dimen>
     <dimen name="textsize_medium">15sp</dimen>
     <dimen name="textsize_small">12.5sp</dimen>
+    <dimen name="textsize_very_small">10sp</dimen>
     
     <dimen name="home_height_tab">37.5dp</dimen>
     
@@ -101,5 +102,8 @@
     <dimen name="fm_filter_reset_filter_height">70dp</dimen>
     <dimen name="fm_filter_et_width">170dp</dimen>
     <dimen name="fm_filter_et_height">35dp</dimen>
+    
+    <!-- fragment activity -->
+    <dimen name="fm_activity_img_product_size">65dp</dimen>
 
 </resources>

@@ -118,6 +118,13 @@
             android:screenOrientation="portrait"
             android:theme="@style/CustomActionBarTheme" >
         </activity>
+        
+        <activity
+            android:name="com.threemin.app.UserActivityActivity"
+            android:label="@string/activity_title"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomActionBarTheme" >
+        </activity>
     </application>
 
     <uses-feature

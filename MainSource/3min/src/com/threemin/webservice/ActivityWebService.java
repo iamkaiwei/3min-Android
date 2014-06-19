@@ -1,0 +1,34 @@
+package com.threemin.webservice;
+
+import java.lang.reflect.Type;
+import java.util.List;
+
+import android.util.Log;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.threemin.model.ActivityModel;
+import com.threemin.uti.WebserviceConstant;
+
+public class ActivityWebService {
+	
+	public List<ActivityModel>  getActivities(String tokken) {
+		String url = WebserviceConstant.GET_ACTIVITIES + "?access_token=" +  tokken;
+		Log.i("tructran", "Activity: " + url);
+		try {
+			String result = WebServiceUtil.getData(url);
+			Log.i("tructran", "Result: " + result);
+			
+			Type listType = new TypeToken<List<ActivityModel>>() {
+			}.getType();
+			List<ActivityModel> list = new Gson().fromJson(result, listType);
+			return list;
+		} catch (Exception e) {
+			e.printStackTrace();
+			Log.i("tructran", "Exception: " + e.toString());
+			Log.i("tructran", "Exception msg: " + e.getMessage());
+		}
+		return null;
+	}
+
+}

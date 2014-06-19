@@ -87,5 +87,8 @@
     <string name="fm_filter_max">Maximum</string>
     
     <string name="offer">Offers</string>
+    
+    <!-- activity user activity -->
+    <string name="activity_title">Activity</string>
 
 </resources>
