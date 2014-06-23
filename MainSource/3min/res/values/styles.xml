@@ -124,5 +124,30 @@
         <item name="android:inputType">number</item>
         <item name="android:singleLine">true</item>
     </style>
+    
+    <!-- activity setting -->
+    <style name="act_setting_row">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/act_setting_row_height</item>
+        <item name="android:paddingLeft">@dimen/common_spacing_triple</item>
+        <item name="android:paddingRight">@dimen/common_spacing_triple</item>
+        <item name="android:background">@android:color/white</item>
+    </style>
+    
+    <style name="act_setting_textview">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/textsize_medium</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_alignParentLeft">true</item>
+    </style>
+    
+    <style name="act_setting_imageview">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:src">@drawable/ic_arrow</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_centerVertical">true</item>
+    </style>
 
 </resources>
