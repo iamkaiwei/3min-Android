@@ -7,6 +7,33 @@
     <uses-sdk
         android:minSdkVersion="14"
         android:targetSdkVersion="19" />
+    
+    <!-- ********************************************************************************* -->
+    <!-- Required for the Urban Airship library -->
+    <permission
+        android:name="com.threemins.permission.UA_DATA"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.threemins.permission.UA_DATA" />
+
+    <!-- Required for Push -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+
+    <!-- Keeps the processor from sleeping when a message is received. -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <!-- This app has permission to register with GCM and receive message -->
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+
+    <permission
+        android:name="com.threemins.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.threemins.permission.C2D_MESSAGE" />
+
+
+    <!-- ********************************************************************************* -->
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -19,6 +46,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
+        android:name="com.threemin.app.ThreeMinsApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
@@ -132,6 +160,74 @@
             android:screenOrientation="portrait"
             android:theme="@style/CustomActionBarTheme" >
         </activity>
+        
+        <!-- **********************************Urban Airship*********************************************** -->
+        <!-- Required for the library -->
+        <provider
+            android:name="com.urbanairship.UrbanAirshipProvider"
+            android:authorities="com.threemins.urbanairship.provider"
+            android:exported="true"
+            android:multiprocess="true"
+            android:permission="com.threemins.permission.UA_DATA" />
+
+        <!-- Required for Push -->
+        <service android:name="com.urbanairship.push.PushService" />
+
+        <receiver android:name="com.urbanairship.CoreReceiver" />
+        <receiver
+            android:name="com.urbanairship.push.GCMPushReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+
+                <category android:name="com.threemins" />
+            </intent-filter>
+
+            <!-- Required for detecting when the application is upgraded so it can request a new GCM ID -->
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_REPLACED" />
+
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Required for analytics -->
+        <service android:name="com.urbanairship.analytics.EventService" />
+
+        <!-- Required for Rich Push -->
+        <service android:name="com.urbanairship.richpush.RichPushUpdateService" />
+
+        <!-- Required for Actions -->
+        <activity android:name="com.urbanairship.actions.ActionActivity" />
+
+        <service android:name="com.urbanairship.actions.ActionService" />
+
+        <!-- Required for Landing Page Action -->
+        <activity
+            android:name="com.urbanairship.actions.LandingPageActivity"
+            android:exported="false"
+            android:parentActivityName="com.threemin.app.HomeActivity" >
+
+            <!-- MODIFICATION REQUIRED set or remove the parent activity -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.threemin.app.HomeActivity" />
+
+            <intent-filter>
+                <action android:name="com.urbanairship.actions.SHOW_LANDING_PAGE_INTENT_ACTION" />
+
+                <data android:scheme="http" />
+                <data android:scheme="https" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
+        <receiver android:name="com.threemin.receiver.IntentReceiver" />
+
+        <!-- ********************************************************************************* -->
+        
     </application>
 
     <uses-feature

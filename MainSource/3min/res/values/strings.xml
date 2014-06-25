@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    
+    <!-- urban airship -->
+    <string name="gcmSender">400375101132</string>
+    <string name="developmentAppKey">YmOWEA0lR7aW77MI2u-SAQ</string>
+    <string name="developmentAppSecret">gL0ScP2vSAGohDRfZjHDeA</string>
+    <string name="productionAppKey">YmOWEA0lR7aW77MI2u-SAQ</string>
+    <string name="productionAppSecret">gL0ScP2vSAGohDRfZjHDeA</string>
 
     <string name="font_semibold">OpenSans-Semibold.ttf</string>
     <string name="font_bold">OpenSans-Bold.ttf</string>
