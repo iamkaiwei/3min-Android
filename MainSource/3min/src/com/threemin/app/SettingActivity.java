@@ -17,6 +17,8 @@ import android.widget.RelativeLayout;
 
 public class SettingActivity extends Activity implements OnClickListener {
 	
+	public static final int ACTIONS_LOG_OUT = 99;
+	
 	RelativeLayout mRlAbout, mRlSendSuggestions, mRlRate;
 	LinearLayout mLlLogOut;
 	ImageView mImgShareFacebook, mImgShareEmail, mImgShareMessage;
@@ -123,7 +125,10 @@ public class SettingActivity extends Activity implements OnClickListener {
 			mGoogleApiClient.connect();
 		}
 		finish();
-		startActivity(new Intent(mContext, LoginActivity.class));
+		Intent intent = new Intent(this, LoginActivity.class);
+		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK); 
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		startActivity(intent);
 	}
 	
 	public void doShareFacebook() {
