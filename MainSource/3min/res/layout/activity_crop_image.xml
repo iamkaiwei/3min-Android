@@ -16,7 +16,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:adjustViewBounds="true"
+        android:scaleType="fitXY"
         android:layout_below="@+id/act_crop_img_btn"
         android:layout_centerInParent="true"/>
+    
 
 </RelativeLayout>
