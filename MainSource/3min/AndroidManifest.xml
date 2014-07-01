@@ -161,6 +161,13 @@
             android:theme="@style/CustomActionBarTheme" >
         </activity>
         
+        <activity
+            android:name="com.threemin.app.CropImageActivity"
+            android:label="CROP"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomActionBarTheme" >
+        </activity>
+        
         <!-- **********************************Urban Airship*********************************************** -->
         <!-- Required for the library -->
         <provider

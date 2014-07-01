@@ -67,6 +67,8 @@ import com.threemin.view.HorizontalListView;
 import com.threemins.R;
 
 public class ActivityCamera extends Activity implements OnSeekBarChangeListener, OnClickListener {
+	
+	public static final int REQUEST_CROP = 33;
 
 	private GPUImage mGPUImage;
 	private CameraHelper mCameraHelper;
@@ -194,6 +196,9 @@ public class ActivityCamera extends Activity implements OnSeekBarChangeListener,
 			gpuImageView.setVisibility(View.VISIBLE);
 			surface.setVisibility(View.INVISIBLE);
 			handleImage(data.getData());
+		} else if (requestCode == REQUEST_CROP && resultCode == RESULT_OK) {
+			Uri uri = data.getData();
+			finishCameraActivity(uri);
 		}
 	}
 
@@ -264,10 +269,11 @@ public class ActivityCamera extends Activity implements OnSeekBarChangeListener,
 
 							@Override
 							public void onPictureSaved(Uri uri) {
-								Intent intent = new Intent();
-								intent.putExtra("imageUri", uri.toString());
-								setResult(RESULT_OK, intent);
-								finish();
+//								Intent intent = new Intent();
+//								intent.putExtra("imageUri", uri.toString());
+//								setResult(RESULT_OK, intent);
+//								finish();
+								finishImage(uri);
 							}
 						});
 
@@ -392,10 +398,11 @@ public class ActivityCamera extends Activity implements OnSeekBarChangeListener,
 
 							@Override
 							public void onPictureSaved(final Uri uri) {
-								Intent intent = new Intent();
-								intent.putExtra("imageUri", uri.toString());
-								setResult(RESULT_OK, intent);
-								finish();
+//								Intent intent = new Intent();
+//								intent.putExtra("imageUri", uri.toString());
+//								setResult(RESULT_OK, intent);
+//								finish();
+								finishImage(uri);
 							}
 						});
 			}
@@ -515,4 +522,43 @@ public class ActivityCamera extends Activity implements OnSeekBarChangeListener,
 			mCameraInstance = null;
 		}
 	}
+	
+	public void finishImage(Uri picUri) {
+//		Intent intent = new Intent();
+//		intent.putExtra("imageUri", picUri.toString());
+//		setResult(RESULT_OK, intent);
+//		finish();
+		
+//		cropCapturedImage(picUri);
+		
+		Intent intent = new Intent(this, CropImageActivity.class);
+		intent.putExtra("imageUri", picUri.toString());
+		startActivity(intent);
+	}
+	
+	public void finishCameraActivity(Uri uri) {
+		Intent intent = new Intent();
+		intent.putExtra("imageUri", uri.toString());
+		setResult(RESULT_OK, intent);
+		finish();
+	}
+	
+	public void cropCapturedImage(Uri picUri){
+		  //call the standard crop action intent 
+		  Intent cropIntent = new Intent("com.android.camera.action.CROP");
+		  //indicate image type and Uri of image
+		  cropIntent.setDataAndType(picUri, "image/*");
+		  //set crop properties
+		  cropIntent.putExtra("crop", "true");
+		  //indicate aspect of desired crop
+		  cropIntent.putExtra("aspectX", 0);
+		  cropIntent.putExtra("aspectY", 0);
+		  //indicate output X and Y
+		  cropIntent.putExtra("outputX", 256);
+		  cropIntent.putExtra("outputY", 256);
+		  //retrieve data on return
+		  cropIntent.putExtra("return-data", true);
+		  //start the activity - we handle returning in onActivityResult
+		  startActivityForResult(cropIntent, REQUEST_CROP);
+		 }
 }
