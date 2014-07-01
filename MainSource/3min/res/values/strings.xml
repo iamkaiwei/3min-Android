@@ -84,6 +84,7 @@
     
     <!-- fragment filter -->
     <string name="fm_filter_search_hint">Search for products</string>
+    <string name="fm_filter_sort_by">SORT BY</string>
     <string name="fm_filter_popular">Popular</string>
     <string name="fm_filter_recent">Recent</string>
     <string name="fm_filter_lowest">Lowest Price</string>

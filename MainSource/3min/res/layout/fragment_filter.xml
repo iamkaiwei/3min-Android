@@ -30,6 +30,17 @@
                 android:padding="@dimen/common_spacing_double"
                 android:textColorHint="@color/common_grey" />
         </RelativeLayout>
+        
+        <!-- SORT BY -->
+
+        <com.lanna.droidlib.view.CustomTextView
+            style="@style/fm_filter_textview"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/fm_filter_row_height"
+            android:background="@color/background_grey"
+            android:gravity="center_vertical"
+            android:text="@string/fm_filter_sort_by"
+            threemins:customTypeface="@string/font_regular" />
 
         <!-- popular -->
 
