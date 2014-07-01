@@ -3,13 +3,13 @@
     xmlns:threemins="http://schemas.android.com/apk/res-auto"
     android:id="@+id/RelativeLayout1"
     android:layout_width="600dp"
-    android:layout_height="wrap_content"
+    android:layout_height="@dimen/inflater_category_row_height"
     android:orientation="horizontal"
    >
 
     <ImageView
         android:id="@+id/inflater_cate_image"
-        android:layout_width="50dp"
+        android:layout_width="25dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
@@ -26,6 +26,6 @@
         android:layout_toRightOf="@+id/inflater_cate_image"
         android:paddingLeft="@dimen/inflater_category_tv_padding_left"
         threemins:customTypeface="@string/font_regular"
-        android:textSize="@dimen/textsize_avatar"  />
+        android:textSize="@dimen/textsize_medium"  />
 
 </RelativeLayout>

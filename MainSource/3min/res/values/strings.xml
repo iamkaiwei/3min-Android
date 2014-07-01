@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    
+    <!-- urban airship -->
+    <string name="gcmSender">400375101132</string>
+    <string name="developmentAppKey">YmOWEA0lR7aW77MI2u-SAQ</string>
+    <string name="developmentAppSecret">gL0ScP2vSAGohDRfZjHDeA</string>
+    <string name="productionAppKey">YmOWEA0lR7aW77MI2u-SAQ</string>
+    <string name="productionAppSecret">gL0ScP2vSAGohDRfZjHDeA</string>
 
     <string name="font_semibold">OpenSans-Semibold.ttf</string>
     <string name="font_bold">OpenSans-Bold.ttf</string>
@@ -77,6 +84,7 @@
     
     <!-- fragment filter -->
     <string name="fm_filter_search_hint">Search for products</string>
+    <string name="fm_filter_sort_by">SORT BY</string>
     <string name="fm_filter_popular">Popular</string>
     <string name="fm_filter_recent">Recent</string>
     <string name="fm_filter_lowest">Lowest Price</string>
@@ -87,5 +95,16 @@
     <string name="fm_filter_max">Maximum</string>
     
     <string name="offer">Offers</string>
+    
+    <!-- activity user activity -->
+    <string name="activity_title">Activity</string>
+    
+    <!-- activity setting -->
+    <string name="act_setting_label">Settings</string>
+    <string name="about">About 3mins</string>
+    <string name="send_suggestions">Send us your suggestions</string>
+    <string name="rate">Rate us on Appstore</string>
+    <string name="share_label">Recommend to friends</string>
+    <string name="log_out">Log out</string>
 
 </resources>

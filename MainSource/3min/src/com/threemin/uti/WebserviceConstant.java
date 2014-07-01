@@ -20,4 +20,5 @@ public class WebserviceConstant {
 	public static final String GET_LIST_OFFER = URL_HOST + API + "/products/%s/show_offer.json";
 	public static final String POST_MESSAGE_OFFLINE = URL_HOST + API + "/conversations/%s/conversation_replies.json";
 	public static final String POST_BUNDLE_MESSAGE=URL_HOST + API + "/conversations/%s/conversation_replies/bulk_create.json";
+	public static final String GET_ACTIVITIES = URL_HOST + API + "/activities.json/";
 }

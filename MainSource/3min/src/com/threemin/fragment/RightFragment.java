@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.threemin.app.ListMessageActivity;
+import com.threemin.app.SettingActivity;
+import com.threemin.app.UserActivityActivity;
 import com.threemin.app.UserLikeProductActivity;
 import com.threemin.model.UserModel;
 import com.threemin.uti.PreferenceHelper;
@@ -46,6 +48,20 @@ public class RightFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				startActivity(new Intent(getActivity(), ListMessageActivity.class));
+			}
+		});
+		rootView.findViewById(R.id.nav_avatar).setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(getActivity(), UserActivityActivity.class));
+			}
+		});
+		rootView.findViewById(R.id.inf_avt_setting).setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(getActivity(), SettingActivity.class));
 			}
 		});
 	}

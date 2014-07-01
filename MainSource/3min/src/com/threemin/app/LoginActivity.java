@@ -43,12 +43,16 @@ import com.threemin.fragment.SlidePageFragment;
 import com.threemin.model.UserModel;
 import com.threemin.uti.CommonConstant;
 import com.threemin.uti.CommonUti;
+import com.threemin.uti.PreferenceHelper;
 import com.threemin.webservice.AuthorizeWebservice;
 import com.threemin.webservice.CategoryWebservice;
 import com.threemins.R;
+import com.urbanairship.push.PushManager;
 
 public class LoginActivity extends FragmentActivity implements ConnectionCallbacks, OnConnectionFailedListener,
 		OnClickListener {
+	
+	public static final String APID = "UrbanAirshipAPID";
 	
 	//public const:
 	public static final String PREF_NAME = "3MinsPref";
@@ -302,6 +306,8 @@ public class LoginActivity extends FragmentActivity implements ConnectionCallbac
 				editor.putInt(LOGIN_KEY, LOGIN_KEY_FB);
 				editor.commit();
 				
+				createUrbanAirshipAlias(result);
+				
 				Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
 				startActivity(intent);
 				finish();
@@ -461,6 +467,8 @@ public class LoginActivity extends FragmentActivity implements ConnectionCallbac
 					editor.putInt(LOGIN_KEY, LOGIN_KEY_GG);
 					editor.commit();
 					
+					createUrbanAirshipAlias(result);
+					
 					Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
 					startActivity(intent);
 					finish();
@@ -472,6 +480,16 @@ public class LoginActivity extends FragmentActivity implements ConnectionCallbac
 		}
 	}
 
+	public void createUrbanAirshipAlias (UserModel user) {
+		String alias = "user-" + user.getId();
+		PushManager.shared().setAlias(alias);
+		
+		String apid = PushManager.shared().getAPID();
+		Log.i("tructran", "Login Activity: App ID: " + apid);
+		
+		//save app id to pref
+		PreferenceHelper.getInstance(this).setAPID(apid);
+	}
 	
 	//method set text to SignInButton of Google +
 	protected void setGooglePlusButtonText(SignInButton signInButton, String buttonText) {

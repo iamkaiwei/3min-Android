@@ -167,6 +167,7 @@ public class DetailFragment extends Fragment {
 			int spacing = (int) getResources().getDimension(R.dimen.common_spacing);
 			imageView.setScaleType(ScaleType.CENTER_INSIDE);
 			imageView.setPadding(0, spacing, 0, spacing);
+			imageView.setLayoutParams(params);
 			lnImgs.addView(imageView);
 			UrlImageViewHelper.setUrlDrawable(imageView, imageModel.getOrigin());
 		}

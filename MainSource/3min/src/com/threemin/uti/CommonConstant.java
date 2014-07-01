@@ -24,6 +24,7 @@ public class CommonConstant {
 
 	public static final String PREF_TOKEN = "PREF_TOKEN";
 	public static final String PREF_USER = "PREF_USER";
+	public static final String PREF_APID = "PREF_APID";
 
 	public static final String CURRENCY = " VND";
 
