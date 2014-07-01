@@ -27,6 +27,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.edmodo.cropper.CropImageView;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewCallback;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.threemin.model.ImageModel;
@@ -35,7 +36,9 @@ import com.threemins.R;
 public class CropImageActivity extends Activity {
 	
 	ImageView img;
-	Button btn;
+	CropImageView cropImg;
+	Button btnCrop, btnDone;
+	Bitmap croppedBitmap;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +53,9 @@ public class CropImageActivity extends Activity {
 	
 	public void initWidgets() {
 		img = (ImageView) findViewById(R.id.act_crop_img);
-		btn = (Button) findViewById(R.id.act_crop_img_btn);
+		cropImg = (CropImageView) findViewById(R.id.act_crop_crop_img);
+		btnCrop = (Button) findViewById(R.id.act_crop_img_btn_crop);
+		btnDone = (Button) findViewById(R.id.act_crop_img_btn_done);
 	}
 	
 	public void initData() {
@@ -60,16 +65,59 @@ public class CropImageActivity extends Activity {
 	}
 	
 	public void initListener() {
-		btn.setOnClickListener(new OnClickListener() {
+		btnCrop.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Drawable draw = img.getDrawable();
-				Bitmap bmp = getBitmap(draw);
-				img.setImageBitmap(getCroppedBitmap(bmp));
+				croppedBitmap = cropImg.getCroppedImage();
+				img.setImageBitmap(croppedBitmap);
+				img.setVisibility(View.VISIBLE);
+				cropImg.setVisibility(View.GONE);
 			}
 		});
+		
+		btnDone.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				if (croppedBitmap != null) {
+					String path = saveImagetoLocal(croppedBitmap);
+					Intent intent = new Intent();
+					intent.putExtra("imagePath", path);
+					setResult(RESULT_OK, intent);
+					finish();
+				}
+			}
+		});
+	}
+	
+	public void setImageURI(Uri uri,ImageView imageView) {
+			UrlImageViewHelper.setUrlDrawable(imageView, uri.toString(), getImageCallback());
+	}
+	
+	
+
+	private UrlImageViewCallback getImageCallback() {
+		return new UrlImageViewCallback() {
+
+			@Override
+			public void onLoaded(ImageView imageView, Bitmap loadedBitmap, String url, boolean loadedFromCache) {
+				Log.d("url", url);
+				cropImg.setImageBitmap(loadedBitmap);
+				ImageModel imageModel=new ImageModel();
+				if (url.contains("content://com.google.android.apps.photos.content")) {
+					imageModel.setUrl(saveImagetoLocal(loadedBitmap));
+					Log.d("path", imageModel.getUrl());
+				} else {
+					String pathImage=getPath(Uri.parse(url));
+					Log.d("path", pathImage);
+					imageModel.setUrl(pathImage);
+				}
+				imageView.setTag(imageModel);
+			}
+		};
 	}
 	
 	public String getPath(Uri uri) {
@@ -87,30 +135,6 @@ public class CropImageActivity extends Activity {
 			}
 		}
 		return null;
-	}
-
-	public void setImageURI(Uri uri,ImageView imageView) {
-			UrlImageViewHelper.setUrlDrawable(imageView, uri.toString(), getImageCallback());
-	}
-
-	private UrlImageViewCallback getImageCallback() {
-		return new UrlImageViewCallback() {
-
-			@Override
-			public void onLoaded(ImageView imageView, Bitmap loadedBitmap, String url, boolean loadedFromCache) {
-				Log.d("url", url);
-				ImageModel imageModel=new ImageModel();
-				if (url.contains("content://com.google.android.apps.photos.content")) {
-					imageModel.setUrl(saveImagetoLocal(loadedBitmap));
-					Log.d("path", imageModel.getUrl());
-				} else {
-					String pathImage=getPath(Uri.parse(url));
-					Log.d("path", pathImage);
-					imageModel.setUrl(pathImage);
-				}
-				imageView.setTag(imageModel);
-			}
-		};
 	}
 
 	private String saveImagetoLocal(Bitmap bitmap) {

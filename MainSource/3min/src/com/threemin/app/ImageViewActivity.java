@@ -18,6 +18,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
@@ -354,7 +355,8 @@ public class ImageViewActivity extends Activity {
         
 		if (resultCode == RESULT_OK) {
 			if (requestCode >= REQUEST_CAMERA_IMG_1 && requestCode <= REQUEST_CAMERA_IMG_4) {
-				Uri uri = Uri.parse(data.getStringExtra("imageUri"));
+//				Uri uri = Uri.parse(data.getStringExtra("imageUri"));
+				String uri = data.getStringExtra("imagePath");
 				if (requestCode == REQUEST_CAMERA_IMG_1) {
 					setImageURI(uri,mImg1);
 				} else if (requestCode == REQUEST_CAMERA_IMG_2) {
@@ -372,7 +374,8 @@ public class ImageViewActivity extends Activity {
 					locationName.setText(venue.getName());
 				}
 			} else if (requestCode == REQUEST_CAMERA_ON_CREATE) {
-				Uri uri = Uri.parse(data.getStringExtra("imageUri"));
+//				Uri uri = Uri.parse(data.getStringExtra("imageUri"));
+				String uri = data.getStringExtra("imagePath");
 				setImageURI(uri,mImg1);
 			}
 			else if(requestCode==REQUEST_CATEGORY){
@@ -400,8 +403,18 @@ public class ImageViewActivity extends Activity {
 		return null;
 	}
 
-	public void setImageURI(Uri uri,ImageView imageView) {
-			UrlImageViewHelper.setUrlDrawable(imageView, uri.toString(), getImageCallback());
+//	public void setImageURI(Uri uri,ImageView imageView) {
+//			UrlImageViewHelper.setUrlDrawable(imageView, uri.toString(), getImageCallback());
+//	}
+	
+	public void setImageURI(String uri,ImageView imageView) {
+		File imgFile = new  File(uri);
+		if(imgFile.exists()){
+		    Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+		    imageView.setImageBitmap(myBitmap);
+		} else {
+			Toast.makeText(this, "File does not exists", Toast.LENGTH_LONG).show();
+		}
 	}
 
 	private UrlImageViewCallback getImageCallback() {

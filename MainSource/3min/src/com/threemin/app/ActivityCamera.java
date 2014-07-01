@@ -32,6 +32,7 @@ import jp.co.cyberagent.android.gpuimage.GPUImageSepiaFilter;
 import jp.co.cyberagent.android.gpuimage.GPUImageView;
 import jp.co.cyberagent.android.gpuimage.GPUImageVignetteFilter;
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -55,6 +56,7 @@ import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
@@ -197,8 +199,8 @@ public class ActivityCamera extends Activity implements OnSeekBarChangeListener,
 			surface.setVisibility(View.INVISIBLE);
 			handleImage(data.getData());
 		} else if (requestCode == REQUEST_CROP && resultCode == RESULT_OK) {
-			Uri uri = data.getData();
-			finishCameraActivity(uri);
+			String path = data.getStringExtra("imagePath");
+			finishCameraActivity(path);
 		}
 	}
 
@@ -529,36 +531,18 @@ public class ActivityCamera extends Activity implements OnSeekBarChangeListener,
 //		setResult(RESULT_OK, intent);
 //		finish();
 		
-//		cropCapturedImage(picUri);
+//		performCrop(picUri);
 		
 		Intent intent = new Intent(this, CropImageActivity.class);
 		intent.putExtra("imageUri", picUri.toString());
-		startActivity(intent);
+		startActivityForResult(intent, REQUEST_CROP);
 	}
 	
-	public void finishCameraActivity(Uri uri) {
+	public void finishCameraActivity(String path) {
 		Intent intent = new Intent();
-		intent.putExtra("imageUri", uri.toString());
+		intent.putExtra("imagePath", path);
 		setResult(RESULT_OK, intent);
 		finish();
 	}
-	
-	public void cropCapturedImage(Uri picUri){
-		  //call the standard crop action intent 
-		  Intent cropIntent = new Intent("com.android.camera.action.CROP");
-		  //indicate image type and Uri of image
-		  cropIntent.setDataAndType(picUri, "image/*");
-		  //set crop properties
-		  cropIntent.putExtra("crop", "true");
-		  //indicate aspect of desired crop
-		  cropIntent.putExtra("aspectX", 0);
-		  cropIntent.putExtra("aspectY", 0);
-		  //indicate output X and Y
-		  cropIntent.putExtra("outputX", 256);
-		  cropIntent.putExtra("outputY", 256);
-		  //retrieve data on return
-		  cropIntent.putExtra("return-data", true);
-		  //start the activity - we handle returning in onActivityResult
-		  startActivityForResult(cropIntent, REQUEST_CROP);
-		 }
+
 }
