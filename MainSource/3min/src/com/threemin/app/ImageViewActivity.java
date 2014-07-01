@@ -402,7 +402,6 @@ public class ImageViewActivity extends Activity {
 
 	public void setImageURI(Uri uri,ImageView imageView) {
 			UrlImageViewHelper.setUrlDrawable(imageView, uri.toString(), getImageCallback());
-
 	}
 
 	private UrlImageViewCallback getImageCallback() {

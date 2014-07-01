@@ -165,7 +165,7 @@ public class DetailFragment extends Fragment {
 			ImageView imageView = new ImageView(getActivity());
 			LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 			int spacing = (int) getResources().getDimension(R.dimen.common_spacing);
-			imageView.setScaleType(ScaleType.CENTER_INSIDE);
+			imageView.setAdjustViewBounds(true);
 			imageView.setPadding(0, spacing, 0, spacing);
 			imageView.setLayoutParams(params);
 			lnImgs.addView(imageView);

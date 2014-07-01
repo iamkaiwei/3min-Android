@@ -22,6 +22,14 @@ public class ThreeMinsApplication extends Application {
 //	    options.productionAppSecret = getString(R.string.productionAppSecret);
 //	    options.inProduction = false;
 //	    options.richPushEnabled = true;
+		
+		options.gcmSender = "1096090152384";
+	    options.transport = "gcm";
+	    options.developmentAppKey = "-IT-qB3pRBiec3liyxk4cQ";
+	    options.developmentAppSecret = "rp9clmV1RzGi0GfPUiO0iA";
+	    options.inProduction = false;
+	    options.richPushEnabled = true;
+		
 		UAirship.takeOff(this, options);
 		PushManager.enablePush();
 		
