@@ -2,7 +2,6 @@ package com.threemin.adapter;
 
 import java.util.List;
 
-import za.co.immedia.pinnedheaderlistview.SectionedBaseAdapter;
 import android.content.Context;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;

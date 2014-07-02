@@ -8,41 +8,32 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -63,7 +54,6 @@ import com.threemin.uti.CommonConstant;
 import com.threemin.uti.CommonUti;
 import com.threemin.uti.PreferenceHelper;
 import com.threemin.view.SquareImageView;
-import com.threemin.webservice.CategoryWebservice;
 import com.threemins.R;
 import com.threemins.R.id;
 
@@ -78,6 +68,8 @@ public class ImageViewActivity extends Activity {
 	
 	private final static int REQUEST_LOCATION = 31;
 	private final static int REQUEST_CATEGORY = 32;
+    private static final int REQUEST_PRODUCT_INPUT_ITEM = 33;
+
 
 	SquareImageView mImg1, mImg2, mImg3, mImg4;
 	Context mContext;
@@ -321,14 +313,22 @@ public class ImageViewActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				if(viewContentProduct.getVisibility()==View.GONE){
-					viewContentProduct.setVisibility(View.VISIBLE);
-					CommonUti.showKeyboard(etName, mContext);
-				} else {
-					viewContentProduct.setVisibility(View.GONE);
-					CommonUti.hideKeyboard(etName, mContext);
-					tvName.setText(etName.getText());
-				}
+//				if(viewContentProduct.getVisibility()==View.GONE){
+//					viewContentProduct.setVisibility(View.VISIBLE);
+//					CommonUti.showKeyboard(etName, mContext);
+//				} else {
+//					viewContentProduct.setVisibility(View.GONE);
+//					CommonUti.hideKeyboard(etName, mContext);
+//					tvName.setText(etName.getText());
+//				}
+			    Bundle bundle=new Bundle();
+			    bundle.putString(CommonConstant.INTENT_PRODUCT_NAME, etName.getText().toString());
+			    bundle.putString(CommonConstant.INTENT_PRODUCT_DESCRIPTION, etDescription.getText().toString());
+			    String dataLocation= new Gson().toJson(venue);
+			    bundle.putString(CommonConstant.INTENT_PRODUCT_DATA, dataLocation);
+			    Intent intent=new Intent(mContext, InputProductActivity.class);
+			    intent.putExtras(bundle);
+			    startActivityForResult(intent, REQUEST_PRODUCT_INPUT_ITEM);
 			}
 		});
 	}
@@ -379,6 +379,16 @@ public class ImageViewActivity extends Activity {
 				String json=data.getStringExtra(CommonConstant.INTENT_CATEGORY_DATA);
 				mSelectedCategory=new Gson().fromJson(json, CategoryModel.class);
 				tv_Category.setText(mSelectedCategory.getName());
+			} else if(requestCode==REQUEST_PRODUCT_INPUT_ITEM){
+			    String productName = data.getStringExtra(CommonConstant.INTENT_PRODUCT_NAME);
+		        String productDescription = data.getStringExtra(CommonConstant.INTENT_PRODUCT_DESCRIPTION);
+		        venue = new Gson().fromJson(data.getStringExtra(CommonConstant.INTENT_PRODUCT_DATA), Venue.class);
+		        tvName.setText(productName);
+		        etName.setText(productName);
+		        etDescription.setText(productDescription);
+		        if(venue!=null){
+                    locationName.setText(venue.getName());
+                }
 			}
 		}
 	}

@@ -8,10 +8,12 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
@@ -22,11 +24,11 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.facebook.Session;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
+import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.threemin.adapter.CategoryAdapter;
 import com.threemin.fragment.HomeFragment;
 import com.threemin.fragment.LeftFragment;
@@ -97,12 +99,18 @@ public class HomeActivity extends FragmentActivity {
 		mSpnActionbarCenterTitle.setSelected(true);
 		mImgActionbarProfile.setSelected(false);
 		mImgActionbarSearch.setSelected(false);
-		
 		mViewPagerMainContent.setOnPageChangeListener(new OnPageChangeListener() {
 			
 			@Override
-			public void onPageSelected(int position) {
-				doPageChange(position);
+			public void onPageSelected(final int position) {
+//				doPageChange(position);
+				new Handler().postDelayed(new Runnable() {
+					
+					@Override
+					public void run() {
+						doPageChange(position);
+					}
+				}, 200);
 			}
 			
 			@Override
@@ -297,7 +305,7 @@ public class HomeActivity extends FragmentActivity {
 			mViewPagerMainContent.setCurrentItem(PAGE_CENTER);
 		}
 	}
-	private class PagerAdapter extends FragmentPagerAdapter {
+	private class PagerAdapter extends FragmentStatePagerAdapter {
 
 		public PagerAdapter(FragmentManager fm) {
 			super(fm);

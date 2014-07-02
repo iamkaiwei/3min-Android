@@ -2,10 +2,6 @@ package com.threemin.adapter;
 
 import java.util.List;
 
-import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
-import com.threemin.model.Conversation;
-import com.threemins.R;
-
 import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
@@ -14,6 +10,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
+import com.threemin.model.Conversation;
+import com.threemins.R;
 
 public class ListOfferAdapter extends BaseAdapter {
 

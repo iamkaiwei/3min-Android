@@ -2,30 +2,27 @@ package com.threemin.fragment;
 
 import java.util.List;
 
-import com.google.gson.Gson;
-import com.threemin.adapter.ListOfferAdapter;
-import com.threemin.app.ChatToBuyActivity;
-import com.threemin.app.PostOfferActivity;
-import com.threemin.model.Conversation;
-import com.threemin.uti.CommonConstant;
-import com.threemin.uti.PreferenceHelper;
-import com.threemin.webservice.ConversationWebService;
-import com.threemin.webservice.ProductWebservice;
-import com.threemins.R;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+
+import com.threemin.adapter.ListOfferAdapter;
+import com.threemin.app.ChatToBuyActivity;
+import com.threemin.model.Conversation;
+import com.threemin.uti.CommonConstant;
+import com.threemin.uti.PreferenceHelper;
+import com.threemin.webservice.ConversationWebService;
+import com.threemin.webservice.ProductWebservice;
+import com.threemins.R;
 
 public class ListOfferFragment extends Fragment {
 	private final int SHOW_DIALOG = 1;

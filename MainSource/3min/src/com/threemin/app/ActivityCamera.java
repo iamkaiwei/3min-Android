@@ -331,7 +331,7 @@ public class ActivityCamera extends Activity implements OnSeekBarChangeListener,
 		Size optimalSize = sizes.get(0);
 		for (Size size : sizes) {
 			Log.i("camera", "Available resolution: " + size.width + " " + size.height);
-			if (size.width > 480 && size.width < 800) {
+			if (size.width >= 720 && size.width <= 1920) {
 				optimalSize = size;
 				break;
 			}
