@@ -182,4 +182,13 @@ public class CommonUti {
 		Log.i("HomeActivity", "end doPostToWall");
 	}
 	//share product on facebook ********************************************************
+	
+	public static String bundle2String(Bundle bundle) {
+	    String string = "Bundle{";
+	    for (String key : bundle.keySet()) {
+	        string += " " + key + " => " + bundle.get(key) + ";\n";
+	    }
+	    string += " }Bundle";
+	    return string;
+	}
 }
