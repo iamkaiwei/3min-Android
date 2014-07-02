@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
     
-    <Button 
+    <!-- <Button 
         android:id="@+id/act_crop_img_btn_done"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/act_crop_img_btn_done"
-        android:text="CROP"/>
+        android:text="CROP"/> -->
     
     <ImageView
         android:id="@+id/act_crop_img"

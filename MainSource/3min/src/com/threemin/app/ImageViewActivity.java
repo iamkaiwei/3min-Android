@@ -206,8 +206,6 @@ public class ImageViewActivity extends Activity {
 		mImg3 = (SquareImageView) findViewById(R.id.activity_imageview_img_3);
 		mImg4 = (SquareImageView) findViewById(R.id.activity_imageview_img_4);
 		
-//        mBtnSubmit = (Button) findViewById(R.id.activity_imageview_btn_submit);
-//        mBtnCancel = (Button) findViewById(R.id.activity_imageview_btn_cancel);
         mBtnLoginFacebook = (LoginButton) findViewById(R.id.activity_imageview_btn_login_facebook);
         mBtnLoginFacebook.setPublishPermissions(Arrays.asList("email","user_photos","publish_stream"));
         mSwShareOnFacebook = (Switch) findViewById(R.id.activity_imageview_switch_share_on_facebook);
@@ -240,7 +238,10 @@ public class ImageViewActivity extends Activity {
 		ProductModel result=new ProductModel();
 		if(imageModels.isEmpty()){
 			Toast.makeText(mContext, R.string.error_empty_image, Toast.LENGTH_SHORT).show();
+		} else {
+			result.setImages(imageModels);
 		}
+		
 		if(TextUtils.isEmpty(name)){
 			Toast.makeText(mContext, R.string.error_miss_field, Toast.LENGTH_SHORT).show();
 			return null;
@@ -265,9 +266,15 @@ public class ImageViewActivity extends Activity {
 			result.setVenueName(venue.getName());
 		}
 		
-		result.setCategory(mSelectedCategory);
+		if (mSelectedCategory == null) {
+			Toast.makeText(mContext, R.string.error_miss_field, Toast.LENGTH_SHORT).show();
+			return null;
+		} else {
+			result.setCategory(mSelectedCategory);
+		}
+		
 		result.setOwner(PreferenceHelper.getInstance(mContext).getCurrentUser());
-		result.setImages(imageModels);
+		
 		return result;
 	}
 
@@ -412,6 +419,9 @@ public class ImageViewActivity extends Activity {
 		if(imgFile.exists()){
 		    Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
 		    imageView.setImageBitmap(myBitmap);
+		    ImageModel imgModel = new ImageModel();
+		    imgModel.setUrl(uri);
+		    imageModels.add(imgModel);
 		} else {
 			Toast.makeText(this, "File does not exists", Toast.LENGTH_LONG).show();
 		}

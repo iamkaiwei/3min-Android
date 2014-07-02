@@ -5,9 +5,11 @@ import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -22,22 +24,28 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.edmodo.cropper.CropImageView;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewCallback;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.threemin.model.ImageModel;
+import com.threemin.uti.CommonUti;
 import com.threemins.R;
 
 public class CropImageActivity extends Activity {
 	
 	ImageView img;
 	CropImageView cropImg;
-	Button btnCrop, btnDone;
+//	Button btnCrop, btnDone;
 	Bitmap croppedBitmap;
 	
 	@Override
@@ -49,13 +57,31 @@ public class CropImageActivity extends Activity {
 		initWidgets();
 		initData();
 		initListener();
+		initActionBar();
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.menu_act_crop_img, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+		
+		if (item.getItemId() == R.id.action_crop_done) {
+			
+			doCropDone();
+		}
+		return super.onMenuItemSelected(featureId, item);
 	}
 	
 	public void initWidgets() {
 		img = (ImageView) findViewById(R.id.act_crop_img);
 		cropImg = (CropImageView) findViewById(R.id.act_crop_crop_img);
-		btnCrop = (Button) findViewById(R.id.act_crop_img_btn_crop);
-		btnDone = (Button) findViewById(R.id.act_crop_img_btn_done);
+//		btnCrop = (Button) findViewById(R.id.act_crop_img_btn_crop);
+//		btnDone = (Button) findViewById(R.id.act_crop_img_btn_done);
 	}
 	
 	public void initData() {
@@ -65,32 +91,62 @@ public class CropImageActivity extends Activity {
 	}
 	
 	public void initListener() {
-		btnCrop.setOnClickListener(new OnClickListener() {
+//		btnCrop.setOnClickListener(new OnClickListener() {
+//			
+//			@Override
+//			public void onClick(View v) {
+//				// TODO Auto-generated method stub
+//				croppedBitmap = cropImg.getCroppedImage();
+//				img.setImageBitmap(croppedBitmap);
+//				img.setVisibility(View.VISIBLE);
+//				cropImg.setVisibility(View.GONE);
+//			}
+//		});
+//		
+//		btnDone.setOnClickListener(new OnClickListener() {
+//			
+//			@Override
+//			public void onClick(View v) {
+//				// TODO Auto-generated method stub
+//				if (croppedBitmap != null) {
+//					String path = saveImagetoLocal(croppedBitmap);
+//					Intent intent = new Intent();
+//					intent.putExtra("imagePath", path);
+//					setResult(RESULT_OK, intent);
+//					finish();
+//				}
+//			}
+//		});
+	}
+	
+	private void initActionBar() {
+		ActionBar bar = getActionBar();
+		bar.setDisplayShowHomeEnabled(true);
+		bar.setIcon(R.drawable.ic_back);
+		bar.setDisplayShowTitleEnabled(true);
+		
+		((ImageView)findViewById(android.R.id.home)).setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				croppedBitmap = cropImg.getCroppedImage();
-				img.setImageBitmap(croppedBitmap);
-				img.setVisibility(View.VISIBLE);
-				cropImg.setVisibility(View.GONE);
+				onBackPressed();
 			}
 		});
 		
-		btnDone.setOnClickListener(new OnClickListener() {
+		int id = Resources.getSystem().getIdentifier("action_bar_title", "id", "android");
+        TextView txtTitle = (TextView) findViewById(id);
+        txtTitle.setGravity(Gravity.CENTER);
+        int screenWidth = CommonUti.getWidthInPixel(this);
+        txtTitle.setWidth(screenWidth);
+        txtTitle.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				if (croppedBitmap != null) {
-					String path = saveImagetoLocal(croppedBitmap);
-					Intent intent = new Intent();
-					intent.putExtra("imagePath", path);
-					setResult(RESULT_OK, intent);
-					finish();
-				}
+				doCrop();
+				v.setEnabled(false);
 			}
 		});
+		
 	}
 	
 	public void setImageURI(Uri uri,ImageView imageView) {
@@ -180,21 +236,40 @@ public class CropImageActivity extends Activity {
 		return mediaFile;
 	}
 	
-	public Bitmap getCroppedBitmap(Bitmap bitmap) {
-		return Bitmap.createBitmap(bitmap, 0, 10, bitmap.getWidth(), 350);
+	public void doCrop() {
+		croppedBitmap = cropImg.getCroppedImage();
+		img.setImageBitmap(croppedBitmap);
+		img.setVisibility(View.VISIBLE);
+		cropImg.setVisibility(View.GONE);
 	}
 	
-	public Bitmap getBitmap(Drawable draw) {
-        Bitmap bitmap;
-        if (draw instanceof BitmapDrawable) {
-            bitmap = ((BitmapDrawable) draw).getBitmap();
-        } else {
-            Drawable d = draw;
-            bitmap = Bitmap.createBitmap(d.getIntrinsicWidth(), d.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-            Canvas canvas = new Canvas(bitmap);
-            d.draw(canvas);
-        }
-        return bitmap;
-    }
+	public void doCropDone() {
+		if (croppedBitmap == null) {
+			croppedBitmap = cropImg.getCroppedImage();
+		}
+		
+		String path = saveImagetoLocal(croppedBitmap);
+		Intent intent = new Intent();
+		intent.putExtra("imagePath", path);
+		setResult(RESULT_OK, intent);
+		finish();
+	}
+	
+//	public Bitmap getCroppedBitmap(Bitmap bitmap) {
+//		return Bitmap.createBitmap(bitmap, 0, 10, bitmap.getWidth(), 350);
+//	}
+//	
+//	public Bitmap getBitmap(Drawable draw) {
+//        Bitmap bitmap;
+//        if (draw instanceof BitmapDrawable) {
+//            bitmap = ((BitmapDrawable) draw).getBitmap();
+//        } else {
+//            Drawable d = draw;
+//            bitmap = Bitmap.createBitmap(d.getIntrinsicWidth(), d.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+//            Canvas canvas = new Canvas(bitmap);
+//            d.draw(canvas);
+//        }
+//        return bitmap;
+//    }
 
 }

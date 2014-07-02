@@ -166,6 +166,7 @@ public class HomeFragment extends Fragment {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == REQUEST_UPLOAD) {
 			if (resultCode == Activity.RESULT_OK) {
+				Log.i("HomeFragment", data.getStringExtra(CommonConstant.INTENT_PRODUCT_DATA));
 				ProductModel productModel = new Gson().fromJson(
 						data.getStringExtra(CommonConstant.INTENT_PRODUCT_DATA), ProductModel.class);
 				new UploadProduct((HomeActivity) getActivity()).execute(productModel);

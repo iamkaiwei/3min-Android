@@ -106,5 +106,9 @@
     <string name="rate">Rate us on Appstore</string>
     <string name="share_label">Recommend to friends</string>
     <string name="log_out">Log out</string>
+    
+    <!-- activity crop image -->
+    <string name="act_crop_img_crop">CROP</string>
+    
 
 </resources>
