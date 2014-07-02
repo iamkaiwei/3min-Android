@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
+import com.threemin.app.HomeActivity;
 import com.threemin.app.ListMessageActivity;
 import com.threemin.app.SettingActivity;
 import com.threemin.app.UserActivityActivity;
@@ -67,7 +68,7 @@ public class RightFragment extends Fragment {
 	}
 
 	private void userProduct() {
-		ListProductFragment productFragmentGrid = new ListProductFragment();
+		ListProductFragment productFragmentGrid = new ListProductFragment(getActivity(), ( (HomeActivity)getActivity() ).getLoginButton());
 		productFragmentGrid.setMode(ListProductFragment.MODE_USER_PRODUCT);
 		getFragmentManager().beginTransaction().replace(R.id.content_list, productFragmentGrid).commit();
 	}

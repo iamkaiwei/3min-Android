@@ -8,23 +8,31 @@
 
     <!-- The main content view -->
 
-    <!-- <RelativeLayout
+
+    <!--
+    <RelativeLayout
         android:id="@+id/content_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
-    </RelativeLayout> -->
-    
-    <android.support.v4.view.ViewPager 
-    android:id="@+id/activity_home_view_pager"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" />
-    
+    </RelativeLayout>
+    -->
+
+    <com.facebook.widget.LoginButton
+        android:id="@+id/activity_home_btn_login_facebook"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/activity_home_view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <!-- The navigation drawer -->
 
-   
- 
-    <!-- 
+
+    <!--
     <ListView
         android:id="@+id/home_right_drawer"
         android:layout_width="240dp"
@@ -34,7 +42,6 @@
         android:choiceMode="singleChoice"
         android:divider="@android:color/transparent"
         android:dividerHeight="0dp" /> 
-     -->
-    
+    -->
 
 </FrameLayout> <!-- </android.support.v4.widget.DrawerLayout> -->

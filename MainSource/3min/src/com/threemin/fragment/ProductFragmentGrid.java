@@ -1,5 +1,6 @@
 package com.threemin.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -16,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.facebook.widget.LoginButton;
 import com.google.gson.Gson;
 import com.threemin.adapter.ProductGridAdapter;
 import com.threemin.app.DetailActivity;
@@ -28,6 +30,9 @@ import com.threemin.webservice.UserWebService;
 import com.threemins.R;
 
 public class ProductFragmentGrid extends BaseProductFragment {
+	
+	private Context mContext;
+	private LoginButton mLoginButton;
 
 	// no items:
 	private RelativeLayout rlNoItems;
@@ -47,9 +52,11 @@ public class ProductFragmentGrid extends BaseProductFragment {
 	private int mMinRawY = 0;
 	private boolean isRequestLike;
 	
-	public ProductFragmentGrid(View bottomView) {
+	public ProductFragmentGrid(View bottomView, Context context, LoginButton btn) {
 		super();
 		this.bottomView = bottomView;
+		this.mContext = context;
+		this.mLoginButton = btn;
 		this.isSwitched = false;
 	}
 
@@ -66,7 +73,8 @@ public class ProductFragmentGrid extends BaseProductFragment {
 		mGrid = (QuickReturnGridView) v.findViewById(R.id.gv_product);
 
 		if (mAdapter == null) {
-			mAdapter = new ProductGridAdapter(productModels);
+			// TODO
+			mAdapter = new ProductGridAdapter(productModels, mContext, mLoginButton);
 		}
 		mGrid.setAdapter(mAdapter);
 
@@ -83,7 +91,6 @@ public class ProductFragmentGrid extends BaseProductFragment {
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
 		mGrid.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
 			@Override
@@ -160,7 +167,8 @@ public class ProductFragmentGrid extends BaseProductFragment {
 	@Override
 	public void updateUI() {
 		if (mAdapter == null) {
-			mAdapter = new ProductGridAdapter(productModels);
+			// TODO
+			mAdapter = new ProductGridAdapter(productModels, mContext, mLoginButton);
 		}
 		mAdapter.updateData(productModels);
 		changeIfNoItem();

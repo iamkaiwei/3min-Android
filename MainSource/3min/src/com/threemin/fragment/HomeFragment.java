@@ -60,7 +60,7 @@ public class HomeFragment extends Fragment {
 
 		// init: list of products is shown in list view:
 		mModeView = MODE_GRID_VIEW;
-		productFragmentGrid = new ProductFragmentGrid(bottomView);
+		productFragmentGrid = new ProductFragmentGrid(bottomView, getActivity(), ( (HomeActivity)getActivity() ).getLoginButton());
 		productFragmentGrid.setHomeFragment(this);
 		getFragmentManager().beginTransaction().replace(R.id.content_fragment, productFragmentGrid).commit();
 		currentFragment = productFragmentGrid;
@@ -166,6 +166,7 @@ public class HomeFragment extends Fragment {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == REQUEST_UPLOAD) {
 			if (resultCode == Activity.RESULT_OK) {
+				Log.i("HomeFragment", data.getStringExtra(CommonConstant.INTENT_PRODUCT_DATA));
 				ProductModel productModel = new Gson().fromJson(
 						data.getStringExtra(CommonConstant.INTENT_PRODUCT_DATA), ProductModel.class);
 				new UploadProduct((HomeActivity) getActivity()).execute(productModel);
