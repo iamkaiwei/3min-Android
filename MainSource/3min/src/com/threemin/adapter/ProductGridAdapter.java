@@ -6,6 +6,7 @@ import android.content.Context;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -13,16 +14,18 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
+import com.threemin.app.HomeActivity;
 import com.threemin.model.ProductModel;
 import com.threemin.uti.CommonConstant;
 import com.threemins.R;
 
 public class ProductGridAdapter extends BaseAdapter {
 	private List<ProductModel> mData;
+	private Context mContext;
 
-	public ProductGridAdapter(List<ProductModel> data) {
+	public ProductGridAdapter(List<ProductModel> data, Context context) {
 		this.mData = data;
-
+		mContext = context;
 	}
 
 	public List<ProductModel> getListProducts() {
@@ -113,7 +116,19 @@ public class ProductGridAdapter extends BaseAdapter {
 			TextView tv_time = (TextView) convertView.findViewById(R.id.inflater_header_product_grid_tv_time);
 			tv_time.setText(DateUtils.getRelativeTimeSpanString(model.getUpdateTime() * 1000,
 					System.currentTimeMillis(), 0L, DateUtils.FORMAT_ABBREV_RELATIVE));
-
+			
+			if (mContext != null) {
+				final int pos = position;
+				ImageView img_share = (ImageView) convertView.findViewById(R.id.inflater_body_product_grid_img_share);
+				img_share.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						((HomeActivity)mContext).doShareFacebook(mData.get(pos));
+					}
+				});
+			}
+			
 		}
 
 	}

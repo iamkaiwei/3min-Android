@@ -47,7 +47,7 @@ public class ListProductFragment extends BaseProductFragment {
 		mGrid = (QuickReturnGridView) v.findViewById(R.id.gv_product);
 
 		if (mAdapter == null) {
-			mAdapter = new ProductGridAdapter(productModels);
+			mAdapter = new ProductGridAdapter(productModels, null);
 		}
 		mGrid.setAdapter(mAdapter);
 
@@ -122,7 +122,7 @@ public class ListProductFragment extends BaseProductFragment {
 	@Override
 	public void updateUI() {
 		if (mAdapter == null) {
-			mAdapter = new ProductGridAdapter(productModels);
+			mAdapter = new ProductGridAdapter(productModels, null);
 		}
 		mAdapter.updateData(productModels);
 	}

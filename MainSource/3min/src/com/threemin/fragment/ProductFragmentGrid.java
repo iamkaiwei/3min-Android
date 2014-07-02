@@ -1,5 +1,6 @@
 package com.threemin.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -28,6 +29,8 @@ import com.threemin.webservice.UserWebService;
 import com.threemins.R;
 
 public class ProductFragmentGrid extends BaseProductFragment {
+	
+	Context mContext;
 
 	// no items:
 	private RelativeLayout rlNoItems;
@@ -47,9 +50,10 @@ public class ProductFragmentGrid extends BaseProductFragment {
 	private int mMinRawY = 0;
 	private boolean isRequestLike;
 	
-	public ProductFragmentGrid(View bottomView) {
+	public ProductFragmentGrid(View bottomView, Context context) {
 		super();
 		this.bottomView = bottomView;
+		this.mContext = context;
 		this.isSwitched = false;
 	}
 
@@ -66,7 +70,7 @@ public class ProductFragmentGrid extends BaseProductFragment {
 		mGrid = (QuickReturnGridView) v.findViewById(R.id.gv_product);
 
 		if (mAdapter == null) {
-			mAdapter = new ProductGridAdapter(productModels);
+			mAdapter = new ProductGridAdapter(productModels, mContext);
 		}
 		mGrid.setAdapter(mAdapter);
 
@@ -160,7 +164,7 @@ public class ProductFragmentGrid extends BaseProductFragment {
 	@Override
 	public void updateUI() {
 		if (mAdapter == null) {
-			mAdapter = new ProductGridAdapter(productModels);
+			mAdapter = new ProductGridAdapter(productModels, getActivity());
 		}
 		mAdapter.updateData(productModels);
 		changeIfNoItem();

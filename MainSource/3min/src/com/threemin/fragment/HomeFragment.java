@@ -60,7 +60,7 @@ public class HomeFragment extends Fragment {
 
 		// init: list of products is shown in list view:
 		mModeView = MODE_GRID_VIEW;
-		productFragmentGrid = new ProductFragmentGrid(bottomView);
+		productFragmentGrid = new ProductFragmentGrid(bottomView, getActivity());
 		productFragmentGrid.setHomeFragment(this);
 		getFragmentManager().beginTransaction().replace(R.id.content_fragment, productFragmentGrid).commit();
 		currentFragment = productFragmentGrid;

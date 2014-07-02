@@ -24,7 +24,9 @@ public class IntentReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-    	Log.i("IntentReceiver", "IntentReciever");
+    	if (intent.getData() != null) {
+    		Log.i("IntentReceiver", "Intent: " + intent.getData().toString());
+		}
 
         if (PushManager.ACTION_PUSH_RECEIVED.equals(intent.getAction())) {
           // Push received
