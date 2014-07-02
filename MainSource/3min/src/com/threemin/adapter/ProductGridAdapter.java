@@ -13,19 +13,23 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.facebook.widget.LoginButton;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.threemin.app.HomeActivity;
 import com.threemin.model.ProductModel;
 import com.threemin.uti.CommonConstant;
+import com.threemin.uti.CommonUti;
 import com.threemins.R;
 
 public class ProductGridAdapter extends BaseAdapter {
 	private List<ProductModel> mData;
 	private Context mContext;
+	private LoginButton mLoginButton;
 
-	public ProductGridAdapter(List<ProductModel> data, Context context) {
+	public ProductGridAdapter(List<ProductModel> data, Context context, LoginButton btn) {
 		this.mData = data;
 		mContext = context;
+		mLoginButton = btn;
 	}
 
 	public List<ProductModel> getListProducts() {
@@ -117,14 +121,14 @@ public class ProductGridAdapter extends BaseAdapter {
 			tv_time.setText(DateUtils.getRelativeTimeSpanString(model.getUpdateTime() * 1000,
 					System.currentTimeMillis(), 0L, DateUtils.FORMAT_ABBREV_RELATIVE));
 			
-			if (mContext != null) {
-				final int pos = position;
+			if (mContext != null && mLoginButton != null) {
+				final int finalPosition = position;
 				ImageView img_share = (ImageView) convertView.findViewById(R.id.inflater_body_product_grid_img_share);
 				img_share.setOnClickListener(new OnClickListener() {
 					
 					@Override
 					public void onClick(View v) {
-						((HomeActivity)mContext).doShareFacebook(mData.get(pos));
+						CommonUti.doShareProductOnFacebook(mContext, mLoginButton, mData.get(finalPosition));
 					}
 				});
 			}
