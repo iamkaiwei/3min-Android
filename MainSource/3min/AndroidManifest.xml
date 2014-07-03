@@ -160,6 +160,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/CustomActionBarTheme" >
         </activity>
+        <activity
+            android:name="com.threemin.app.InputProductActivity"
+            android:label=""
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomActionBarTheme" >
+        </activity>
         
         <activity
             android:name="com.threemin.app.CropImageActivity"

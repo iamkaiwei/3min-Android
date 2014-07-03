@@ -2,10 +2,6 @@ package com.threemin.adapter;
 
 import java.util.ArrayList;
 
-import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
-import com.threemin.model.MessageModel;
-import com.threemins.R;
-
 import android.content.Context;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
@@ -14,6 +10,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
+import com.threemin.model.MessageModel;
+import com.threemins.R;
 
 public class MessageAdapter extends BaseAdapter {
 	

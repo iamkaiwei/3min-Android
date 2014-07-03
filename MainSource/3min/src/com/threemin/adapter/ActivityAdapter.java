@@ -2,11 +2,6 @@ package com.threemin.adapter;
 
 import java.util.List;
 
-import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
-import com.threemin.model.ActivityModel;
-import com.threemin.model.CategoryModel;
-import com.threemins.R;
-
 import android.content.Context;
 import android.text.Html;
 import android.text.format.DateUtils;
@@ -16,8 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
+import com.threemin.model.ActivityModel;
+import com.threemins.R;
 
 public class ActivityAdapter extends BaseAdapter {
 	

@@ -1,11 +1,5 @@
 package com.threemin.app;
 
-import com.facebook.Session;
-import com.facebook.widget.LoginButton;
-import com.threemin.fragment.ListProductFragment;
-import com.threemin.uti.CommonUti;
-import com.threemins.R;
-
 import android.app.ActionBar;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -17,6 +11,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.facebook.Session;
+import com.facebook.widget.LoginButton;
+import com.threemin.fragment.ListProductFragment;
+import com.threemin.uti.CommonUti;
+import com.threemins.R;
 
 public class UserLikeProductActivity extends FragmentActivity {
 	
