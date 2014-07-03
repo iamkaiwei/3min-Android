@@ -1,13 +1,11 @@
 package com.threemin.app;
 
+import android.app.Application;
+
 import com.threemin.receiver.IntentReceiver;
-import com.threemins.R;
 import com.urbanairship.AirshipConfigOptions;
 import com.urbanairship.UAirship;
 import com.urbanairship.push.PushManager;
-
-import android.app.Application;
-import android.util.Log;
 
 public class ThreeMinsApplication extends Application {
 	

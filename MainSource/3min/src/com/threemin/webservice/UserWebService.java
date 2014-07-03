@@ -10,7 +10,6 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.threemin.model.CategoryModel;
 import com.threemin.model.ProductModel;
 import com.threemin.uti.WebserviceConstant;
 

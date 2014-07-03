@@ -62,14 +62,14 @@ public class HomeFragment extends Fragment {
 		mModeView = MODE_GRID_VIEW;
 		productFragmentGrid = new ProductFragmentGrid(bottomView, getActivity(), ( (HomeActivity)getActivity() ).getLoginButton());
 		productFragmentGrid.setHomeFragment(this);
-		getFragmentManager().beginTransaction().replace(R.id.content_fragment, productFragmentGrid).commit();
+		getChildFragmentManager().beginTransaction().replace(R.id.content_fragment, productFragmentGrid).commit();
 		currentFragment = productFragmentGrid;
 
 		// create the fragment to switch between grid view and list view
 
 
 		v.findViewById(R.id.home_camera).setOnClickListener(onSellClick());
-		new GetProductTaks(currentFragment).execute(STEP_INIT);
+//		new GetProductTaks(currentFragment).execute(STEP_INIT);
 
 		return v;
 	}

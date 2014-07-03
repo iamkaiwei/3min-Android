@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_grey"
+    android:orientation="vertical"
+    android:padding="@dimen/common_spacing" >
+
+    <EditText
+        android:id="@+id/et_name"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/et_top"
+        android:hint="@string/activity_imageview_item_hint"
+        android:padding="@dimen/common_spacing"
+        android:singleLine="true" >
+
+        <requestFocus />
+    </EditText>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@color/background_grey" />
+
+    <EditText
+        android:id="@+id/et_description"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:hint="@string/activity_imageview_et_description_hint"
+        android:lines="5"
+        android:maxLines="5"
+        android:padding="@dimen/common_spacing" 
+        android:gravity="top"/>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@color/background_grey" />
+
+    <TextView
+        android:id="@+id/tv_location"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/et_bottom"
+        android:gravity="center_vertical"
+        android:hint="@string/location"
+        android:padding="@dimen/common_spacing" />
+
+</LinearLayout>

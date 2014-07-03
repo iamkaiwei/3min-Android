@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
@@ -51,6 +52,7 @@ public class ProductFragmentGrid extends BaseProductFragment {
 	private int mScrollY;
 	private int mMinRawY = 0;
 	private boolean isRequestLike;
+	private int bottomHeight;
 	
 	public ProductFragmentGrid(View bottomView, Context context, LoginButton btn) {
 		super();
@@ -89,80 +91,7 @@ public class ProductFragmentGrid extends BaseProductFragment {
 		return v;
 	}
 
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		mGrid.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-			@Override
-			public void onGlobalLayout() {
-				mQuickReturnHeight = mGrid.getHeight();
-//				new Thread(new Runnable() {
 
-//					@Override
-//					public void run() {
-				if(isRequestLike){
-					return;
-				}
-						mGrid.computeScrollY();
-//					}
-//				}).start();
-			}
-		});
-	}
-
-	private void initListner() {
-		swipeLayout.setOnRefreshListener(new OnRefreshListener() {
-
-			@Override
-			public void onRefresh() {
-				homeFragment.new GetProductTaks(ProductFragmentGrid.this).execute(HomeFragment.STEP_REFRESH);
-			}
-		});
-
-		mGrid.setOnScrollListener(new OnScrollListener() {
-
-			@Override
-			public void onScrollStateChanged(AbsListView view, int scrollState) {
-
-			}
-
-			@Override
-			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-				boolean loadMore = firstVisibleItem + visibleItemCount >= totalItemCount - 1;
-				if (loadMore && totalItemCount > 1 && thelasttotalCount != totalItemCount) {
-					thelasttotalCount = totalItemCount;
-					homeFragment.new GetProductTaks(ProductFragmentGrid.this).execute(HomeFragment.STEP_ADDMORE);
-				}
-
-				handleQuickReturn();
-			}
-		});
-		
-		mGrid.setOnItemDoubleClickListener(new OnItemDoubleTapLister() {
-			
-			@Override
-			public void OnSingleTap(AdapterView parent, View view, int position, long id) {
-				ProductModel model = (ProductModel) mGrid.getItemAtPosition(position);
-				if (model != null) {
-					String data = new Gson().toJson(model);
-					Intent intent = new Intent(getActivity(), DetailActivity.class);
-					intent.putExtra(CommonConstant.INTENT_PRODUCT_DATA, data);
-					getActivity().startActivity(intent);
-					getActivity().overridePendingTransition(R.anim.swipeback_stack_right_in,
-							R.anim.swipeback_stack_to_back);
-				}
-			}
-			
-			@Override
-			public void OnDoubleTap(AdapterView parent, View view, int position, long id) {
-				ProductModel model = (ProductModel) mGrid.getItemAtPosition(position);
-				if (model != null) {
-					
-				requestLike(model,view);
-				}
-			}
-		});
-	}
 
 	@Override
 	public void updateUI() {
@@ -289,4 +218,112 @@ public class ProductFragmentGrid extends BaseProductFragment {
 		});
 		t.start();
 	}
+    
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        // TODO Auto-generated method stub
+        super.onActivityCreated(savedInstanceState);
+        // mGrid.getViewTreeObserver().addOnGlobalLayoutListener(new
+        // ViewTreeObserver.OnGlobalLayoutListener() {
+        // @Override
+        // public void onGlobalLayout() {
+        // mQuickReturnHeight = mGrid.getHeight();
+        // if (isRequestLike) {
+        // return;
+        // }
+        // // mGrid.computeScrollY();
+        // }
+        // });
+        bottomView.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+
+            @Override
+            public void onGlobalLayout() {
+                if (bottomHeight == 0) {
+                    bottomHeight = bottomView.getHeight();
+                    Log.d("bottom", "height=" + bottomHeight);
+                }
+            }
+        });
+    }
+
+    int mLastFirstVisibleItem;
+    boolean mIsScrollingUp;
+
+    private void initListner() {
+        swipeLayout.setOnRefreshListener(new OnRefreshListener() {
+
+            @Override
+            public void onRefresh() {
+                homeFragment.new GetProductTaks(ProductFragmentGrid.this).execute(HomeFragment.STEP_REFRESH);
+            }
+        });
+
+        mGrid.setOnScrollListener(new OnScrollListener() {
+
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+                if (scrollState == 0)
+                    Log.i("a", "scrolling stopped...");
+
+               
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                boolean loadMore = firstVisibleItem + visibleItemCount >= totalItemCount - 1;
+                if (loadMore && totalItemCount > 1 && thelasttotalCount != totalItemCount) {
+                    thelasttotalCount = totalItemCount;
+                    homeFragment.new GetProductTaks(ProductFragmentGrid.this).execute(HomeFragment.STEP_ADDMORE);
+                }
+
+                
+                if (view.getId() == mGrid.getId()) {
+                    final int currentFirstVisibleItem = mGrid.getFirstVisiblePosition();
+                    if (currentFirstVisibleItem > mLastFirstVisibleItem) {
+                        Log.i("a", "scrolling down...");
+                        if(mIsScrollingUp){ 
+                            mIsScrollingUp = false;
+                            bottomView.setTranslationY(bottomHeight);
+                        }
+                    } else if (currentFirstVisibleItem < mLastFirstVisibleItem) {
+                        Log.i("a", "scrolling up...");
+                        if(!mIsScrollingUp){ 
+                            mIsScrollingUp = true;
+                            bottomView.setTranslationY(0);
+                        }
+                    }
+
+                    mLastFirstVisibleItem = currentFirstVisibleItem;
+                }
+                // handleQuickReturn();
+            }
+        });
+
+        mGrid.setOnItemDoubleClickListener(new OnItemDoubleTapLister() {
+
+            @Override
+            public void OnSingleTap(AdapterView parent, View view, int position, long id) {
+                ProductModel model = (ProductModel) mGrid.getItemAtPosition(position);
+                if (model != null) {
+                    String data = new Gson().toJson(model);
+                    Intent intent = new Intent(getActivity(), DetailActivity.class);
+                    intent.putExtra(CommonConstant.INTENT_PRODUCT_DATA, data);
+                    getActivity().startActivity(intent);
+                    getActivity().overridePendingTransition(R.anim.swipeback_stack_right_in,
+                            R.anim.swipeback_stack_to_back);
+                }
+            }
+
+            @Override
+            public void OnDoubleTap(AdapterView parent, View view, int position, long id) {
+                ProductModel model = (ProductModel) mGrid.getItemAtPosition(position);
+                if (model != null) {
+
+                    requestLike(model, view);
+                }
+            }
+        });
+    }
+
 }

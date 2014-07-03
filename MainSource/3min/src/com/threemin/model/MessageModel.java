@@ -3,8 +3,6 @@ package com.threemin.model;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.google.gson.Gson;
-
 public class MessageModel {
 
 	private String message;

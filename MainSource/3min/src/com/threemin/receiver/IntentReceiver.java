@@ -1,5 +1,10 @@
 package com.threemin.receiver;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
+
 import com.threemin.app.HomeActivity;
 import com.threemin.uti.CommonUti;
 import com.urbanairship.actions.ActionUtils;
@@ -7,12 +12,6 @@ import com.urbanairship.actions.DeepLinkAction;
 import com.urbanairship.actions.LandingPageAction;
 import com.urbanairship.actions.OpenExternalUrlAction;
 import com.urbanairship.push.PushManager;
-
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
 
 public class IntentReceiver extends BroadcastReceiver {
     // A set of actions that launch activities when a push is opened. Update
