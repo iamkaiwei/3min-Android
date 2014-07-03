@@ -227,6 +227,7 @@
                     <!-- share -->
 
                     <LinearLayout
+                        android:id="@+id/fm_detail_ln_share"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"

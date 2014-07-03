@@ -109,7 +109,6 @@
                         style="@style/activity_imageview_edittext_style"
                         android:layout_marginRight="@dimen/common_spacing"
                         android:layout_toLeftOf="@+id/imageView1"
-                        android:hint="@string/activity_imageview_category_hint"
                         threemins:customTypeface="@string/font_regular" />
 
                     <com.lanna.droidlib.view.CustomTextView
@@ -143,12 +142,12 @@
                         android:id="@+id/activity_imageview_tv_item"
                         style="@style/activity_imageview_edittext_style"
                         android:layout_marginRight="@dimen/common_spacing"
-                        android:layout_toLeftOf="@+id/imageView1"
+                        android:layout_toLeftOf="@+id/imageView2"
                         android:hint="@string/activity_imageview_item_hint"
                         threemins:customTypeface="@string/font_regular" />
 
                     <ImageView
-                        android:id="@+id/imageView1"
+                        android:id="@+id/imageView2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
@@ -191,13 +190,13 @@
                         android:id="@+id/activity_imageview_et_price"
                         style="@style/activity_imageview_edittext_style"
                         android:layout_marginRight="@dimen/common_spacing"
-                        android:layout_toLeftOf="@+id/imageView1"
+                        android:layout_toLeftOf="@+id/imageView3"
                         android:hint="@string/activity_imageview_price_hint"
                         android:inputType="number"
                         threemins:customTypeface="@string/font_regular" />
 
                     <ImageView
-                        android:id="@+id/imageView1"
+                        android:id="@+id/imageView3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"

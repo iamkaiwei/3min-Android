@@ -16,6 +16,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -197,8 +198,6 @@ public class ImageViewActivity extends Activity {
 		mImg3 = (SquareImageView) findViewById(R.id.activity_imageview_img_3);
 		mImg4 = (SquareImageView) findViewById(R.id.activity_imageview_img_4);
 		
-//        mBtnSubmit = (Button) findViewById(R.id.activity_imageview_btn_submit);
-//        mBtnCancel = (Button) findViewById(R.id.activity_imageview_btn_cancel);
         mBtnLoginFacebook = (LoginButton) findViewById(R.id.activity_imageview_btn_login_facebook);
         mBtnLoginFacebook.setPublishPermissions(Arrays.asList("email","user_photos","publish_stream"));
         mSwShareOnFacebook = (Switch) findViewById(R.id.activity_imageview_switch_share_on_facebook);
@@ -231,7 +230,10 @@ public class ImageViewActivity extends Activity {
 		ProductModel result=new ProductModel();
 		if(imageModels.isEmpty()){
 			Toast.makeText(mContext, R.string.error_empty_image, Toast.LENGTH_SHORT).show();
+		} else {
+			result.setImages(imageModels);
 		}
+		
 		if(TextUtils.isEmpty(name)){
 			Toast.makeText(mContext, R.string.error_miss_field, Toast.LENGTH_SHORT).show();
 			return null;
@@ -256,9 +258,15 @@ public class ImageViewActivity extends Activity {
 			result.setVenueName(venue.getName());
 		}
 		
-		result.setCategory(mSelectedCategory);
+		if (mSelectedCategory == null) {
+			Toast.makeText(mContext, R.string.error_miss_field, Toast.LENGTH_SHORT).show();
+			return null;
+		} else {
+			result.setCategory(mSelectedCategory);
+		}
+		
 		result.setOwner(PreferenceHelper.getInstance(mContext).getCurrentUser());
-		result.setImages(imageModels);
+		
 		return result;
 	}
 
@@ -354,7 +362,8 @@ public class ImageViewActivity extends Activity {
         
 		if (resultCode == RESULT_OK) {
 			if (requestCode >= REQUEST_CAMERA_IMG_1 && requestCode <= REQUEST_CAMERA_IMG_4) {
-				Uri uri = Uri.parse(data.getStringExtra("imageUri"));
+//				Uri uri = Uri.parse(data.getStringExtra("imageUri"));
+				String uri = data.getStringExtra("imagePath");
 				if (requestCode == REQUEST_CAMERA_IMG_1) {
 					setImageURI(uri,mImg1);
 				} else if (requestCode == REQUEST_CAMERA_IMG_2) {
@@ -372,7 +381,8 @@ public class ImageViewActivity extends Activity {
 					locationName.setText(venue.getName());
 				}
 			} else if (requestCode == REQUEST_CAMERA_ON_CREATE) {
-				Uri uri = Uri.parse(data.getStringExtra("imageUri"));
+//				Uri uri = Uri.parse(data.getStringExtra("imageUri"));
+				String uri = data.getStringExtra("imagePath");
 				setImageURI(uri,mImg1);
 			}
 			else if(requestCode==REQUEST_CATEGORY){
@@ -410,9 +420,21 @@ public class ImageViewActivity extends Activity {
 		return null;
 	}
 
-	public void setImageURI(Uri uri,ImageView imageView) {
-			UrlImageViewHelper.setUrlDrawable(imageView, uri.toString(), getImageCallback());
-
+//	public void setImageURI(Uri uri,ImageView imageView) {
+//			UrlImageViewHelper.setUrlDrawable(imageView, uri.toString(), getImageCallback());
+//	}
+	
+	public void setImageURI(String uri,ImageView imageView) {
+		File imgFile = new  File(uri);
+		if(imgFile.exists()){
+		    Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+		    imageView.setImageBitmap(myBitmap);
+		    ImageModel imgModel = new ImageModel();
+		    imgModel.setUrl(uri);
+		    imageModels.add(imgModel);
+		} else {
+			Toast.makeText(this, "File does not exists", Toast.LENGTH_LONG).show();
+		}
 	}
 
 	private UrlImageViewCallback getImageCallback() {

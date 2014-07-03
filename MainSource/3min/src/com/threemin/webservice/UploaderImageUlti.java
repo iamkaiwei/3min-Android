@@ -15,6 +15,7 @@ import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.params.HttpParams;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.threemin.model.ImageModel;
 import com.threemin.model.ProductModel;
@@ -64,6 +65,7 @@ public class UploaderImageUlti {
 			return mHttpClient.execute(httppost);
 		} catch (Exception e) {
 			e.printStackTrace();
+			Log.i("UploaderImageUlti", e.toString());
 			return null;
 		}
 	}

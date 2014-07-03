@@ -32,6 +32,7 @@ import jp.co.cyberagent.android.gpuimage.GPUImageSepiaFilter;
 import jp.co.cyberagent.android.gpuimage.GPUImageView;
 import jp.co.cyberagent.android.gpuimage.GPUImageVignetteFilter;
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -55,6 +56,7 @@ import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
@@ -67,6 +69,8 @@ import com.threemin.view.HorizontalListView;
 import com.threemins.R;
 
 public class ActivityCamera extends Activity implements OnSeekBarChangeListener, OnClickListener {
+	
+	public static final int REQUEST_CROP = 33;
 
 	private GPUImage mGPUImage;
 	private CameraHelper mCameraHelper;
@@ -194,6 +198,9 @@ public class ActivityCamera extends Activity implements OnSeekBarChangeListener,
 			gpuImageView.setVisibility(View.VISIBLE);
 			surface.setVisibility(View.INVISIBLE);
 			handleImage(data.getData());
+		} else if (requestCode == REQUEST_CROP && resultCode == RESULT_OK) {
+			String path = data.getStringExtra("imagePath");
+			finishCameraActivity(path);
 		}
 	}
 
@@ -264,10 +271,11 @@ public class ActivityCamera extends Activity implements OnSeekBarChangeListener,
 
 							@Override
 							public void onPictureSaved(Uri uri) {
-								Intent intent = new Intent();
-								intent.putExtra("imageUri", uri.toString());
-								setResult(RESULT_OK, intent);
-								finish();
+//								Intent intent = new Intent();
+//								intent.putExtra("imageUri", uri.toString());
+//								setResult(RESULT_OK, intent);
+//								finish();
+								finishImage(uri);
 							}
 						});
 
@@ -392,10 +400,11 @@ public class ActivityCamera extends Activity implements OnSeekBarChangeListener,
 
 							@Override
 							public void onPictureSaved(final Uri uri) {
-								Intent intent = new Intent();
-								intent.putExtra("imageUri", uri.toString());
-								setResult(RESULT_OK, intent);
-								finish();
+//								Intent intent = new Intent();
+//								intent.putExtra("imageUri", uri.toString());
+//								setResult(RESULT_OK, intent);
+//								finish();
+								finishImage(uri);
 							}
 						});
 			}
@@ -515,4 +524,25 @@ public class ActivityCamera extends Activity implements OnSeekBarChangeListener,
 			mCameraInstance = null;
 		}
 	}
+	
+	public void finishImage(Uri picUri) {
+//		Intent intent = new Intent();
+//		intent.putExtra("imageUri", picUri.toString());
+//		setResult(RESULT_OK, intent);
+//		finish();
+		
+//		performCrop(picUri);
+		
+		Intent intent = new Intent(this, CropImageActivity.class);
+		intent.putExtra("imageUri", picUri.toString());
+		startActivityForResult(intent, REQUEST_CROP);
+	}
+	
+	public void finishCameraActivity(String path) {
+		Intent intent = new Intent();
+		intent.putExtra("imagePath", path);
+		setResult(RESULT_OK, intent);
+		finish();
+	}
+
 }

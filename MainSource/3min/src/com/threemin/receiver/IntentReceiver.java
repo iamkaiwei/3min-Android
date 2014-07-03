@@ -3,9 +3,11 @@ package com.threemin.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 
 import com.threemin.app.HomeActivity;
+import com.threemin.uti.CommonUti;
 import com.urbanairship.actions.ActionUtils;
 import com.urbanairship.actions.DeepLinkAction;
 import com.urbanairship.actions.LandingPageAction;
@@ -23,10 +25,18 @@ public class IntentReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-    	Log.i("tructran", "IntentReciever");
+    	Log.i("IntentReceiver", "Intent: " + intent.toString());
+    	Bundle bundle = intent.getExtras();
+    	
+    	Log.i("IntentReceiver", "Bundle: " + CommonUti.bundle2String(bundle));
 
         if (PushManager.ACTION_PUSH_RECEIVED.equals(intent.getAction())) {
           // Push received
+        }else if (intent.getAction().equals(PushManager.ACTION_REGISTRATION_FINISHED)) {
+            Log.i("IntentReceiver","Registration complete. APID:" + intent.getStringExtra(PushManager.EXTRA_APID)+ ". Valid: "+ intent.getBooleanExtra( PushManager.EXTRA_REGISTRATION_VALID, false));
+            // Notify any app-specific listeners
+            String apid = PushManager.shared().getAPID();
+            Log.i("IntentReceiver", "Receiver: App ID: " + apid);
         } else if (PushManager.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
 
             // Push opened
@@ -34,9 +44,6 @@ public class IntentReceiver extends BroadcastReceiver {
             // Only launch the main activity if the payload does not contain any
             // actions that might have already opened an activity
             if (!ActionUtils.containsRegisteredActions(intent.getExtras(), ACTIVITY_ACTIONS)) {
-//            	Bundle bundle = intent.getExtras();
-//            	String message = bundle.getString("Message");
-//            	Log.i("tructran", "Push recieved: " + message);
                 Intent launch = new Intent(Intent.ACTION_MAIN);
 //                launch.putExtra("Message", message);
                 launch.setClass(context, HomeActivity.class);
