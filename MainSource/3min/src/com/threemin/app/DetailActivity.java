@@ -1,15 +1,19 @@
 package com.threemin.app;
 
 import android.app.ActionBar;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.facebook.Session;
+import com.facebook.widget.LoginButton;
 import com.hannesdorfmann.swipeback.Position;
 import com.hannesdorfmann.swipeback.SwipeBack;
 import com.threemin.fragment.DetailFragment;
@@ -20,11 +24,14 @@ public class DetailActivity extends FragmentActivity {
 	
 	ImageView mImgBack;
 	TextView mTvTitle;
+	LoginButton mLoginButton;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_detail);
+		
+		mLoginButton = (LoginButton) findViewById(R.id.activity_detail_btn_login_facebook);
 		
 		// Init the swipe back mechanism
 				SwipeBack.attach(this, Position.LEFT)
@@ -36,6 +43,17 @@ public class DetailActivity extends FragmentActivity {
 		if (savedInstanceState == null) {
 			getSupportFragmentManager().beginTransaction().add(R.id.container, new DetailFragment()).commit();
 		}
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		Session session = Session.getActiveSession();
+        if (session != null) {
+            session.onActivityResult(DetailActivity.this, requestCode, resultCode, data);
+        } else {
+            Log.i("tructran", "DetailActivity session null");
+        }
 	}
 	
 	@Override
@@ -65,6 +83,10 @@ public class DetailActivity extends FragmentActivity {
         int screenWidth = CommonUti.getWidthInPixel(this);
         txtTitle.setWidth(screenWidth);
 		
+	}
+	
+	public LoginButton getLoginButton() {
+		return mLoginButton;
 	}
 
 }

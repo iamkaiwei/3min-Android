@@ -26,6 +26,7 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.threemin.app.ChatToBuyActivity;
+import com.threemin.app.DetailActivity;
 import com.threemin.app.ListOfferActivty;
 import com.threemin.app.PostOfferActivity;
 import com.threemin.model.Conversation;
@@ -33,6 +34,7 @@ import com.threemin.model.ImageModel;
 import com.threemin.model.ProductModel;
 import com.threemin.model.UserModel;
 import com.threemin.uti.CommonConstant;
+import com.threemin.uti.CommonUti;
 import com.threemin.uti.PreferenceHelper;
 import com.threemin.webservice.ConversationWebService;
 import com.threemin.webservice.ProductWebservice;
@@ -65,7 +67,7 @@ public class DetailFragment extends Fragment {
 	private void initBody(View convertView) {
 
 		if (productModel != null) {
-			ImageView image = (ImageView) convertView.findViewById(R.id.inflater_body_product_grid_image);
+//			ImageView image = (ImageView) convertView.findViewById(R.id.inflater_body_product_grid_image);
 			// if (productModel.getImages().size() > 0) {
 			// UrlImageViewHelper.setUrlDrawable(image,
 			// model.getImages().get(0).getMedium());
@@ -157,6 +159,15 @@ public class DetailFragment extends Fragment {
 				}
 			});
 		}
+		
+		LinearLayout lnShare = (LinearLayout) convertView.findViewById(R.id.fm_detail_ln_share);
+		lnShare.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				CommonUti.doShareProductOnFacebook(getActivity(), ( (DetailActivity)getActivity() ).getLoginButton(), productModel);
+			}
+		});
 
 	}
 
@@ -165,7 +176,7 @@ public class DetailFragment extends Fragment {
 			ImageView imageView = new ImageView(getActivity());
 			LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 			int spacing = (int) getResources().getDimension(R.dimen.common_spacing);
-			imageView.setScaleType(ScaleType.CENTER_INSIDE);
+			imageView.setAdjustViewBounds(true);
 			imageView.setPadding(0, spacing, 0, spacing);
 			imageView.setLayoutParams(params);
 			lnImgs.addView(imageView);

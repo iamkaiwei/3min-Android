@@ -63,11 +63,6 @@ public class CategoryAdapter extends BaseAdapter implements SpinnerAdapter {
 				
 			}
 			TextView tvName = (TextView) convertView.findViewById(R.id.inflater_category_spinner_tv);
-//			if (spn.isSelected()) {
-//				tvName.setTextColor(mContext.getResources().getColor(android.R.color.white));
-//			} else {
-//				tvName.setTextColor(mContext.getResources().getColor(R.color.home_action_bar_text_color_disable));
-//			}
 			tvName.setSelected(spn.isSelected());
 			tvName.setText(data.get(position).getName());
 			return convertView;

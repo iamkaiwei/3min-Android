@@ -2,6 +2,7 @@ package com.threemin.fragment;
 
 import java.util.List;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 
+import com.facebook.widget.LoginButton;
 import com.google.gson.Gson;
 import com.threemin.adapter.ProductGridAdapter;
 import com.threemin.app.DetailActivity;
@@ -26,6 +28,9 @@ import com.threemin.webservice.UserWebService;
 import com.threemins.R;
 
 public class ListProductFragment extends BaseProductFragment {
+	
+	private Context mContext;
+	private LoginButton mLoginButton;
 
 	public static int MODE_USER_PRODUCT = 1;
 	public static int MODE_USER_LIKED_PRODUCT = 2;
@@ -39,6 +44,12 @@ public class ListProductFragment extends BaseProductFragment {
 	private boolean isRequestLike;
 	private int page;
 	private int mode;
+	
+	public ListProductFragment(Context context, LoginButton btn) {
+		super();
+		this.mContext = context;
+		this.mLoginButton = btn;
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -47,7 +58,8 @@ public class ListProductFragment extends BaseProductFragment {
 		mGrid = (QuickReturnGridView) v.findViewById(R.id.gv_product);
 
 		if (mAdapter == null) {
-			mAdapter = new ProductGridAdapter(productModels);
+			// TODO
+			mAdapter = new ProductGridAdapter(productModels, mContext, mLoginButton);
 		}
 		mGrid.setAdapter(mAdapter);
 
@@ -116,20 +128,19 @@ public class ListProductFragment extends BaseProductFragment {
 
 	@Override
 	public void setBottomView(View bottomView) {
-		// TODO Auto-generated method stub
 	}
 
 	@Override
 	public void updateUI() {
 		if (mAdapter == null) {
-			mAdapter = new ProductGridAdapter(productModels);
+			// TODO
+			mAdapter = new ProductGridAdapter(productModels, mContext, mLoginButton);
 		}
 		mAdapter.updateData(productModels);
 	}
 
 	@Override
 	public void changeIfNoItem() {
-		// TODO Auto-generated method stub
 
 	}
 

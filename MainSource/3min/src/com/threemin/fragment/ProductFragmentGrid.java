@@ -1,5 +1,6 @@
 package com.threemin.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -17,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.facebook.widget.LoginButton;
 import com.google.gson.Gson;
 import com.threemin.adapter.ProductGridAdapter;
 import com.threemin.app.DetailActivity;
@@ -29,6 +31,9 @@ import com.threemin.webservice.UserWebService;
 import com.threemins.R;
 
 public class ProductFragmentGrid extends BaseProductFragment {
+
+    private Context mContext;
+    private LoginButton mLoginButton;
 
     // no items:
     private RelativeLayout rlNoItems;
@@ -49,9 +54,11 @@ public class ProductFragmentGrid extends BaseProductFragment {
     private boolean isRequestLike;
     private int bottomHeight;
 
-    public ProductFragmentGrid(View bottomView) {
+    public ProductFragmentGrid(View bottomView, Context context, LoginButton btn) {
         super();
         this.bottomView = bottomView;
+        this.mContext = context;
+        this.mLoginButton = btn;
         this.isSwitched = false;
     }
 
@@ -68,7 +75,8 @@ public class ProductFragmentGrid extends BaseProductFragment {
         mGrid = (QuickReturnGridView) v.findViewById(R.id.gv_product);
 
         if (mAdapter == null) {
-            mAdapter = new ProductGridAdapter(productModels);
+            // TODO
+            mAdapter = new ProductGridAdapter(productModels, mContext, mLoginButton);
         }
         mGrid.setAdapter(mAdapter);
 
@@ -130,7 +138,6 @@ public class ProductFragmentGrid extends BaseProductFragment {
                 if (scrollState == 0)
                     Log.i("a", "scrolling stopped...");
 
-               
             }
 
             @Override
@@ -141,18 +148,17 @@ public class ProductFragmentGrid extends BaseProductFragment {
                     homeFragment.new GetProductTaks(ProductFragmentGrid.this).execute(HomeFragment.STEP_ADDMORE);
                 }
 
-                
                 if (view.getId() == mGrid.getId()) {
                     final int currentFirstVisibleItem = mGrid.getFirstVisiblePosition();
                     if (currentFirstVisibleItem > mLastFirstVisibleItem) {
                         Log.i("a", "scrolling down...");
-                        if(mIsScrollingUp){ 
+                        if (mIsScrollingUp) {
                             mIsScrollingUp = false;
                             bottomView.setTranslationY(bottomHeight);
                         }
                     } else if (currentFirstVisibleItem < mLastFirstVisibleItem) {
                         Log.i("a", "scrolling up...");
-                        if(!mIsScrollingUp){ 
+                        if (!mIsScrollingUp) {
                             mIsScrollingUp = true;
                             bottomView.setTranslationY(0);
                         }
@@ -193,7 +199,8 @@ public class ProductFragmentGrid extends BaseProductFragment {
     @Override
     public void updateUI() {
         if (mAdapter == null) {
-            mAdapter = new ProductGridAdapter(productModels);
+            // TODO
+            mAdapter = new ProductGridAdapter(productModels, mContext, mLoginButton);
         }
         mAdapter.updateData(productModels);
         changeIfNoItem();
@@ -312,4 +319,5 @@ public class ProductFragmentGrid extends BaseProductFragment {
         });
         t.start();
     }
+
 }

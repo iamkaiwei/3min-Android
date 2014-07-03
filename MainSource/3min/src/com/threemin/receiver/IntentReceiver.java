@@ -23,10 +23,17 @@ public class IntentReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-    	Log.i("tructran", "IntentReciever");
+    	if (intent.getData() != null) {
+    		Log.i("IntentReceiver", "Intent: " + intent.getData().toString());
+		}
 
         if (PushManager.ACTION_PUSH_RECEIVED.equals(intent.getAction())) {
           // Push received
+        } if (intent.getAction().equals(PushManager.ACTION_REGISTRATION_FINISHED)) {
+            Log.i("tructran","Registration complete. APID:" + intent.getStringExtra(PushManager.EXTRA_APID)+ ". Valid: "+ intent.getBooleanExtra( PushManager.EXTRA_REGISTRATION_VALID, false));
+            // Notify any app-specific listeners
+            String apid = PushManager.shared().getAPID();
+            Log.i("tructran", "Receiver: App ID: " + apid);
         } else if (PushManager.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
 
             // Push opened
