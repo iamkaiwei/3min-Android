@@ -17,6 +17,7 @@ import com.facebook.widget.LoginButton;
 import com.hannesdorfmann.swipeback.Position;
 import com.hannesdorfmann.swipeback.SwipeBack;
 import com.threemin.fragment.DetailFragment;
+import com.threemin.uti.CommonConstant;
 import com.threemin.uti.CommonUti;
 import com.threemins.R;
 
@@ -32,6 +33,8 @@ public class DetailActivity extends FragmentActivity {
 		setContentView(R.layout.activity_detail);
 		
 		mLoginButton = (LoginButton) findViewById(R.id.activity_detail_btn_login_facebook);
+		String productID = getIntent().getStringExtra(CommonConstant.INTENT_PRODUCT_DATA_VIA_ID);
+		Log.i("DetailActivity", "Product ID: " + productID);
 		
 		// Init the swipe back mechanism
 				SwipeBack.attach(this, Position.LEFT)
@@ -40,7 +43,8 @@ public class DetailActivity extends FragmentActivity {
 		
 		initActionBar();
 
-		if (savedInstanceState == null) {
+		if (savedInstanceState == null || (productID != null && productID.length() > 0)) {
+			Log.i("DetailActivity", "Create Fragment");
 			getSupportFragmentManager().beginTransaction().add(R.id.container, new DetailFragment()).commit();
 		}
 	}

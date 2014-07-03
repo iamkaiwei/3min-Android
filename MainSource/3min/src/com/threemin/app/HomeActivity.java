@@ -314,7 +314,6 @@ public class HomeActivity extends FragmentActivity {
 			mViewPagerMainContent.setCurrentItem(PAGE_CENTER);
 		}
 	}
-
 	private class PagerAdapter extends FragmentStatePagerAdapter {
 
 		public PagerAdapter(FragmentManager fm) {

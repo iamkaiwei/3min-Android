@@ -9,7 +9,9 @@ import java.util.Set;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.res.Resources;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -43,6 +45,7 @@ import com.threemin.uti.CommonUti;
 import com.threemin.uti.PreferenceHelper;
 import com.threemin.uti.WebserviceConstant;
 import com.threemin.webservice.ConversationWebService;
+import com.threemin.webservice.ProductWebservice;
 import com.threemins.R;
 
 public class ChatToBuyActivity extends Activity {
@@ -53,6 +56,10 @@ public class ChatToBuyActivity extends Activity {
 	
 	public static final boolean IS_THEIR_MESSAGE = true;
 	public static final boolean IS_MY_MESSAGE = false;
+	
+	String mProductID;
+	String mConversationID;
+	String mTokken;
 	
 	ImageView mImgProduct;
 	TextView mTvProductName;
@@ -83,10 +90,7 @@ public class ChatToBuyActivity extends Activity {
 
 		initWidgets();
 		initData();
-		initActionBar();
-		initPusher();
-		initListview();
-		initHistory();
+
 	}
 
 	private void initWidgets() {
@@ -117,12 +121,28 @@ public class ChatToBuyActivity extends Activity {
 
 	private void initData() {
 		userChats = new ArrayList<MessageModel>();
-		mProductModel = new Gson().fromJson(this.getIntent().getStringExtra(CommonConstant.INTENT_PRODUCT_DATA),
-				ProductModel.class);
-		// mOfferedPrice =
-		// this.getIntent().getStringExtra(CommonConstant.INTENT_PRODUCT_OFFER);
-		conversation = new Gson().fromJson(getIntent().getStringExtra(CommonConstant.INTENT_CONVERSATION_DATA),
-				Conversation.class);
+		mTokken = PreferenceHelper.getInstance(ChatToBuyActivity.this).getTokken();
+		
+		Intent intent = getIntent();
+		mProductID = intent.getStringExtra(CommonConstant.INTENT_PRODUCT_DATA_VIA_ID);
+		mConversationID = intent.getStringExtra(CommonConstant.INTENT_CONVERSATION_DATA_VIA_ID);
+		
+		if (mProductID != null && mConversationID != null) {
+			//get from webservice
+			new GetConversationViaIdTask().execute(mConversationID);
+		} else {
+			mProductModel = new Gson().fromJson(this.getIntent().getStringExtra(CommonConstant.INTENT_PRODUCT_DATA),
+					ProductModel.class);
+			// mOfferedPrice =
+			// this.getIntent().getStringExtra(CommonConstant.INTENT_PRODUCT_OFFER);
+			conversation = new Gson().fromJson(getIntent().getStringExtra(CommonConstant.INTENT_CONVERSATION_DATA),
+					Conversation.class);
+			setData();
+			
+		}
+	}
+	
+	private void setData() {
 		mOfferedPrice = conversation.getOffer() + "";
 		UrlImageViewHelper.setUrlDrawable(mImgProduct, mProductModel.getImages().get(0).getOrigin());
 		mTvProductName.setText(mProductModel.getName());
@@ -133,6 +153,11 @@ public class ChatToBuyActivity extends Activity {
 				+ conversation.getUser().getFullName());
 		getActionBar().setTitle(conversation.getUser().getFullName());
 		currentUser = PreferenceHelper.getInstance(this).getCurrentUser();
+		
+		initActionBar();
+		initPusher();
+		initListview();
+		initHistory();
 	}
 
 	private void initActionBar() {
@@ -338,5 +363,45 @@ public class ChatToBuyActivity extends Activity {
 			mMessageAdapter.addListData(historyChat);
 		};
 	};
+	
+//	private class GetProductViaIdTask extends AsyncTask<String, Void, ProductModel> {
+//		
+//		@Override
+//		protected ProductModel doInBackground(String... params) {
+//			return new ProductWebservice().getProductViaID(mTokken, params[0]);
+//		}
+//		
+//		@Override
+//		protected void onPostExecute(ProductModel result) {
+//			super.onPostExecute(result);
+//			if (result != null) {
+//				mProductModel = result;
+//				new GetConversationViaIdTask().execute(mConversationID);
+//			}
+//		}
+//	}
+	
+	private class GetConversationViaIdTask extends AsyncTask<String, Void, String> {
+
+		@Override
+		protected String doInBackground(String... params) {
+			// TODO Auto-generated method stub
+			String data = new ConversationWebService().getDetailConversation(mTokken, Integer.parseInt(mConversationID));
+			Log.i("ChatToBuyActivity", data);
+			conversation = new Gson().fromJson(data, Conversation.class);
+			mProductModel=new ProductWebservice().getProductViaID(mTokken, "" + conversation.getProductId());
+			return data;
+		}
+		
+		@Override
+		protected void onPostExecute(String result) {
+			// TODO Auto-generated method stub
+			super.onPostExecute(result);
+			if (result != null) {
+				setData();
+			}
+		}
+		
+	}
 
 }

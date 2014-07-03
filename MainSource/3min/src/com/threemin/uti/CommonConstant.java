@@ -29,7 +29,9 @@ public class CommonConstant {
     public static final String CURRENCY = " VND";
 
     public static final String INTENT_PRODUCT_DATA = "productData";
+    public static final String INTENT_PRODUCT_DATA_VIA_ID = "productDataViaID";
     public static final String INTENT_CONVERSATION_DATA = "conversationData";
+    public static final String INTENT_CONVERSATION_DATA_VIA_ID = "conversationDataViaID";
     public static final String INTENT_PRODUCT_OFFER = "productOffer";
     public static final String INTENT_CATEGORY_DATA = "cateData";
     public static final String INTENT_PRODUCT_NAME = "productName";

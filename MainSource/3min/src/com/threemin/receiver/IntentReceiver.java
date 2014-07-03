@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.threemin.app.HomeActivity;
 import com.threemin.app.LoginActivity;
+import com.threemin.uti.CommonConstant;
 import com.threemin.uti.CommonUti;
 import com.urbanairship.actions.ActionUtils;
 import com.urbanairship.actions.DeepLinkAction;
@@ -45,11 +46,24 @@ public class IntentReceiver extends BroadcastReceiver {
             // Only launch the main activity if the payload does not contain any
             // actions that might have already opened an activity
             if (!ActionUtils.containsRegisteredActions(intent.getExtras(), ACTIVITY_ACTIONS)) {
-                Intent launch = new Intent(Intent.ACTION_MAIN);
+                
                 Log.i("IntentReceiver", "Bundle start app: " + CommonUti.bundle2String(bundle));
-                launch.setClass(context, LoginActivity.class);
-                launch.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(launch);
+                
+                String productID = "" + bundle.get("product_id");
+                if (productID != null && productID.length() > 0) {
+                	Intent launch = new Intent(Intent.ACTION_MAIN);
+                	launch.putExtra(CommonConstant.INTENT_PRODUCT_DATA_VIA_ID, productID);
+                	launch.setClass(context, LoginActivity.class);
+                    launch.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(launch);
+				} else {
+					Intent launch = new Intent(Intent.ACTION_MAIN);
+					launch.setClass(context, HomeActivity.class);
+					launch.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					context.startActivity(launch);
+				}
+                
+                
             }
         }
     }

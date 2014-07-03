@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -57,10 +58,24 @@ public class DetailFragment extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		productModel = new Gson().fromJson(
-				getActivity().getIntent().getStringExtra(CommonConstant.INTENT_PRODUCT_DATA), ProductModel.class);
+		
+		Intent intent = getActivity().getIntent();
+		
+		String productID = intent.getStringExtra(CommonConstant.INTENT_PRODUCT_DATA_VIA_ID);
+		Log.i("DetailFragment", "Product ID: " + productID);
+		
 		rootView = inflater.inflate(R.layout.fragment_detail, null);
-		initBody(rootView);
+		
+		if (productID == null) {
+			productModel = new Gson().fromJson(getActivity().getIntent().getStringExtra(CommonConstant.INTENT_PRODUCT_DATA), ProductModel.class);
+			initBody(rootView);
+		} else {
+			dialog = new ProgressDialog(getActivity());
+			dialog.setMessage(getString(R.string.please_wait));
+			dialog.show();
+			new GetProductViaIdTask().execute(productID);
+		}
+		
 		return rootView;
 	}
 
@@ -289,5 +304,27 @@ public class DetailFragment extends Fragment {
 			}
 		});
 		t.start();
+	}
+	
+	private class GetProductViaIdTask extends AsyncTask<String, Void, ProductModel> {
+
+		@Override
+		protected ProductModel doInBackground(String... params) {
+			String tokken = PreferenceHelper.getInstance(getActivity()).getTokken();
+			return new ProductWebservice().getProductViaID(tokken, params[0]);
+		}
+		
+		@Override
+		protected void onPostExecute(ProductModel result) {
+			super.onPostExecute(result);
+			if (result != null) {
+				productModel = result;
+				initBody(rootView);
+				if (dialog != null && dialog.isShowing()) {
+					dialog.dismiss();
+				}
+			}
+		}
+		
 	}
 }
