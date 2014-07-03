@@ -31,6 +31,7 @@ import com.threemin.webservice.UserWebService;
 import com.threemins.R;
 
 public class ProductFragmentGrid extends BaseProductFragment {
+
 	
 	private Context mContext;
 	private LoginButton mLoginButton;
@@ -266,7 +267,6 @@ public class ProductFragmentGrid extends BaseProductFragment {
                 if (scrollState == 0)
                     Log.i("a", "scrolling stopped...");
 
-               
             }
 
             @Override
@@ -277,18 +277,17 @@ public class ProductFragmentGrid extends BaseProductFragment {
                     homeFragment.new GetProductTaks(ProductFragmentGrid.this).execute(HomeFragment.STEP_ADDMORE);
                 }
 
-                
                 if (view.getId() == mGrid.getId()) {
                     final int currentFirstVisibleItem = mGrid.getFirstVisiblePosition();
                     if (currentFirstVisibleItem > mLastFirstVisibleItem) {
                         Log.i("a", "scrolling down...");
-                        if(mIsScrollingUp){ 
+                        if (mIsScrollingUp) {
                             mIsScrollingUp = false;
                             bottomView.setTranslationY(bottomHeight);
                         }
                     } else if (currentFirstVisibleItem < mLastFirstVisibleItem) {
                         Log.i("a", "scrolling up...");
-                        if(!mIsScrollingUp){ 
+                        if (!mIsScrollingUp) {
                             mIsScrollingUp = true;
                             bottomView.setTranslationY(0);
                         }

@@ -236,8 +236,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        
-        <receiver android:name="com.threemin.receiver.IntentReceiver" />
 
         <!-- ********************************************************************************* -->
         
