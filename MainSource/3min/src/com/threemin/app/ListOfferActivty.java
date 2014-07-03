@@ -1,10 +1,5 @@
 package com.threemin.app;
 
-import com.threemin.fragment.ListOfferFragment;
-import com.threemin.fragment.PostOfferFragment;
-import com.threemin.uti.CommonUti;
-import com.threemins.R;
-
 import android.app.ActionBar;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -14,6 +9,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.threemin.fragment.ListOfferFragment;
+import com.threemin.uti.CommonUti;
+import com.threemins.R;
 
 public class ListOfferActivty extends FragmentActivity {
 
