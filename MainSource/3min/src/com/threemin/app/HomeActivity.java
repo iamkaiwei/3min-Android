@@ -3,19 +3,15 @@ package com.threemin.app;
 import java.util.List;
 
 import android.app.ActionBar;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
@@ -28,22 +24,16 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.facebook.HttpMethod;
-import com.facebook.Request;
-import com.facebook.Request.Callback;
-import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.widget.LoginButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
-import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.threemin.adapter.CategoryAdapter;
 import com.threemin.fragment.HomeFragment;
 import com.threemin.fragment.LeftFragment;
 import com.threemin.fragment.RightFragment;
 import com.threemin.model.CategoryModel;
 import com.threemin.model.FilterModel;
-import com.threemin.model.ProductModel;
 import com.threemin.view.CustomSpinner;
 import com.threemin.webservice.CategoryWebservice;
 import com.threemins.R;
@@ -139,37 +129,6 @@ public class HomeActivity extends FragmentActivity {
 			}
 		});
 		
-
-		mViewPagerMainContent
-				.setOnPageChangeListener(new OnPageChangeListener() {
-
-					@Override
-					public void onPageSelected(int position) {
-						doPageChange(position);
-					}
-
-					@Override
-					public void onPageScrolled(int arg0, float arg1, int arg2) {
-
-					}
-
-					@Override
-					public void onPageScrollStateChanged(int arg0) {
-
-					}
-				});
-
-	}
-	
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		Session session = Session.getActiveSession();
-        if (session != null) {
-            session.onActivityResult(HomeActivity.this, requestCode, resultCode, data);
-        } else {
-            Log.i("tructran", "HomeActivity session null");
-        }
 	}
 
 	public void doPageChange(int position) {
