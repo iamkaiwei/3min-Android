@@ -2,7 +2,6 @@ package com.threemin.app;
 
 import android.app.Application;
 
-import com.threemin.receiver.IntentReceiver;
 import com.threemin.receiver.ThreeMinsNotificationBuilder;
 import com.urbanairship.AirshipConfigOptions;
 import com.urbanairship.UAirship;
@@ -33,7 +32,6 @@ public class ThreeMinsApplication extends Application {
 		PushManager.enablePush();
 		
 		PushManager.shared().setNotificationBuilder(new ThreeMinsNotificationBuilder());
-//		PushManager.shared().setIntentReceiver(IntentReceiver.class);
 	};
 
 }
