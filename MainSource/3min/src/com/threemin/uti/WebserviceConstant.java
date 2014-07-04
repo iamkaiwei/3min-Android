@@ -9,6 +9,7 @@ public class WebserviceConstant {
 	public static final String GET_CATE_TAGGABLE = URL_HOST + API + "/categories/taggable.json";
 	public static final String GET_CATE_DISPLAY = URL_HOST + API + "/categories/display.json";
 	public static final String GET_PRODUCT = URL_HOST + API + "/products.json";
+	public static final String GET_PRODUCT_VIA_ID = URL_HOST + API + "/products";
 	public static final String CREATE_PRODUCT = URL_HOST + API + "/products";
 	public static final String LIKE = URL_HOST + API + "/products/%s/likes";
 	public static final String GET_USER_PRODUCT = URL_HOST + API + "/products/me.json";
@@ -16,6 +17,7 @@ public class WebserviceConstant {
 	public static final String CONVERSATION_EXIST = URL_HOST + API + "/conversations/exist.json";
 	public static final String CONVERSATION = URL_HOST + API + "/conversations.json";
 	public static final String CONVERSATION_GET_DETAIL = URL_HOST + API + "/conversations/";
+	public static final String GET_CONVERSATION_VIA_ID = URL_HOST + API + "/conversations";
 	public static final String PUSH_AUTHORIZE = URL_HOST + API + "/pushers/auth";
 	public static final String GET_LIST_OFFER = URL_HOST + API + "/products/%s/show_offer.json";
 	public static final String POST_MESSAGE_OFFLINE = URL_HOST + API + "/conversations/%s/conversation_replies.json";
