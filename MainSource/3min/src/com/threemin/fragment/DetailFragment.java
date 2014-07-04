@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,6 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.koushikdutta.urlimageviewhelper.UrlImageViewCallback;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.threemin.app.ChatToBuyActivity;
 import com.threemin.app.DetailActivity;
@@ -52,7 +54,7 @@ public class DetailFragment extends Fragment {
 	ViewPager pager;
 	Button btnChatToBuy, btnViewOffers;
 	LinearLayout lnImgs, btnLike;
-	ProgressDialog dialog;
+	ProgressDialog dialog, dialogPushReceived;
 	String conversationData;
 	List<Conversation> conversations;
 
@@ -70,9 +72,10 @@ public class DetailFragment extends Fragment {
 			productModel = new Gson().fromJson(getActivity().getIntent().getStringExtra(CommonConstant.INTENT_PRODUCT_DATA), ProductModel.class);
 			initBody(rootView);
 		} else {
-			dialog = new ProgressDialog(getActivity());
-			dialog.setMessage(getString(R.string.please_wait));
-			dialog.show();
+			rootView.setVisibility(View.INVISIBLE);
+			dialogPushReceived = new ProgressDialog(getActivity());
+			dialogPushReceived.setMessage(getString(R.string.please_wait));
+			dialogPushReceived.show();
 			new GetProductViaIdTask().execute(productID);
 		}
 		
@@ -137,15 +140,6 @@ public class DetailFragment extends Fragment {
 					
 					@Override
 					public void onClick(View v) {
-						// TODO Auto-generated method stub
-						// String data = new Gson().toJson(productModel);
-						// // Intent intent = new Intent(getActivity(),
-						// // ChatToBuyActivity.class);
-						// Intent intent = new Intent(getActivity(),
-						// PostOfferActivity.class);
-						// intent.putExtra(CommonConstant.INTENT_PRODUCT_DATA,
-						// data);
-						// getActivity().startActivity(intent);
 						checkOffer();
 					}
 				});
@@ -317,12 +311,15 @@ public class DetailFragment extends Fragment {
 		@Override
 		protected void onPostExecute(ProductModel result) {
 			super.onPostExecute(result);
+			if (rootView.getVisibility() == View.INVISIBLE) {
+				rootView.setVisibility(View.VISIBLE);
+			}
+			if (dialogPushReceived != null && dialogPushReceived.isShowing()) {
+				dialogPushReceived.dismiss();
+			}
 			if (result != null) {
 				productModel = result;
 				initBody(rootView);
-				if (dialog != null && dialog.isShowing()) {
-					dialog.dismiss();
-				}
 			}
 		}
 		
