@@ -3,6 +3,7 @@ package com.threemin.adapter;
 import java.util.List;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,8 +15,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.facebook.widget.LoginButton;
+import com.google.gson.Gson;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.threemin.app.HomeActivity;
+import com.threemin.app.ProfileActivity;
 import com.threemin.model.ProductModel;
 import com.threemin.uti.CommonConstant;
 import com.threemin.uti.CommonUti;
@@ -79,7 +82,7 @@ public class ProductGridAdapter extends BaseAdapter {
 		if (mData == null || mData.size() == 0) {
 			return;
 		}
-		ProductModel model = mData.get(position);
+		final ProductModel model = mData.get(position);
 
 		if (model != null) {
 			ImageView image = (ImageView) convertView.findViewById(R.id.inflater_body_product_grid_image);
@@ -116,6 +119,16 @@ public class ProductGridAdapter extends BaseAdapter {
 
 				TextView tv_name_owner = (TextView) convertView.findViewById(R.id.inflater_header_product_grid_tv_name);
 				tv_name_owner.setText(model.getOwner().getFullName());
+				convertView.findViewById(R.id.owner_view).setOnClickListener(new OnClickListener() {
+                    
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent=new Intent(mContext,ProfileActivity.class);
+                        String data=new Gson().toJson(model.getOwner());
+                        intent.putExtra(CommonConstant.INTENT_USER_DATA, data);
+                        mContext.startActivity(intent);
+                    }
+                });
 			}
 			TextView tv_time = (TextView) convertView.findViewById(R.id.inflater_header_product_grid_tv_time);
 			tv_time.setText(DateUtils.getRelativeTimeSpanString(model.getUpdateTime() * 1000,

@@ -12,7 +12,7 @@ public class WebserviceConstant {
 	public static final String GET_PRODUCT_VIA_ID = URL_HOST + API + "/products";
 	public static final String CREATE_PRODUCT = URL_HOST + API + "/products";
 	public static final String LIKE = URL_HOST + API + "/products/%s/likes";
-	public static final String GET_USER_PRODUCT = URL_HOST + API + "/products/me.json";
+	public static final String GET_MY_PRODUCT = URL_HOST + API + "/products/me.json";
 	public static final String GET_USER_LIKED_PRODUCT = URL_HOST + API + "/products/liked.json";
 	public static final String CONVERSATION_EXIST = URL_HOST + API + "/conversations/exist.json";
 	public static final String CONVERSATION = URL_HOST + API + "/conversations.json";
@@ -23,4 +23,5 @@ public class WebserviceConstant {
 	public static final String POST_MESSAGE_OFFLINE = URL_HOST + API + "/conversations/%s/conversation_replies.json";
 	public static final String POST_BUNDLE_MESSAGE=URL_HOST + API + "/conversations/%s/conversation_replies/bulk_create.json";
 	public static final String GET_ACTIVITIES = URL_HOST + API + "/activities.json/";
+	public static final String GET_USER_PRODUCT=URL_HOST + API +"/users/%s/products.json";
 }
