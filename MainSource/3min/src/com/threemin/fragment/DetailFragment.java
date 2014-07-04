@@ -189,7 +189,7 @@ public class DetailFragment extends Fragment {
 			imageView.setPadding(0, spacing, 0, spacing);
 			imageView.setLayoutParams(params);
 			lnImgs.addView(imageView);
-			UrlImageViewHelper.setUrlDrawable(imageView, imageModel.getOrigin());
+			UrlImageViewHelper.setUrlDrawable(imageView, imageModel.getOrigin(), R.drawable.stuff_img);
 		}
 	}
 
