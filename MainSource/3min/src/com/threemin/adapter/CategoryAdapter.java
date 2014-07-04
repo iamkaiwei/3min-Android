@@ -63,7 +63,6 @@ public class CategoryAdapter extends BaseAdapter implements SpinnerAdapter {
 				
 			}
 			TextView tvName = (TextView) convertView.findViewById(R.id.inflater_category_spinner_tv);
-			tvName.setSelected(spn.isSelected());
 			tvName.setText(data.get(position).getName());
 			return convertView;
 		} else {

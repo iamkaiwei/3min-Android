@@ -8,6 +8,9 @@ import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.Animation.AnimationListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -141,6 +144,8 @@ public class ProductGridAdapter extends BaseAdapter {
 					
 					@Override
 					public void onClick(View v) {
+						Animation animation = AnimationUtils.loadAnimation(mContext, R.anim.rotate_around_center_point);
+						v.startAnimation(animation);
 						CommonUti.doShareProductOnFacebook(mContext, mLoginButton, mData.get(finalPosition));
 					}
 				});

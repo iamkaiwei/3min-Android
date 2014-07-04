@@ -25,6 +25,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.facebook.Session;
 import com.facebook.widget.LoginButton;
@@ -114,14 +115,7 @@ public class HomeActivity extends SwipeBackActivity {
 			
 			@Override
 			public void onPageSelected(final int position) {
-//				doPageChange(position);
-				new Handler().postDelayed(new Runnable() {
-					
-					@Override
-					public void run() {
-						doPageChange(position);
-					}
-				}, 200);
+				doPageChange(position);
 			}
 			
 			@Override
@@ -196,14 +190,24 @@ public class HomeActivity extends SwipeBackActivity {
 	}
 
 	public void setSpinnerSelected(boolean isSelected) {
+		RelativeLayout rl = (RelativeLayout)mSpnActionbarCenterTitle.getChildAt(0);
+		TextView tv = null;
+		if (rl != null) {
+			tv = (TextView)rl.getChildAt(0);
+		}
+		
 		if (isSelected) {
 			mSpnActionbarCenterTitle.setSelected(true);
-			categoryAdapter.notifyDataSetChanged();
+			if (tv != null) {
+				tv.setTextColor(getResources().getColor(R.color.home_action_bar_text_color_enable));
+			}
 			mSpnActionbarCenterTitle.setEnabled(true);
 			mBtnActionbarCenterTitle.setVisibility(View.GONE);
 		} else {
 			mSpnActionbarCenterTitle.setSelected(false);
-			categoryAdapter.notifyDataSetChanged();
+			if (tv != null) {
+				tv.setTextColor(getResources().getColor(R.color.home_action_bar_text_color_disable));
+			}
 			mSpnActionbarCenterTitle.setEnabled(false);
 			mBtnActionbarCenterTitle.setVisibility(View.VISIBLE);
 		}
@@ -248,6 +252,7 @@ public class HomeActivity extends SwipeBackActivity {
 
 						CategoryModel categoryModel = (CategoryModel) parent
 								.getItemAtPosition(position);
+//						mBtnActionbarCenterTitle.setText(categoryModel.getName());
 						if (categoryModel.getName().equals(
 								getString(R.string.browse))) {
 							onSwitchCate(null);
