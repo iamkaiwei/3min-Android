@@ -151,7 +151,7 @@ public class CommonUti {
 		if (session != null && session.isOpened()){
 			doPostToWall(context, session, product);
 		} else {
-			Log.i("HomeActivity", "session null or not opened");
+			Log.i("CommonUti", "session null or not opened");
 		}
 	}
 	

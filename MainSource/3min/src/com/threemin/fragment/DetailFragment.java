@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,6 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.koushikdutta.urlimageviewhelper.UrlImageViewCallback;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.threemin.app.ChatToBuyActivity;
 import com.threemin.app.DetailActivity;
@@ -52,7 +54,7 @@ public class DetailFragment extends Fragment {
 	ViewPager pager;
 	Button btnChatToBuy, btnViewOffers;
 	LinearLayout lnImgs, btnLike;
-	ProgressDialog dialog;
+	ProgressDialog dialog, dialogPushReceived;
 	String conversationData;
 	List<Conversation> conversations;
 
@@ -65,14 +67,15 @@ public class DetailFragment extends Fragment {
 		Log.i("DetailFragment", "Product ID: " + productID);
 		
 		rootView = inflater.inflate(R.layout.fragment_detail, null);
+		rootView.setVisibility(View.INVISIBLE);
 		
 		if (productID == null) {
 			productModel = new Gson().fromJson(getActivity().getIntent().getStringExtra(CommonConstant.INTENT_PRODUCT_DATA), ProductModel.class);
 			initBody(rootView);
 		} else {
-			dialog = new ProgressDialog(getActivity());
-			dialog.setMessage(getString(R.string.please_wait));
-			dialog.show();
+			dialogPushReceived = new ProgressDialog(getActivity());
+			dialogPushReceived.setMessage(getString(R.string.please_wait));
+			dialogPushReceived.show();
 			new GetProductViaIdTask().execute(productID);
 		}
 		
@@ -195,7 +198,21 @@ public class DetailFragment extends Fragment {
 			imageView.setPadding(0, spacing, 0, spacing);
 			imageView.setLayoutParams(params);
 			lnImgs.addView(imageView);
-			UrlImageViewHelper.setUrlDrawable(imageView, imageModel.getOrigin());
+			UrlImageViewHelper.setUrlDrawable(imageView, imageModel.getOrigin(), new UrlImageViewCallback() {
+				
+				@Override
+				public void onLoaded(ImageView imageView, Bitmap loadedBitmap, String url,
+						boolean loadedFromCache) {
+					// TODO Auto-generated method stub
+					imageView.setImageBitmap(loadedBitmap);
+					if (rootView.getVisibility() == View.INVISIBLE) {
+						rootView.setVisibility(View.VISIBLE);
+						if (dialogPushReceived != null && dialogPushReceived.isShowing()) {
+							dialogPushReceived.dismiss();
+						}
+					}
+				}
+			});
 		}
 	}
 
@@ -320,9 +337,6 @@ public class DetailFragment extends Fragment {
 			if (result != null) {
 				productModel = result;
 				initBody(rootView);
-				if (dialog != null && dialog.isShowing()) {
-					dialog.dismiss();
-				}
 			}
 		}
 		
