@@ -20,6 +20,7 @@ import com.google.gson.Gson;
 import com.threemin.adapter.ProductGridAdapter;
 import com.threemin.app.DetailActivity;
 import com.threemin.model.ProductModel;
+import com.threemin.model.UserModel;
 import com.threemin.uti.CommonConstant;
 import com.threemin.uti.PreferenceHelper;
 import com.threemin.view.QuickReturnGridView;
@@ -28,189 +29,201 @@ import com.threemin.webservice.UserWebService;
 import com.threemins.R;
 
 public class ListProductFragment extends BaseProductFragment {
-	
-	private Context mContext;
-	private LoginButton mLoginButton;
 
-	public static int MODE_USER_PRODUCT = 1;
-	public static int MODE_USER_LIKED_PRODUCT = 2;
-	public static int STEP_INIT = 0;
-	public static int STEP_ADDMORE = 1;
-	public static int STEP_REFRESH = 2;
+    private Context mContext;
+    private LoginButton mLoginButton;
 
-	private QuickReturnGridView mGrid;
-	private ProductGridAdapter mAdapter;
+    public static int MODE_MY_PRODUCT = 1;
+    public static int MODE_USER_LIKED_PRODUCT = 2;
+    public static int MODE_USER_PRODUCT = 3;
+    public static int STEP_INIT = 0;
+    public static int STEP_ADDMORE = 1;
+    public static int STEP_REFRESH = 2;
 
-	private boolean isRequestLike;
-	private int page;
-	private int mode;
-	
-	public ListProductFragment(Context context, LoginButton btn) {
-		super();
-		this.mContext = context;
-		this.mLoginButton = btn;
-	}
+    private QuickReturnGridView mGrid;
+    private ProductGridAdapter mAdapter;
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View v = inflater.inflate(R.layout.fragment_product_gridview, null);
-		swipeLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_gridview);
-		mGrid = (QuickReturnGridView) v.findViewById(R.id.gv_product);
+    private boolean isRequestLike;
+    private int page;
+    private int mode;
+    private UserModel userModel;
 
-		if (mAdapter == null) {
-			// TODO
-			mAdapter = new ProductGridAdapter(productModels, mContext, mLoginButton);
-		}
-		mGrid.setAdapter(mAdapter);
+    public ListProductFragment(Context context, LoginButton btn) {
+        super();
+        this.mContext = context;
+        this.mLoginButton = btn;
+    }
 
-		initListner();
-		new GetProductTaks(ListProductFragment.this).execute(HomeFragment.STEP_INIT);
-		return v;
-	}
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_product_gridview, null);
+        swipeLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_gridview);
+        mGrid = (QuickReturnGridView) v.findViewById(R.id.gv_product);
 
-	public void setMode(int mode) {
-		this.mode = mode;
-	}
+        if (mAdapter == null) {
+            // TODO
+            mAdapter = new ProductGridAdapter(productModels, mContext, mLoginButton);
+        }
+        mGrid.setAdapter(mAdapter);
 
-	private void initListner() {
-		swipeLayout.setOnRefreshListener(new OnRefreshListener() {
+        initListner();
+        new GetProductTaks(ListProductFragment.this).execute(HomeFragment.STEP_INIT);
+        return v;
+    }
 
-			@Override
-			public void onRefresh() {
-				new GetProductTaks(ListProductFragment.this).execute(HomeFragment.STEP_REFRESH);
-			}
-		});
+    public void setMode(int mode) {
+        this.mode = mode;
+    }
 
-		mGrid.setOnScrollListener(new OnScrollListener() {
+    public void setUserModel(UserModel userModel) {
+        this.userModel = userModel;
+    }
 
-			@Override
-			public void onScrollStateChanged(AbsListView view, int scrollState) {
+    private void initListner() {
+        swipeLayout.setOnRefreshListener(new OnRefreshListener() {
 
-			}
+            @Override
+            public void onRefresh() {
+                new GetProductTaks(ListProductFragment.this).execute(HomeFragment.STEP_REFRESH);
+            }
+        });
 
-			@Override
-			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-				boolean loadMore = firstVisibleItem + visibleItemCount >= totalItemCount - 1;
-				if (loadMore && totalItemCount > 1 && thelasttotalCount != totalItemCount) {
-					thelasttotalCount = totalItemCount;
-					new GetProductTaks(ListProductFragment.this).execute(HomeFragment.STEP_ADDMORE);
-				}
+        mGrid.setOnScrollListener(new OnScrollListener() {
 
-			}
-		});
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
 
-		mGrid.setOnItemDoubleClickListener(new OnItemDoubleTapLister() {
+            }
 
-			@Override
-			public void OnSingleTap(AdapterView parent, View view, int position, long id) {
-				ProductModel model = (ProductModel) mGrid.getItemAtPosition(position);
-				if (model != null) {
-					if(model.getOwner()==null){
-						model.setOwner(PreferenceHelper.getInstance(getActivity()).getCurrentUser());
-					}
-					String data = new Gson().toJson(model);
-					Intent intent = new Intent(getActivity(), DetailActivity.class);
-					intent.putExtra(CommonConstant.INTENT_PRODUCT_DATA, data);
-					getActivity().startActivity(intent);
-				}
-			}
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                boolean loadMore = firstVisibleItem + visibleItemCount >= totalItemCount - 1;
+                if (loadMore && totalItemCount > 1 && thelasttotalCount != totalItemCount) {
+                    thelasttotalCount = totalItemCount;
+                    new GetProductTaks(ListProductFragment.this).execute(HomeFragment.STEP_ADDMORE);
+                }
 
-			@Override
-			public void OnDoubleTap(AdapterView parent, View view, int position, long id) {
-				ProductModel model = (ProductModel) mGrid.getItemAtPosition(position);
-				if (model != null) {
+            }
+        });
 
-					// requestLike(model,view);
-				}
-			}
-		});
-	}
+        mGrid.setOnItemDoubleClickListener(new OnItemDoubleTapLister() {
 
-	@Override
-	public void setBottomView(View bottomView) {
-	}
+            @Override
+            public void OnSingleTap(AdapterView parent, View view, int position, long id) {
+                ProductModel model = (ProductModel) mGrid.getItemAtPosition(position);
+                if (model != null) {
+                    if (model.getOwner() == null) {
+                        if (mode == MODE_MY_PRODUCT) {
+                            model.setOwner(PreferenceHelper.getInstance(getActivity()).getCurrentUser());
+                        } else {
+                            model.setOwner(userModel);
+                        }
+                    }
+                    String data = new Gson().toJson(model);
+                    Intent intent = new Intent(getActivity(), DetailActivity.class);
+                    intent.putExtra(CommonConstant.INTENT_PRODUCT_DATA, data);
+                    getActivity().startActivity(intent);
+                }
+            }
 
-	@Override
-	public void updateUI() {
-		if (mAdapter == null) {
-			// TODO
-			mAdapter = new ProductGridAdapter(productModels, mContext, mLoginButton);
-		}
-		mAdapter.updateData(productModels);
-	}
+            @Override
+            public void OnDoubleTap(AdapterView parent, View view, int position, long id) {
+                ProductModel model = (ProductModel) mGrid.getItemAtPosition(position);
+                if (model != null) {
 
-	@Override
-	public void changeIfNoItem() {
+                    // requestLike(model,view);
+                }
+            }
+        });
+    }
 
-	}
+    @Override
+    public void setBottomView(View bottomView) {
+    }
 
-	public class GetProductTaks extends AsyncTask<Integer, Void, List<ProductModel>> {
-		int currentStep;
+    @Override
+    public void updateUI() {
+        if (mAdapter == null) {
+            // TODO
+            mAdapter = new ProductGridAdapter(productModels, mContext, mLoginButton);
+        }
+        mAdapter.updateData(productModels);
+    }
 
-		BaseProductFragment baseProductFragment;
+    @Override
+    public void changeIfNoItem() {
 
-		// flag check if asynctask is proccessing or not
+    }
 
-		// constructor
-		public GetProductTaks(BaseProductFragment baseProductFragment) {
-			this.baseProductFragment = baseProductFragment;
-		}
+    public class GetProductTaks extends AsyncTask<Integer, Void, List<ProductModel>> {
+        int currentStep;
 
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-			if (baseProductFragment.swipeLayout != null) {
-				baseProductFragment.swipeLayout.setRefreshing(true);
-			}
-		}
+        BaseProductFragment baseProductFragment;
 
-		@Override
-		protected List<ProductModel> doInBackground(Integer... params) {
-			currentStep = params[0];
-			if (currentStep == STEP_INIT || currentStep == STEP_REFRESH) {
-				page = 1;
-				baseProductFragment.thelasttotalCount = 0;
-			}
-			if (currentStep == STEP_ADDMORE) {
-				page++;
-			}
-			String tokken = PreferenceHelper.getInstance(baseProductFragment.getActivity()).getTokken();
-			try {
-				if (mode == MODE_USER_PRODUCT) {
-					return new UserWebService().getUserProduct(tokken, page);
-				} else if (mode == MODE_USER_LIKED_PRODUCT) {
-					return new UserWebService().getUserLikedProduct(tokken, page);
-				} else {
-					return null;
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-				return null;
-			}
-		}
+        // flag check if asynctask is proccessing or not
 
-		@Override
-		protected void onPostExecute(List<ProductModel> result) {
-			super.onPostExecute(result);
-			if (baseProductFragment.swipeLayout != null) {
-				baseProductFragment.swipeLayout.setRefreshing(false);
-			}
-			if (result != null && result.size() > 0) {
-				if (currentStep == STEP_INIT || currentStep == STEP_REFRESH) {
-					productModels = result;
-					baseProductFragment.setProductModels(result);
-				} else if (currentStep == STEP_ADDMORE) {
-					productModels.addAll(result);
-					baseProductFragment.setProductModels(productModels);
-				} else {
-				}
+        // constructor
+        public GetProductTaks(BaseProductFragment baseProductFragment) {
+            this.baseProductFragment = baseProductFragment;
+        }
 
-			} else if (currentStep == STEP_INIT) {
-				baseProductFragment.setProductModels(result);
-				productModels = result;
-			}
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            if (baseProductFragment.swipeLayout != null) {
+                baseProductFragment.swipeLayout.setRefreshing(true);
+            }
+        }
 
-		}
-	}
+        @Override
+        protected List<ProductModel> doInBackground(Integer... params) {
+            currentStep = params[0];
+            if (currentStep == STEP_INIT || currentStep == STEP_REFRESH) {
+                page = 1;
+                baseProductFragment.thelasttotalCount = 0;
+            }
+            if (currentStep == STEP_ADDMORE) {
+                page++;
+            }
+            String tokken = PreferenceHelper.getInstance(baseProductFragment.getActivity()).getTokken();
+            try {
+                if (mode == MODE_MY_PRODUCT) {
+                    return new UserWebService().getMyProduct(tokken, page);
+                } else if (mode == MODE_USER_LIKED_PRODUCT) {
+                    return new UserWebService().getUserLikedProduct(tokken, page);
+                } else if (mode == MODE_USER_PRODUCT) {
+                    return new UserWebService().getUserProduct(tokken, userModel.getId(), page);
+                } else {
+                    return null;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(List<ProductModel> result) {
+            super.onPostExecute(result);
+            if (baseProductFragment.swipeLayout != null) {
+                baseProductFragment.swipeLayout.setRefreshing(false);
+            }
+            if (result != null && result.size() > 0) {
+                if (currentStep == STEP_INIT || currentStep == STEP_REFRESH) {
+                    productModels = result;
+                    baseProductFragment.setProductModels(result);
+                } else if (currentStep == STEP_ADDMORE) {
+                    productModels.addAll(result);
+                    baseProductFragment.setProductModels(productModels);
+                } else {
+                }
+
+            } else if (currentStep == STEP_INIT) {
+                baseProductFragment.setProductModels(result);
+                productModels = result;
+            }
+
+        }
+    }
 
 }
