@@ -67,12 +67,12 @@ public class DetailFragment extends Fragment {
 		Log.i("DetailFragment", "Product ID: " + productID);
 		
 		rootView = inflater.inflate(R.layout.fragment_detail, null);
-		rootView.setVisibility(View.INVISIBLE);
 		
 		if (productID == null) {
 			productModel = new Gson().fromJson(getActivity().getIntent().getStringExtra(CommonConstant.INTENT_PRODUCT_DATA), ProductModel.class);
 			initBody(rootView);
 		} else {
+			rootView.setVisibility(View.INVISIBLE);
 			dialogPushReceived = new ProgressDialog(getActivity());
 			dialogPushReceived.setMessage(getString(R.string.please_wait));
 			dialogPushReceived.show();
@@ -140,15 +140,6 @@ public class DetailFragment extends Fragment {
 					
 					@Override
 					public void onClick(View v) {
-						// TODO Auto-generated method stub
-						// String data = new Gson().toJson(productModel);
-						// // Intent intent = new Intent(getActivity(),
-						// // ChatToBuyActivity.class);
-						// Intent intent = new Intent(getActivity(),
-						// PostOfferActivity.class);
-						// intent.putExtra(CommonConstant.INTENT_PRODUCT_DATA,
-						// data);
-						// getActivity().startActivity(intent);
 						checkOffer();
 					}
 				});
@@ -198,21 +189,7 @@ public class DetailFragment extends Fragment {
 			imageView.setPadding(0, spacing, 0, spacing);
 			imageView.setLayoutParams(params);
 			lnImgs.addView(imageView);
-			UrlImageViewHelper.setUrlDrawable(imageView, imageModel.getOrigin(), new UrlImageViewCallback() {
-				
-				@Override
-				public void onLoaded(ImageView imageView, Bitmap loadedBitmap, String url,
-						boolean loadedFromCache) {
-					// TODO Auto-generated method stub
-					imageView.setImageBitmap(loadedBitmap);
-					if (rootView.getVisibility() == View.INVISIBLE) {
-						rootView.setVisibility(View.VISIBLE);
-						if (dialogPushReceived != null && dialogPushReceived.isShowing()) {
-							dialogPushReceived.dismiss();
-						}
-					}
-				}
-			});
+			UrlImageViewHelper.setUrlDrawable(imageView, imageModel.getOrigin());
 		}
 	}
 
@@ -334,6 +311,12 @@ public class DetailFragment extends Fragment {
 		@Override
 		protected void onPostExecute(ProductModel result) {
 			super.onPostExecute(result);
+			if (rootView.getVisibility() == View.INVISIBLE) {
+				rootView.setVisibility(View.VISIBLE);
+			}
+			if (dialogPushReceived != null && dialogPushReceived.isShowing()) {
+				dialogPushReceived.dismiss();
+			}
 			if (result != null) {
 				productModel = result;
 				initBody(rootView);

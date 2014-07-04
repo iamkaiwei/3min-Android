@@ -144,8 +144,6 @@ public class ProductGridAdapter extends BaseAdapter {
 					
 					@Override
 					public void onClick(View v) {
-						Animation animation = AnimationUtils.loadAnimation(mContext, R.anim.rotate_around_center_point);
-						v.startAnimation(animation);
 						CommonUti.doShareProductOnFacebook(mContext, mLoginButton, mData.get(finalPosition));
 					}
 				});
