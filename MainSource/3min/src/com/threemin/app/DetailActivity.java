@@ -1,5 +1,7 @@
 package com.threemin.app;
 
+import me.imid.swipebacklayout.lib.SwipeBackLayout;
+import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 import android.app.ActionBar;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -21,11 +23,12 @@ import com.threemin.uti.CommonConstant;
 import com.threemin.uti.CommonUti;
 import com.threemins.R;
 
-public class DetailActivity extends FragmentActivity {
+public class DetailActivity extends SwipeBackActivity {
 	
 	ImageView mImgBack;
 	TextView mTvTitle;
 	LoginButton mLoginButton;
+	SwipeBackLayout mSwipeBack;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +40,11 @@ public class DetailActivity extends FragmentActivity {
 		Log.i("DetailActivity", "Product ID: " + productID);
 		
 		// Init the swipe back mechanism
-				SwipeBack.attach(this, Position.LEFT)
-				.setContentView(R.layout.activity_detail)
-				.setSwipeBackView(R.layout.swipeback_default);
+//				SwipeBack.attach(this, Position.LEFT)
+//				.setContentView(R.layout.activity_detail)
+//				.setSwipeBackView(R.layout.swipeback_default);
+		mSwipeBack = getSwipeBackLayout();
+		mSwipeBack.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
 		
 		initActionBar();
 
@@ -62,9 +67,10 @@ public class DetailActivity extends FragmentActivity {
 	
 	@Override
 	public void onBackPressed(){
-		super.onBackPressed();
-		overridePendingTransition(R.anim.swipeback_stack_to_front,
-				R.anim.swipeback_stack_right_out);
+		scrollToFinishActivity();
+//		super.onBackPressed();
+//		overridePendingTransition(R.anim.swipeback_stack_to_front,
+//				R.anim.swipeback_stack_right_out);
 	}
 
 	private void initActionBar() {

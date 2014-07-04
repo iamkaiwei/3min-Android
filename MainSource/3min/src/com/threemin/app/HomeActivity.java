@@ -2,6 +2,8 @@ package com.threemin.app;
 
 import java.util.List;
 
+import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
+
 import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
@@ -38,7 +40,7 @@ import com.threemin.view.CustomSpinner;
 import com.threemin.webservice.CategoryWebservice;
 import com.threemins.R;
 
-public class HomeActivity extends FragmentActivity {
+public class HomeActivity extends SwipeBackActivity {
 
 	// action bar widgets
 	ImageView mImgActionbarSearch, mImgActionbarProfile;
@@ -78,6 +80,10 @@ public class HomeActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
+		
+		//disable swipe back
+		getSwipeBackLayout().setEnableGesture(false);
+		
 		mContext = this;
 
 		mGoogleApiClient = new GoogleApiClient.Builder(this)
