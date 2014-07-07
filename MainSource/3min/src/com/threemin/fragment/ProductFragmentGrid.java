@@ -72,6 +72,8 @@ public class ProductFragmentGrid extends BaseProductFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_product_gridview, null);
 		swipeLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_gridview);
+		int color = R.color.red_background;
+		swipeLayout.setColorScheme(color, color, color, color);
 		rlNoItems = (RelativeLayout) v.findViewById(R.id.fragment_product_gridview_layout_no_items);
 		mGrid = (QuickReturnGridView) v.findViewById(R.id.gv_product);
 
