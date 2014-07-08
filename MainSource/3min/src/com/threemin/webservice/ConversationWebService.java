@@ -111,20 +111,5 @@ public class ConversationWebService {
 			return null;
 		}
 	}
-	
-	
-	//http://threemins-server-staging.herokuapp.com/api/v1/conversations/93.json?access_token=916439146e3cd9c29ea09bc9cadb9e7af5c49a655ccbebb0f22a8b07fa82c10f
-	public Conversation getConversationViaId(String tokken, String conversationID) {
-		String url = WebserviceConstant.GET_CONVERSATION_VIA_ID + "/" + conversationID + ".json?access_token=" + tokken;
-		Log.i("ConversationWebService", "getConversationViaId url: " + url);
-		try {
-			String result = WebServiceUtil.getData(url);
-			Log.e("ConversationWebService", "getConversationViaId data: " + result);
-			Gson gson = new Gson();
-			return gson.fromJson(result, Conversation.class);
-		} catch (Exception e) {
-			Log.i("ConversationWebService", "getConversationViaId exception: " + e.toString());
-		}
-		return null;
-	}
+
 }
