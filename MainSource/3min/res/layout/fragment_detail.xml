@@ -232,13 +232,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/common_spacing"
-                            android:src="@drawable/ic_share" />
+                            android:src="@drawable/selector_share_on_facebook" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Share"
-                            android:textColor="@color/common_grey" />
+                            android:textColor="@color/selector_text_share_on_facebook" />
                     </LinearLayout>
                 </LinearLayout>
             </RelativeLayout>
