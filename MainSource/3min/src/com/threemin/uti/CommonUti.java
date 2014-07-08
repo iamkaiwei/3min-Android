@@ -85,6 +85,26 @@ public class CommonUti {
 			}
 		};
 	}
+	
+	public static OnClickListener feedbackClick(final Context context){
+	    return new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Intent.ACTION_SEND);
+                i.setType("message/rfc822");
+                i.putExtra(Intent.EXTRA_EMAIL, new String[] { "iamkaiwei@gmail.com" });
+                i.putExtra(Intent.EXTRA_SUBJECT, "Three mins Sugesstion");
+                i.putExtra(Intent.EXTRA_TEXT,
+                        "");
+                try {
+                    context.startActivity(Intent.createChooser(i, "Send mail..."));
+                } catch (android.content.ActivityNotFoundException ex) {
+                }
+            }
+        };
+
+	}
 
 	public static OnClickListener shareMessage(final Context context) {
 		return new OnClickListener() {
