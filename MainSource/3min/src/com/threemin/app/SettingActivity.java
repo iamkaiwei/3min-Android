@@ -5,10 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -65,7 +65,7 @@ public class SettingActivity extends Activity implements OnClickListener {
 	
 	private void initListener() {
 		mRlAbout.setOnClickListener(this);
-		mRlSendSuggestions.setOnClickListener(this);
+		mRlSendSuggestions.setOnClickListener(CommonUti.feedbackClick(mContext));
 		mRlRate.setOnClickListener(this);
 		mLlLogOut.setOnClickListener(this);
 	}
@@ -78,9 +78,6 @@ public class SettingActivity extends Activity implements OnClickListener {
 			doAbout();
 			break;
 
-		case R.id.act_setting_rl_send_suggestions:
-			doSendSuggestions();
-			break;
 
 		case R.id.act_setting_rl_rate:
 			doRate();
@@ -89,19 +86,6 @@ public class SettingActivity extends Activity implements OnClickListener {
 		case R.id.act_setting_ll_log_out:
 			doLogOut();
 			break;
-			
-		case R.id.act_setting_img_share_facebook:
-			doShareFacebook();
-			break;
-			
-		case R.id.act_setting_img_share_email:
-			doShareEmail();
-			break;	
-			
-		case R.id.act_setting_img_share_message:
-			doShareMessage();
-			break;
-			
 		default:
 			break;
 		}
@@ -109,12 +93,16 @@ public class SettingActivity extends Activity implements OnClickListener {
 	}
 	
 	public void doAbout() {
-	}
-	
-	public void doSendSuggestions() {
+		startActivity(new Intent(SettingActivity.this, AboutActivity.class));
 	}
 	
 	public void doRate() {
+	    final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
+	    try {
+	        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+	    } catch (android.content.ActivityNotFoundException anfe) {
+	        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + appPackageName)));
+	    }
 	}
 	
 	public void doLogOut() {
@@ -140,29 +128,4 @@ public class SettingActivity extends Activity implements OnClickListener {
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		startActivity(intent);
 	}
-	
-	public void doShareFacebook() {
-//		if (mImgShareFacebook.isSelected()) {
-//			mImgShareFacebook.setSelected(false);
-//		} else {
-//			mImgShareFacebook.setSelected(true);
-//		}
-	}
-	
-	public void doShareEmail() {
-//		if (mImgShareEmail.isSelected()) {
-//			mImgShareEmail.setSelected(false);
-//		} else {
-//			mImgShareEmail.setSelected(true);
-//		}
-	}
-	
-	public void doShareMessage() {
-//		if (mImgShareMessage.isSelected()) {
-//			mImgShareMessage.setSelected(false);
-//		} else {
-//			mImgShareMessage.setSelected(true);
-//		}
-	}
-	
 }

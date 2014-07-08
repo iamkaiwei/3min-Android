@@ -1,6 +1,7 @@
 package com.threemin.app;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -83,7 +84,6 @@ public class ImageViewActivity extends Activity {
 	Venue venue;
     Switch mSwShareOnFacebook;
     TextView tv_Category,tvName;
-//    Button mBtnSubmit, mBtnCancel;
     LoginButton mBtnLoginFacebook;
     View viewContentProduct;
     String[] permissions = {"email","user_photos","publish_stream"};
@@ -230,12 +230,14 @@ public class ImageViewActivity extends Activity {
 		ProductModel result=new ProductModel();
 		if(imageModels.isEmpty()){
 			Toast.makeText(mContext, R.string.error_empty_image, Toast.LENGTH_SHORT).show();
+			Log.i("ImageViewActivity", "list img empty");
 		} else {
 			result.setImages(imageModels);
 		}
 		
 		if(TextUtils.isEmpty(name)){
 			Toast.makeText(mContext, R.string.error_miss_field, Toast.LENGTH_SHORT).show();
+			Log.i("ImageViewActivity", "name empty");
 			return null;
 		} else {
 			result.setName(name);
@@ -243,6 +245,7 @@ public class ImageViewActivity extends Activity {
 		
 		if(TextUtils.isEmpty(price)){
 			Toast.makeText(mContext, R.string.error_miss_field, Toast.LENGTH_SHORT).show();
+			Log.i("ImageViewActivity", "price empty");
 			return null;
 		} else {
 			result.setPrice(price);
@@ -250,16 +253,20 @@ public class ImageViewActivity extends Activity {
 		
 		if(!TextUtils.isEmpty(description)){
 			result.setDescription(description);
+			Log.i("ImageViewActivity", "description empty");
 		} 
 		if(venue!=null){
 			result.setVenueId(venue.getId());
 			result.setVenueLat(venue.getLocation().getLat());
 			result.setVenueLong(venue.getLocation().getLng());
 			result.setVenueName(venue.getName());
+		} else {
+			Log.i("ImageViewActivity", "location empty");
 		}
 		
 		if (mSelectedCategory == null) {
 			Toast.makeText(mContext, R.string.error_miss_field, Toast.LENGTH_SHORT).show();
+			Log.i("ImageViewActivity", "category empty");
 			return null;
 		} else {
 			result.setCategory(mSelectedCategory);
@@ -321,14 +328,6 @@ public class ImageViewActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-//				if(viewContentProduct.getVisibility()==View.GONE){
-//					viewContentProduct.setVisibility(View.VISIBLE);
-//					CommonUti.showKeyboard(etName, mContext);
-//				} else {
-//					viewContentProduct.setVisibility(View.GONE);
-//					CommonUti.hideKeyboard(etName, mContext);
-//					tvName.setText(etName.getText());
-//				}
 			    Bundle bundle=new Bundle();
 			    bundle.putString(CommonConstant.INTENT_PRODUCT_NAME, etName.getText().toString());
 			    bundle.putString(CommonConstant.INTENT_PRODUCT_DESCRIPTION, etDescription.getText().toString());
@@ -345,8 +344,6 @@ public class ImageViewActivity extends Activity {
 	public void initActionBar() {
 		getActionBar().setIcon(R.drawable.btn_back);
 		getActionBar().setHomeButtonEnabled(true);
-//		bar.setCustomView(R.layout.actionbar_activity_imageview_custom_view);
-//		bar.setDisplayShowCustomEnabled(true);
 	}
 
 	@Override
@@ -362,7 +359,6 @@ public class ImageViewActivity extends Activity {
         
 		if (resultCode == RESULT_OK) {
 			if (requestCode >= REQUEST_CAMERA_IMG_1 && requestCode <= REQUEST_CAMERA_IMG_4) {
-//				Uri uri = Uri.parse(data.getStringExtra("imageUri"));
 				String uri = data.getStringExtra("imagePath");
 				if (requestCode == REQUEST_CAMERA_IMG_1) {
 					setImageURI(uri,mImg1);
@@ -381,7 +377,6 @@ public class ImageViewActivity extends Activity {
 					locationName.setText(venue.getName());
 				}
 			} else if (requestCode == REQUEST_CAMERA_ON_CREATE) {
-//				Uri uri = Uri.parse(data.getStringExtra("imageUri"));
 				String uri = data.getStringExtra("imagePath");
 				setImageURI(uri,mImg1);
 			}
@@ -420,87 +415,20 @@ public class ImageViewActivity extends Activity {
 		return null;
 	}
 
-//	public void setImageURI(Uri uri,ImageView imageView) {
-//			UrlImageViewHelper.setUrlDrawable(imageView, uri.toString(), getImageCallback());
-//	}
-	
 	public void setImageURI(String uri,ImageView imageView) {
 		File imgFile = new  File(uri);
 		if(imgFile.exists()){
 		    Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
 		    imageView.setImageBitmap(myBitmap);
 		    ImageModel imgModel = new ImageModel();
-		    imgModel.setUrl(uri);
+		    imgModel.setUrl(imgFile.getAbsolutePath());
+		    imageView.setTag(imgModel);
 		    imageModels.add(imgModel);
 		} else {
 			Toast.makeText(this, "File does not exists", Toast.LENGTH_LONG).show();
 		}
 	}
 
-	private UrlImageViewCallback getImageCallback() {
-		return new UrlImageViewCallback() {
-
-			@Override
-			public void onLoaded(ImageView imageView, Bitmap loadedBitmap, String url, boolean loadedFromCache) {
-				Log.d("url", url);
-				ImageModel imageModel=new ImageModel();
-				if (url.contains("content://com.google.android.apps.photos.content")) {
-					imageModel.setUrl(saveImagetoLocal(loadedBitmap));
-					Log.d("path", imageModel.getUrl());
-				} else {
-					String pathImage=getPath(Uri.parse(url));
-					Log.d("path", pathImage);
-					imageModel.setUrl(pathImage);
-				}
-				imageView.setTag(imageModel);
-				imageModels.add(imageModel);
-			}
-		};
-	}
-
-	private String saveImagetoLocal(Bitmap bitmap) {
-		File filename = getOutputMediaFile();
-
-		FileOutputStream out = null;
-		try {
-			out = new FileOutputStream(filename);
-			bitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				out.close();
-			} catch (Throwable ignore) {
-			}
-		}
-		return filename.getAbsolutePath();
-	}
-
-	private File getOutputMediaFile() {
-		// To be safe, you should check that the SDCard is mounted
-		// using Environment.getExternalStorageState() before doing this.
-
-		File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-				"threemins");
-		// This location works best if you want the created images to be shared
-		// between applications and persist after your app has been uninstalled.
-
-		// Create the storage directory if it does not exist
-		if (!mediaStorageDir.exists()) {
-			if (!mediaStorageDir.mkdirs()) {
-				Log.d("MyCameraApp", "failed to create directory");
-				return null;
-			}
-		}
-
-		// Create a media file name
-		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-		File mediaFile;
-		mediaFile = new File(mediaStorageDir.getPath() + File.separator + "IMG_" + timeStamp + ".jpg");
-
-		return mediaFile;
-	}
-	
     public void doShareOnFacebook() {
     	Log.i("tructran", "doShareOnFacebook start");
         Session session = Session.getActiveSession();
@@ -518,66 +446,67 @@ public class ImageViewActivity extends Activity {
     }
     
     public void postToFacebookWall() {
-        Log.i("tructran", "Post to facebook start");
-        Drawable draw1 = mImg1.getDrawable();
-        Drawable draw2 = mImg2.getDrawable();
-        Drawable draw3 = mImg3.getDrawable();
-        Drawable draw4 = mImg4.getDrawable();
-        if (draw1 == null && draw2 == null && draw3 == null && draw4 == null) {
-            return;
-        }
-        RequestBatch batch = new RequestBatch();
-        String item = etName.getText().toString();
-        String price = etPrice.getText().toString();
-        String description = etDescription.getText().toString();
-        String caption = "Name: " + item +
-                        "\nPrice: " + price + 
-                        "\nDescription: " + description;        
-        if (draw1 != null) {
-            batch.add(createRequest(draw1, caption));
-        }
-        if (draw2 != null) {
-            batch.add(createRequest(draw2, caption));
-        }
-        if (draw3 != null) {
-            batch.add(createRequest(draw3, caption));
-        }
-        if (draw4 != null) {
-            batch.add(createRequest(draw4, caption));
-        }
+        Log.i("tructran", "Post to facebook start");   
         
-        batch.executeAsync();
-        Log.i("tructran", "Post to facebook: done");
-    }
-    
-    public Request createRequest(Drawable draw, String capion) {
-    	Log.i("tructran", "createRequest: start");
-        Request request = Request.newUploadPhotoRequest(Session.getActiveSession(), getBitmap(draw), new Request.Callback() {
+		ImageModel draw1 = (ImageModel) mImg1.getTag();
+		ImageModel draw2 = (ImageModel) mImg2.getTag();
+		ImageModel draw3 = (ImageModel) mImg3.getTag();
+		ImageModel draw4 = (ImageModel) mImg4.getTag();
+		if (draw1 == null && draw2 == null && draw3 == null && draw4 == null) {
+			return;
+		}
+		RequestBatch batch = new RequestBatch();
+		String item = etName.getText().toString();
+		String price = etPrice.getText().toString();
+		String description = etDescription.getText().toString();
+		String caption = "Name: " + item + "\nPrice: " + price
+				+ "\nDescription: " + description;
+		if (draw1 != null) {
+			batch.add(createRequestFromFile(draw1.getUrl(), caption));
+		}
+		if (draw2 != null) {
+			batch.add(createRequestFromFile(draw2.getUrl(), caption));
+		}
+		if (draw3 != null) {
+			batch.add(createRequestFromFile(draw3.getUrl(), caption));
+		}
+		if (draw4 != null) {
+			batch.add(createRequestFromFile(draw4.getUrl(), caption));
+		}
 
-            @Override
-            public void onCompleted(Response response) {
-                Toast.makeText(ImageViewActivity.this, "Post photo success", Toast.LENGTH_LONG).show();
-            }
-        });
-        Bundle params = request.getParameters();
-        params.putString("message", capion);
-        request.setParameters(params);
-        Log.i("tructran", "createRequest: done");
-        return request;
-    }
+		batch.executeAsync();
+		
+		Log.i("tructran", "Post to facebook: done");
+	}
     
-    public Bitmap getBitmap(Drawable draw) {
-        Bitmap bitmap;
-        if (draw instanceof BitmapDrawable) {
-            bitmap = ((BitmapDrawable) draw).getBitmap();
-        } else {
-            Drawable d = draw;
-            bitmap = Bitmap.createBitmap(d.getIntrinsicWidth(), d.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-            Canvas canvas = new Canvas(bitmap);
-            d.draw(canvas);
-        }
-        return bitmap;
-    }
+	public Request createRequestFromFile(String filePath, String caption) {
+		Log.i("tructran", "createRequestFromFile: start");
+
+		File file = new File(filePath);
+		Request request = null;
+		try {
+			request = Request.newUploadPhotoRequest(Session.getActiveSession(),
+					file, new Request.Callback() {
+
+						@Override
+						public void onCompleted(Response response) {
+							Toast.makeText(ImageViewActivity.this, "Post image success", Toast.LENGTH_LONG).show();
+							Log.i("tructran", "Post image done");
+						}
+					});
+			Bundle params = request.getParameters();
+			params.putString("message", caption);
+			request.setParameters(params);
+			Log.i("tructran", "createRequestFromFile: done");
+			return request;
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			Log.i("tructran", "createRequestFromFile: " + e.toString());
+		}
+
+		Log.i("tructran", "createRequestFromFile: done, request null");
+		return null;
+	}
     
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
