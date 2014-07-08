@@ -107,6 +107,7 @@ public class SettingActivity extends Activity implements OnClickListener {
 	}
 	
 	public void doAbout() {
+		startActivity(new Intent(SettingActivity.this, AboutActivity.class));
 	}
 	
 	public void doSendSuggestions() {
