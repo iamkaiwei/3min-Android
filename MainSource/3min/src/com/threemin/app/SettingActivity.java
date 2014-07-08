@@ -8,6 +8,7 @@ import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -15,6 +16,7 @@ import android.widget.RelativeLayout;
 import com.facebook.Session;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
+import com.threemin.uti.CommonUti;
 import com.threemins.R;
 
 public class SettingActivity extends Activity implements OnClickListener {
@@ -55,9 +57,9 @@ public class SettingActivity extends Activity implements OnClickListener {
 		mImgShareEmail = (ImageView) findViewById(R.id.act_setting_img_share_email);
 		mImgShareMessage = (ImageView) findViewById(R.id.act_setting_img_share_message);
 		
-		mImgShareFacebook.setOnClickListener(this);
-		mImgShareEmail.setOnClickListener(this);
-		mImgShareMessage.setOnClickListener(this);
+		mImgShareFacebook.setOnClickListener(CommonUti.shareFacebook());
+		mImgShareEmail.setOnClickListener(CommonUti.shareEmail(mContext));
+		mImgShareMessage.setOnClickListener(CommonUti.shareMessage(mContext));
 		
 	}
 	
@@ -140,27 +142,27 @@ public class SettingActivity extends Activity implements OnClickListener {
 	}
 	
 	public void doShareFacebook() {
-		if (mImgShareFacebook.isSelected()) {
-			mImgShareFacebook.setSelected(false);
-		} else {
-			mImgShareFacebook.setSelected(true);
-		}
+//		if (mImgShareFacebook.isSelected()) {
+//			mImgShareFacebook.setSelected(false);
+//		} else {
+//			mImgShareFacebook.setSelected(true);
+//		}
 	}
 	
 	public void doShareEmail() {
-		if (mImgShareEmail.isSelected()) {
-			mImgShareEmail.setSelected(false);
-		} else {
-			mImgShareEmail.setSelected(true);
-		}
+//		if (mImgShareEmail.isSelected()) {
+//			mImgShareEmail.setSelected(false);
+//		} else {
+//			mImgShareEmail.setSelected(true);
+//		}
 	}
 	
 	public void doShareMessage() {
-		if (mImgShareMessage.isSelected()) {
-			mImgShareMessage.setSelected(false);
-		} else {
-			mImgShareMessage.setSelected(true);
-		}
+//		if (mImgShareMessage.isSelected()) {
+//			mImgShareMessage.setSelected(false);
+//		} else {
+//			mImgShareMessage.setSelected(true);
+//		}
 	}
 	
 }

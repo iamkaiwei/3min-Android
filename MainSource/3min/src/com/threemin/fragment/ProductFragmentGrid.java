@@ -72,6 +72,8 @@ public class ProductFragmentGrid extends BaseProductFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_product_gridview, null);
 		swipeLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_gridview);
+		int color = R.color.red_background;
+		swipeLayout.setColorScheme(color, color, color, color);
 		rlNoItems = (RelativeLayout) v.findViewById(R.id.fragment_product_gridview_layout_no_items);
 		mGrid = (QuickReturnGridView) v.findViewById(R.id.gv_product);
 
@@ -309,8 +311,7 @@ public class ProductFragmentGrid extends BaseProductFragment {
                     Intent intent = new Intent(getActivity(), DetailActivity.class);
                     intent.putExtra(CommonConstant.INTENT_PRODUCT_DATA, data);
                     getActivity().startActivity(intent);
-                    getActivity().overridePendingTransition(R.anim.swipeback_stack_right_in,
-                            R.anim.swipeback_stack_to_back);
+                    getActivity().overridePendingTransition(R.anim.anim_right_in,R.anim.anim_no_animation);
                 }
             }
 
