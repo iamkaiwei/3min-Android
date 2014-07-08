@@ -93,10 +93,12 @@ public class CommonUti {
 			public void onClick(View v) {
 				Uri smsUri = Uri.parse("sms:");
 				Intent intent = new Intent(Intent.ACTION_VIEW, smsUri);
+				if(intent!=null){
 				intent.setType("vnd.android-dir/mms-sms");
 				intent.putExtra("sms_body",
 						"Hi Guys, Try this app https://play.google.com/store/apps/details?id=com.threemins");
 				context.startActivity(intent);
+				}
 			}
 		};
 	}
