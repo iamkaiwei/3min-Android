@@ -1,8 +1,6 @@
 package com.threemin.app;
 
 import java.io.IOException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 import android.app.ActionBar;
@@ -14,10 +12,6 @@ import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
-import android.content.pm.Signature;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -25,7 +19,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Base64;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
@@ -50,12 +43,16 @@ import com.threemin.fragment.SlidePageFragment;
 import com.threemin.model.UserModel;
 import com.threemin.uti.CommonConstant;
 import com.threemin.uti.CommonUti;
+import com.threemin.uti.PreferenceHelper;
 import com.threemin.webservice.AuthorizeWebservice;
 import com.threemin.webservice.CategoryWebservice;
 import com.threemins.R;
+import com.urbanairship.push.PushManager;
 
 public class LoginActivity extends FragmentActivity implements ConnectionCallbacks, OnConnectionFailedListener,
 		OnClickListener {
+	
+	public static final String APID = "UrbanAirshipAPID";
 	
 	//public const:
 	public static final String PREF_NAME = "3MinsPref";
@@ -309,6 +306,8 @@ public class LoginActivity extends FragmentActivity implements ConnectionCallbac
 				editor.putInt(LOGIN_KEY, LOGIN_KEY_FB);
 				editor.commit();
 				
+				createUrbanAirshipAlias(result);
+				
 				Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
 				startActivity(intent);
 				finish();
@@ -468,6 +467,8 @@ public class LoginActivity extends FragmentActivity implements ConnectionCallbac
 					editor.putInt(LOGIN_KEY, LOGIN_KEY_GG);
 					editor.commit();
 					
+					createUrbanAirshipAlias(result);
+					
 					Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
 					startActivity(intent);
 					finish();
@@ -479,6 +480,16 @@ public class LoginActivity extends FragmentActivity implements ConnectionCallbac
 		}
 	}
 
+	public void createUrbanAirshipAlias (UserModel user) {
+		String alias = "user-" + user.getId();
+		PushManager.shared().setAlias(alias);
+		
+		String apid = PushManager.shared().getAPID();
+		Log.i("tructran", "Login Activity: App ID: " + apid);
+		
+		//save app id to pref
+		PreferenceHelper.getInstance(this).setAPID(apid);
+	}
 	
 	//method set text to SignInButton of Google +
 	protected void setGooglePlusButtonText(SignInButton signInButton, String buttonText) {

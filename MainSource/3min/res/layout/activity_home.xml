@@ -1,153 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:threemins="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@color/background_grey" >
 
     <!-- The main content view -->
 
+
+    <!--
     <RelativeLayout
         android:id="@+id/content_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
-        <LinearLayout
-            android:id="@+id/ln_topbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/fragment_product_grudview_spacing"
-            android:background="@android:color/white"
-            android:orientation="horizontal" >
-
-            <RelativeLayout
-                android:id="@+id/tab_thumb"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/home_height_tab"
-                android:layout_weight="1" >
-
-                <com.lanna.droidlib.view.CustomTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:gravity="center"
-                    android:text="@string/home_thumbnail"
-                    android:textColor="@color/selector_text"
-                    android:textSize="@dimen/textsize_medium"
-                    threemins:customTypeface="@string/font_semibold" />
-
-                <ImageView
-                    android:id="@+id/highlight_thumbnail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
-                    android:src="@drawable/bright_slider_bottom" />
-            </RelativeLayout>
-
-            <View
-                android:layout_width="1dp"
-                android:layout_height="fill_parent"
-                android:background="#e4e4e4" />
-
-            <RelativeLayout
-                android:id="@+id/tab_list"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/home_height_tab"
-                android:layout_weight="1" >
-
-                <com.lanna.droidlib.view.CustomTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:gravity="center"
-                    android:text="@string/home_list"
-                    android:textColor="@color/selector_text"
-                    android:textSize="@dimen/textsize_medium"
-                    threemins:customTypeface="@string/font_semibold" />
-
-                <ImageView
-                    android:id="@+id/highlight_list"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
-                    android:src="@drawable/bright_slider_bottom" />
-            </RelativeLayout>
-        </LinearLayout>
-
-        <FrameLayout
-            android:id="@+id/content_fragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/ln_topbar" >
-        </FrameLayout>
-
-        <RelativeLayout
-            android:id="@+id/bottom"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bottom_gradient"
-             android:layout_alignParentBottom="true" >
-
-            <ImageView
-                android:id="@+id/home_camera"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:src="@drawable/camera"
-                
-                 />
-        </RelativeLayout>
     </RelativeLayout>
+    -->
+
+    <com.facebook.widget.LoginButton
+        android:id="@+id/activity_home_btn_login_facebook"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/activity_home_view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <!-- The navigation drawer -->
 
-    <FrameLayout
-        android:id="@+id/home_left_drawer"
-        android:layout_width="240dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:background="@android:color/white"
-        android:choiceMode="singleChoice"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="0dp" >
-        <include layout="@layout/view_navigation_left"
-            android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-    </FrameLayout>
 
-    <!-- right navigation drawer -->
-    
-    <RelativeLayout
-        android:id="@+id/home_right_drawer_layout"
-        android:layout_width="240dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="end"
-        android:background="@android:color/white"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="0dp" >
-
-        <ListView
-            android:id="@+id/home_right_drawer_listview"
-            android:layout_width="240dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:background="@android:color/white"
-            android:choiceMode="singleChoice"
-            android:divider="@android:color/transparent"
-            android:dividerHeight="0dp" />
-
-        <Button
-            android:id="@+id/home_right_drawer_btn_reset"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:background="@drawable/bt_reset_filters"
-            android:layout_marginBottom="10dp" />
-    </RelativeLayout>
- 
-    <!-- 
+    <!--
     <ListView
         android:id="@+id/home_right_drawer"
         android:layout_width="240dp"
@@ -157,7 +42,6 @@
         android:choiceMode="singleChoice"
         android:divider="@android:color/transparent"
         android:dividerHeight="0dp" /> 
-     -->
-    
+    -->
 
-</android.support.v4.widget.DrawerLayout> <!-- </android.support.v4.widget.DrawerLayout> -->
+</FrameLayout> <!-- </android.support.v4.widget.DrawerLayout> -->

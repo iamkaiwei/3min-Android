@@ -12,7 +12,6 @@ import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.CoreProtocolPNames;
-import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 
 import android.text.TextUtils;
@@ -66,6 +65,7 @@ public class UploaderImageUlti {
 			return mHttpClient.execute(httppost);
 		} catch (Exception e) {
 			e.printStackTrace();
+			Log.i("UploaderImageUlti", e.toString());
 			return null;
 		}
 	}

@@ -32,6 +32,7 @@ import jp.co.cyberagent.android.gpuimage.GPUImageSepiaFilter;
 import jp.co.cyberagent.android.gpuimage.GPUImageView;
 import jp.co.cyberagent.android.gpuimage.GPUImageVignetteFilter;
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -46,9 +47,14 @@ import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
+import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
@@ -63,6 +69,8 @@ import com.threemin.view.HorizontalListView;
 import com.threemins.R;
 
 public class ActivityCamera extends Activity implements OnSeekBarChangeListener, OnClickListener {
+	
+	public static final int REQUEST_CROP = 33;
 
 	private GPUImage mGPUImage;
 	private CameraHelper mCameraHelper;
@@ -73,6 +81,9 @@ public class ActivityCamera extends Activity implements OnSeekBarChangeListener,
 	private static final int REQUEST_PICK_IMAGE = 1;
 	View surface;
 	private HorizontalListView listfilters;
+	private View lnFilter;
+	private View imgHide;
+	private static int TIME_TRANSLATE=500;
 
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
@@ -96,10 +107,18 @@ public class ActivityCamera extends Activity implements OnSeekBarChangeListener,
 
 		listfilters = (HorizontalListView) findViewById(R.id.list_filter);
 		listfilters.setAdapter(new FilterAdapter());
-		getActionBar().setIcon(R.drawable.btn_back);
+		getActionBar().setIcon(R.drawable.btn_cancel);
 		getActionBar().setHomeButtonEnabled(true);
 		gpuImageView = (GPUImageView) findViewById(R.id.gpuimage);
-
+		lnFilter = findViewById(R.id.lnfilter);
+		imgHide=findViewById(R.id.img_hide);
+		imgHide.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				hideView(TIME_TRANSLATE);
+			}
+		});
 		listfilters.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
@@ -147,9 +166,28 @@ public class ActivityCamera extends Activity implements OnSeekBarChangeListener,
 				startActivityForResult(photoPickerIntent, REQUEST_PICK_IMAGE);
 			}
 		});
+		hideView(0);
 	}
-	private void resetAll(){
-		for(int i=0;i<5;i++){
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.menu_camera, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+		// TODO Auto-generated method stub
+		if(item.getItemId()==R.id.action_switch_camera){
+			 mCamera.switchCamera();
+			return true;
+		}
+		return super.onMenuItemSelected(featureId, item);
+	}
+
+	private void resetAll() {
+		for (int i = 0; i < 5; i++) {
 			listfilters.getChildAt(i).setSelected(false);
 		}
 	}
@@ -160,6 +198,9 @@ public class ActivityCamera extends Activity implements OnSeekBarChangeListener,
 			gpuImageView.setVisibility(View.VISIBLE);
 			surface.setVisibility(View.INVISIBLE);
 			handleImage(data.getData());
+		} else if (requestCode == REQUEST_CROP && resultCode == RESULT_OK) {
+			String path = data.getStringExtra("imagePath");
+			finishCameraActivity(path);
 		}
 	}
 
@@ -192,6 +233,8 @@ public class ActivityCamera extends Activity implements OnSeekBarChangeListener,
 		mCamera.onPause();
 		super.onPause();
 	}
+	
+	
 
 	@Override
 	public void onClick(final View v) {
@@ -228,10 +271,11 @@ public class ActivityCamera extends Activity implements OnSeekBarChangeListener,
 
 							@Override
 							public void onPictureSaved(Uri uri) {
-								Intent intent = new Intent();
-								intent.putExtra("imageUri", uri.toString());
-								setResult(RESULT_OK, intent);
-								finish();
+//								Intent intent = new Intent();
+//								intent.putExtra("imageUri", uri.toString());
+//								setResult(RESULT_OK, intent);
+//								finish();
+								finishImage(uri);
 							}
 						});
 
@@ -239,16 +283,63 @@ public class ActivityCamera extends Activity implements OnSeekBarChangeListener,
 			break;
 
 		case R.id.img_switch_camera:
-			mCamera.switchCamera();
+			// mCamera.switchCamera();
+			showView(TIME_TRANSLATE);
 			break;
 		}
+	}
+
+	private void hideView(int time) {
+		TranslateAnimation ta = new TranslateAnimation(0, 0, 0, lnFilter.getHeight());
+		ta.setDuration(time);
+		ta.setAnimationListener(new AnimationListener() {
+
+			@Override
+			public void onAnimationStart(Animation animation) {
+
+			}
+
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+
+			}
+
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				lnFilter.setVisibility(View.GONE);
+			}
+		});
+		lnFilter.startAnimation(ta);
+	}
+
+	private void showView(int time) {
+		TranslateAnimation ta = new TranslateAnimation(0, 0, lnFilter.getHeight(), 0);
+		ta.setDuration(TIME_TRANSLATE);
+		ta.setAnimationListener(new AnimationListener() {
+
+			@Override
+			public void onAnimationStart(Animation animation) {
+				lnFilter.setVisibility(View.VISIBLE);
+			}
+
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+
+			}
+
+			@Override
+			public void onAnimationEnd(Animation animation) {
+
+			}
+		});
+		lnFilter.startAnimation(ta);
 	}
 
 	private Camera.Size getOptimalSize(List<Camera.Size> sizes) {
 		Size optimalSize = sizes.get(0);
 		for (Size size : sizes) {
 			Log.i("camera", "Available resolution: " + size.width + " " + size.height);
-			if (size.width > 480 && size.width < 800) {
+			if (size.width >= 720 && size.width <= 1920) {
 				optimalSize = size;
 				break;
 			}
@@ -309,10 +400,11 @@ public class ActivityCamera extends Activity implements OnSeekBarChangeListener,
 
 							@Override
 							public void onPictureSaved(final Uri uri) {
-								Intent intent = new Intent();
-								intent.putExtra("imageUri", uri.toString());
-								setResult(RESULT_OK, intent);
-								finish();
+//								Intent intent = new Intent();
+//								intent.putExtra("imageUri", uri.toString());
+//								setResult(RESULT_OK, intent);
+//								finish();
+								finishImage(uri);
 							}
 						});
 			}
@@ -432,4 +524,25 @@ public class ActivityCamera extends Activity implements OnSeekBarChangeListener,
 			mCameraInstance = null;
 		}
 	}
+	
+	public void finishImage(Uri picUri) {
+//		Intent intent = new Intent();
+//		intent.putExtra("imageUri", picUri.toString());
+//		setResult(RESULT_OK, intent);
+//		finish();
+		
+//		performCrop(picUri);
+		
+		Intent intent = new Intent(this, CropImageActivity.class);
+		intent.putExtra("imageUri", picUri.toString());
+		startActivityForResult(intent, REQUEST_CROP);
+	}
+	
+	public void finishCameraActivity(String path) {
+		Intent intent = new Intent();
+		intent.putExtra("imagePath", path);
+		setResult(RESULT_OK, intent);
+		finish();
+	}
+
 }

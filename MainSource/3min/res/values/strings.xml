@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    
+    <!-- urban airship -->
+    <string name="gcmSender">400375101132</string>
+    <string name="developmentAppKey">YmOWEA0lR7aW77MI2u-SAQ</string>
+    <string name="developmentAppSecret">gL0ScP2vSAGohDRfZjHDeA</string>
+    <string name="productionAppKey">YmOWEA0lR7aW77MI2u-SAQ</string>
+    <string name="productionAppSecret">gL0ScP2vSAGohDRfZjHDeA</string>
 
     <string name="font_semibold">OpenSans-Semibold.ttf</string>
     <string name="font_bold">OpenSans-Bold.ttf</string>
@@ -10,32 +17,30 @@
     <string name="font_lightItalic">OpenSans-LightItalic.ttf</string>
     <string name="font_regular">OpenSans-Regular.ttf</string>
     <string name="font_semibolditalic">OpenSans-SemiboldItalic.ttf</string>
-    
     <string name="login_3mins">Snap a photo to start \nselling in 3 mins !</string>
     <string name="login_bestdeal">Find the best deals in town</string>
     <string name="login_bestdeal_sub">\nGet the best value shopping in town from \nreviewed sellers all from your phone. </string>
     <string name="login_chatapp">Buy with private chat in app </string>
     <string name="login_chatapp_sub">\nBuy securely with an in app chat \nthat protects your identity.</string>
-    
     <string name="home_list">List</string>
+    <string name="profile_list">Listings</string>
     <string name="home_thumbnail">Thumbnails</string>
-    <string name="browse">Browse</string>
+    <string name="browse">Everything</string>
     <string name="navigation_mylisting">My Listings</string>
     <string name="navigation_offer">Offer I made</string>
     <string name="navigation_like">Stuff I liked</string>
     <string name="navigation_share_friends">Share with your friends</string>
-    
-    <string name="app_name">3 phút</string>
+    <string name="app_name">3 mins</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="app_id">580806171975545</string>
     <string name="activity_login_btn_login_gg"></string>
     <string name="please_wait">Please wait</string>
     <string name="location">Location</string>
-    
+
     <!-- action bar -->
     <string name="action_bar_search_title">Search</string>
-    
+
     <!-- activity_imageview.xml -->
     <string name="activity_imageview_category">Category</string>
     <string name="activity_imageview_item">Item</string>
@@ -52,9 +57,59 @@
     <string name="activity_imageview_et_description_hint">Enter product description</string>
     <string name="activity_imageview_action_submit_title">Submit</string>
     <string name="activity_imageview_action_cancel_title">Cancel</string>
-    
     <string name="error_empty_image">Please enter at least one image</string>
     <string name="error_miss_field">Please enter all require field</string>
     <string name="error_upload">Fail to upload product</string>
-    <string name="google_map_API">AIzaSyA-qXZc5zoSAEOfb2EJ_7crPEwXpGAH-Js</string>
+    <string name="google_map_API">AIzaSyAJTkTJj_9VkWK-aamL3B3dXGe90UKXED4</string>
+    <string name="title_activity_detail">DetailActivity</string>
+    <string name="camera_filter">Filters</string>
+    <string name="camera_album">Album</string>
+
+    <!-- no items -->
+    <string name="no_items_line_1">Tap on the icon below</string>
+    <string name="no_items_line_2">to start listing yours items for sell</string>
+
+    <!-- chat to buy -->
+    <string name="activity_chat_price_label">Listed Price</string>
+    <string name="activity_chat_price_offered_label">Price Offered</string>
+    <string name="activity_chat_chat_input_hint">Type message here to chat</string>
+    <string name="activity_chat_chat_content_label">Chat privately with</string>
+    <string name="profile_liked">Liked</string>
+    <string name="profile_message">Messages</string>
+    <string name="profile_mylist">My Listings</string>
+    <string name="mylike">My likes</string>
+    <string name="postOffer_your_offer">Your offer</string>
+    <string name="postoffer_start_chatting">Make an offer to start chatting</string>
+    <string name="postoffer_tap_to_change">tap to change</string>
+    <string formatted="false" name="postoffer_title">%s is selling it for %s VND</string>
+    
+    <!-- fragment filter -->
+    <string name="fm_filter_search_hint">Search for products</string>
+    <string name="fm_filter_sort_by">SORT BY</string>
+    <string name="fm_filter_popular">Popular</string>
+    <string name="fm_filter_recent">Recent</string>
+    <string name="fm_filter_lowest">Lowest Price</string>
+    <string name="fm_filter_highest">Highest Price</string>
+    <string name="fm_filter_nearest">Nearest</string>
+    <string name="fm_filter_price_range">PRICE RANGE</string>
+    <string name="fm_filter_min">Minimum</string>
+    <string name="fm_filter_max">Maximum</string>
+    
+    <string name="offer">Offers</string>
+    
+    <!-- activity user activity -->
+    <string name="activity_title">Activity</string>
+    
+    <!-- activity setting -->
+    <string name="act_setting_label">Settings</string>
+    <string name="about">About 3mins</string>
+    <string name="send_suggestions">Send us your suggestions</string>
+    <string name="rate">Rate us on Appstore</string>
+    <string name="share_label">Recommend to friends</string>
+    <string name="log_out">Log out</string>
+    
+    <!-- activity crop image -->
+    <string name="act_crop_img_crop">CROP</string>
+    
+
 </resources>

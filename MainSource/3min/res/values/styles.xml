@@ -1,4 +1,5 @@
-<resources xmlns:android="http://schemas.android.com/apk/res/android">
+<resources xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:threemins="http://schemas.android.com/apk/res-auto">
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
@@ -20,6 +21,11 @@
 
     <style name="CustomActionBarTheme" parent="@android:style/Theme.Holo.Light">
         <item name="android:actionBarStyle">@style/MyActionBar</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+    
+    <style name="CustomActionBarThemeBis" parent="@style/CustomActionBarTheme">
+        <item name="android:windowIsTranslucent">true</item>
     </style>
 
     <!-- ActionBar styles -->
@@ -27,7 +33,7 @@
         <item name="android:titleTextStyle">@style/MyTitleTextStyle</item>
         <item name="android:background">@color/red_background</item>
         <item name="android:icon">@android:color/transparent</item>
-        <item name="android:homeAsUpIndicator">@drawable/ic_launcher</item>
+        <item name="android:homeAsUpIndicator">@drawable/ic_back</item>
     </style>
 
     <!-- TitleTextStyle -->
@@ -37,9 +43,17 @@
     </style>
 
     <!-- activity_imageview.xml -->
-    <style name="activity_imageview_img_style">
+    <!-- <style name="activity_imageview_img_style">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:scaleType">centerCrop</item>
+        <item name="android:background">@drawable/ic_add_photo</item>
+    </style> -->
+    
+    <style name="activity_imageview_img_style">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">0dp</item>
         <item name="android:layout_weight">1</item>
         <item name="android:scaleType">centerCrop</item>
         <item name="android:background">@drawable/ic_add_photo</item>
@@ -48,26 +62,97 @@
     <style name="activity_imageview_textview_style">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_alignParentLeft">true</item>
         <item name="android:layout_centerVertical">true</item>
-        <item name="android:textSize">@dimen/activity_imageview_textview_textsize</item>
+        <item name="android:textSize">@dimen/textsize_medium</item>
+        <item name="android:textColor">@color/common_black</item>
     </style>
 
     <style name="activity_imageview_edittext_style">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_alignParentRight">true</item>
         <item name="android:layout_centerVertical">true</item>
         <item name="android:singleLine">true</item>
         <item name="android:maxLength">30</item>
-        <item name="android:textSize">@dimen/activity_imageview_edittext_textsize</item>
         <item name="android:gravity">right</item>
+        <item name="android:textSize">@dimen/textsize_medium</item>
+        <item name="android:textColor">@color/common_grey</item>
     </style>
 
     <!-- activity_login.xml -->
     <style name="activity_login_btn_login_facebook">
         <item name="android:background">@drawable/bt_login_facebook</item>
         <item name="android:textSize">0dp</item>
+    </style>
+    
+    <!-- fragment filter -->
+    <style name="fm_filter_row_layout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/fm_filter_row_height</item>
+    </style>
+    
+    <style name="fm_filter_textview">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">@dimen/common_spacing_triple</item>
+        <item name="android:layout_alignParentLeft">true</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:textSize">@dimen/textsize_avatar</item>
+    </style>
+    
+    <style name="fm_filter_imageview">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginRight">@dimen/common_spacing_triple</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:src">@drawable/ic_ticked</item>
+        <item name="android:visibility">invisible</item>
+    </style>
+    
+    <style name="fm_filter_divider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/background_grey</item>
+    </style>
+    
+    <style name="fm_filter_edittext">
+        <item name="android:layout_width">@dimen/fm_filter_et_width</item>
+        <item name="android:layout_height">@dimen/fm_filter_et_height</item>
+        <item name="android:background">@drawable/background_fm_filter_et</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_marginRight">@dimen/common_spacing_triple</item>
+        <item name="android:gravity">right|center_vertical</item>
+        <item name="android:paddingLeft">@dimen/common_spacing</item>
+        <item name="android:paddingRight">@dimen/common_spacing</item>
+        <item name="android:textSize">@dimen/textsize_avatar</item>
+        <item name="android:inputType">number</item>
+        <item name="android:singleLine">true</item>
+    </style>
+    
+    <!-- activity setting -->
+    <style name="act_setting_row">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/act_setting_row_height</item>
+        <item name="android:paddingLeft">@dimen/common_spacing_triple</item>
+        <item name="android:paddingRight">@dimen/common_spacing_triple</item>
+        <item name="android:background">@android:color/white</item>
+    </style>
+    
+    <style name="act_setting_textview">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/textsize_medium</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_alignParentLeft">true</item>
+    </style>
+    
+    <style name="act_setting_imageview">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:src">@drawable/ic_arrow</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_centerVertical">true</item>
     </style>
 
 </resources>

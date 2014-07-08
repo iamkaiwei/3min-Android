@@ -7,6 +7,33 @@
     <uses-sdk
         android:minSdkVersion="14"
         android:targetSdkVersion="19" />
+    
+    <!-- ********************************************************************************* -->
+    <!-- Required for the Urban Airship library -->
+    <permission
+        android:name="com.threemins.permission.UA_DATA"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.threemins.permission.UA_DATA" />
+
+    <!-- Required for Push -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+
+    <!-- Keeps the processor from sleeping when a message is received. -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <!-- This app has permission to register with GCM and receive message -->
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+
+    <permission
+        android:name="com.threemins.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.threemins.permission.C2D_MESSAGE" />
+
+
+    <!-- ********************************************************************************* -->
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -19,10 +46,11 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
+        android:name="com.threemin.app.ThreeMinsApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppBaseTheme" >
+        android:theme="@style/AppBaseTheme">
         <activity
             android:name="com.threemin.app.LoginActivity"
             android:label="@string/app_name"
@@ -38,11 +66,11 @@
             android:name="com.threemin.app.HomeActivity"
             android:label="@string/browse"
             android:screenOrientation="portrait"
-            android:theme="@style/CustomActionBarTheme" >
+            android:theme="@style/CustomActionBarThemeBis" >
         </activity>
         <activity
             android:name="com.threemin.app.ActivityCamera"
-            android:label="@android:string/cancel"
+            android:label=""
             android:screenOrientation="portrait"
             android:theme="@style/CustomActionBarTheme" >
         </activity>
@@ -54,11 +82,11 @@
         <activity android:name="com.facebook.LoginActivity" />
         <activity
             android:name="com.threemin.app.ImageViewActivity"
+            android:label=""
             android:screenOrientation="portrait"
             android:theme="@style/CustomActionBarTheme"
             android:windowSoftInputMode="stateHidden" >
         </activity>
-        
         <activity
             android:name="com.threemin.app.LocationActivity"
             android:label="@string/location"
@@ -72,6 +100,152 @@
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="@string/google_map_API" />
+
+        <activity
+            android:name="com.threemin.app.DetailActivity"
+            android:label="@string/title_activity_detail"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomActionBarTheme" >
+        </activity>
+        <activity
+            android:name="com.threemin.app.CategoryActivity"
+            android:label=""
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomActionBarTheme" >
+        </activity>
+        <activity
+            android:name="com.threemin.app.ChatToBuyActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomActionBarTheme"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+        </activity>
+        <activity
+            android:name="com.threemin.app.UserLikeProductActivity"
+            android:label="@string/mylike"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomActionBarTheme"
+            android:windowSoftInputMode="stateHidden" >
+        </activity>
+        <activity
+            android:name="com.threemin.app.PostOfferActivity"
+            android:label="@string/postOffer_your_offer"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomActionBarTheme"
+            android:windowSoftInputMode="stateHidden" >
+        </activity>
+        <activity
+            android:name="com.threemin.app.ListOfferActivty"
+            android:label="@string/offer"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomActionBarTheme" >
+        </activity>
+        
+        <activity
+            android:name="com.threemin.app.ListMessageActivity"
+            android:label="@string/profile_message"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomActionBarTheme" >
+        </activity>
+        
+        <activity
+            android:name="com.threemin.app.UserActivityActivity"
+            android:label="@string/activity_title"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomActionBarTheme" >
+        </activity>
+        
+        <activity
+            android:name="com.threemin.app.SettingActivity"
+            android:label="@string/act_setting_label"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomActionBarTheme" >
+        </activity>
+        <activity
+            android:name="com.threemin.app.InputProductActivity"
+            android:label=""
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomActionBarTheme" >
+        </activity>
+        
+        <activity
+            android:name="com.threemin.app.CropImageActivity"
+            android:label="CROP"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomActionBarTheme" >
+        </activity>
+        
+        <activity
+            android:name="com.threemin.app.ProfileActivity"
+            android:label=""
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomActionBarTheme" >
+        </activity>
+        
+        <!-- **********************************Urban Airship*********************************************** -->
+        <!-- Required for the library -->
+        <provider
+            android:name="com.urbanairship.UrbanAirshipProvider"
+            android:authorities="com.threemins.urbanairship.provider"
+            android:exported="true"
+            android:multiprocess="true"
+            android:permission="com.threemins.permission.UA_DATA" />
+
+        <!-- Required for Push -->
+        <service android:name="com.urbanairship.push.PushService" />
+
+        <receiver android:name="com.urbanairship.CoreReceiver" />
+        <receiver
+            android:name="com.urbanairship.push.GCMPushReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+
+                <category android:name="com.threemins" />
+            </intent-filter>
+
+            <!-- Required for detecting when the application is upgraded so it can request a new GCM ID -->
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_REPLACED" />
+
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Required for analytics -->
+        <service android:name="com.urbanairship.analytics.EventService" />
+
+        <!-- Required for Rich Push -->
+        <service android:name="com.urbanairship.richpush.RichPushUpdateService" />
+
+        <!-- Required for Actions -->
+        <activity android:name="com.urbanairship.actions.ActionActivity" />
+
+        <service android:name="com.urbanairship.actions.ActionService" />
+
+        <!-- Required for Landing Page Action -->
+        <activity
+            android:name="com.urbanairship.actions.LandingPageActivity"
+            android:exported="false"
+            android:parentActivityName="com.threemin.app.HomeActivity" >
+
+            <!-- MODIFICATION REQUIRED set or remove the parent activity -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.threemin.app.HomeActivity" />
+
+            <intent-filter>
+                <action android:name="com.urbanairship.actions.SHOW_LANDING_PAGE_INTENT_ACTION" />
+
+                <data android:scheme="http" />
+                <data android:scheme="https" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- ********************************************************************************* -->
+        
     </application>
 
     <uses-feature

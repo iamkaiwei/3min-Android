@@ -1,84 +1,187 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:threemins="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/inflater_body_product_grid_bg_with_shadow"
     android:orientation="vertical" >
 
     <ImageView
         android:id="@+id/inflater_body_product_image"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:background="@android:color/black"
-        android:scaleType="centerCrop" />
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:maxHeight="300dp"
+        android:background="@drawable/background_white_corners_top" />
+
+    <!-- group product info -->
 
     <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="@dimen/activity_vertical_margin" >
+        android:padding="@dimen/inflater_body_product_grid_padding" >
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+        <LinearLayout
+            android:id="@+id/inflater_body_product_group_product_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
 
-            <TextView
+            <com.lanna.droidlib.view.CustomTextView
                 android:id="@+id/inflater_body_product_tv_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
                 android:text="Medium Text"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/inflater_body_product_tv_name_text_color"
-                android:textStyle="bold" />
+                android:textColor="@color/common_black"
+                android:textSize="@dimen/textsize_large"
+                threemins:customTypeface="@string/font_semibold" />
 
-            <TextView
+            <com.lanna.droidlib.view.CustomTextView
                 android:id="@+id/inflater_body_product_tv_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
                 android:text="50 000 VND"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/orange" />
-        </RelativeLayout>
+                android:textColor="@color/common_orange"
+                android:textSize="@dimen/textsize_medium"
+                threemins:customTypeface="@string/font_regular" />
+        </LinearLayout>
+
+        <!-- like, comment -->
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/inflater_body_product_margin_top" >
+            android:orientation="horizontal" >
 
-            <ImageView
-                android:id="@+id/inflater_body_product_img_like"
+            <!-- comment -->
+
+            <LinearLayout
+                android:id="@+id/inflater_body_product_group_comment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:src="@drawable/selector_like" />
+                android:orientation="horizontal" >
 
-            <TextView
-                android:id="@+id/inflater_body_product_tv_like"
+                <ImageView
+                    android:id="@+id/inflater_body_product_img_comment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/inflater_body_product_grid_common_spacing"
+                    android:src="@drawable/selector_like" />
+
+                <com.lanna.droidlib.view.CustomTextView
+                    android:id="@+id/inflater_body_product_tv_comment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="1200"
+                    android:textColor="@color/common_grey"
+                    android:textSize="@dimen/textsize_small"
+                    threemins:customTypeface="@string/font_regular" />
+            </LinearLayout>
+
+            <!-- like -->
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toRightOf="@+id/inflater_body_product_img_like"
-                android:text="1"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/inflater_body_product_tv_like_text_color" />
+                android:layout_toRightOf="@+id/inflater_body_product_group_comment"
+                android:layout_marginLeft="@dimen/common_spacing"
+                android:orientation="horizontal" >
 
+                <ImageView
+                    android:id="@+id/inflater_body_product_img_like"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/inflater_body_product_grid_common_spacing"
+                    android:src="@drawable/selector_like" />
+
+                <com.lanna.droidlib.view.CustomTextView
+                    android:id="@+id/inflater_body_product_tv_like"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="623"
+                    android:textColor="@color/common_grey"
+                    android:textSize="@dimen/textsize_small"
+                    threemins:customTypeface="@string/font_regular" />
+            </LinearLayout>
+            
             <ImageView
-                android:id="@+id/inflater_body_product_img_share"
-                android:layout_width="@dimen/inflater_body_product_image_share_size"
-                android:layout_height="@dimen/inflater_body_product_image_share_size"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:src="@drawable/icon_share" />
+            android:id="@+id/inflater_heeader_product_img_share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_share" />
         </RelativeLayout>
+
+        
     </LinearLayout>
 
     <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@color/background_grey" />
+    <!-- owner info -->
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="3dp"
-        android:background="@android:color/darker_gray" />
+        android:layout_height="wrap_content"
+        android:padding="@dimen/inflater_header_grid_padding" >
+            
+        <com.meg7.widget.SvgImageView
+            android:id="@+id/inflater_heeader_product_image"
+            android:layout_width="@dimen/inflater_header_grid_avatar_size"
+            android:layout_height="@dimen/inflater_header_grid_avatar_size"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_launcher"
+            threemins:svg_raw_resource="@raw/shape_avatar" />    
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/inflater_header_grid_margin_left"
+            android:layout_toRightOf="@id/inflater_heeader_product_image"
+            android:orientation="vertical" >
+
+            <com.lanna.droidlib.view.CustomTextView
+                android:id="@+id/inflater_heeader_product_tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginBottom="@dimen/inflater_header_grid_tv_name_margin_bottom"
+                android:text="Name"
+                android:textColor="@color/common_black"
+                android:textSize="@dimen/textsize_small"
+                threemins:customTypeface="@string/font_regular" />
+
+            <ImageView
+                android:id="@+id/inflater_heeader_product_image_clock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/inflater_heeader_product_tv_name"
+                android:src="@drawable/icon_clock" />
+
+            <com.lanna.droidlib.view.CustomTextView
+                android:id="@+id/inflater_heeader_product_tv_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/inflater_heeader_product_tv_name"
+                android:layout_marginLeft="@dimen/inflater_body_product_grid_common_spacing"
+                android:layout_toRightOf="@+id/inflater_heeader_product_image_clock"
+                android:text="2 days ago"
+                android:textColor="@color/common_grey"
+                android:textSize="@dimen/textsize_small"
+                threemins:customTypeface="@string/font_regular" />
+        </RelativeLayout>
+    </RelativeLayout>
 
 </LinearLayout>

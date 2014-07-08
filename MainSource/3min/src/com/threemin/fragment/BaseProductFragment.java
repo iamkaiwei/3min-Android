@@ -3,26 +3,27 @@ package com.threemin.fragment;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Fragment;
-import android.os.AsyncTask;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
-import com.threemin.model.CategoryModel;
 import com.threemin.model.ProductModel;
-import com.threemin.uti.PreferenceHelper;
-import com.threemin.webservice.ProductWebservice;
 
 public abstract class BaseProductFragment extends Fragment {
 
 	protected List<ProductModel> productModels;
 	
 	public SwipeRefreshLayout swipeLayout;
+	protected HomeFragment homeFragment;
+	public int thelasttotalCount;
 
 	public BaseProductFragment() {
 		productModels = new ArrayList<ProductModel>();
 	}
 	
+	public void setHomeFragment(HomeFragment homeFragment){
+		this.homeFragment=homeFragment;
+	}
 	public abstract void setBottomView(View bottomView);
 	
 	public SwipeRefreshLayout getRefreshLayout(){
@@ -30,6 +31,8 @@ public abstract class BaseProductFragment extends Fragment {
 	}
 
 	public abstract void updateUI();
+	
+	public abstract void changeIfNoItem() ;
 
 
 	public void setProductModels(List<ProductModel> productModels) {

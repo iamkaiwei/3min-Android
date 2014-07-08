@@ -3,9 +3,6 @@ package com.lanna.droidlib.view;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.threemins.R;
-import com.threemins.R.styleable;
-
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
@@ -13,6 +10,9 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.TextView;
+
+import com.threemins.R;
+import com.threemins.R.styleable;
 
 
 

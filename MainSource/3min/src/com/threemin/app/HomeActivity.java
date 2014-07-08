@@ -1,479 +1,297 @@
 package com.threemin.app;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.ParseException;
-import org.apache.http.util.EntityUtils;
-import org.json.JSONException;
-import org.json.JSONObject;
+import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 
-import android.app.Activity;
+import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.widget.DrawerLayout;
+import android.os.Handler;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.EditText;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.SearchView;
-import android.widget.Spinner;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.facebook.Session;
+import com.facebook.widget.LoginButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
-import com.google.gson.Gson;
-import com.threemin.adapter.AvatarAdapter;
 import com.threemin.adapter.CategoryAdapter;
-import com.threemin.adapter.RightDrawerAdapter;
-import com.threemin.fragment.BaseProductFragment;
-import com.threemin.fragment.ProductFragmentGrid;
-import com.threemin.fragment.ProductFragmentList;
+import com.threemin.fragment.HomeFragment;
+import com.threemin.fragment.LeftFragment;
+import com.threemin.fragment.RightFragment;
 import com.threemin.model.CategoryModel;
-import com.threemin.model.ProductModel;
-import com.threemin.uti.CommonConstant;
-import com.threemin.uti.PreferenceHelper;
-import com.threemin.uti.WebserviceConstant;
+import com.threemin.model.FilterModel;
+import com.threemin.view.CustomSpinner;
 import com.threemin.webservice.CategoryWebservice;
-import com.threemin.webservice.ProductWebservice;
-import com.threemin.webservice.UploaderImageUlti;
 import com.threemins.R;
 
-public class HomeActivity extends Activity {
+public class HomeActivity extends SwipeBackActivity {
+
+	// action bar widgets
+	ImageView mImgActionbarSearch, mImgActionbarProfile;
+	CustomSpinner mSpnActionbarCenterTitle;
+	Button mBtnActionbarCenterTitle;
+
+	// button to login facebook
+	LoginButton mBtnLoginFacebook;
+
+	// view pager
+	public static final int NUM_PAGES = 3;
+	public static final int PAGE_LEFT = 0;
+	public static final int PAGE_CENTER = 1;
+	public static final int PAGE_RIGHT = 2;
+	ViewPager mViewPagerMainContent;
+	PagerAdapter mViewPagerAdapter;
+	CategoryAdapter categoryAdapter;
+	int currentPage, prevPage;
+
+	// filter:
+	public static final int POPULAR_ID = R.id.fm_filter_rl_popular;
+	public static final int LOWEST_ID = R.id.fm_filter_rl_lowest;
+	public static final int HIGHEST_ID = R.id.fm_filter_rl_highest;
+	public static final int RECENT_ID = R.id.fm_filter_rl_recent;
+	public static final int NEAREST_ID = R.id.fm_filter_rl_nearest;
 
 	Context mContext;
-	ListView lvCategory, lvfilter;
-	ProductFragmentList productFragmentList;
-	DrawerLayout drawerLayout;
-	ActionBarDrawerToggle mDrawerToggle;
-	BaseProductFragment currentFragment;
-	
-	//right drawer
+	// right drawer
 	RelativeLayout layoutFilter;
-	RightDrawerAdapter adapterRightDrawer;
 
-	// add grid view
-	ProductFragmentGrid productFragmentGrid;
-
-	// view mode: list view or grid view
-	public static final int MODE_LIST_VIEW = 1;
-	public static final int MODE_GRID_VIEW = 2;
-	private static final int REQUEST_UPLOAD = 3;
-
-	public static int STEP_INIT = 0;
-	public static int STEP_ADDMORE = 1;
-	public static int STEP_REFRESH = 2;
-
-	public int mModeView;
-
-	protected CategoryModel currentCate;
-	protected List<ProductModel> productModels;
-	int page;
-	View vHighlightList, vHighlightThumb;
-	View tabList, tabThumb;
-	View bottomView;
 	GoogleApiClient mGoogleApiClient;
+	HomeFragment homeFragment;
+	LeftFragment leftFragment;
+	RightFragment rightFragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
+		
+		//disable swipe back
+		getSwipeBackLayout().setEnableGesture(false);
+		
 		mContext = this;
-		
-		//right drawer
-		lvfilter=(ListView) findViewById(R.id.home_right_drawer_listview);
-		layoutFilter = (RelativeLayout) findViewById(R.id.home_right_drawer_layout);
-		ArrayList<String> listFilter = new ArrayList<String>();
-		listFilter.add("Popular");
-		listFilter.add("Recent");
-		listFilter.add("Lowest Price");
-		listFilter.add("Highest Price");
-		listFilter.add("Nearest");
-		adapterRightDrawer = new RightDrawerAdapter(mContext, R.layout.inflater_right_drawer_listview_item, listFilter);
-		lvfilter.setAdapter(adapterRightDrawer);
-		lvfilter.setOnItemClickListener(new OnItemClickListener() {
 
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position,
-					long id) {
-				adapterRightDrawer.setSelectedPosition(position);
-			}
-		});
-		
-		
-		lvCategory = (ListView) findViewById(R.id.navigation_list);
-		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-		vHighlightList = findViewById(R.id.highlight_list);
-		vHighlightThumb = findViewById(R.id.highlight_thumbnail);
-		vHighlightList.setVisibility(View.INVISIBLE);
-		bottomView = findViewById(R.id.bottom);
-		tabList = findViewById(R.id.tab_list);
-		tabThumb = findViewById(R.id.tab_thumb);
-		initActionBar();
-		new InitCategory().execute();
-
-		// init: list of products is shown in list view:
-		mModeView = MODE_GRID_VIEW;
-		productFragmentList = new ProductFragmentList(bottomView);
-		productFragmentGrid = new ProductFragmentGrid(bottomView);
-		getFragmentManager().beginTransaction().replace(R.id.content_fragment, productFragmentGrid).commit();
-		currentFragment = productFragmentGrid;
-
-		// create the fragment to switch between grid view and list view
-
-		lvCategory.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				CategoryModel categoryModel = (CategoryModel) lvCategory.getItemAtPosition(position);
-				if (position > 0) {
-					currentCate = categoryModel;
-				} else {
-					currentCate = null;
-				}
-				new GetProductTaks(currentFragment).execute(STEP_INIT);
-				drawerLayout.closeDrawer(Gravity.START);
-				getActionBar().setTitle(categoryModel.getName());
-			}
-		});
-
-		findViewById(R.id.home_camera).setOnClickListener(onSellClick());
-		new GetProductTaks(currentFragment).execute(STEP_INIT);
-
-		tabList.setOnClickListener(onTabSwitch());
-		tabThumb.setOnClickListener(onTabSwitch());
-		tabThumb.setSelected(true);
-		tabList.setSelected(false);
-		initAvatar();
-		mGoogleApiClient = new GoogleApiClient.Builder(this).addApi(Plus.API, null).addScope(Plus.SCOPE_PLUS_PROFILE)
+		mGoogleApiClient = new GoogleApiClient.Builder(this)
+				.addApi(Plus.API, null).addScope(Plus.SCOPE_PLUS_PROFILE)
 				.build();
 		mGoogleApiClient.connect();
-	}
+		initActionBar();
 
-	private void initAvatar() {
-		Spinner mSpinner = (Spinner) findViewById(R.id.avatar);
-		mSpinner.setAdapter(new AvatarAdapter(mContext, PreferenceHelper.getInstance(mContext).getCurrentUser()));
-	}
+		// button login facebook
+		mBtnLoginFacebook = (LoginButton) findViewById(R.id.activity_home_btn_login_facebook);
 
-	private class InitCategory extends AsyncTask<Void, Void, List<CategoryModel>> {
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-		}
+		// view pager implementation
+		currentPage = PAGE_CENTER;
+		prevPage = -1;
+		homeFragment = new HomeFragment();
+		leftFragment = new LeftFragment();
+		rightFragment = new RightFragment();
+		mViewPagerMainContent = (ViewPager) findViewById(R.id.activity_home_view_pager);
+		mViewPagerAdapter = new PagerAdapter(getSupportFragmentManager());
+		mViewPagerMainContent.setOffscreenPageLimit(3);
+		mViewPagerMainContent.setAdapter(mViewPagerAdapter);
+		mViewPagerMainContent.setCurrentItem(PAGE_CENTER);
 
-		@Override
-		protected List<CategoryModel> doInBackground(Void... arg0) {
-			try {
-				return CategoryWebservice.getInstance().getAllCategory(mContext);
-			} catch (Exception e) {
-				e.printStackTrace();
-				return null;
+		mSpnActionbarCenterTitle.setSelected(true);
+		mImgActionbarProfile.setSelected(false);
+		mImgActionbarSearch.setSelected(false);
+		mViewPagerMainContent.setOnPageChangeListener(new OnPageChangeListener() {
+			
+			@Override
+			public void onPageSelected(final int position) {
+				doPageChange(position);
 			}
-		}
-
-		@Override
-		protected void onPostExecute(List<CategoryModel> result) {
-			if (result != null) {
+			
+			@Override
+			public void onPageScrolled(int arg0, float arg1, int arg2) {
 				
-				CategoryAdapter adapter = new CategoryAdapter(mContext, result);
-				adapter.setOnLogout(doLogout());
-				lvCategory.setAdapter(adapter);
 			}
-			super.onPostExecute(result);
+			
+			@Override
+			public void onPageScrollStateChanged(int arg0) {
+				
+			}
+		});
+		
+	}
+
+	public void doPageChange(int position) {
+		prevPage = currentPage;
+		currentPage = position;
+		switch (position) {
+		case PAGE_LEFT:
+			mImgActionbarSearch.setSelected(true);
+			setSpinnerSelected(false);
+			mImgActionbarProfile.setSelected(false);
+			break;
+
+		case PAGE_CENTER:
+			mImgActionbarSearch.setSelected(false);
+			setSpinnerSelected(true);
+			mImgActionbarProfile.setSelected(false);
+			leftFragment.hideKeyboard();
+
+			if (prevPage == PAGE_LEFT) {
+				doFilter();
+			}
+
+			break;
+
+		case PAGE_RIGHT:
+			mImgActionbarSearch.setSelected(false);
+			setSpinnerSelected(false);
+			mImgActionbarProfile.setSelected(true);
+			leftFragment.hideKeyboard();
+			break;
+
+		default:
+			Log.i("tructran", "Page position: " + position);
+			break;
+		}
+	}
+
+	public void doFilter() {
+		FilterModel model = leftFragment.getFilterModel();
+		switch (model.getFilterID()) {
+		case POPULAR_ID:
+			break;
+
+		case RECENT_ID:
+			break;
+
+		case LOWEST_ID:
+			break;
+
+		case HIGHEST_ID:
+			break;
+
+		case NEAREST_ID:
+			break;
+
+		default:
+			break;
+		}
+	}
+
+	public void setSpinnerSelected(boolean isSelected) {
+		RelativeLayout rl = (RelativeLayout)mSpnActionbarCenterTitle.getChildAt(0);
+		TextView tv = null;
+		if (rl != null) {
+			tv = (TextView)rl.getChildAt(0);
+		}
+		
+		if (isSelected) {
+			mSpnActionbarCenterTitle.setSelected(true);
+			if (tv != null) {
+				tv.setTextColor(getResources().getColor(R.color.home_action_bar_text_color_enable));
+			}
+			mSpnActionbarCenterTitle.setEnabled(true);
+			mBtnActionbarCenterTitle.setVisibility(View.GONE);
+		} else {
+			mSpnActionbarCenterTitle.setSelected(false);
+			if (tv != null) {
+				tv.setTextColor(getResources().getColor(R.color.home_action_bar_text_color_disable));
+			}
+			mSpnActionbarCenterTitle.setEnabled(false);
+			mBtnActionbarCenterTitle.setVisibility(View.VISIBLE);
 		}
 	}
 
 	private void initActionBar() {
-		mDrawerToggle = new ActionBarDrawerToggle(this, /* host Activity */
-		drawerLayout, /* DrawerLayout object */
-		R.drawable.ic_menu, /* nav drawer image to replace 'Up' caret */
-		R.string.app_name, /* "open drawer" description for accessibility */
-		R.string.app_name /* "close drawer" description for accessibility */
-		) {
-			public void onDrawerClosed(View view) {
-				// onPrepareOptionsMenu()
-			}
+		ActionBar bar = getActionBar();
+		bar.setDisplayHomeAsUpEnabled(false);
+		bar.setHomeButtonEnabled(false);
+		bar.setCustomView(R.layout.layout_custom_action_bar);
+		bar.setDisplayShowCustomEnabled(true);
+		bar.setDisplayShowHomeEnabled(false);
+		bar.setDisplayShowTitleEnabled(false);
 
-			public void onDrawerOpened(View drawerView) {
-				// onPrepareOptionsMenu()
-			}
-		};
-		getActionBar().setDisplayHomeAsUpEnabled(true);
-		getActionBar().setHomeButtonEnabled(true);
+		// action bar center
+		mImgActionbarProfile = (ImageView) findViewById(R.id.home_activity_action_bar_center_img_profile);
+		mImgActionbarProfile.setOnClickListener(new OnClickListener() {
 
-		// set padding between home icon and the title
-		ImageView view = (ImageView) findViewById(android.R.id.home);
-		view.setPadding(0, 0, 20, 0);
+			@Override
+			public void onClick(View v) {
+				mViewPagerMainContent.setCurrentItem(PAGE_RIGHT, true);
+			}
+		});
+
+		mImgActionbarSearch = (ImageView) findViewById(R.id.home_activity_action_bar_center_img_search);
+		mImgActionbarSearch.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				mViewPagerMainContent.setCurrentItem(PAGE_LEFT, true);
+			}
+		});
+
+		mSpnActionbarCenterTitle = (CustomSpinner) findViewById(R.id.home_activity_action_bar_center_title);
+		new InitCategory().execute();
+		mSpnActionbarCenterTitle
+				.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+					@Override
+					public void onItemSelected(AdapterView<?> parent,
+							View view, int position, long id) {
+
+						CategoryModel categoryModel = (CategoryModel) parent
+								.getItemAtPosition(position);
+//						mBtnActionbarCenterTitle.setText(categoryModel.getName());
+						if (categoryModel.getName().equals(
+								getString(R.string.browse))) {
+							onSwitchCate(null);
+						} else {
+							onSwitchCate(categoryModel);
+						}
+						categoryAdapter.swapView(position);
+					}
+
+					@Override
+					public void onNothingSelected(AdapterView<?> parent) {
+
+					}
+				});
+
+		mBtnActionbarCenterTitle = (Button) findViewById(R.id.home_activity_action_bar_center_btn_title);
+		mBtnActionbarCenterTitle.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				mViewPagerMainContent.setCurrentItem(PAGE_CENTER, true);
+				setSpinnerSelected(true);
+			}
+		});
+
+		disableSpinnerBackground();
+
 	}
 
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
 		// Sync the toggle state after onRestoreInstanceState has occurred.
-		mDrawerToggle.syncState();
 	}
 
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
 		// Pass any configuration change to the drawer toggls
-		mDrawerToggle.onConfigurationChanged(newConfig);
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.menu_switch_view, menu);
-		MenuItem itemSearch = menu.findItem(R.id.action_search);
-		
-		SearchView searchView = (SearchView) itemSearch.getActionView();
-		
-		int searchButtonID = getResources().getIdentifier("android:id/search_button", null, null);
-		ImageView searchButtonImage = (ImageView) searchView.findViewById(searchButtonID);
-		searchButtonImage.setImageResource(R.drawable.ic_search);
-		
-		int closeButtonID = getResources().getIdentifier("android:id/search_close_btn", null, null);
-		ImageView closeButtonImage = (ImageView) searchView.findViewById(closeButtonID);
-		closeButtonImage.setImageResource(R.drawable.ic_search_close);
-		
-		int searchEditTextID = getResources().getIdentifier("android:id/search_src_text", null, null); 
-		EditText searchEditText = (EditText) searchView.findViewById(searchEditTextID);
-		searchEditText.setTextColor(Color.WHITE);
-		searchEditText.setHint("");
-		
-		return super.onCreateOptionsMenu(menu);
-	}
-
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Pass the event to ActionBarDrawerToggle, if it returns
-		// true, then it has handled the app icon touch event
-		if (mDrawerToggle.onOptionsItemSelected(item)) {
-			return true;
-		}
-
-//		if (item.getItemId() == R.id.action_switch_view) {
-//			if(drawerLayout.isDrawerOpen(lvfilter)){
-//				drawerLayout.closeDrawer(lvfilter);
-//			} else {
-//				drawerLayout.openDrawer(lvfilter);
-//			}
-//		}
-		
-		if (item.getItemId() == R.id.action_switch_view) {
-			if(drawerLayout.isDrawerOpen(layoutFilter)){
-				drawerLayout.closeDrawer(layoutFilter);
-			} else {
-				drawerLayout.openDrawer(layoutFilter);
-			}
-		}
-		
-		return super.onOptionsItemSelected(item);
-	}
-
-	private OnClickListener onTabSwitch() {
-		return new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				if (v == tabList && mModeView == MODE_LIST_VIEW) {
-					return;
-				}
-				if (v == tabThumb && mModeView == MODE_GRID_VIEW) {
-					return;
-				}
-				switchMode();
-			}
-		};
-	}
-
-	private void switchMode() {
-		if (mModeView == MODE_LIST_VIEW) {
-			mModeView = MODE_GRID_VIEW;
-			vHighlightThumb.setVisibility(View.VISIBLE);
-			vHighlightList.setVisibility(View.INVISIBLE);
-			tabThumb.setSelected(true);
-			tabList.setSelected(false);
-			productFragmentGrid.setProductModels(productModels);
-			getFragmentManager().beginTransaction().replace(R.id.content_fragment, productFragmentGrid).commit();
-			currentFragment = productFragmentGrid;
-		} else {
-			mModeView = MODE_LIST_VIEW;
-			vHighlightThumb.setVisibility(View.INVISIBLE);
-			vHighlightList.setVisibility(View.VISIBLE);
-			tabList.setSelected(true);
-			tabThumb.setSelected(false);
-			productFragmentList.setProductModels(productModels);
-			getFragmentManager().beginTransaction().replace(R.id.content_fragment, productFragmentList).commit();
-			currentFragment = productFragmentList;
-		}
-	}
-
-	private OnClickListener onSellClick() {
-		return new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				startActivityForResult(new Intent(mContext, ImageViewActivity.class), REQUEST_UPLOAD);
-			}
-		};
-	}
-
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == REQUEST_UPLOAD) {
-			if (resultCode == RESULT_OK) {
-				ProductModel productModel = new Gson().fromJson(
-						data.getStringExtra(CommonConstant.INTENT_PRODUCT_DATA), ProductModel.class);
-				new UploadProduct(this).execute(productModel);
-			}
-		}
-		super.onActivityResult(requestCode, resultCode, data);
-	}
-
-	private class UploadProduct extends AsyncTask<ProductModel, Void, ProductModel> {
-		CategoryModel categoryModel;
-
-		public UploadProduct(HomeActivity activity) {
-		}
-
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-			currentFragment.getRefreshLayout().setRefreshing(true);
-		}
-
-		@Override
-		protected void onPostExecute(ProductModel result) {
-			super.onPostExecute(result);
-			if (mContext != null && currentFragment != null) {
-				currentFragment.getRefreshLayout().setRefreshing(false);
-				if (result != null) {
-					addNewProducts(result, categoryModel);
-				} else {
-					Toast.makeText(mContext, R.string.error_upload, Toast.LENGTH_SHORT).show();
-				}
-			}
-		}
-
-		@Override
-		protected ProductModel doInBackground(ProductModel... params) {
-			ProductModel model = params[0];
-			String tokken = PreferenceHelper.getInstance(mContext).getTokken();
-			categoryModel = model.getCategory();
-			HttpResponse reponese = new UploaderImageUlti().uploadUserPhoto(WebserviceConstant.CREATE_PRODUCT, model,
-					tokken);
-			if (reponese != null) {
-				HttpEntity r_entity = reponese.getEntity();
-				String responseString;
-				try {
-					responseString = EntityUtils.toString(r_entity);
-					Log.d("UPLOAD", responseString);
-					JSONObject resultObject = new JSONObject(responseString);
-
-					ProductModel list = new Gson().fromJson(resultObject.optJSONObject("product").toString(),
-							ProductModel.class);
-					return list;
-				} catch (ParseException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				} catch (JSONException e) {
-				}
-			}
-			return null;
-		}
-	}
-
-	public class GetProductTaks extends AsyncTask<Integer, Void, List<ProductModel>> {
-		int currentStep;
-
-		BaseProductFragment baseProductFragment;
-
-		// flag check if asynctask is proccessing or not
-
-		// constructor
-		public GetProductTaks(BaseProductFragment baseProductFragment) {
-			this.baseProductFragment = baseProductFragment;
-		}
-
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-			if (baseProductFragment.swipeLayout != null) {
-				baseProductFragment.swipeLayout.setRefreshing(true);
-			}
-		}
-
-		@Override
-		protected List<ProductModel> doInBackground(Integer... params) {
-			currentStep = params[0];
-			if (currentStep == STEP_INIT || currentStep == STEP_REFRESH) {
-				page = 1;
-			}
-			if (currentStep == STEP_ADDMORE) {
-				page++;
-			}
-			String tokken = PreferenceHelper.getInstance(baseProductFragment.getActivity()).getTokken();
-			try {
-				return new ProductWebservice().getProduct(tokken, currentCate, page);
-			} catch (Exception e) {
-				e.printStackTrace();
-				return null;
-			}
-		}
-
-		@Override
-		protected void onPostExecute(List<ProductModel> result) {
-			super.onPostExecute(result);
-			if (baseProductFragment.swipeLayout != null) {
-				baseProductFragment.swipeLayout.setRefreshing(false);
-			}
-			if (result != null && result.size() > 0) {
-				if (currentStep == STEP_INIT || currentStep == STEP_REFRESH) {
-					productModels = result;
-					baseProductFragment.setProductModels(result);
-				} else if (currentStep == STEP_ADDMORE) {
-					productModels.addAll(result);
-					baseProductFragment.setProductModels(productModels);
-				} else {
-				}
-
-			} else if (currentStep == STEP_INIT) {
-				baseProductFragment.setProductModels(result);
-				productModels = result;
-			}
-		}
-	}
-
-	public void addNewProducts(ProductModel result, CategoryModel categoryModel) {
-		if (currentCate == null || currentCate.getId() == categoryModel.getId()) {
-			productModels.add(0, result);
-		}
-	}
-
-	public void setBottomView() {
-		productFragmentList.setBottomView(bottomView);
-		productFragmentGrid.setBottomView(bottomView);
 	}
 
 	public OnClickListener doLogout() {
@@ -495,5 +313,115 @@ public class HomeActivity extends Activity {
 				startActivity(new Intent(mContext, LoginActivity.class));
 			}
 		};
+	}
+
+	// view pager implementation
+
+	@Override
+	public void onBackPressed() {
+		if (mViewPagerMainContent.getCurrentItem() == PAGE_CENTER) {
+			super.onBackPressed();
+		} else {
+			mViewPagerMainContent.setCurrentItem(PAGE_CENTER);
+		}
+	}
+	private class PagerAdapter extends FragmentStatePagerAdapter {
+
+		public PagerAdapter(FragmentManager fm) {
+			super(fm);
+		}
+
+		@Override
+		public Fragment getItem(int position) {
+			if (position == 1) {
+				return homeFragment;
+			}
+			if (position == 0) {
+				return leftFragment;
+			}
+			return rightFragment;
+		}
+
+		@Override
+		public int getCount() {
+			return NUM_PAGES;
+		}
+
+	}
+
+	public void onSwitchCate(CategoryModel categoryModel) {
+		mViewPagerMainContent.setCurrentItem(PAGE_CENTER);
+		homeFragment.onSwichCategory(categoryModel);
+		if (categoryModel == null) {
+			getActionBar().setTitle(R.string.browse);
+		} else {
+			getActionBar().setTitle(categoryModel.getName());
+		}
+	}
+
+	// create list category to add to spinner
+	private class InitCategory extends
+			AsyncTask<Void, Void, List<CategoryModel>> {
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+		}
+
+		@Override
+		protected List<CategoryModel> doInBackground(Void... arg0) {
+			try {
+				return CategoryWebservice.getInstance().getAllCategory(
+						HomeActivity.this);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+		}
+
+		@Override
+		protected void onPostExecute(List<CategoryModel> result) {
+			if (result != null) {
+
+				categoryAdapter = new CategoryAdapter(HomeActivity.this,
+						result, true, mSpnActionbarCenterTitle);
+				mSpnActionbarCenterTitle.setAdapter(categoryAdapter);
+				mSpnActionbarCenterTitle.setSelected(true);
+				mSpnActionbarCenterTitle
+						.setBackgroundResource(R.drawable.selector_home_action_bar_spn_bg);
+			}
+			super.onPostExecute(result);
+		}
+	}
+
+	// use to hide the spinner border when the drop down list is closed
+	@Override
+	public void onWindowFocusChanged(boolean hasFocus) {
+		super.onWindowFocusChanged(hasFocus);
+		if (hasFocus && mSpnActionbarCenterTitle.isDropdownShowing()) {
+			mSpnActionbarCenterTitle.setDropdownShowing(false);
+			disableSpinnerBackground();
+		} else {
+			if (hasFocus) {
+				Log.i("tructran", "window has no focus");
+			} else {
+				Log.i("tructran", "window has focus");
+			}
+
+			if (mSpnActionbarCenterTitle.isDropdownShowing()) {
+				Log.i("tructran", "drop down is showing");
+			} else {
+				Log.i("tructran", "drop down is not showing");
+			}
+		}
+	}
+
+	// functions to set the background of spinner
+	public void disableSpinnerBackground() {
+		mSpnActionbarCenterTitle
+				.setBackgroundResource(R.drawable.selector_home_action_bar_spn_bg);
+	}
+	
+	public LoginButton getLoginButton() {
+		return mBtnLoginFacebook;
 	}
 }

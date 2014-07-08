@@ -1,7 +1,5 @@
 package com.threemin.view;
 
-import com.threemins.R;
-
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -13,6 +11,8 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.util.AttributeSet;
 import android.widget.ImageView;
+
+import com.threemins.R;
 
 public class MaskImage extends ImageView{
 	int mImageSource=0;

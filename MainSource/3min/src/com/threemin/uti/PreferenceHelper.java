@@ -124,4 +124,12 @@ public class PreferenceHelper {
 			return currentUserModel;
 		}
 	}
+	
+	public void setAPID(String apid) {
+		putString(CommonConstant.PREF_APID, apid);
+	}
+	
+	public String getAPID() {
+		return getString(CommonConstant.PREF_APID, null);
+	}
 }

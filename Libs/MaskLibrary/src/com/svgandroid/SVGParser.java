@@ -63,7 +63,6 @@ import javax.xml.parsers.SAXParserFactory;
  */
 public class SVGParser {
 
-    static final String TAG = "SVGAndroid";
 
     /**
      * Parse SVG data from an input stream.
@@ -1222,7 +1221,6 @@ public class SVGParser {
                 }
                 popTransform();
             } else if (!hidden) {
-                Log.d(TAG, "UNRECOGNIZED SVG COMMAND: " + localName);
             }
         }
 

@@ -1,31 +1,29 @@
 package com.threemin.fragment;
 
-import java.util.ArrayList;
-
-import za.co.immedia.pinnedheaderlistview.PinnedHeaderListView;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
-import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import com.threemin.adapter.ProductAdapter;
-import com.threemin.app.HomeActivity;
-import com.threemin.app.HomeActivity.GetProductTaks;
 import com.threemin.view.QuickReturnListView;
 import com.threemins.R;
 
 public class ProductFragmentList extends BaseProductFragment {
+	
+	//no items
+	RelativeLayout rlNoItems;
+	private boolean isSwitched;
+	
 	QuickReturnListView list;
 	ProductAdapter adapter;
 	int thelasttotalCount;
-	HomeActivity homeActivity;
 	private int mQuickReturnHeight;
 
 	private static final int STATE_ONSCREEN = 0;
@@ -39,24 +37,31 @@ public class ProductFragmentList extends BaseProductFragment {
 	public ProductFragmentList(View bottomView) {
 		super();
 		this.bottomView = bottomView;
+		this.isSwitched = false;
 	}
 
 	public ProductFragmentList() {
 		super();
+		this.isSwitched = false;
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_product_listview, null);
 		swipeLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe);
+		int color = R.color.red_background;
+		swipeLayout.setColorScheme(color, color, color, color);
+		rlNoItems = (RelativeLayout) v.findViewById(R.id.fragment_product_listview_layout_no_items);
 		list = (QuickReturnListView) v.findViewById(R.id.lv_product);
 		if (adapter == null) {
 			adapter = new ProductAdapter(productModels);
 		}
 		list.setAdapter(adapter);
-		homeActivity = (HomeActivity) getActivity();
-		homeActivity.setBottomView();
+		homeFragment.setBottomView();
 		initListner();
+		if (isSwitched) {
+			changeIfNoItem();
+		}
 		return v;
 	}
 
@@ -84,7 +89,7 @@ public class ProductFragmentList extends BaseProductFragment {
 
 			@Override
 			public void onRefresh() {
-				homeActivity.new GetProductTaks(ProductFragmentList.this).execute(HomeActivity.STEP_REFRESH);
+				homeFragment.new GetProductTaks(ProductFragmentList.this).execute(HomeFragment.STEP_REFRESH);
 			}
 		});
 		list.setOnScrollListener(new OnScrollListener() {
@@ -99,7 +104,7 @@ public class ProductFragmentList extends BaseProductFragment {
 				boolean loadMore = firstVisibleItem + visibleItemCount >= totalItemCount - 1;
 				if (loadMore && totalItemCount > 1 && thelasttotalCount != totalItemCount) {
 					thelasttotalCount = totalItemCount;
-					homeActivity.new GetProductTaks(ProductFragmentList.this).execute(HomeActivity.STEP_ADDMORE);
+					homeFragment.new GetProductTaks(ProductFragmentList.this).execute(HomeFragment.STEP_ADDMORE);
 				}
 				handleQuickReturn();
 			}
@@ -112,6 +117,20 @@ public class ProductFragmentList extends BaseProductFragment {
 			adapter = new ProductAdapter(productModels);
 		}
 		adapter.updateData(productModels);
+		changeIfNoItem();
+	}
+	
+	public  void changeIfNoItem()  {
+		if (rlNoItems == null || list == null) {
+			return;
+		}
+		if (adapter.getListProducts() == null || adapter.getListProducts().size() == 0) {
+			rlNoItems.setVisibility(View.VISIBLE);
+			list.setVisibility(View.GONE);
+		} else {
+			rlNoItems.setVisibility(View.GONE);
+			list.setVisibility(View.VISIBLE);
+		}
 	}
 
 	private void handleQuickReturn() {
@@ -170,5 +189,9 @@ public class ProductFragmentList extends BaseProductFragment {
 	@Override
 	public void setBottomView(View bottomView) {
 		this.bottomView = bottomView;
+	}
+
+	public void setIsSwitched(boolean isSwitched) {
+		this.isSwitched = isSwitched;
 	}
 }

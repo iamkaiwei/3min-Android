@@ -1,0 +1,46 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_actionbar_center"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/red_background" >
+
+    <ImageView
+        android:id="@+id/home_activity_action_bar_center_img_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/common_spacing_triple"
+        android:background="@drawable/selector_home_actoin_bar_search" />
+
+    <com.threemin.view.CustomSpinner
+        android:id="@+id/home_activity_action_bar_center_title"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="@dimen/common_spacing"
+        android:layout_marginTop="@dimen/common_spacing"
+        android:dividerHeight="0dp"
+        android:dropDownVerticalOffset="-3dp"
+        android:textColor="@android:color/white" />
+
+    <Button
+        android:id="@+id/home_activity_action_bar_center_btn_title"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="@dimen/common_spacing"
+        android:layout_marginTop="@dimen/common_spacing"
+        android:background="@android:color/transparent"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/home_activity_action_bar_center_img_profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/common_spacing_triple"
+        android:background="@drawable/selector_home_action_bar_profile" />
+
+</RelativeLayout>

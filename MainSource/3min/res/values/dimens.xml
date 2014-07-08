@@ -5,6 +5,11 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     
     <dimen name="common_spacing">5dp</dimen>
+    <dimen name="common_spacing_a_half">7.5dp</dimen>
+    <dimen name="common_spacing_double">10dp</dimen>
+    <dimen name="common_spacing_triple">15dp</dimen>
+    <dimen name="common_radius">5dp</dimen>
+    <dimen name="common_radius_pixel">10px</dimen>
     
     <!-- login screen -->
     <dimen name="login_margin_top_image">70dp</dimen>
@@ -21,21 +26,34 @@
     <dimen name="login_screen_img_loading_margin_left_right">10dp</dimen>
     <dimen name="login_screen_img_loading_margin_bottom">40dp</dimen>
     
-    <dimen name="textsize_large">21sp</dimen>
+    <dimen name="textsize_large">22sp</dimen>
     <dimen name="textsize_avatar">16sp</dimen>
     <dimen name="textsize_medium">15sp</dimen>
     <dimen name="textsize_small">12.5sp</dimen>
+    <dimen name="textsize_very_small">10sp</dimen>
     
     <dimen name="home_height_tab">37.5dp</dimen>
     
+    <!-- inflater_avatar -->
     <dimen name="navigation_avatar_size">55dp</dimen>
     <dimen name="navigation_avatar_margin">13dp</dimen>
+    <dimen name="inf_avt_feedback_margin_right">20dp</dimen>
     
     <!-- fragment_product_gridview.xml -->
-    <dimen name="fragment_product_grudview_spacing">10dp</dimen>
+    <dimen name="fragment_product_spacing">10dp</dimen>
     
     <!-- inflater_body_product_grid.xml -->
     <dimen name="inflater_body_product_grid_padding">10dp</dimen>
+    <dimen name="inflater_body_product_grid_common_spacing">3dp</dimen>
+    <dimen name="inflater_body_product_grid_product_img">170dp</dimen>
+    <dimen name="inflater_body_product_grid_line_view_margin_left">15dp</dimen>
+    <dimen name="inflater_body_product_grid_img_avatar_like">25dp</dimen>
+    
+     <!-- inflater_header_grid -->
+    <dimen name="inflater_header_grid_margin_left">10dp</dimen>
+    <dimen name="inflater_header_grid_padding">10dp</dimen>
+    <dimen name="inflater_header_grid_avatar_size">35dp</dimen>
+    <dimen name="inflater_header_grid_tv_name_margin_bottom">3dp</dimen>
     
     <!-- inflater_body_product.xml -->
     <dimen name="inflater_body_product_margin_top">10dp</dimen>
@@ -44,13 +62,9 @@
     <!-- inflater_header.xml -->
     <dimen name="inflater_header_margin_left">5dp</dimen>
     
-    <!-- inflater_header_grid -->
-    <dimen name="inflater_header_grid_margin_left">10dp</dimen>
-    <dimen name="inflater_header_grid_padding">10dp</dimen>
-    <dimen name="inflater_header_grid_avatar_size">35dp</dimen>
-    
     <!-- inflater_category.xml -->
     <dimen name="inflater_category_tv_padding_left">20dp</dimen>
+    <dimen name="inflater_category_row_height">50dp</dimen>
     
     <!-- action bar style -->
     <dimen name="action_bar_title_text_size">25sp</dimen>
@@ -73,5 +87,32 @@
     <dimen name="inflater_right_drawer_listview_item_margin_bot">15dp</dimen>
     <dimen name="inflater_right_drawer_listview_item_text_size">19sp</dimen>
     <dimen name="inflater_right_drawer_listview_item_selected_text_size">24sp</dimen>
+    
+    <!-- no items -->
+    <dimen name="no_item_line_1_margin_top">40dp</dimen>
+    <dimen name="no_item_line_text_size">20sp</dimen>
+    <dimen name="no_item_img_arrows_margin_bot">30dp</dimen>
+    <dimen name="no_item_img_arrows_margin_right">30dp</dimen>
+    
+    <!-- chat to buy -->
+    <dimen name="activity_chat_tv_radius">15dp</dimen>
+    <dimen name="activity_chat_img_product_size">70dp</dimen>
+    <dimen name="activity_chat_chat_input_height">50dp</dimen>
+    <dimen name="activity_chat_btn_send_height">30dp</dimen>
+    
+    <!-- fragment filter -->
+    <dimen name="fm_filter_row_height">50dp</dimen>
+    <dimen name="fm_filter_reset_filter_height">70dp</dimen>
+    <dimen name="fm_filter_et_width">170dp</dimen>
+    <dimen name="fm_filter_et_height">35dp</dimen>
+    
+    <!-- fragment activity -->
+    <dimen name="fm_activity_img_product_size">65dp</dimen>
+    
+    <!-- act setting -->
+    <dimen name="act_setting_margin_top">40dp</dimen>
+    <dimen name="act_setting_row_height">50dp</dimen>
+    <dimen name="act_setting_share_height">135dp</dimen>
+    <dimen name="act_setting_share_margin">20dp</dimen>
 
 </resources>

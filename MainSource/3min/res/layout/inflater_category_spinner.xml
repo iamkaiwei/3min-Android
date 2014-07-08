@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="35dp"
+     >
+    
+    <TextView 
+        android:id="@+id/inflater_category_spinner_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/home_action_bar_text_color_enable"
+        android:textSize="@dimen/textsize_large"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="hehe"
+         />
+
+</RelativeLayout>

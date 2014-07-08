@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+    <!-- <Button 
+        android:id="@+id/act_crop_img_btn_done"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:text="DONE"/>
+    
+    <Button 
+        android:id="@+id/act_crop_img_btn_crop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/act_crop_img_btn_done"
+        android:text="CROP"/> -->
+    
+    <ImageView
+        android:id="@+id/act_crop_img"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:adjustViewBounds="true"
+        android:scaleType="center"
+        android:layout_below="@+id/act_crop_img_btn_crop"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
+    
+    <com.edmodo.cropper.CropImageView
+        android:id="@+id/act_crop_crop_img"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        android:layout_below="@+id/act_crop_img_btn_crop"
+        android:layout_centerInParent="true"/>
+    
+
+</RelativeLayout>

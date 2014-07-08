@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:threemins="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="wrap_content" >
 
     <com.meg7.widget.SvgImageView
         android:id="@+id/nav_avatar"
@@ -15,8 +15,10 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
         android:layout_toRightOf="@+id/nav_avatar"
+        android:layout_alignTop="@+id/nav_avatar"
+        android:layout_alignBottom="@+id/nav_avatar"
         android:orientation="vertical" >
 
         <com.lanna.droidlib.view.CustomTextView
@@ -28,16 +30,55 @@
             android:textColor="@color/text_color_grouplayout"
             android:textSize="@dimen/textsize_avatar"
             threemins:customTypeface="@string/font_semibold" />
+        
+        <!-- group feedback and setting -->
+        
+        <RelativeLayout 
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/common_spacing"
+            android:layout_marginRight="@dimen/common_spacing_triple">
+            
+            <!-- feedback -->
+            <!-- <LinearLayout 
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true">
+                
+                <ImageView 
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_feedback_good"/>
+                
+                <TextView 
+                    android:id="@+id/inf_avt_tv_feedback_good"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="12"
+                    android:textSize="@dimen/textsize_medium"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/common_spacing"
+                    android:layout_marginRight="@dimen/inf_avt_feedback_margin_right"/>
+                
+                <View 
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/common_grey"/>
+            </LinearLayout> -->
+            
+            <!-- setting -->
+            <ImageView 
+                android:id="@+id/inf_avt_setting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_setting"/>
+            
+        </RelativeLayout>
 
-        <com.lanna.droidlib.view.CustomTextView
-            android:id="@+id/navigation_email"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:text="CustomTextView"
-            android:textColor="@color/text_color_grouplayout_disable"
-            android:textSize="@dimen/textsize_medium"
-            threemins:customTypeface="@string/font_regular" />
     </LinearLayout>
 
 </RelativeLayout>

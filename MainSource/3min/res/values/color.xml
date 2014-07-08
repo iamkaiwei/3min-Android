@@ -3,7 +3,8 @@
     <color name="orange">#FE7C42</color>
     <color name="red_background">#ff401a</color>
     <color name="gridview_orange">#FC3308</color>
-    <color name="fragment_product_gridview_bg">#E6E6E6</color>
+    <color name="background_grey">#E4E4E4</color>
+    <color name="fragment_product_bg">#E4E4E4</color>
     <color name="text_color_grouplayout">#333333</color>
      <color name="text_color_grouplayout_disable">#a9a9a9</color>
      
@@ -14,6 +15,7 @@
     <!-- inflater_header.xml -->
     <color name="inflater_header_text_color">#71706F</color>
     <color name="divider_color">#e4e4e4</color>
+    
     <!-- inflater_body_product.xml -->
     <color name="inflater_body_product_tv_name_text_color">#8B8A89</color>
     <color name="inflater_body_product_tv_like_text_color">#71706F</color>
@@ -22,5 +24,12 @@
     <color name="activity_imageview_grey">#DDDBDA</color>
     
     <color name="inflater_right_drawer_listview_item_line">#E4E4E4</color>
+    
+    <!-- chat to buy -->
+    <color name="activity_chat_text_color_grey">#AAAAAA</color>
+    
+    <!-- home action bar -->
+    <color name="home_action_bar_text_color_enable">#ffffff</color> <!-- white no transparent -->
+    <color name="home_action_bar_text_color_disable">#66ffffff</color> <!-- white transparent 40% -->
     
 </resources>

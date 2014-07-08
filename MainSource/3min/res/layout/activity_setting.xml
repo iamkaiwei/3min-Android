@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:threemins="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_grey"
+    android:orientation="vertical" >
+
+    <!-- About -->
+
+    <RelativeLayout
+        android:id="@+id/act_setting_rl_about"
+        style="@style/act_setting_row"
+        android:layout_marginTop="@dimen/act_setting_margin_top" >
+
+        <com.lanna.droidlib.view.CustomTextView
+            style="@style/act_setting_textview"
+            android:text="@string/about"
+            threemins:customTypeface="@string/font_regular" />
+
+        <ImageView
+            android:id="@+id/act_setting_arrow_about"
+            style="@style/act_setting_imageview" />
+    </RelativeLayout>
+
+    <!-- send suggestions -->
+
+    <RelativeLayout
+        android:id="@+id/act_setting_rl_send_suggestions"
+        style="@style/act_setting_row"
+        android:layout_marginTop="1dp" >
+
+        <com.lanna.droidlib.view.CustomTextView
+            style="@style/act_setting_textview"
+            android:text="@string/send_suggestions"
+            threemins:customTypeface="@string/font_regular" />
+
+        <ImageView
+            android:id="@+id/act_setting_arrow_send_suggestions"
+            style="@style/act_setting_imageview" />
+    </RelativeLayout>
+
+    <!-- Rate -->
+
+    <RelativeLayout
+        android:id="@+id/act_setting_rl_rate"
+        style="@style/act_setting_row"
+        android:layout_marginTop="1dp" >
+
+        <com.lanna.droidlib.view.CustomTextView
+            style="@style/act_setting_textview"
+            android:text="@string/rate"
+            threemins:customTypeface="@string/font_regular" />
+
+        <ImageView
+            android:id="@+id/act_setting_arrow_rate"
+            style="@style/act_setting_imageview" />
+    </RelativeLayout>
+
+    <!-- share -->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/act_setting_share_height" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_centerInParent="true" >
+
+            <com.lanna.droidlib.view.CustomTextView
+                style="@style/act_setting_textview"
+                android:text="@string/share_label"
+                threemins:customTypeface="@string/font_regular"
+                android:layout_gravity="center_horizontal" />
+            
+            <LinearLayout 
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/act_setting_share_margin">
+                
+                <ImageView 
+                    android:id="@+id/act_setting_img_share_facebook"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/selector_act_setting_facebook"/>
+                
+                <ImageView 
+                    android:id="@+id/act_setting_img_share_email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/selector_act_setting_email"
+                    android:layout_marginLeft="@dimen/act_setting_share_margin"
+                    android:layout_marginRight="@dimen/act_setting_share_margin"/>
+                
+                <ImageView 
+                    android:id="@+id/act_setting_img_share_message"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/selector_act_setting_message"/>
+                
+            </LinearLayout>
+            
+        </LinearLayout>
+        
+    </RelativeLayout>
+    
+    <LinearLayout
+        android:id="@+id/act_setting_ll_log_out" 
+        android:orientation="horizontal"
+		style="@style/act_setting_row">
+        
+        <ImageView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_logout"/>
+        
+        <com.lanna.droidlib.view.CustomTextView
+                style="@style/act_setting_textview"
+                android:text="@string/log_out"
+                threemins:customTypeface="@string/font_regular"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/common_spacing_double" />
+        
+    </LinearLayout>
+
+</LinearLayout>

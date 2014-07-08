@@ -10,6 +10,7 @@ public class ProductModel {
 	private String name;
 	private String description;
 	private String price;
+	@SerializedName("likes")
 	private int like;
 	@SerializedName("sold_out")
 	boolean soldOut;

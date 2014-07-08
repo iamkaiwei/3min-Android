@@ -71,4 +71,6 @@ public class SlidePageFragment extends Fragment {
 		return mPageNumber;
 	}
 	
+	
+	
 }

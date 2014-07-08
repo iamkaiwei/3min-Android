@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:threemins="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <com.lanna.droidlib.view.CustomTextView
+        android:id="@+id/post_offer_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:singleLine="true"
+        android:text="@string/profile_mylist"
+        android:textColor="@color/common_grey"
+        android:textSize="@dimen/textsize_avatar"
+        threemins:customTypeface="@string/font_regular" />
+
+    <com.lanna.droidlib.view.CustomTextView
+        android:id="@+id/tv_label_chatting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="20dp"
+        android:singleLine="true"
+        android:text="@string/postoffer_start_chatting"
+        android:textColor="@color/common_grey"
+        android:textSize="@dimen/textsize_avatar"
+        threemins:customTypeface="@string/font_regular" />
+
+    <com.lanna.droidlib.view.CustomEditText
+        android:id="@+id/et_label_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="@dimen/common_spacing"
+        android:background="@android:color/transparent"
+        android:singleLine="true"
+        android:text="@string/postoffer_start_chatting"
+        android:textColor="@color/common_grey"
+        android:textSize="@dimen/textsize_large"
+        threemins:customTypeface="@string/font_regular" 
+        android:inputType="numberDecimal">
+    </com.lanna.droidlib.view.CustomEditText>
+
+
+    <FrameLayout
+        android:id="@+id/view_change"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="50dp" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/money" />
+
+        <ImageView
+            android:id="@+id/rotate_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/arow_rotate" />
+    </FrameLayout>
+
+    <com.lanna.droidlib.view.CustomTextView
+        android:id="@+id/post_offer_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:singleLine="true"
+        android:text="@string/postoffer_tap_to_change"
+        android:textColor="@color/common_grey"
+        android:textSize="@dimen/textsize_small"
+        threemins:customTypeface="@string/font_regular" />
+
+</LinearLayout>

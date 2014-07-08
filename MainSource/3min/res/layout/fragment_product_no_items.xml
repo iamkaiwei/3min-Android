@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:id="@+id/fragment_product_no_items_group_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:id="@+id/fragment_product_no_items_img_no_items"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/ic_no_items" />
+
+        <TextView
+            android:id="@+id/fragment_product_no_items_tv_no_items_line_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/no_item_line_1_margin_top"
+            android:textColor="@color/common_grey" 
+            android:textSize="@dimen/no_item_line_text_size"
+            android:text="@string/no_items_line_1"/>
+
+        <TextView
+            android:id="@+id/fragment_product_no_items_tv_no_items_line_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/common_grey"
+            android:textSize="@dimen/no_item_line_text_size"
+            android:text="@string/no_items_line_2" />
+    </LinearLayout>
+    
+    <View 
+        android:id="@+id/fragment_product_no_items_virtual_view"
+        android:layout_width="1dp"
+        android:layout_height="50dp"
+        android:visibility="invisible"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"/>
+
+    <ImageView
+        android:id="@+id/fragment_product_no_items_img_arrows_guide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/fragment_product_no_items_virtual_view"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/no_item_img_arrows_margin_bot"
+        android:layout_marginRight="@dimen/no_item_img_arrows_margin_right"
+        android:src="@drawable/ic_arrows_guide" />
+
+</RelativeLayout>

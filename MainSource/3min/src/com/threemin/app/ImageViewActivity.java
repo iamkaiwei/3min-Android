@@ -8,7 +8,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
@@ -17,26 +16,25 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -54,9 +52,11 @@ import com.threemin.model.CategoryModel;
 import com.threemin.model.ImageModel;
 import com.threemin.model.ProductModel;
 import com.threemin.uti.CommonConstant;
+import com.threemin.uti.CommonUti;
 import com.threemin.uti.PreferenceHelper;
-import com.threemin.webservice.CategoryWebservice;
+import com.threemin.view.SquareImageView;
 import com.threemins.R;
+import com.threemins.R.id;
 
 public class ImageViewActivity extends Activity {
 
@@ -67,20 +67,14 @@ public class ImageViewActivity extends Activity {
 	public final static int REQUEST_CAMERA_IMG_3 = 13;
 	public final static int REQUEST_CAMERA_IMG_4 = 14;
 	
-
-	public final static int REQUEST_SELECT_FILE_IMG_1 = 21;
-	public final static int REQUEST_SELECT_FILE_IMG_2 = 22;
-	public final static int REQUEST_SELECT_FILE_IMG_3 = 23;
-	public final static int REQUEST_SELECT_FILE_IMG_4 = 24;
-	
 	private final static int REQUEST_LOCATION = 31;
+	private final static int REQUEST_CATEGORY = 32;
+    private static final int REQUEST_PRODUCT_INPUT_ITEM = 33;
 
-	ImageView mImg1, mImg2, mImg3, mImg4;
+
+	SquareImageView mImg1, mImg2, mImg3, mImg4;
 	Context mContext;
 	
-	//variables for spinner
-	Spinner mSpnCategory;
-	List<CategoryModel> mListCategory;
 	ArrayAdapter<CategoryModel> mAdapter;
 	CategoryModel mSelectedCategory;
 	EditText etName, etPrice, etDescription;
@@ -88,9 +82,10 @@ public class ImageViewActivity extends Activity {
 	TextView locationName;
 	Venue venue;
     Switch mSwShareOnFacebook;
-    Button mBtnSubmit, mBtnCancel;
+    TextView tv_Category,tvName;
+//    Button mBtnSubmit, mBtnCancel;
     LoginButton mBtnLoginFacebook;
-    
+    View viewContentProduct;
     String[] permissions = {"email","user_photos","publish_stream"};
 
 
@@ -98,13 +93,9 @@ public class ImageViewActivity extends Activity {
 
 		@Override
 		public void onClick(final View v) {
-			
 			final CharSequence[] items = { 	getResources().getString(R.string.activity_imageview_take_a_photo),
-											getResources().getString(R.string.activity_imageview_select_from_gallery), 
 											getResources().getString(R.string.activity_imageview_delete) };
 			
-			final CharSequence[] itemsWithoutDelete = { getResources().getString(R.string.activity_imageview_take_a_photo),
-														getResources().getString(R.string.activity_imageview_select_from_gallery) };
 			
 			AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
 			builder.setTitle(getResources().getString(R.string.activity_imageview_add_photo));
@@ -119,14 +110,28 @@ public class ImageViewActivity extends Activity {
 				});
 				builder.show();
 			} else {
-				builder.setItems(itemsWithoutDelete, new DialogInterface.OnClickListener() {
+				int requestCode_Camera = 0;
+				switch (v.getId()) {
+				case R.id.activity_imageview_img_1:
+					requestCode_Camera = REQUEST_CAMERA_IMG_1;
+					break;
 
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						configDialog(v, itemsWithoutDelete, dialog, which);
-					}
-				});
-				builder.show();
+				case R.id.activity_imageview_img_2:
+					requestCode_Camera = REQUEST_CAMERA_IMG_2;
+					break;
+
+				case R.id.activity_imageview_img_3:
+					requestCode_Camera = REQUEST_CAMERA_IMG_3;
+					break;
+
+				case R.id.activity_imageview_img_4:
+					requestCode_Camera = REQUEST_CAMERA_IMG_4;
+					break;
+
+				default:
+					break;
+				}
+				startActivityForResult(new Intent(ImageViewActivity.this, ActivityCamera.class), requestCode_Camera);
 			}
 			
 		}
@@ -134,26 +139,21 @@ public class ImageViewActivity extends Activity {
 		public void configDialog(View v, CharSequence[] items, DialogInterface dialog, int which) {
 			// which imageView is tapped
 			int requestCode_Camera = 0;
-			int requestCode_SelectFile = 0;
 			switch (v.getId()) {
 			case R.id.activity_imageview_img_1:
 				requestCode_Camera = REQUEST_CAMERA_IMG_1;
-				requestCode_SelectFile = REQUEST_SELECT_FILE_IMG_1;
 				break;
 
 			case R.id.activity_imageview_img_2:
 				requestCode_Camera = REQUEST_CAMERA_IMG_2;
-				requestCode_SelectFile = REQUEST_SELECT_FILE_IMG_2;
 				break;
 
 			case R.id.activity_imageview_img_3:
 				requestCode_Camera = REQUEST_CAMERA_IMG_3;
-				requestCode_SelectFile = REQUEST_SELECT_FILE_IMG_3;
 				break;
 
 			case R.id.activity_imageview_img_4:
 				requestCode_Camera = REQUEST_CAMERA_IMG_4;
-				requestCode_SelectFile = REQUEST_SELECT_FILE_IMG_4;
 				break;
 
 			default:
@@ -162,9 +162,7 @@ public class ImageViewActivity extends Activity {
 			
 			if (which == 0) {
 				startActivityForResult(new Intent(ImageViewActivity.this, ActivityCamera.class), requestCode_Camera);
-			} else if (which == 1) {
-				openGallery(requestCode_SelectFile);
-			} else if (which == 2) {
+			} else {
 				deleteImage(v.getId());
 			}
 		}
@@ -180,25 +178,6 @@ public class ImageViewActivity extends Activity {
 	
 	
 
-	OnItemSelectedListener onItemSpinnerSelected = new OnItemSelectedListener() {
-
-		@Override
-		public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long arg3) {
-			mSelectedCategory = mListCategory.get(position);
-		}
-
-		@Override
-		public void onNothingSelected(AdapterView<?> arg0) {
-
-		}
-	};
-	
-	private void openGallery(int requestCode) {
-		Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-		photoPickerIntent.setType("image/*");
-		startActivityForResult(photoPickerIntent, requestCode);
-	 }
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -208,19 +187,17 @@ public class ImageViewActivity extends Activity {
 		imageModels=new ArrayList<ImageModel>();
 		initActionBar();
 		initWidgets();
-		initSpiner();
 		setEvents();
 		
 		startActivityForResult(new Intent(ImageViewActivity.this, ActivityCamera.class), REQUEST_CAMERA_ON_CREATE);
 	}
 
 	public void initWidgets() {
-		mImg1 = (ImageView) findViewById(R.id.activity_imageview_img_1);
-		mImg2 = (ImageView) findViewById(R.id.activity_imageview_img_2);
-		mImg3 = (ImageView) findViewById(R.id.activity_imageview_img_3);
-		mImg4 = (ImageView) findViewById(R.id.activity_imageview_img_4);
-        mBtnSubmit = (Button) findViewById(R.id.activity_imageview_btn_submit);
-        mBtnCancel = (Button) findViewById(R.id.activity_imageview_btn_cancel);
+		mImg1 = (SquareImageView) findViewById(R.id.activity_imageview_img_1);
+		mImg2 = (SquareImageView) findViewById(R.id.activity_imageview_img_2);
+		mImg3 = (SquareImageView) findViewById(R.id.activity_imageview_img_3);
+		mImg4 = (SquareImageView) findViewById(R.id.activity_imageview_img_4);
+		
         mBtnLoginFacebook = (LoginButton) findViewById(R.id.activity_imageview_btn_login_facebook);
         mBtnLoginFacebook.setPublishPermissions(Arrays.asList("email","user_photos","publish_stream"));
         mSwShareOnFacebook = (Switch) findViewById(R.id.activity_imageview_switch_share_on_facebook);
@@ -229,8 +206,8 @@ public class ImageViewActivity extends Activity {
 		etDescription = (EditText) findViewById(R.id.activity_imageview_et_description);
 		etName = (EditText) findViewById(R.id.activity_imageview_et_item);
 		etPrice = (EditText) findViewById(R.id.activity_imageview_et_price);
-
-		mSpnCategory = (Spinner) findViewById(R.id.activity_imageview_spn_category);
+		tv_Category=(TextView) findViewById(R.id.activity_imageview_category);
+		tv_Category.setText("");
 		
 		locationName=(TextView) findViewById(R.id.activity_imageview_tv_location);
 		
@@ -241,6 +218,8 @@ public class ImageViewActivity extends Activity {
 				startActivityForResult(new Intent(mContext, LocationActivity.class), REQUEST_LOCATION);
 			}
 		});
+		tvName=(TextView) findViewById(id.activity_imageview_tv_item);
+		viewContentProduct=findViewById(R.id.view_product_content);
 	}
 
 	private ProductModel validateInput() {
@@ -251,7 +230,10 @@ public class ImageViewActivity extends Activity {
 		ProductModel result=new ProductModel();
 		if(imageModels.isEmpty()){
 			Toast.makeText(mContext, R.string.error_empty_image, Toast.LENGTH_SHORT).show();
+		} else {
+			result.setImages(imageModels);
 		}
+		
 		if(TextUtils.isEmpty(name)){
 			Toast.makeText(mContext, R.string.error_miss_field, Toast.LENGTH_SHORT).show();
 			return null;
@@ -276,9 +258,15 @@ public class ImageViewActivity extends Activity {
 			result.setVenueName(venue.getName());
 		}
 		
-		result.setCategory(mSelectedCategory);
+		if (mSelectedCategory == null) {
+			Toast.makeText(mContext, R.string.error_miss_field, Toast.LENGTH_SHORT).show();
+			return null;
+		} else {
+			result.setCategory(mSelectedCategory);
+		}
+		
 		result.setOwner(PreferenceHelper.getInstance(mContext).getCurrentUser());
-		result.setImages(imageModels);
+		
 		return result;
 	}
 
@@ -321,76 +309,44 @@ public class ImageViewActivity extends Activity {
             }
         });
         
-        mBtnSubmit.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                ProductModel result=validateInput();
-                if(result!=null){
-                    String data=new Gson().toJson(result);
-                    Intent intent=new Intent();
-                    intent.putExtra(CommonConstant.INTENT_PRODUCT_DATA, data);
-                    setResult(RESULT_OK, intent);
-                    if (mSwShareOnFacebook.isChecked()) {
-                        doShareOnFacebook();
-                    }
-                    finish();
-                }
-            }
-
-        });
-        mBtnCancel.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-
-        });
-
-	}
-
-	public void initSpiner() {
-		new InitCategory().execute();
-	}
-
-	private class InitCategory extends AsyncTask<Void, Void, List<CategoryModel>> {
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-		}
-
-		@Override
-		protected List<CategoryModel> doInBackground(Void... arg0) {
-			try {
-				return CategoryWebservice.getInstance().getTaggableCategory(mContext);
-			} catch (Exception e) {
-				e.printStackTrace();
-				return null;
+        findViewById(R.id.view_cate).setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				startActivityForResult(new Intent(mContext,CategoryActivity.class), REQUEST_CATEGORY);
 			}
-		}
-
-		@Override
-		protected void onPostExecute(List<CategoryModel> result) {
-			if (result != null) {
-				Log.i("tructran", "Set adapter");
-				mListCategory = result;
-				mSelectedCategory = mListCategory.get(0);
-				mAdapter = new ArrayAdapter<CategoryModel>(mContext, android.R.layout.simple_spinner_item, mListCategory);
-				mAdapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
-				mSpnCategory.setAdapter(mAdapter);
-				mSpnCategory.setOnItemSelectedListener(onItemSpinnerSelected);
+		});
+        
+        findViewById(id.item_content).setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+//				if(viewContentProduct.getVisibility()==View.GONE){
+//					viewContentProduct.setVisibility(View.VISIBLE);
+//					CommonUti.showKeyboard(etName, mContext);
+//				} else {
+//					viewContentProduct.setVisibility(View.GONE);
+//					CommonUti.hideKeyboard(etName, mContext);
+//					tvName.setText(etName.getText());
+//				}
+			    Bundle bundle=new Bundle();
+			    bundle.putString(CommonConstant.INTENT_PRODUCT_NAME, etName.getText().toString());
+			    bundle.putString(CommonConstant.INTENT_PRODUCT_DESCRIPTION, etDescription.getText().toString());
+			    String dataLocation= new Gson().toJson(venue);
+			    bundle.putString(CommonConstant.INTENT_PRODUCT_DATA, dataLocation);
+			    Intent intent=new Intent(mContext, InputProductActivity.class);
+			    intent.putExtras(bundle);
+			    startActivityForResult(intent, REQUEST_PRODUCT_INPUT_ITEM);
 			}
-			super.onPostExecute(result);
-		}
+		});
 	}
+
 
 	public void initActionBar() {
-		ActionBar bar = getActionBar();
-		bar.setDisplayShowHomeEnabled(false);
-		bar.setDisplayShowTitleEnabled(false);
-		bar.setCustomView(R.layout.actionbar_activity_imageview_custom_view);
-		bar.setDisplayShowCustomEnabled(true);
+		getActionBar().setIcon(R.drawable.btn_back);
+		getActionBar().setHomeButtonEnabled(true);
+//		bar.setCustomView(R.layout.actionbar_activity_imageview_custom_view);
+//		bar.setDisplayShowCustomEnabled(true);
 	}
 
 	@Override
@@ -406,7 +362,8 @@ public class ImageViewActivity extends Activity {
         
 		if (resultCode == RESULT_OK) {
 			if (requestCode >= REQUEST_CAMERA_IMG_1 && requestCode <= REQUEST_CAMERA_IMG_4) {
-				Uri uri = Uri.parse(data.getStringExtra("imageUri"));
+//				Uri uri = Uri.parse(data.getStringExtra("imageUri"));
+				String uri = data.getStringExtra("imagePath");
 				if (requestCode == REQUEST_CAMERA_IMG_1) {
 					setImageURI(uri,mImg1);
 				} else if (requestCode == REQUEST_CAMERA_IMG_2) {
@@ -416,28 +373,33 @@ public class ImageViewActivity extends Activity {
 				} else if (requestCode == REQUEST_CAMERA_IMG_4) {
 					setImageURI(uri,mImg4);
 				}
-			} else if (requestCode >= REQUEST_SELECT_FILE_IMG_1 && requestCode <= REQUEST_SELECT_FILE_IMG_4) {
-				Uri uri = data.getData();
-				if (requestCode == REQUEST_SELECT_FILE_IMG_1) {
-					setImageURI(uri,mImg1);
-				} else if (requestCode == REQUEST_SELECT_FILE_IMG_2) {
-					setImageURI(uri,mImg2);
-				} else if (requestCode == REQUEST_SELECT_FILE_IMG_3) {
-					setImageURI(uri,mImg3);
-				} else if (requestCode == REQUEST_SELECT_FILE_IMG_4) {
-					setImageURI(uri,mImg4);
-				}
-			} else if(requestCode== REQUEST_LOCATION){
+			} 
+			else if(requestCode== REQUEST_LOCATION){
 				String result=data.getStringExtra(CommonConstant.INTENT_PRODUCT_DATA);
 				venue=new Gson().fromJson(result, Venue.class);
 				if(venue!=null){
 					locationName.setText(venue.getName());
 				}
 			} else if (requestCode == REQUEST_CAMERA_ON_CREATE) {
-				Uri uri = Uri.parse(data.getStringExtra("imageUri"));
+//				Uri uri = Uri.parse(data.getStringExtra("imageUri"));
+				String uri = data.getStringExtra("imagePath");
 				setImageURI(uri,mImg1);
 			}
-
+			else if(requestCode==REQUEST_CATEGORY){
+				String json=data.getStringExtra(CommonConstant.INTENT_CATEGORY_DATA);
+				mSelectedCategory=new Gson().fromJson(json, CategoryModel.class);
+				tv_Category.setText(mSelectedCategory.getName());
+			} else if(requestCode==REQUEST_PRODUCT_INPUT_ITEM){
+			    String productName = data.getStringExtra(CommonConstant.INTENT_PRODUCT_NAME);
+		        String productDescription = data.getStringExtra(CommonConstant.INTENT_PRODUCT_DESCRIPTION);
+		        venue = new Gson().fromJson(data.getStringExtra(CommonConstant.INTENT_PRODUCT_DATA), Venue.class);
+		        tvName.setText(productName);
+		        etName.setText(productName);
+		        etDescription.setText(productDescription);
+		        if(venue!=null){
+                    locationName.setText(venue.getName());
+                }
+			}
 		}
 	}
 
@@ -458,9 +420,21 @@ public class ImageViewActivity extends Activity {
 		return null;
 	}
 
-	public void setImageURI(Uri uri,ImageView imageView) {
-			UrlImageViewHelper.setUrlDrawable(imageView, uri.toString(), getImageCallback());
-
+//	public void setImageURI(Uri uri,ImageView imageView) {
+//			UrlImageViewHelper.setUrlDrawable(imageView, uri.toString(), getImageCallback());
+//	}
+	
+	public void setImageURI(String uri,ImageView imageView) {
+		File imgFile = new  File(uri);
+		if(imgFile.exists()){
+		    Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+		    imageView.setImageBitmap(myBitmap);
+		    ImageModel imgModel = new ImageModel();
+		    imgModel.setUrl(uri);
+		    imageModels.add(imgModel);
+		} else {
+			Toast.makeText(this, "File does not exists", Toast.LENGTH_LONG).show();
+		}
 	}
 
 	private UrlImageViewCallback getImageCallback() {
@@ -605,6 +579,35 @@ public class ImageViewActivity extends Activity {
         return bitmap;
     }
     
-
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			onBackPressed();
+			return true;
+		case R.id.action_submit:
+          ProductModel result=validateInput();
+          if(result!=null){
+              String data=new Gson().toJson(result);
+              Intent intent=new Intent();
+              intent.putExtra(CommonConstant.INTENT_PRODUCT_DATA, data);
+              setResult(RESULT_OK, intent);
+              if (mSwShareOnFacebook.isChecked()) {
+                  doShareOnFacebook();
+              }
+              finish();
+          }
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.menu_post_product, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
 	
 }
