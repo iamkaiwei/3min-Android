@@ -56,6 +56,7 @@ import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.SeekBar;
@@ -84,13 +85,15 @@ public class ActivityCamera extends Activity implements OnSeekBarChangeListener,
 	private View lnFilter;
 	private View imgHide;
 	private static int TIME_TRANSLATE=500;
+	private ImageButton mBtnCapture;
 
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_camera);
 		((SeekBar) findViewById(R.id.seekBar)).setOnSeekBarChangeListener(this);
-		findViewById(R.id.button_capture).setOnClickListener(this);
+		mBtnCapture = (ImageButton) findViewById(R.id.button_capture);
+		mBtnCapture.setOnClickListener(this);
 
 		mGPUImage = new GPUImage(this);
 		mGPUImage.setGLSurfaceView((GLSurfaceView) findViewById(R.id.surfaceView));
@@ -125,6 +128,8 @@ public class ActivityCamera extends Activity implements OnSeekBarChangeListener,
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				resetAll();
 				view.setSelected(true);
+				//hide the list filters 
+				hideView(TIME_TRANSLATE);
 				switch (position) {
 				case 0:
 					switchFilterTo(new GPUImagePixelationFilter());
@@ -205,8 +210,9 @@ public class ActivityCamera extends Activity implements OnSeekBarChangeListener,
 	}
 
 	private void handleImage(final Uri selectedImage) {
-		gpuImageView.setImage(selectedImage);
+//		gpuImageView.setImage(selectedImage);
 		resetAll();
+		finishImage(selectedImage);
 	}
 
 	@Override
@@ -386,6 +392,7 @@ public class ActivityCamera extends Activity implements OnSeekBarChangeListener,
 				}
 
 				Bitmap bMap = BitmapFactory.decodeByteArray(data, 0, data.length, opt);
+				Log.i("Bitmap", "W x H: " + bMap.getWidth() + " x " + bMap.getHeight());
 				Bitmap bMapRotate;
 				Matrix matrix = new Matrix();
 				matrix.postRotate(90);
