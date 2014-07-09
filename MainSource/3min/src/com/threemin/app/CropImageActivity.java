@@ -15,6 +15,7 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuffXfermode;
@@ -45,8 +46,8 @@ public class CropImageActivity extends Activity {
 	
 	ImageView img;
 	CropImageView cropImg;
-//	Button btnCrop, btnDone;
 	Bitmap croppedBitmap;
+	String mPathImage;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -79,9 +80,9 @@ public class CropImageActivity extends Activity {
 	
 	public void initWidgets() {
 		img = (ImageView) findViewById(R.id.act_crop_img);
+//		img.setVisibility(View.VISIBLE);
 		cropImg = (CropImageView) findViewById(R.id.act_crop_crop_img);
-//		btnCrop = (Button) findViewById(R.id.act_crop_img_btn_crop);
-//		btnDone = (Button) findViewById(R.id.act_crop_img_btn_done);
+//		cropImg.setVisibility(View.INVISIBLE);
 	}
 	
 	public void initData() {
@@ -91,32 +92,7 @@ public class CropImageActivity extends Activity {
 	}
 	
 	public void initListener() {
-//		btnCrop.setOnClickListener(new OnClickListener() {
-//			
-//			@Override
-//			public void onClick(View v) {
-//				// TODO Auto-generated method stub
-//				croppedBitmap = cropImg.getCroppedImage();
-//				img.setImageBitmap(croppedBitmap);
-//				img.setVisibility(View.VISIBLE);
-//				cropImg.setVisibility(View.GONE);
-//			}
-//		});
-//		
-//		btnDone.setOnClickListener(new OnClickListener() {
-//			
-//			@Override
-//			public void onClick(View v) {
-//				// TODO Auto-generated method stub
-//				if (croppedBitmap != null) {
-//					String path = saveImagetoLocal(croppedBitmap);
-//					Intent intent = new Intent();
-//					intent.putExtra("imagePath", path);
-//					setResult(RESULT_OK, intent);
-//					finish();
-//				}
-//			}
-//		});
+
 	}
 	
 	private void initActionBar() {
@@ -161,17 +137,33 @@ public class CropImageActivity extends Activity {
 			@Override
 			public void onLoaded(ImageView imageView, Bitmap loadedBitmap, String url, boolean loadedFromCache) {
 				Log.d("url", url);
-				cropImg.setImageBitmap(loadedBitmap);
-				ImageModel imageModel=new ImageModel();
+				Log.i("Bitmap", "LoadedBmp: W x H: " + loadedBitmap.getWidth() + " x " + loadedBitmap.getHeight());
+//				cropImg.setImageBitmap(loadedBitmap);
+//				ImageModel imageModel=new ImageModel();
+//				if (url.contains("content://com.google.android.apps.photos.content")) {
+//					imageModel.setUrl(saveImagetoLocal(loadedBitmap));
+//					Log.d("path", imageModel.getUrl());
+//				} else {
+//					String pathImage=getPath(Uri.parse(url));
+//					Log.d("path", pathImage);
+//					imageModel.setUrl(pathImage);
+//				}
+//				imageView.setTag(imageModel);
+				
+				
 				if (url.contains("content://com.google.android.apps.photos.content")) {
-					imageModel.setUrl(saveImagetoLocal(loadedBitmap));
-					Log.d("path", imageModel.getUrl());
+					mPathImage = saveImagetoLocal(loadedBitmap);
+					Log.d("path", mPathImage);
 				} else {
-					String pathImage=getPath(Uri.parse(url));
-					Log.d("path", pathImage);
-					imageModel.setUrl(pathImage);
+					mPathImage=getPath(Uri.parse(url));
+					Log.d("path", mPathImage);
 				}
-				imageView.setTag(imageModel);
+				File f = new File(mPathImage);
+				if (f.exists()) {
+					Bitmap myBitmap = BitmapFactory.decodeFile(f.getAbsolutePath());
+					Log.i("Bitmap", "myBitmap: W x H: " + myBitmap.getWidth() + " x " + myBitmap.getHeight());
+					cropImg.setImageBitmap(myBitmap);
+				}
 			}
 		};
 	}
@@ -248,28 +240,32 @@ public class CropImageActivity extends Activity {
 			croppedBitmap = cropImg.getCroppedImage();
 		}
 		
-		String path = saveImagetoLocal(croppedBitmap);
+		String path = saveCroppedImageToLocal(croppedBitmap);
 		Intent intent = new Intent();
 		intent.putExtra("imagePath", path);
 		setResult(RESULT_OK, intent);
 		finish();
 	}
 	
-//	public Bitmap getCroppedBitmap(Bitmap bitmap) {
-//		return Bitmap.createBitmap(bitmap, 0, 10, bitmap.getWidth(), 350);
-//	}
-//	
-//	public Bitmap getBitmap(Drawable draw) {
-//        Bitmap bitmap;
-//        if (draw instanceof BitmapDrawable) {
-//            bitmap = ((BitmapDrawable) draw).getBitmap();
-//        } else {
-//            Drawable d = draw;
-//            bitmap = Bitmap.createBitmap(d.getIntrinsicWidth(), d.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-//            Canvas canvas = new Canvas(bitmap);
-//            d.draw(canvas);
-//        }
-//        return bitmap;
-//    }
+	public String saveCroppedImageToLocal(Bitmap bitmap) {
+		File file = new File(mPathImage);
+		if (file.exists()) {
+			file.delete();
+		}
+		FileOutputStream out = null;
+		try {
+			out = new FileOutputStream(file);
+			bitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
+		} catch (Exception e) {
+			e.printStackTrace();
+			Log.i("CropImageActivity", "saveCroppedImageToLocal ex: " + e.toString());
+		} finally {
+			try {
+				out.close();
+			} catch (Throwable ignore) {
+			}
+		}
+		return file.getAbsolutePath();
+	}
 
 }

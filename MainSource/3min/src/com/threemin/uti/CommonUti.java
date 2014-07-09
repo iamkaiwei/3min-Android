@@ -85,6 +85,26 @@ public class CommonUti {
 			}
 		};
 	}
+	
+	public static OnClickListener feedbackClick(final Context context){
+	    return new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Intent.ACTION_SEND);
+                i.setType("message/rfc822");
+                i.putExtra(Intent.EXTRA_EMAIL, new String[] { "iamkaiwei@gmail.com" });
+                i.putExtra(Intent.EXTRA_SUBJECT, "Three mins Sugesstion");
+                i.putExtra(Intent.EXTRA_TEXT,
+                        "");
+                try {
+                    context.startActivity(Intent.createChooser(i, "Send mail..."));
+                } catch (android.content.ActivityNotFoundException ex) {
+                }
+            }
+        };
+
+	}
 
 	public static OnClickListener shareMessage(final Context context) {
 		return new OnClickListener() {
@@ -93,10 +113,12 @@ public class CommonUti {
 			public void onClick(View v) {
 				Uri smsUri = Uri.parse("sms:");
 				Intent intent = new Intent(Intent.ACTION_VIEW, smsUri);
+				if(intent!=null){
 				intent.setType("vnd.android-dir/mms-sms");
 				intent.putExtra("sms_body",
 						"Hi Guys, Try this app https://play.google.com/store/apps/details?id=com.threemins");
 				context.startActivity(intent);
+				}
 			}
 		};
 	}
