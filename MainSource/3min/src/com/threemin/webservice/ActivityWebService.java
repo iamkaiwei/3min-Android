@@ -14,10 +14,10 @@ public class ActivityWebService {
 	
 	public List<ActivityModel>  getActivities(String tokken) {
 		String url = WebserviceConstant.GET_ACTIVITIES + "?access_token=" +  tokken;
-		Log.i("tructran", "Activity: " + url);
+		Log.i("ActivityWebService", "Activity: " + url);
 		try {
 			String result = WebServiceUtil.getData(url);
-			Log.i("tructran", "Result: " + result);
+			Log.i("ActivityWebService", "Result: " + result);
 			
 			Type listType = new TypeToken<List<ActivityModel>>() {
 			}.getType();
@@ -25,8 +25,8 @@ public class ActivityWebService {
 			return list;
 		} catch (Exception e) {
 			e.printStackTrace();
-			Log.i("tructran", "Exception: " + e.toString());
-			Log.i("tructran", "Exception msg: " + e.getMessage());
+			Log.i("ActivityWebService", "Exception: " + e.toString());
+			Log.i("ActivityWebService", "Exception msg: " + e.getMessage());
 		}
 		return null;
 	}

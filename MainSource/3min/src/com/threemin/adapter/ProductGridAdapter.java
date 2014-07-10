@@ -2,6 +2,7 @@ package com.threemin.adapter;
 
 import java.util.List;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.text.format.DateUtils;
@@ -130,6 +131,7 @@ public class ProductGridAdapter extends BaseAdapter {
                         String data=new Gson().toJson(model.getOwner());
                         intent.putExtra(CommonConstant.INTENT_USER_DATA, data);
                         mContext.startActivity(intent);
+                        ((Activity)mContext).overridePendingTransition(R.anim.anim_right_in,R.anim.anim_no_animation);
                     }
                 });
 			}

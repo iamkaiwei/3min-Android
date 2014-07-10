@@ -37,6 +37,7 @@
     <string name="activity_login_btn_login_gg"></string>
     <string name="please_wait">Please wait</string>
     <string name="location">Location</string>
+    <string name="currency">kVND</string>
 
     <!-- action bar -->
     <string name="action_bar_search_title">Search</string>
@@ -60,7 +61,7 @@
     <string name="error_empty_image">Please enter at least one image</string>
     <string name="error_miss_field">Please enter all require field</string>
     <string name="error_upload">Fail to upload product</string>
-    <string name="google_map_API">AIzaSyAJTkTJj_9VkWK-aamL3B3dXGe90UKXED4</string>
+    <string name="google_map_API">AIzaSyA7LzP742pWpP0Vfmkf0GVwT22-gUzL7Nc</string>
     <string name="title_activity_detail">DetailActivity</string>
     <string name="camera_filter">Filters</string>
     <string name="camera_album">Album</string>
@@ -81,7 +82,7 @@
     <string name="postOffer_your_offer">Your offer</string>
     <string name="postoffer_start_chatting">Make an offer to start chatting</string>
     <string name="postoffer_tap_to_change">tap to change</string>
-    <string formatted="false" name="postoffer_title">%s is selling it for %s VND</string>
+    <string formatted="false" name="postoffer_title">%s is selling it for %s kVND</string>
     
     <!-- fragment filter -->
     <string name="fm_filter_search_hint">Search for products</string>

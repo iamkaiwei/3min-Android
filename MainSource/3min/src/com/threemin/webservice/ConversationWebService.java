@@ -100,8 +100,10 @@ public class ConversationWebService {
 
 	public List<Conversation> getListMessage(String tokken) {
 		String url = WebserviceConstant.CONVERSATION + "?access_token=" + tokken;
+		Log.i("ConversationWebService", "URL: " + url);
 		try {
 			String result = WebServiceUtil.getData(url);
+			Log.i("ConversationWebService", "getListMessage " + result);
 			Type listType = new TypeToken<List<Conversation>>() {
 			}.getType();
 			List<Conversation> list = new Gson().fromJson(result, listType);

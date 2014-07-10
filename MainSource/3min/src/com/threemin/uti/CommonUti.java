@@ -194,7 +194,9 @@ public class CommonUti {
 					if (response.getError() == null) {
 			        	Log.i("CommonUti", "doPostToWall done");
 			        	Toast.makeText(context, "Post success", Toast.LENGTH_LONG).show();
-			        }
+			        } else {
+			        	Log.i("CommonUti", "doPostToWall Ex" + response.toString());
+					}
 				}
 			});
 			
