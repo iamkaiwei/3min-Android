@@ -1,5 +1,8 @@
 package br.com.condesales.constants;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 public class FoursquareConstants {
 	/**
 	 * Change this!!! Generate yours at https://foursquare.com/developers/register
@@ -12,5 +15,13 @@ public class FoursquareConstants {
 	public static final String SHARED_PREF_FILE = "shared_pref";
 	public static final String ACCESS_TOKEN = "access_token";
 	public static final String USER_INFO = "user_info";
-	public static final String API_DATE_VERSION = "20120609";
+	public static final String API_DATE_VERSION = "20140710";
+	
+	public static String FORMATTIMEVERSION(){
+	    String DATE_FORMAT = "yyyyMMdd";
+	    SimpleDateFormat sdf =
+	          new SimpleDateFormat(DATE_FORMAT);
+	    Calendar c1 = Calendar.getInstance(); // today
+	    return sdf.format(c1.getTime());
+	}
 }
