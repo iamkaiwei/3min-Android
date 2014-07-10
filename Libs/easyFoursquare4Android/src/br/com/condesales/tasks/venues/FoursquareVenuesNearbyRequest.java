@@ -59,7 +59,7 @@ public class FoursquareVenuesNearbyRequest extends
 		try {
 			
 			//date required
-			String apiDateVersion = FoursquareConstants.API_DATE_VERSION;
+			String apiDateVersion = FoursquareConstants.FORMATTIMEVERSION();
 			// Call Foursquare to get the Venues around
 			JSONObject venuesJson = executeHttpGet("https://api.foursquare.com/v2/venues/search"
 					+ "?v="

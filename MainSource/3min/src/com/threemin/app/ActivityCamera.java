@@ -354,9 +354,6 @@ public class ActivityCamera extends Activity implements OnSeekBarChangeListener,
 		Size picturesize = getOptimalSize(params.getSupportedPictureSizes());
 		params.setPictureSize(picturesize.width, picturesize.height);
 		mCamera.mCameraInstance.setParameters(params);
-		for (Camera.Size size2 : mCamera.mCameraInstance.getParameters().getSupportedPictureSizes()) {
-			Log.i("ASDF", "Supported: " + size2.width + "x" + size2.height);
-		}
 		mCamera.mCameraInstance.takePicture(null, null, new Camera.PictureCallback() {
 
 			@Override
