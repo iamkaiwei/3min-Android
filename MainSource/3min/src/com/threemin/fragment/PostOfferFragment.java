@@ -83,6 +83,7 @@ public class PostOfferFragment extends Fragment {
 					@Override
 					public void onAnimationEnd(Animation animation) {
 						CommonUti.showKeyboard(price, getActivity());
+						price.selectAll();
 					}
 				});
 				rotateImg.startAnimation(animation);

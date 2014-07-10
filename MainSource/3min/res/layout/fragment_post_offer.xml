@@ -28,21 +28,38 @@
         android:textSize="@dimen/textsize_avatar"
         threemins:customTypeface="@string/font_regular" />
 
-    <com.lanna.droidlib.view.CustomEditText
-        android:id="@+id/et_label_price"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_margin="@dimen/common_spacing"
-        android:background="@android:color/transparent"
-        android:singleLine="true"
-        android:text="@string/postoffer_start_chatting"
-        android:textColor="@color/common_grey"
-        android:textSize="@dimen/textsize_large"
-        threemins:customTypeface="@string/font_regular" 
-        android:inputType="numberDecimal">
-    </com.lanna.droidlib.view.CustomEditText>
+        android:orientation="horizontal" >
 
+        <com.lanna.droidlib.view.CustomEditText
+            android:id="@+id/et_label_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/common_spacing"
+            android:background="@android:color/transparent"
+            android:inputType="numberDecimal"
+            android:singleLine="true"
+            android:text="12000.0"
+            android:textColor="@color/common_grey"
+            android:textSize="@dimen/textsize_large"
+            threemins:customTypeface="@string/font_regular" >
+        </com.lanna.droidlib.view.CustomEditText>
+        
+        <com.lanna.droidlib.view.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/common_spacing"
+            android:background="@android:color/transparent"
+            android:singleLine="true"
+            android:text="@string/currency"
+            android:textColor="@color/common_grey"
+            android:textSize="@dimen/textsize_large"
+            threemins:customTypeface="@string/font_regular" >
+        </com.lanna.droidlib.view.CustomTextView>
+    </LinearLayout>
 
     <FrameLayout
         android:id="@+id/view_change"
@@ -64,7 +81,6 @@
     </FrameLayout>
 
     <com.lanna.droidlib.view.CustomTextView
-        android:id="@+id/post_offer_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
