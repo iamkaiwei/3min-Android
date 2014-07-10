@@ -25,10 +25,11 @@
         android:id="@+id/dialog_share_fb_et_caption"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/activity_chat_chat_input_hint"
+        android:hint="@string/dialog_share_fb_hint"
         android:textColor="@color/common_black"
         android:textColorHint="@color/common_grey"
         android:textSize="@dimen/textsize_medium"
+        android:maxLines="3"
         threemins:customTypeface="@string/font_regular" />
 
     <View
