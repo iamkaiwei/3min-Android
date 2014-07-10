@@ -42,7 +42,6 @@ public class DetailActivity extends SwipeBackActivity {
 		// Init the swipe back mechanism
 		mSwipeBack = getSwipeBackLayout();
 		mSwipeBack.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
-		Log.i("DetailActivity", "Width: " + CommonUti.getWidthInPixel(this));
 		
 		initActionBar();
 
