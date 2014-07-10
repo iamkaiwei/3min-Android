@@ -117,12 +117,8 @@ public class PreferenceHelper {
 	
 	UserModel currentUserModel;
 	public UserModel getCurrentUser(){
-		if(currentUserModel!=null){
-			return currentUserModel;
-		} else {
-			currentUserModel=new Gson().fromJson( getString(CommonConstant.PREF_USER, ""),UserModel.class);
-			return currentUserModel;
-		}
+		currentUserModel=new Gson().fromJson( getString(CommonConstant.PREF_USER, ""),UserModel.class);
+		return currentUserModel;
 	}
 	
 	public void setAPID(String apid) {

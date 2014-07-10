@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:threemins="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <com.lanna.droidlib.view.CustomTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:text="@string/dialog_share_fb_question"
+        android:textColor="@color/common_black"
+        android:textSize="@dimen/textsize_medium"
+        threemins:customTypeface="@string/font_regular" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="@dimen/common_spacing"
+        android:layout_marginTop="@dimen/common_spacing"
+        android:background="@color/common_grey" />
+
+    <com.lanna.droidlib.view.CustomEditText
+        android:id="@+id/dialog_share_fb_et_caption"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/activity_chat_chat_input_hint"
+        android:textColor="@color/common_black"
+        android:textColorHint="@color/common_grey"
+        android:textSize="@dimen/textsize_medium"
+        threemins:customTypeface="@string/font_regular" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="@dimen/common_spacing"
+        android:layout_marginTop="@dimen/common_spacing"
+        android:background="@color/common_grey" />
+
+    <ImageView
+        android:id="@+id/dialog_share_fb_img_product"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:maxWidth="@dimen/dialog_share_fb_img_width"
+        android:scaleType="fitCenter"
+        android:src="@drawable/stuff_img" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/dialog_share_fb_btn_post"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/dialog_share_fb_post" />
+
+        <Button
+            android:id="@+id/dialog_share_fb_btn_cancel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/dialog_share_fb_cancel" />
+    </LinearLayout>
+
+</LinearLayout>

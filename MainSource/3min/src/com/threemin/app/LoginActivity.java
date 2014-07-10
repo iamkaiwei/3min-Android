@@ -117,6 +117,7 @@ public class LoginActivity extends FragmentActivity implements ConnectionCallbac
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
+		
 		mSharedPreferences = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
 
 		// Hide the action bar
@@ -124,6 +125,13 @@ public class LoginActivity extends FragmentActivity implements ConnectionCallbac
 		actionBar.hide();
 		isRequestPermisson = false;
 		mContext = this;
+		UserModel current = PreferenceHelper.getInstance(mContext).getCurrentUser();
+		
+		if (current == null) {
+			Log.i("LoginActivity", "User null");
+		} else {
+			Log.i("LoginActivity", current.getFullName());
+		}
 
 		mImgLoading1 = (ImageView) findViewById(R.id.img_login_loading_1);
 		mImgLoading2 = (ImageView) findViewById(R.id.img_login_loading_2);

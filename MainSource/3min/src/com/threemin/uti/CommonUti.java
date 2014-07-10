@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -21,8 +22,10 @@ import android.view.Display;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.Request;
@@ -32,7 +35,9 @@ import com.facebook.Session;
 import com.facebook.widget.LoginButton;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewCallback;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
+import com.threemin.model.ImageModel;
 import com.threemin.model.ProductModel;
+import com.threemins.R;
 
 public class CommonUti {
 
@@ -168,71 +173,113 @@ public class CommonUti {
 						}
 					});
 			builder.show();
-		} 
-		
-		if (session != null && session.isOpened()){
-			doPostToWall(context, session, product);
 		} else {
-			Log.i("CommonUti", "session null or not opened");
+			doPostToWall(context, session, product);
 		}
+		
+//		if (session != null && session.isOpened()){
+//			doPostToWall(context, session, product);
+//		} else {
+//			Log.i("CommonUti", "session null or not opened");
+//		}
 	}
 	
 	public static void doPostToWall(final Context context, final Session session, ProductModel product) {
 		Log.i("CommonUti", "start doPostToWall");
-		final String caption = "Check out " + product.getName() + " on 3mins app (available for Android and iOS)";
-		final String imgURL = product.getImages().get(0).getOrigin();
-		final String link = "https://play.google.com/store/apps/details?id=com.threemins";
-
+//		final String caption = "Check out " + product.getName() + " on 3mins app (available for Android and iOS)";
+//		final String imgURL = product.getImages().get(0).getOrigin();
+//		final String link = "https://play.google.com/store/apps/details?id=com.threemins";
+//
+//		
+//		Bitmap bitmap = UrlImageViewHelper.getCachedBitmap(imgURL);
+//		if (bitmap != null) {
+//			Request request = Request.newUploadPhotoRequest(session, bitmap, new Callback() {
+//				
+//				@Override
+//				public void onCompleted(Response response) {
+//					// TODO Auto-generated method stub
+//					if (response.getError() == null) {
+//			        	Log.i("CommonUti", "doPostToWall done");
+//			        	Toast.makeText(context, "Post success", Toast.LENGTH_LONG).show();
+//			        } else {
+//			        	Log.i("CommonUti", "doPostToWall Ex" + response.toString());
+//					}
+//				}
+//			});
+//			
+//			Bundle bundle = request.getParameters();
+//			bundle.putString("message", caption + "\n" + link);
+//			request.setParameters(bundle);
+//			request.executeAsync();
+//			Log.i("CommonUti", "request.executeAsync()");
+//		} else {
+//			Log.i("CommonUti", "bitmap null");
+//			UrlImageViewHelper.setUrlDrawable(new ImageView(context), imgURL, new UrlImageViewCallback() {
+//				
+//				@Override
+//				public void onLoaded(ImageView imageView, Bitmap loadedBitmap, String url,
+//						boolean loadedFromCache) {
+//					Request request = Request.newUploadPhotoRequest(session, loadedBitmap, new Callback() {
+//						
+//						@Override
+//						public void onCompleted(Response response) {
+//							// TODO Auto-generated method stub
+//							if (response.getError() == null) {
+//					        	Log.i("CommonUti", "Loaded, doPostToWall done");
+//					        	Toast.makeText(context, "Post success", Toast.LENGTH_LONG).show();
+//					        }
+//						}
+//					});
+//					
+//					Bundle bundle = request.getParameters();
+//					bundle.putString("message", caption + "\n" + link);
+//					request.setParameters(bundle);
+//					request.executeAsync();
+//					Log.i("CommonUti", "Loaded, request.executeAsync()");
+//				}
+//			});
+//		}
 		
-		Bitmap bitmap = UrlImageViewHelper.getCachedBitmap(imgURL);
-		if (bitmap != null) {
-			Request request = Request.newUploadPhotoRequest(session, bitmap, new Callback() {
-				
-				@Override
-				public void onCompleted(Response response) {
-					// TODO Auto-generated method stub
-					if (response.getError() == null) {
-			        	Log.i("CommonUti", "doPostToWall done");
-			        	Toast.makeText(context, "Post success", Toast.LENGTH_LONG).show();
-			        } else {
-			        	Log.i("CommonUti", "doPostToWall Ex" + response.toString());
-					}
-				}
-			});
-			
-			Bundle bundle = request.getParameters();
-			bundle.putString("message", caption + "\n" + link);
-			request.setParameters(bundle);
-			request.executeAsync();
-			Log.i("CommonUti", "request.executeAsync()");
+		//=========================================
+		final Dialog dialog = new Dialog(context);
+		dialog.setContentView(R.layout.dialog_share_facebook);
+		dialog.setTitle(context.getResources().getString(R.string.dialog_share_fb_title));
+		
+		TextView tvCaption = (TextView) dialog.findViewById(R.id.dialog_share_fb_et_caption);
+		ImageView imgProduct = (ImageView) dialog.findViewById(R.id.dialog_share_fb_img_product);
+		Button btnPost = (Button) dialog.findViewById(R.id.dialog_share_fb_btn_post);
+		Button btnCancel = (Button) dialog.findViewById(R.id.dialog_share_fb_btn_cancel);
+		
+		List<ImageModel> listImgs = product.getImages();
+		if (listImgs.size() > 0) {
+			UrlImageViewHelper.setUrlDrawable(imgProduct, listImgs.get(0).getOrigin(), R.drawable.stuff_img);
 		} else {
-			Log.i("CommonUti", "bitmap null");
-			UrlImageViewHelper.setUrlDrawable(new ImageView(context), imgURL, new UrlImageViewCallback() {
-				
-				@Override
-				public void onLoaded(ImageView imageView, Bitmap loadedBitmap, String url,
-						boolean loadedFromCache) {
-					Request request = Request.newUploadPhotoRequest(session, loadedBitmap, new Callback() {
-						
-						@Override
-						public void onCompleted(Response response) {
-							// TODO Auto-generated method stub
-							if (response.getError() == null) {
-					        	Log.i("CommonUti", "Loaded, doPostToWall done");
-					        	Toast.makeText(context, "Post success", Toast.LENGTH_LONG).show();
-					        }
-						}
-					});
-					
-					Bundle bundle = request.getParameters();
-					bundle.putString("message", caption + "\n" + link);
-					request.setParameters(bundle);
-					request.executeAsync();
-					Log.i("CommonUti", "Loaded, request.executeAsync()");
-				}
-			});
+			imgProduct.setImageResource(R.drawable.stuff_img);
 		}
 		
+		btnPost.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Toast.makeText(context, "Post", Toast.LENGTH_LONG).show();
+				dialog.dismiss();
+			}
+		});
+		
+		btnCancel.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Toast.makeText(context, "Cancel", Toast.LENGTH_LONG).show();
+				dialog.dismiss();
+			}
+		});
+		
+		//=========================================
+		
+		dialog.show();
 		
 		Log.i("CommonUti", "end doPostToWall");
 	}

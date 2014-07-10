@@ -115,5 +115,11 @@
     <!-- activity about -->
     <string name="activity_about_title">About</string>
     
+    <!-- dialog share on facebook -->
+    <string name="dialog_share_fb_question">What is on your mind?</string>
+    <string name="dialog_share_fb_hint">I am putting this on my birthday wishlist</string>
+    <string name="dialog_share_fb_title">Share on Facebook</string>
+    <string name="dialog_share_fb_post">Post</string>
+    <string name="dialog_share_fb_cancel">Cancel</string>
 
 </resources>

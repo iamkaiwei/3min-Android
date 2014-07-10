@@ -3,7 +3,6 @@ package com.threemin.app;
 import java.util.List;
 
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
-
 import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
@@ -129,6 +128,17 @@ public class HomeActivity extends SwipeBackActivity {
 			}
 		});
 		
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		Session session = Session.getActiveSession();
+        if (session != null) {
+            session.onActivityResult(HomeActivity.this, requestCode, resultCode, data);
+        } else {
+            Log.i("tructran", "DetailActivity session null");
+        }
 	}
 
 	public void doPageChange(int position) {
