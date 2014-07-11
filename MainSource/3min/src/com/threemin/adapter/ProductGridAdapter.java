@@ -146,7 +146,7 @@ public class ProductGridAdapter extends BaseAdapter {
 					
 					@Override
 					public void onClick(View v) {
-						CommonUti.doShareProductOnFacebook(mContext, mLoginButton, mData.get(finalPosition));
+						new CommonUti().doShareProductOnFacebook(mContext, mLoginButton, mData.get(finalPosition));
 					}
 				});
 			}

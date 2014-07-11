@@ -16,6 +16,8 @@ import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.Settings.Secure;
 import android.util.DisplayMetrics;
 import android.view.Display;
@@ -140,9 +142,56 @@ public class CommonUti {
 		      Context.INPUT_METHOD_SERVICE);
 		imm.hideSoftInputFromWindow(stuff.getWindowToken(), 0);
 	}
-	
+	//TODO
 	//share product on facebook ********************************************************
-	public static void doShareProductOnFacebook(Context context, LoginButton loginButton, ProductModel product) {
+	public static final int SHOW_LOADING_DIALOG = 1;
+	public static final int HIDE_LOADING_DIALOG = 2;
+	public static final int LOAD_IMG = 3;
+	public static final int TIME_OUT = 4;
+	public List<Bitmap> mListBitmap = new ArrayList<Bitmap>();
+	public int mNumBitmap;
+	public Context mShareContext;
+	public boolean isPosted = false;
+	public ProgressDialog mProgressDialog;
+	
+	public Handler mShareHandler = new Handler() {
+		public void handleMessage(android.os.Message msg){
+			switch (msg.what) {
+			case LOAD_IMG:
+				mListBitmap.add((Bitmap)msg.obj);
+				if (mListBitmap.size() == mNumBitmap && isPosted == false) {
+					isPosted = true;
+					doShowShareDialog(mShareContext, mListBitmap);
+				}
+				break;
+			case SHOW_LOADING_DIALOG:
+				mProgressDialog = new ProgressDialog(mShareContext);
+				mProgressDialog.setMessage(mShareContext.getResources().getString(R.string.please_wait));
+				mProgressDialog.show();
+				break;
+				
+			case HIDE_LOADING_DIALOG:
+				if (mProgressDialog != null && mProgressDialog.isShowing()) {
+					mProgressDialog.dismiss();
+				}
+				break;
+				
+			case TIME_OUT:
+				if (!isPosted && mListBitmap.size() > 0) {
+					isPosted = true;
+					doShowShareDialog(mShareContext, mListBitmap);
+				} else if (!isPosted && mListBitmap.size() == 0) {
+					Toast.makeText(mShareContext, "Something 's wrong when loading image", Toast.LENGTH_LONG).show();
+				}
+
+			default:
+				break;
+			}
+		}
+	};
+	
+	
+	public void doShareProductOnFacebook(Context context, LoginButton loginButton, ProductModel product) {
 		// check logged in or not:
 		final LoginButton loginBtn = loginButton;
 		Session session = Session.getActiveSession();
@@ -173,40 +222,58 @@ public class CommonUti {
 		}
 	}
 	
-	public static void showShareDialog(final Context context, final Session session, final ProductModel product) {
-		
-		//check if can use the share dialog or not
+	public void showShareDialog(final Context context, final Session session, final ProductModel product) {
 		if (FacebookDialog.canPresentShareDialog(context,FacebookDialog.ShareDialogFeature.PHOTOS)) {
-			String url = product.getImages().get(0).getOrigin();
-			 Bitmap loadedBmp = UrlImageViewHelper.getCachedBitmap(url);
-			 if (loadedBmp != null) {
-				 doShowShareDialog(context, loadedBmp);
-
-			} else {
-				final ProgressDialog progressDialog = new ProgressDialog(context);
-				progressDialog.setTitle(context.getResources().getString(R.string.loading_image));
-				progressDialog.setMessage(context.getResources().getString(R.string.please_wait));
-				progressDialog.show();
-				UrlImageViewHelper.setUrlDrawable(new ImageView(context), url, new UrlImageViewCallback() {
+			mShareHandler.sendEmptyMessage(SHOW_LOADING_DIALOG);
+			mNumBitmap = product.getImages().size();
+			mShareContext = context;
+			for (int i = 0; i < mNumBitmap; i++) {
+				final String url = product.getImages().get(i).getOrigin();
+				Thread threadLoadImage = new Thread(new Runnable() {
 					
 					@Override
-					public void onLoaded(ImageView imageView, Bitmap loadedBitmap, String url,boolean loadedFromCache) {
-						if (progressDialog != null && progressDialog.isShowing()) {
-							progressDialog.dismiss();
+					public void run() {
+						// TODO Auto-generated method stub
+						Bitmap cachedBitmap = UrlImageViewHelper.getCachedBitmap(url);
+						if (cachedBitmap != null) {
+							mShareHandler.sendEmptyMessage(HIDE_LOADING_DIALOG);
+							Message msg = new Message();
+							msg.what = LOAD_IMG;
+							msg.obj = cachedBitmap;
+							mShareHandler.sendMessage(msg);
+						} else {
+							UrlImageViewHelper.setUrlDrawable(new ImageView(mShareContext), url, new UrlImageViewCallback() {
+								
+								@Override
+								public void onLoaded(ImageView imageView, Bitmap loadedBitmap, String url,
+										boolean loadedFromCache) {
+									mShareHandler.sendEmptyMessage(HIDE_LOADING_DIALOG);
+									Message msg = new Message();
+									msg.what = LOAD_IMG;
+									msg.obj = loadedBitmap;
+									mShareHandler.sendMessage(msg);
+								}
+							});
 						}
-						doShowShareDialog(context, loadedBitmap);
-
 					}
 				});
+				threadLoadImage.start();
 			}
+			
+			Thread threadTimeOut = new Thread(new Runnable() {
+				
+				@Override
+				public void run() {
+					mShareHandler.sendEmptyMessageDelayed(TIME_OUT, 10000);
+				}
+			});
+			threadTimeOut.start();
 		} else {
 			Toast.makeText(context, "Please install Facebook for Android to share easier!", Toast.LENGTH_LONG).show();
 		}
 	}
 	
-	public static void doShowShareDialog(Context context, Bitmap bmp) {
-		List<Bitmap> data=new ArrayList<Bitmap>();
-		 data.add(bmp);
+	public static void doShowShareDialog(Context context, List<Bitmap> data) {
 		 FacebookDialog shareDialog = new FacebookDialog.PhotoShareDialogBuilder((Activity)context)
 		 									.addPhotos(data)
 		 									.build();

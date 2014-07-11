@@ -174,7 +174,7 @@ public class DetailFragment extends Fragment {
 			
 			@Override
 			public void onClick(View v) {
-				CommonUti.doShareProductOnFacebook(getActivity(), ( (DetailActivity)getActivity() ).getLoginButton(), productModel);
+				new CommonUti().doShareProductOnFacebook(getActivity(), ( (DetailActivity)getActivity() ).getLoginButton(), productModel);
 			}
 		});
 
