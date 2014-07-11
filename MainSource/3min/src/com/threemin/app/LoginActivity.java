@@ -125,13 +125,6 @@ public class LoginActivity extends FragmentActivity implements ConnectionCallbac
 		actionBar.hide();
 		isRequestPermisson = false;
 		mContext = this;
-		UserModel current = PreferenceHelper.getInstance(mContext).getCurrentUser();
-		
-		if (current == null) {
-			Log.i("LoginActivity", "User null");
-		} else {
-			Log.i("LoginActivity", current.getFullName());
-		}
 
 		mImgLoading1 = (ImageView) findViewById(R.id.img_login_loading_1);
 		mImgLoading2 = (ImageView) findViewById(R.id.img_login_loading_2);
@@ -323,7 +316,7 @@ public class LoginActivity extends FragmentActivity implements ConnectionCallbac
 				Log.i("tructran", "Can not authorize webservice: user returned is null");
 				new AlertDialog.Builder(mContext)
 					.setTitle("Authorization failed!")
-					.setMessage("User is not authorized")
+					.setMessage("User is not authorized. Please try again!")
 					.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 						
 						@Override
@@ -333,7 +326,6 @@ public class LoginActivity extends FragmentActivity implements ConnectionCallbac
 						}
 					})
 					.show();
-				
 			}
 		}
 
@@ -480,11 +472,33 @@ public class LoginActivity extends FragmentActivity implements ConnectionCallbac
 					Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
 					startActivity(intent);
 					finish();
+				} else {
+					Log.i("tructran", "Can not authorize webservice: user returned is null");
+					new AlertDialog.Builder(mContext)
+						.setTitle("Authorization failed!")
+						.setMessage("User is not authorized. Please try again!")
+						.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+							
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								logoutGoogle();
+								dialog.dismiss();
+							}
+						})
+						.show();
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 				Log.i("tructran", "Login GG exception" + e.toString());
 			}
+		}
+	}
+	
+	public void logoutGoogle() {
+		if (mGoogleApiClient.isConnected()) {
+			Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
+			mGoogleApiClient.disconnect();
+			mGoogleApiClient.connect();
 		}
 	}
 

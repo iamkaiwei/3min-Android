@@ -36,6 +36,7 @@
     <string name="app_id">580806171975545</string>
     <string name="activity_login_btn_login_gg"></string>
     <string name="please_wait">Please wait</string>
+    <string name="loading_image">Loading image...</string>
     <string name="location">Location</string>
     <string name="currency">kVND</string>
 
