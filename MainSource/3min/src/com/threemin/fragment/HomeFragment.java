@@ -22,6 +22,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.facebook.Session;
 import com.google.gson.Gson;
 import com.threemin.app.HomeActivity;
 import com.threemin.app.ImageViewActivity;
@@ -164,6 +165,7 @@ public class HomeFragment extends Fragment {
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		
 		if (requestCode == REQUEST_UPLOAD) {
 			if (resultCode == Activity.RESULT_OK) {
 				Log.i("HomeFragment", data.getStringExtra(CommonConstant.INTENT_PRODUCT_DATA));

@@ -17,6 +17,7 @@ import com.facebook.Session;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
 import com.threemin.uti.CommonUti;
+import com.threemin.uti.PreferenceHelper;
 import com.threemins.R;
 
 public class SettingActivity extends Activity implements OnClickListener {
@@ -121,6 +122,9 @@ public class SettingActivity extends Activity implements OnClickListener {
 		Editor editor = sharedPreferences.edit();
 		editor.remove(LoginActivity.LOGIN_KEY);
 		editor.commit();
+		
+		PreferenceHelper.getInstance(mContext).setCurrentUser("");
+		PreferenceHelper.getInstance(mContext).setTokken("");
 		
 		finish();
 		Intent intent = new Intent(this, LoginActivity.class);
