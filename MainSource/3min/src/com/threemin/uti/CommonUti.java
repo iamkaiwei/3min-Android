@@ -181,12 +181,7 @@ public class CommonUti {
 			 Bitmap loadedBmp = UrlImageViewHelper.getCachedBitmap(url);
 			 if (loadedBmp != null) {
 				 doShowShareDialog(context, loadedBmp);
-//				 List<Bitmap> data=new ArrayList<Bitmap>();
-//				 data.add(loadedBmp);
-//				 FacebookDialog shareDialog = new FacebookDialog.PhotoShareDialogBuilder((Activity)context)
-//				 									.addPhotos(data)
-//				 									.build();
-//				 shareDialog.present();
+
 			} else {
 				final ProgressDialog progressDialog = new ProgressDialog(context);
 				progressDialog.setTitle(context.getResources().getString(R.string.loading_image));
@@ -200,10 +195,7 @@ public class CommonUti {
 							progressDialog.dismiss();
 						}
 						doShowShareDialog(context, loadedBitmap);
-//						List<Bitmap> data=new ArrayList<Bitmap>();
-//						 data.add(loadedBitmap);
-//						 FacebookDialog shareDialog = new FacebookDialog.PhotoShareDialogBuilder((Activity)context).addPhotos(data).build();
-//						 shareDialog.present();
+
 					}
 				});
 			}
