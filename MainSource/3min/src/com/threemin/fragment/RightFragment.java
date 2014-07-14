@@ -129,19 +129,31 @@ public class RightFragment extends Fragment {
     }
     
     public void doFollow() {
-    	new FollowUserTask().execute(userModel.getId());
+    	new FollowUserTask(FOLLOW).execute(userModel.getId());
     }
     
     public void doUnfollow() {
-    	
+    	new FollowUserTask(UNFOLLOW).execute(userModel.getId());
     }
     
     private class FollowUserTask extends AsyncTask<Integer, Void, String> {
 
+    	boolean followMode;
+    	
+    	public FollowUserTask(boolean followMode) {
+    		this.followMode = followMode;
+		}
+    	
 		@Override
 		protected String doInBackground(Integer... params) {
 			String tokken = PreferenceHelper.getInstance(getActivity()).getTokken();
-			String result = new RelationshipWebService().followUser(tokken, params[0]);
+			String result;
+			if (followMode == FOLLOW) {
+				result = new RelationshipWebService().followUser(tokken, params[0]);
+			} else {
+				result = new RelationshipWebService().unfollowUser(tokken, params[0]);
+			}
+				 
 			return result;
 		}
 		

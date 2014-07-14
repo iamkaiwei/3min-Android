@@ -11,9 +11,12 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.threemin.model.ProductModel;
+import com.threemin.model.UserModel;
 import com.threemin.uti.WebserviceConstant;
 
 public class UserWebService {
+	
+	public final String tag = "UserWebService";
 
     public boolean productLike(int productid, String tokken, boolean isLike) {
         try {
@@ -78,5 +81,25 @@ public class UserWebService {
         }.getType();
         List<ProductModel> list = new Gson().fromJson(result, listType);
         return list;
+    }
+    
+    
+    //http://threemins-server-staging.herokuapp.com/api/v1/users/6.json/?access_token=9932cdeb3494585d093e847ae2f1fed1f0f57bf0e638d1d1d18f84a8adb962df
+    public UserModel getUserViaId(String accessToken, String userId) {
+    	try {
+    		String requestLink = WebserviceConstant.GET_USER_VIA_ID + "/" + userId + ".json/?access_token=" + accessToken;
+    		Log.i(tag, "getUserViaId url: " + requestLink);
+    		String result;
+			result = WebServiceUtil.getData(requestLink);
+			Log.i(tag, "getUserViaId result: " + result);
+			Gson gson = new Gson();
+			UserModel model = gson.fromJson(result, UserModel.class);
+			return model;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			Log.i(tag, "getUserViaId ex: " + e.toString());
+		}
+    	return null;
     }
 }

@@ -3,7 +3,6 @@ package com.threemin.webservice;
 import java.lang.reflect.Type;
 import java.util.List;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.util.Log;
@@ -38,12 +37,9 @@ public class RelationshipWebService {
 	
 	public String unfollowUser(String token, int userID) {
 		try {
-			String url = WebserviceConstant.UNFOLLOW_USER;
+			String url = WebserviceConstant.UNFOLLOW_USER + "/?access_token=" + token + "&user_id=" + userID;
 			Log.i(tag, "unfollowUser url: " + url);
-			JSONObject data = new JSONObject();
-			data.put(CommonConstant.KEY_ACCESS_TOKEN, token);
-			data.put(CommonConstant.KEY_USER_ID, userID);
-			String result = WebServiceUtil.deleteJson(url, data);
+			String result = WebServiceUtil.deleteJson(url);
 			Log.i(tag, "unfollowUser result: " + result);
 			return result;
 		} catch (Exception e) {
@@ -64,7 +60,6 @@ public class RelationshipWebService {
 	        List<ProductModel> list = new Gson().fromJson(result, listType);
 			return list;
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			Log.i(tag, "getProductsFollowed ex" + e.toString());
 		}

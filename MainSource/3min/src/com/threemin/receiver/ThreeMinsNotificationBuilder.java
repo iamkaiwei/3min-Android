@@ -15,6 +15,7 @@ import android.util.Log;
 import com.threemin.app.ChatToBuyActivity;
 import com.threemin.app.DetailActivity;
 import com.threemin.app.HomeActivity;
+import com.threemin.app.ProfileActivity;
 import com.threemin.uti.CommonConstant;
 import com.threemins.R;
 import com.urbanairship.UAirship;
@@ -54,21 +55,27 @@ public class ThreeMinsNotificationBuilder extends BasicPushNotificationBuilder {
 			
 			String productID = extras.get("product_id");
 			String conversationID = extras.get("conversation_id");
+			String userID = extras.get("user_id");
 			
-			Log.i("ThreeMinsNotificationBuilder", "Key: " + "product_id: " + productID + "conversation_id: " + conversationID);
+			Log.i("ThreeMinsNotificationBuilder", "Key: " + "product_id: " + productID + " conversation_id: " + conversationID + " user_id: " + userID);
 			
 			if (productID != null && productID.length() > 0) {
 				if (conversationID != null && conversationID.length() > 0) {
+					//push notification of chat
 					showAppIntent.putExtra(CommonConstant.INTENT_PRODUCT_DATA_VIA_ID, productID);
 					showAppIntent.putExtra(CommonConstant.INTENT_CONVERSATION_DATA_VIA_ID, conversationID);
 					showAppIntent.setClass(context, ChatToBuyActivity.class);
 				} else {
+					//push notification of like
 					showAppIntent.putExtra(CommonConstant.INTENT_PRODUCT_DATA_VIA_ID, productID);
 					showAppIntent.setClass(context, DetailActivity.class);
 				}
-			} else {
-				showAppIntent.setClass(context, HomeActivity.class);
-			}
+			} 
+			else if(userID != null && userID.length() > 0) {
+				//push notification of follow
+				showAppIntent.putExtra(CommonConstant.INTENT_USER_DATA_VIA_ID, userID);
+				showAppIntent.setClass(context, ProfileActivity.class);
+			} 
 //			showAppIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
 			builder.setContentTitle(context.getString(R.string.app_name))

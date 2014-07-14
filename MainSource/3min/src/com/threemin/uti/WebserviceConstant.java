@@ -25,6 +25,7 @@ public class WebserviceConstant {
 	public static final String POST_BUNDLE_MESSAGE=URL_HOST + API + "/conversations/%s/conversation_replies/bulk_create.json";
 	public static final String GET_ACTIVITIES = URL_HOST + API + "/activities.json/";
 	public static final String GET_USER_PRODUCT=URL_HOST + API +"/users/%s/products.json";
+	public static final String GET_USER_VIA_ID=URL_HOST + API + "/users";
 	public static final String FOLLOW_USER = URL_HOST + API + "/relationships.json";
 	public static final String UNFOLLOW_USER = URL_HOST + API + "/relationships/unfollow";
 }

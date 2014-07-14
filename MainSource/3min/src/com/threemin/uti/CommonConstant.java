@@ -39,6 +39,7 @@ public class CommonConstant {
     public static final String INTENT_PRODUCT_DESCRIPTION = "productDescription";
     public static final String INTENT_PRODUCT_MODE = "productMode";
     public static final String INTENT_USER_DATA="userData";
+    public static final String INTENT_USER_DATA_VIA_ID="userDataViaID";
 
     public static final String PUSHER_CHAT_EVENT_NAME = "client-chat";
     public static final String PUSHER_CHAT_EVENT_TYPING = "client-typing";
