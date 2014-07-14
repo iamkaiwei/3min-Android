@@ -30,6 +30,8 @@ import com.threemins.R;
 public class RightFragment extends Fragment {
     int mode;
     UserModel userModel;
+    public static boolean FOLLOW = true;
+    public static boolean UNFOLLOW = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -93,13 +95,20 @@ public class RightFragment extends Fragment {
 				doFollow();
 			}
 		});
+        rootView.findViewById(R.id.inf_avt_btn_unfollow).setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				doUnfollow();
+			}
+		});
 
         if (mode == ListProductFragment.MODE_USER_PRODUCT) {
             rootView.findViewById(R.id.inf_avt_setting).setVisibility(View.INVISIBLE);
             rootView.findViewById(R.id.ln_group_control).setVisibility(View.GONE);
             UserModel currentUser = PreferenceHelper.getInstance(getActivity()).getCurrentUser();
             if (currentUser != null && userModel != null && currentUser.getId() != userModel.getId()) {
-            	rootView.findViewById(R.id.inf_avt_btn_follow).setVisibility(View.VISIBLE);
+            	rootView.findViewById(R.id.inf_avt_ln_follow).setVisibility(View.VISIBLE);
 			}
         }
     }
@@ -121,6 +130,10 @@ public class RightFragment extends Fragment {
     
     public void doFollow() {
     	new FollowUserTask().execute(userModel.getId());
+    }
+    
+    public void doUnfollow() {
+    	
     }
     
     private class FollowUserTask extends AsyncTask<Integer, Void, String> {

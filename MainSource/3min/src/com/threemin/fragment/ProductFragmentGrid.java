@@ -311,6 +311,7 @@ public class ProductFragmentGrid extends BaseProductFragment {
                     Intent intent = new Intent(getActivity(), DetailActivity.class);
                     intent.putExtra(CommonConstant.INTENT_PRODUCT_DATA, data);
                     getActivity().startActivity(intent);
+                    getActivity().overridePendingTransition(R.anim.anim_right_in,R.anim.anim_no_animation);
                 }
             }
 

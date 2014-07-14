@@ -18,22 +18,38 @@ public class RelationshipWebService {
 	
 	public final String tag = "RelationshipWebService";
 
-	public String followUser(String tokken, int userID) {
+	public String followUser(String token, int userID) {
 		try {
 			String url = WebserviceConstant.FOLLOW_USER;
 			Log.i(tag, "followUser url: " + url);
 			JSONObject data = new JSONObject();
-			data.put(CommonConstant.KEY_ACCESS_TOKEN, tokken);
+			data.put(CommonConstant.KEY_ACCESS_TOKEN, token);
 			data.put(CommonConstant.KEY_USER_ID, userID);
 			String result = WebServiceUtil.postJson(url, data);
 			Log.i(tag, "followUser result: " + result);
 			return result;
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			Log.i(tag, "followUser ex: " + e.toString());
 		}
 		
+		return null;
+	}
+	
+	public String unfollowUser(String token, int userID) {
+		try {
+			String url = WebserviceConstant.UNFOLLOW_USER;
+			Log.i(tag, "unfollowUser url: " + url);
+			JSONObject data = new JSONObject();
+			data.put(CommonConstant.KEY_ACCESS_TOKEN, token);
+			data.put(CommonConstant.KEY_USER_ID, userID);
+			String result = WebServiceUtil.deleteJson(url, data);
+			Log.i(tag, "unfollowUser result: " + result);
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			Log.i(tag, "unfollowUser ex: " + e.toString());
+		}
 		return null;
 	}
 	
