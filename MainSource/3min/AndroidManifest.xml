@@ -188,6 +188,13 @@
             android:theme="@style/CustomActionBarTheme" >
         </activity>
         
+        <activity
+            android:name="com.threemin.app.FollowActivity"
+            android:label="@string/activity_follow_title"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomActionBarTheme" >
+        </activity>
+        
         <!-- **********************************Urban Airship*********************************************** -->
         <!-- Required for the library -->
         <provider

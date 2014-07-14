@@ -38,7 +38,7 @@ public class ThreeMinsNotificationBuilder extends BasicPushNotificationBuilder {
 			
 			String data = "Extras content:\n";
 			for (String key : extras.keySet()) {
-				data += key + " : " + extras.get(key);
+				data += " *** " + key + " : " + extras.get(key);
 			}
 			
 			Log.i("ThreeMinsNotificationBuilder", data);

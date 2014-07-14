@@ -1,6 +1,7 @@
 package com.threemin.fragment;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
+import com.threemin.app.FollowActivity;
 import com.threemin.app.HomeActivity;
 import com.threemin.app.ListMessageActivity;
 import com.threemin.app.ProfileActivity;
@@ -22,10 +24,12 @@ import com.threemin.app.UserLikeProductActivity;
 import com.threemin.model.UserModel;
 import com.threemin.uti.CommonConstant;
 import com.threemin.uti.PreferenceHelper;
+import com.threemin.webservice.RelationshipWebService;
 import com.threemins.R;
 
 public class RightFragment extends Fragment {
     int mode;
+    UserModel userModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -33,7 +37,7 @@ public class RightFragment extends Fragment {
         if (this.getArguments() != null) {
             mode = this.getArguments().getInt(CommonConstant.INTENT_PRODUCT_MODE);
         }
-        UserModel userModel;
+        
         if (mode == ListProductFragment.MODE_USER_PRODUCT) {
             userModel = new Gson().fromJson(this.getArguments().getString(CommonConstant.INTENT_USER_DATA),
                     UserModel.class);
@@ -82,10 +86,21 @@ public class RightFragment extends Fragment {
                 startActivity(new Intent(getActivity(), SettingActivity.class));
             }
         });
+        rootView.findViewById(R.id.inf_avt_btn_follow).setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				doFollow();
+			}
+		});
 
         if (mode == ListProductFragment.MODE_USER_PRODUCT) {
             rootView.findViewById(R.id.inf_avt_setting).setVisibility(View.INVISIBLE);
             rootView.findViewById(R.id.ln_group_control).setVisibility(View.GONE);
+            UserModel currentUser = PreferenceHelper.getInstance(getActivity()).getCurrentUser();
+            if (currentUser != null && userModel != null && currentUser.getId() != userModel.getId()) {
+            	rootView.findViewById(R.id.inf_avt_btn_follow).setVisibility(View.VISIBLE);
+			}
         }
     }
 
@@ -102,6 +117,27 @@ public class RightFragment extends Fragment {
             productFragmentGrid.setMode(ListProductFragment.MODE_MY_PRODUCT);
         }
         getFragmentManager().beginTransaction().replace(R.id.content_list, productFragmentGrid).commit();
+    }
+    
+    public void doFollow() {
+    	new FollowUserTask().execute(userModel.getId());
+    }
+    
+    private class FollowUserTask extends AsyncTask<Integer, Void, String> {
+
+		@Override
+		protected String doInBackground(Integer... params) {
+			String tokken = PreferenceHelper.getInstance(getActivity()).getTokken();
+			String result = new RelationshipWebService().followUser(tokken, params[0]);
+			return result;
+		}
+		
+		@Override
+		protected void onPostExecute(String result) {
+				Intent intent = new Intent(getActivity(), FollowActivity.class);
+				intent.putExtra("intent_data", result);
+		    	startActivity(intent);
+		}
     }
 
 }

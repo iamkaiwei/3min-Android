@@ -11,6 +11,7 @@ public class CommonConstant {
     public static final String KEY_ACCESS_TOKEN = "access_token";
     public static final String KEY_USER = "user";
     public static final String KEY_PRODUCT_ID = "product_id";
+    public static final String KEY_USER_ID = "user_id";
     public static final String KEY_TO = "to";
     public static final String KEY_OFFER = "offer";
 

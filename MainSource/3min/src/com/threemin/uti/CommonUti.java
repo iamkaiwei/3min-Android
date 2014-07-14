@@ -147,11 +147,9 @@ public class CommonUti {
 	public static final int SHOW_LOADING_DIALOG = 1;
 	public static final int HIDE_LOADING_DIALOG = 2;
 	public static final int LOAD_IMG = 3;
-	public static final int TIME_OUT = 4;
 	public List<Bitmap> mListBitmap = new ArrayList<Bitmap>();
 	public int mNumBitmap;
 	public Context mShareContext;
-	public boolean isPosted = false;
 	public ProgressDialog mProgressDialog;
 	
 	public Handler mShareHandler = new Handler() {
@@ -159,8 +157,7 @@ public class CommonUti {
 			switch (msg.what) {
 			case LOAD_IMG:
 				mListBitmap.add((Bitmap)msg.obj);
-				if (mListBitmap.size() == mNumBitmap && isPosted == false) {
-					isPosted = true;
+				if (mListBitmap.size() == mNumBitmap) {
 					doShowShareDialog(mShareContext, mListBitmap);
 				}
 				break;
@@ -175,14 +172,6 @@ public class CommonUti {
 					mProgressDialog.dismiss();
 				}
 				break;
-				
-			case TIME_OUT:
-				if (!isPosted && mListBitmap.size() > 0) {
-					isPosted = true;
-					doShowShareDialog(mShareContext, mListBitmap);
-				} else if (!isPosted && mListBitmap.size() == 0) {
-					Toast.makeText(mShareContext, "Something 's wrong when loading image", Toast.LENGTH_LONG).show();
-				}
 
 			default:
 				break;
@@ -260,14 +249,14 @@ public class CommonUti {
 				threadLoadImage.start();
 			}
 			
-			Thread threadTimeOut = new Thread(new Runnable() {
-				
-				@Override
-				public void run() {
-					mShareHandler.sendEmptyMessageDelayed(TIME_OUT, 10000);
-				}
-			});
-			threadTimeOut.start();
+//			Thread threadTimeOut = new Thread(new Runnable() {
+//				
+//				@Override
+//				public void run() {
+//					mShareHandler.sendEmptyMessageDelayed(TIME_OUT, 10000);
+//				}
+//			});
+//			threadTimeOut.start();
 		} else {
 			Toast.makeText(context, "Please install Facebook for Android to share easier!", Toast.LENGTH_LONG).show();
 		}
