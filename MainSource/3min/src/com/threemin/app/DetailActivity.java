@@ -16,8 +16,6 @@ import android.widget.TextView;
 
 import com.facebook.Session;
 import com.facebook.widget.LoginButton;
-import com.hannesdorfmann.swipeback.Position;
-import com.hannesdorfmann.swipeback.SwipeBack;
 import com.threemin.fragment.DetailFragment;
 import com.threemin.uti.CommonConstant;
 import com.threemin.uti.CommonUti;
