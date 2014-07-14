@@ -3,6 +3,7 @@ package com.threemin.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -40,6 +41,7 @@ public class RightFragment extends Fragment {
             listing.setText(R.string.profile_list);
         } else {
             userModel = PreferenceHelper.getInstance(getActivity()).getCurrentUser();
+            Log.i("RightFragment", userModel.getFirstName());
         }
         ImageView img = (ImageView) rootView.findViewById(R.id.nav_avatar);
         UrlImageViewHelper.setUrlDrawable(img, userModel.getFacebook_avatar());

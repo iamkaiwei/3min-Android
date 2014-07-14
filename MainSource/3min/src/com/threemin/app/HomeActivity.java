@@ -3,7 +3,6 @@ package com.threemin.app;
 import java.util.List;
 
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
-
 import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
@@ -26,9 +25,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.Session;
+import com.facebook.UiLifecycleHelper;
+import com.facebook.widget.FacebookDialog;
 import com.facebook.widget.LoginButton;
+import com.facebook.widget.FacebookDialog.PendingCall;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
 import com.threemin.adapter.CategoryAdapter;
@@ -50,6 +53,7 @@ public class HomeActivity extends SwipeBackActivity {
 
 	// button to login facebook
 	LoginButton mBtnLoginFacebook;
+	UiLifecycleHelper uiHelper;
 
 	// view pager
 	public static final int NUM_PAGES = 3;
@@ -80,12 +84,13 @@ public class HomeActivity extends SwipeBackActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		mContext = this;
+		uiHelper = new UiLifecycleHelper(this, null);
+		uiHelper.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
 		
 		//disable swipe back
 		getSwipeBackLayout().setEnableGesture(false);
-		
-		mContext = this;
 
 		mGoogleApiClient = new GoogleApiClient.Builder(this)
 				.addApi(Plus.API, null).addScope(Plus.SCOPE_PLUS_PROFILE)
@@ -130,6 +135,66 @@ public class HomeActivity extends SwipeBackActivity {
 		});
 		
 	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		Session session = Session.getActiveSession();
+        if (session != null) {
+            session.onActivityResult(HomeActivity.this, requestCode, resultCode, data);
+        } else {
+            Log.i("HomeActivity", "session null");
+        }
+        
+        /*can use in future=====================================================================
+        uiHelper.onActivityResult(requestCode, resultCode, data, new FacebookDialog.Callback() {
+			
+			@Override
+			public void onError(PendingCall pendingCall, Exception error, Bundle data) {
+				// TODO Auto-generated method stub
+				Toast.makeText(mContext, "Posting Failed", Toast.LENGTH_LONG).show();
+				Log.i("HomeActivity", "post error" + error.toString());
+			}
+			
+			@Override
+			public void onComplete(PendingCall pendingCall, Bundle data) {
+				// TODO Auto-generated method stub
+				Toast.makeText(mContext, "Shared on Facebook", Toast.LENGTH_LONG).show();
+				Log.i("HomeActivity", "post success");
+			}
+		});
+		can use in future=====================================================================*/
+	}
+	
+	/*can use in future=====================================================================
+	@Override
+	protected void onResume() {
+	    super.onResume();
+	    uiHelper.onResume();
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+	    super.onSaveInstanceState(outState);
+	    uiHelper.onSaveInstanceState(outState);
+	}
+
+	@Override
+	public void onPause() {
+	    super.onPause();
+	    uiHelper.onPause();
+	}
+
+	@Override
+	public void onDestroy() {
+	    super.onDestroy();
+	    uiHelper.onDestroy();
+	}
+	
+	public UiLifecycleHelper getUiHelper() {
+		return uiHelper;
+	}
+	can use in future=====================================================================*/
 
 	public void doPageChange(int position) {
 		prevPage = currentPage;

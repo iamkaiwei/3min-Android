@@ -117,6 +117,7 @@ public class LoginActivity extends FragmentActivity implements ConnectionCallbac
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
+		
 		mSharedPreferences = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
 
 		// Hide the action bar
@@ -315,7 +316,7 @@ public class LoginActivity extends FragmentActivity implements ConnectionCallbac
 				Log.i("tructran", "Can not authorize webservice: user returned is null");
 				new AlertDialog.Builder(mContext)
 					.setTitle("Authorization failed!")
-					.setMessage("User is not authorized")
+					.setMessage("User is not authorized. Please try again!")
 					.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 						
 						@Override
@@ -325,7 +326,6 @@ public class LoginActivity extends FragmentActivity implements ConnectionCallbac
 						}
 					})
 					.show();
-				
 			}
 		}
 
@@ -472,11 +472,33 @@ public class LoginActivity extends FragmentActivity implements ConnectionCallbac
 					Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
 					startActivity(intent);
 					finish();
+				} else {
+					Log.i("tructran", "Can not authorize webservice: user returned is null");
+					new AlertDialog.Builder(mContext)
+						.setTitle("Authorization failed!")
+						.setMessage("User is not authorized. Please try again!")
+						.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+							
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								logoutGoogle();
+								dialog.dismiss();
+							}
+						})
+						.show();
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 				Log.i("tructran", "Login GG exception" + e.toString());
 			}
+		}
+	}
+	
+	public void logoutGoogle() {
+		if (mGoogleApiClient.isConnected()) {
+			Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
+			mGoogleApiClient.disconnect();
+			mGoogleApiClient.connect();
 		}
 	}
 

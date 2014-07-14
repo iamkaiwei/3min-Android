@@ -26,7 +26,7 @@ public class CommonConstant {
     public static final String PREF_USER = "PREF_USER";
     public static final String PREF_APID = "PREF_APID";
 
-    public static final String CURRENCY = " VND";
+    public static final String CURRENCY = " kVND";
 
     public static final String INTENT_PRODUCT_DATA = "productData";
     public static final String INTENT_PRODUCT_DATA_VIA_ID = "productDataViaID";

@@ -144,7 +144,12 @@ public class ChatToBuyActivity extends Activity {
 	
 	private void setData() {
 		mOfferedPrice = conversation.getOffer() + "";
-		UrlImageViewHelper.setUrlDrawable(mImgProduct, mProductModel.getImages().get(0).getOrigin());
+		int size = mProductModel.getImages().size();
+		if (size > 0) {
+			UrlImageViewHelper.setUrlDrawable(mImgProduct, mProductModel.getImages().get(0).getOrigin());
+		} else {
+			mImgProduct.setImageResource(R.drawable.stuff_img);
+		}
 		mTvProductName.setText(mProductModel.getName());
 		mTvProductPrice.setText(mProductModel.getPrice() + CommonConstant.CURRENCY);
 		mTvOfferedPrice.setText(mOfferedPrice + CommonConstant.CURRENCY);

@@ -114,5 +114,8 @@
     <dimen name="act_setting_row_height">50dp</dimen>
     <dimen name="act_setting_share_height">135dp</dimen>
     <dimen name="act_setting_share_margin">20dp</dimen>
+    
+    <!-- dialog share on facebook -->
+    <dimen name="dialog_share_fb_img_width">100dp</dimen>
 
 </resources>

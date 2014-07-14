@@ -190,9 +190,17 @@
                         android:id="@+id/activity_imageview_et_price"
                         style="@style/activity_imageview_edittext_style"
                         android:layout_marginRight="@dimen/common_spacing"
-                        android:layout_toLeftOf="@+id/imageView3"
+                        android:layout_toLeftOf="@+id/activity_imageview_tv_currency"
                         android:hint="@string/activity_imageview_price_hint"
                         android:inputType="number"
+                        threemins:customTypeface="@string/font_regular" />
+                    
+                    <com.lanna.droidlib.view.CustomTextView
+                        android:id="@+id/activity_imageview_tv_currency"
+                        style="@style/activity_imageview_edittext_style"
+                        android:layout_marginRight="@dimen/common_spacing"
+                        android:layout_toLeftOf="@+id/imageView3"
+                        android:text="@string/currency"
                         threemins:customTypeface="@string/font_regular" />
 
                     <ImageView
