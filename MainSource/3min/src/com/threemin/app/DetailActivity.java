@@ -38,9 +38,6 @@ public class DetailActivity extends SwipeBackActivity {
 		Log.i("DetailActivity", "Product ID: " + productID);
 		
 		// Init the swipe back mechanism
-//				SwipeBack.attach(this, Position.LEFT)
-//				.setContentView(R.layout.activity_detail)
-//				.setSwipeBackView(R.layout.swipeback_default);
 		mSwipeBack = getSwipeBackLayout();
 		mSwipeBack.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
 		

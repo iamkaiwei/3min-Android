@@ -1,5 +1,13 @@
 package com.threemin.app;
 
+import me.imid.swipebacklayout.lib.SwipeBackLayout;
+import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
+import android.content.res.Resources;
+import android.os.Bundle;
+import android.view.Gravity;
+import android.view.MenuItem;
+import android.widget.TextView;
+
 import com.facebook.widget.LoginButton;
 import com.google.gson.Gson;
 import com.threemin.fragment.ListProductFragment;
@@ -9,22 +17,23 @@ import com.threemin.uti.CommonConstant;
 import com.threemin.uti.CommonUti;
 import com.threemins.R;
 
-import android.content.res.Resources;
-import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.view.Gravity;
-import android.view.MenuItem;
-import android.widget.TextView;
-
-public class ProfileActivity extends FragmentActivity {
+public class ProfileActivity extends SwipeBackActivity {
+	
     LoginButton mLoginButton;
     UserModel userModel;
+    SwipeBackLayout mSwipeBack;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         mLoginButton = (LoginButton) findViewById(R.id.activity_detail_btn_login_facebook);
         userModel=new Gson().fromJson(getIntent().getStringExtra(CommonConstant.INTENT_USER_DATA), UserModel.class);
+        
+        // Init the swipe back mechanism
+        mSwipeBack = getSwipeBackLayout();
+		mSwipeBack.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
+        
         initActionBar();
         if (savedInstanceState == null) {
             RightFragment fragment=new RightFragment();
@@ -34,6 +43,11 @@ public class ProfileActivity extends FragmentActivity {
             fragment.setArguments(bundle);
             getSupportFragmentManager().beginTransaction().add(R.id.container, fragment).commit();
         }
+    }
+    
+    @Override
+    public void onBackPressed() {
+    	scrollToFinishActivity();
     }
     
     public void initActionBar() {

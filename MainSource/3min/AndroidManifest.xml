@@ -253,6 +253,12 @@
 
         <!-- ********************************************************************************* -->
         
+        <!-- facebook -->
+        <provider
+            android:name="com.facebook.NativeAppCallContentProvider"
+            android:authorities="com.facebook.app.NativeAppCallContentProvider580806171975545"
+            android:exported="true" />
+        
     </application>
 
     <uses-feature

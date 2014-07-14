@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.text.TextUtils;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,8 +61,14 @@ public class ListOfferAdapter extends BaseAdapter {
 
 			if (conversation.getProduct() != null) {
 				ImageView imageViewProduct = (ImageView) convertView.findViewById(R.id.imageView1);
-				UrlImageViewHelper.setUrlDrawable(imageViewProduct, conversation.getProduct().getImages().get(0)
-						.getSquare());
+				int size = conversation.getProduct().getImages().size();
+				if (size > 0) {
+					UrlImageViewHelper.setUrlDrawable(imageViewProduct, conversation.getProduct().getImages().get(0)
+							.getSquare());
+				} else {
+					Log.d("ListOfferAdapter", "Size 0: "  + conversation.getProduct().toString());
+					imageViewProduct.setImageResource(R.drawable.stuff_img);
+				}
 			}
 			if(!TextUtils.isEmpty(conversation.getLastest_message())){
 				TextView lastMessage=(TextView) convertView.findViewById(R.id.inflater_heeader_product_tv_last_message);
