@@ -32,7 +32,7 @@ public class FollowActivity extends FragmentActivity {
 		
 		if (savedInstanceState == null) {
 			Log.i(tag, "Create Fragment");
-			getSupportFragmentManager().beginTransaction().add(R.id.container, mFragmentContent).commit();
+			getSupportFragmentManager().beginTransaction().add(R.id.activity_follow_container, mFragmentContent).commit();
 		}
 		
 	}

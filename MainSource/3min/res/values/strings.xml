@@ -39,6 +39,8 @@
     <string name="loading_image">Loading image...</string>
     <string name="location">Location</string>
     <string name="currency">kVND</string>
+    <string name="followers">Followers</string>
+    <string name="following">Following</string>
 
     <!-- action bar -->
     <string name="action_bar_search_title">Search</string>

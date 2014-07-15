@@ -105,10 +105,13 @@ public class RightFragment extends Fragment {
 
         if (mode == ListProductFragment.MODE_USER_PRODUCT) {
             rootView.findViewById(R.id.inf_avt_setting).setVisibility(View.INVISIBLE);
-            rootView.findViewById(R.id.ln_group_control).setVisibility(View.GONE);
+//            rootView.findViewById(R.id.ln_group_control).setVisibility(View.GONE);
             UserModel currentUser = PreferenceHelper.getInstance(getActivity()).getCurrentUser();
             if (currentUser != null && userModel != null && currentUser.getId() != userModel.getId()) {
             	rootView.findViewById(R.id.inf_avt_ln_follow).setVisibility(View.VISIBLE);
+            	rootView.findViewById(R.id.btn_msg).setVisibility(View.GONE);
+            	rootView.findViewById(R.id.btn_liked).setVisibility(View.GONE);
+            	rootView.findViewById(R.id.img_follow).setVisibility(View.VISIBLE);
 			}
         }
     }
