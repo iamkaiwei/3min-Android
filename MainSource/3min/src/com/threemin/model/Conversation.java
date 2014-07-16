@@ -25,6 +25,7 @@ public class Conversation {
 	@SerializedName("channel_name")
 	private String channel_Name;
 	private UserModel user;
+	@SerializedName("latest_update")
 	private long lastest_update;
 	private String latest_message;
 	private ProductModel product;

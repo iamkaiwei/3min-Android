@@ -22,6 +22,7 @@ import com.threemin.app.DetailActivity;
 import com.threemin.model.ProductModel;
 import com.threemin.model.UserModel;
 import com.threemin.uti.CommonConstant;
+import com.threemin.uti.CommonUti;
 import com.threemin.uti.PreferenceHelper;
 import com.threemin.view.QuickReturnGridView;
 import com.threemin.view.QuickReturnGridView.OnItemDoubleTapLister;
@@ -64,7 +65,7 @@ public class ListProductFragment extends BaseProductFragment {
 
         if (mAdapter == null) {
             // TODO
-            mAdapter = new ProductGridAdapter(productModels, mContext, mLoginButton);
+            mAdapter = new ProductGridAdapter(productModels, mContext, mLoginButton,CommonUti.calcWidthItem(mContext));
         }
         mGrid.setAdapter(mAdapter);
 
@@ -125,6 +126,7 @@ public class ListProductFragment extends BaseProductFragment {
                     Intent intent = new Intent(getActivity(), DetailActivity.class);
                     intent.putExtra(CommonConstant.INTENT_PRODUCT_DATA, data);
                     getActivity().startActivity(intent);
+                    getActivity().overridePendingTransition(R.anim.anim_right_in, R.anim.anim_no_animation);
                 }
             }
 
@@ -147,7 +149,7 @@ public class ListProductFragment extends BaseProductFragment {
     public void updateUI() {
         if (mAdapter == null) {
             // TODO
-            mAdapter = new ProductGridAdapter(productModels, mContext, mLoginButton);
+            mAdapter = new ProductGridAdapter(productModels, mContext, mLoginButton,CommonUti.calcWidthItem(mContext));
         }
         mAdapter.updateData(productModels);
     }

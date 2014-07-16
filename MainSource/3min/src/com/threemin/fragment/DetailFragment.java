@@ -28,6 +28,8 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewCallback;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 import com.threemin.app.ChatToBuyActivity;
 import com.threemin.app.DetailActivity;
 import com.threemin.app.ListOfferActivty;
@@ -189,7 +191,8 @@ public class DetailFragment extends Fragment {
 			imageView.setPadding(0, spacing, 0, spacing);
 			imageView.setLayoutParams(params);
 			lnImgs.addView(imageView);
-			UrlImageViewHelper.setUrlDrawable(imageView, imageModel.getOrigin(), R.drawable.stuff_img);
+			UrlImageViewHelper.setUrlDrawable(imageView, imageModel.getMedium(), R.drawable.stuff_img);
+//			UrlImageViewHelper.setUrlDrawable(imageView, imageModel.getOrigin());
 		}
 	}
 

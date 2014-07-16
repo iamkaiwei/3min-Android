@@ -14,12 +14,15 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings.Secure;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -329,5 +332,16 @@ public class CommonUti {
 	    }
 	    string += " }Bundle";
 	    return string;
+	}
+	
+	public static int calcWidthItem(Context context){
+	        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+	        Display display = wm.getDefaultDisplay();
+	        Point point = new Point();
+	        display.getSize(point);
+	        int width = point.x - context.getResources().getDimensionPixelSize(R.dimen.fragment_product_spacing) * 3;
+	        width = width / 2;
+	        Log.d("width", "width=" + width);
+	        return width;
 	}
 }

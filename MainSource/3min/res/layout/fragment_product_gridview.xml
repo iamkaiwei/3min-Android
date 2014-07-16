@@ -16,7 +16,8 @@
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_gridview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:layout_marginTop="1dp" >
 
         <com.threemin.view.QuickReturnGridView
             android:id="@+id/gv_product"
