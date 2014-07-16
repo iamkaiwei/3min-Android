@@ -15,10 +15,23 @@
     </FrameLayout>
 
     <LinearLayout
-         android:id="@+id/ln_group_control"
+        android:id="@+id/ln_group_control"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/common_spacing" >
+        
+        <!-- follow -->
+        <ImageView 
+            android:id="@+id/img_follow"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/selector_follow"
+            android:layout_gravity="center"
+            android:visibility="gone"/>
+
+        <!-- liked -->
 
         <com.lanna.droidlib.view.CustomTextView
             android:id="@+id/btn_liked"
@@ -41,6 +54,8 @@
             android:background="@color/common_grey" >
         </FrameLayout>
 
+        <!-- messages -->
+
         <com.lanna.droidlib.view.CustomTextView
             android:id="@+id/btn_msg"
             android:layout_width="0dp"
@@ -53,6 +68,88 @@
             android:textColor="@color/common_grey"
             android:textSize="@dimen/textsize_medium"
             threemins:customTypeface="@string/font_semibold" />
+
+        <FrameLayout
+            android:id="@+id/btn_msg_divider"
+            android:layout_width="1.5dp"
+            android:layout_height="fill_parent"
+            android:layout_marginBottom="@dimen/common_spacing"
+            android:layout_marginTop="@dimen/common_spacing"
+            android:background="@color/common_grey" >
+        </FrameLayout>
+
+        <!-- follower -->
+
+        <RelativeLayout
+            android:id="@+id/btn_follower"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" >
+            
+            <com.lanna.droidlib.view.CustomTextView
+                android:id="@+id/btn_follower_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:layout_centerHorizontal="true"
+                android:text="..."
+                android:textColor="@color/common_black"
+                android:textSize="@dimen/textsize_large"
+                threemins:customTypeface="@string/font_bold" />
+
+            <com.lanna.droidlib.view.CustomTextView
+                android:id="@+id/btn_follower_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/btn_follower_number"
+                android:text="@string/followers"
+                android:textColor="@color/common_grey"
+                android:textSize="@dimen/textsize_medium"
+                threemins:customTypeface="@string/font_semibold" />
+        </RelativeLayout>
+        
+        <FrameLayout
+            android:layout_width="1.5dp"
+            android:layout_height="fill_parent"
+            android:layout_marginBottom="@dimen/common_spacing"
+            android:layout_marginTop="@dimen/common_spacing"
+            android:background="@color/common_grey" >
+        </FrameLayout>
+        
+        <!-- following -->
+
+        <RelativeLayout
+            android:id="@+id/btn_following"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" >
+            
+            <com.lanna.droidlib.view.CustomTextView
+                android:id="@+id/btn_following_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:layout_centerHorizontal="true"
+                android:text="..."
+                android:textColor="@color/common_black"
+                android:textSize="@dimen/textsize_large"
+                threemins:customTypeface="@string/font_bold" />
+
+            <com.lanna.droidlib.view.CustomTextView
+                android:id="@+id/btn_following_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/btn_following_number"
+                android:text="@string/following"
+                android:textColor="@color/common_grey"
+                android:textSize="@dimen/textsize_medium"
+                threemins:customTypeface="@string/font_semibold" />
+        </RelativeLayout>
+        
     </LinearLayout>
 
     <FrameLayout

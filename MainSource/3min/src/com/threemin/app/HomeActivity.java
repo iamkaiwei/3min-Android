@@ -40,6 +40,7 @@ import com.threemin.fragment.LeftFragment;
 import com.threemin.fragment.RightFragment;
 import com.threemin.model.CategoryModel;
 import com.threemin.model.FilterModel;
+import com.threemin.uti.PreferenceHelper;
 import com.threemin.view.CustomSpinner;
 import com.threemin.webservice.CategoryWebservice;
 import com.threemins.R;
@@ -84,6 +85,7 @@ public class HomeActivity extends SwipeBackActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Log.i("access_token", PreferenceHelper.getInstance(this).getTokken());
 		mContext = this;
 		uiHelper = new UiLifecycleHelper(this, null);
 		uiHelper.onCreate(savedInstanceState);

@@ -4,7 +4,6 @@ import java.util.List;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,12 +20,10 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.koushikdutta.urlimageviewhelper.UrlImageViewCallback;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.threemin.app.ChatToBuyActivity;
 import com.threemin.app.DetailActivity;
@@ -135,7 +132,7 @@ public class DetailFragment extends Fragment {
 
 			// if current user is not the owner of this product
 			if (currentUser.getId() != productModel.getOwner().getId()) {
-				btnChatToBuy.setBackgroundResource(R.drawable.bt_chat_to_buy);
+				btnChatToBuy.setBackgroundResource(R.drawable.selector_btn_chat_to_buy);
 				btnChatToBuy.setOnClickListener(new OnClickListener() {
 					
 					@Override
@@ -174,7 +171,7 @@ public class DetailFragment extends Fragment {
 			
 			@Override
 			public void onClick(View v) {
-				CommonUti.doShareProductOnFacebook(getActivity(), ( (DetailActivity)getActivity() ).getLoginButton(), productModel);
+				new CommonUti().doShareProductOnFacebook(getActivity(), ( (DetailActivity)getActivity() ).getLoginButton(), productModel);
 			}
 		});
 
@@ -251,7 +248,7 @@ public class DetailFragment extends Fragment {
 				break;
 			case REQUEST_GET_LIST_OFFER:
 				if(conversations==null || conversations.isEmpty()){
-					btnChatToBuy.setBackgroundResource(R.drawable.bt_no_offer_yet);
+					btnChatToBuy.setBackgroundResource(R.drawable.selector_btn_no_offer_yet);
 				}
 				break;
 			default:
