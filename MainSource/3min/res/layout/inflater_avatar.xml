@@ -69,8 +69,6 @@
                     android:background="@color/common_grey"/>
             </LinearLayout>
             -->
-
-
             <!-- setting -->
 
             <ImageView
@@ -83,32 +81,6 @@
         </RelativeLayout>
     </LinearLayout>
 
-    <!-- button follow and unfollow -->
-
-    <LinearLayout
-        android:id="@+id/inf_avt_ln_follow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:orientation="horizontal"
-        android:visibility="gone" >
-
-        <Button
-            android:id="@+id/inf_avt_btn_follow"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textSize="@dimen/textsize_very_small"
-            android:text="Follow" />
-        
-        <Button
-            android:id="@+id/inf_avt_btn_unfollow"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textSize="@dimen/textsize_very_small"
-            android:text="Unfollow" />
-    </LinearLayout>
+    
 
 </RelativeLayout>

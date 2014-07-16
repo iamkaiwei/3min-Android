@@ -1,5 +1,6 @@
 package com.threemin.app;
 
+import com.threemin.fragment.FolowersFollowingFragment;
 import com.threemins.R;
 
 import android.os.Bundle;
@@ -18,7 +19,7 @@ public class FollowerFollowingActivity extends FragmentActivity {
 		
 		if (savedInstanceState == null) {
 			Log.i(tag, "Create Fragment");
-//			getSupportFragmentManager().beginTransaction().add(R.id.activity_follow_container, mFragmentContent).commit();
+			getSupportFragmentManager().beginTransaction().add(R.id.activity_follower_following_container, new FolowersFollowingFragment()).commit();
 		}
 	}
 	

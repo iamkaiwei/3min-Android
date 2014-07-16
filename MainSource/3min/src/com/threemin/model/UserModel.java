@@ -27,8 +27,37 @@ public class UserModel {
 	@SerializedName("avatar")
 	private String facebook_avatar;
 	private ImageModel image;
+	@SerializedName("follower_count")
+	private int countFollowers;
+	@SerializedName("following_count")
+	private int countFollowing;
+	@SerializedName("followed")
+	private boolean isFollowed;
 	
-	
+	public int getCountFollowers() {
+		return countFollowers;
+	}
+
+	public void setCountFollowers(int countFollowers) {
+		this.countFollowers = countFollowers;
+	}
+
+	public int getCountFollowing() {
+		return countFollowing;
+	}
+
+	public void setCountFollowing(int countFollowing) {
+		this.countFollowing = countFollowing;
+	}
+
+	public boolean isFollowed() {
+		return isFollowed;
+	}
+
+	public void setFollowed(boolean isFollowed) {
+		this.isFollowed = isFollowed;
+	}
+
 	public ImageModel getImage() {
 		return image;
 	}

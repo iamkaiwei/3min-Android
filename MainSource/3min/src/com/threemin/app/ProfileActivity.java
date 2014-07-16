@@ -5,6 +5,7 @@ import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -21,11 +22,11 @@ import com.threemin.uti.PreferenceHelper;
 import com.threemin.webservice.UserWebService;
 import com.threemins.R;
 
-public class ProfileActivity extends SwipeBackActivity {
+public class ProfileActivity extends FragmentActivity {
 	public final String tag = "ProfileActivity";
     LoginButton mLoginButton;
     UserModel userModel;
-    SwipeBackLayout mSwipeBack;
+//    SwipeBackLayout mSwipeBack;
     Bundle savedInstanceState;
     
     @Override
@@ -35,8 +36,8 @@ public class ProfileActivity extends SwipeBackActivity {
         this.savedInstanceState = savedInstanceState;
         
         // Init the swipe back mechanism
-        mSwipeBack = getSwipeBackLayout();
-        mSwipeBack.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
+//        mSwipeBack = getSwipeBackLayout();
+//        mSwipeBack.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
         
         mLoginButton = (LoginButton) findViewById(R.id.activity_detail_btn_login_facebook);
         
@@ -65,7 +66,8 @@ public class ProfileActivity extends SwipeBackActivity {
     
     @Override
     public void onBackPressed() {
-    	scrollToFinishActivity();
+        super.onBackPressed();
+//    	scrollToFinishActivity();
     }
     
     public void initActionBar() {

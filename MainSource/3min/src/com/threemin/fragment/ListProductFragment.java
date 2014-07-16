@@ -61,7 +61,8 @@ public class ListProductFragment extends BaseProductFragment {
         View v = inflater.inflate(R.layout.fragment_product_gridview, null);
         swipeLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_gridview);
         int color = R.color.red_background;
-        swipeLayout.setColorScheme(color, color, color, color);
+        int color2 = R.color.common_grey;
+        swipeLayout.setColorScheme(color, color2, color, color2);
         mGrid = (QuickReturnGridView) v.findViewById(R.id.gv_product);
 
         if (mAdapter == null) {

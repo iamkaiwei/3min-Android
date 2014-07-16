@@ -102,4 +102,42 @@ public class UserWebService {
 		}
     	return null;
     }
+    
+    //http://threemins-server-staging.herokuapp.com/api/v1/users/125/followers/?access_token=2220b698852d4946140fa7d384cc65e795923b69157dbef35196a78c798eecce&page=1
+    public List<UserModel> getFollowers(String accessToken, int userID, int page) {
+        try {
+            String requestLink = String.format(WebserviceConstant.GET_FOLLOWERS, "" + userID) + "/?access_token=" + accessToken + "&page=" + page;
+            Log.i(tag, "getFollowers url: " + requestLink);
+            String result = WebServiceUtil.getData(requestLink);
+            Log.i(tag, "getFolloers result: " + result);
+            Gson gson = new Gson();
+            Type listType = new TypeToken<List<UserModel>>() {}.getType();
+            List<UserModel> list = gson.fromJson(result, listType);
+            Log.i(tag, "getFollowers list size: " + list.size());
+            return list;
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.i(tag, "getFollowers ex: " + e.toString());
+        }
+        return null;
+    }
+    
+    //http://threemins-server-staging.herokuapp.com/api/v1/users/125/followings/?access_token=2220b698852d4946140fa7d384cc65e795923b69157dbef35196a78c798eecce&page=1
+    public List<UserModel> getFollowings(String accessToken, int userID, int page) {
+        try {
+            String requestLink = String.format(WebserviceConstant.GET_FOLLOWINGS, "" + userID) + "/?access_token=" + accessToken + "&page=" + page;
+            Log.i(tag, "getFollowings url: " + requestLink);
+            String result = WebServiceUtil.getData(requestLink);
+            Log.i(tag, "getFollowings result: " + result);
+            Gson gson = new Gson();
+            Type listType = new TypeToken<List<UserModel>>() {}.getType();
+            List<UserModel> list = gson.fromJson(result, listType);
+            Log.i(tag, "getFollowings list size: " + list.size());
+            return list;
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.i(tag, "getFollowings ex: " + e.toString());
+        }
+        return null;
+    }
 }

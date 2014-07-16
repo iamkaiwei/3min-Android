@@ -24,6 +24,7 @@ public class ProductWebservice {
 			requestLink += "&page=" + page;
 		}
 		String result = WebServiceUtil.getData(requestLink);
+		Log.i("product", result);
 		Type listType = new TypeToken<List<ProductModel>>() {
 		}.getType();
 		List<ProductModel> list = new Gson().fromJson(result, listType);

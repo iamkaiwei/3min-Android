@@ -1,5 +1,6 @@
 package com.threemin.fragment;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -14,7 +15,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
-import com.threemin.app.FollowActivity;
+import com.threemin.app.FollowerFollowingActivity;
 import com.threemin.app.HomeActivity;
 import com.threemin.app.ListMessageActivity;
 import com.threemin.app.ProfileActivity;
@@ -25,6 +26,7 @@ import com.threemin.model.UserModel;
 import com.threemin.uti.CommonConstant;
 import com.threemin.uti.PreferenceHelper;
 import com.threemin.webservice.RelationshipWebService;
+import com.threemin.webservice.UserWebService;
 import com.threemins.R;
 
 public class RightFragment extends Fragment {
@@ -32,10 +34,13 @@ public class RightFragment extends Fragment {
     UserModel userModel;
     public static boolean FOLLOW = true;
     public static boolean UNFOLLOW = false;
+    public static boolean GET_FOLLOWERS = true;
+    public static boolean GET_FOLLOWINGS = false;
+    ViewGroup rootView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_right, container, false);
+        rootView = (ViewGroup) inflater.inflate(R.layout.fragment_right, container, false);
         if (this.getArguments() != null) {
             mode = this.getArguments().getInt(CommonConstant.INTENT_PRODUCT_MODE);
         }
@@ -45,6 +50,15 @@ public class RightFragment extends Fragment {
                     UserModel.class);
             TextView listing = (TextView) rootView.findViewById(R.id.tv_listing);
             listing.setText(R.string.profile_list);
+            
+            rootView.findViewById(R.id.inf_avt_setting).setVisibility(View.INVISIBLE);
+            UserModel currentUser = PreferenceHelper.getInstance(getActivity()).getCurrentUser();
+            if (currentUser != null && userModel != null && currentUser.getId() != userModel.getId()) {
+            	rootView.findViewById(R.id.btn_msg).setVisibility(View.GONE);
+            	rootView.findViewById(R.id.btn_msg_divider).setVisibility(View.GONE);
+            	rootView.findViewById(R.id.btn_liked).setVisibility(View.GONE);
+            	rootView.findViewById(R.id.img_follow).setVisibility(View.VISIBLE);
+			}
         } else {
             userModel = PreferenceHelper.getInstance(getActivity()).getCurrentUser();
             Log.i("RightFragment", userModel.getFirstName());
@@ -54,9 +68,50 @@ public class RightFragment extends Fragment {
 
         TextView tv_name = (TextView) rootView.findViewById(R.id.navigation_name);
         tv_name.setText(userModel.getFullName());
-        userProduct(userModel);
-        initListener(rootView);
+        
+        Log.i("RightFragment: ", userModel.getFirstName() + "isFollowed: " + (userModel.isFollowed()?"true":"false"));
+        
+        new GetFollowInfoTask().execute(userModel.getId());
+//        userProduct(userModel);
+//        initListener(rootView);
         return rootView;
+    }
+    
+  //get the number of followers and followings, and the the state that this user is followed or not
+    private class GetFollowInfoTask extends AsyncTask<Integer, Void, UserModel> {
+        
+        @Override
+        protected void onPreExecute() {
+            // TODO Auto-generated method stub
+            super.onPreExecute();
+        }
+        
+        @Override
+        protected UserModel doInBackground(Integer... params) {
+            String token = PreferenceHelper.getInstance(getActivity()).getTokken();
+            UserModel model = new UserWebService().getUserViaId(token, "" + userModel.getId());
+            Log.i("RightFragment", model.getFullName() + " followers: " + model.getCountFollowers() + " following: " + model.getCountFollowing());
+            return model;
+        }
+        
+        @Override
+        protected void onPostExecute(UserModel result) {
+            if (result != null) {
+                TextView tv_followers_number = (TextView) rootView.findViewById(R.id.btn_follower_number);
+                tv_followers_number.setText("" + result.getCountFollowers());
+                
+                TextView tv_followings_number = (TextView) rootView.findViewById(R.id.btn_following_number);
+                tv_followings_number.setText("" + result.getCountFollowing());
+                
+                ImageView img_follow = (ImageView) rootView.findViewById(R.id.img_follow);
+                img_follow.setSelected(result.isFollowed());
+                
+                Log.i("RightFragment: ", result.getFirstName() + "isFollowed: " + (result.isFollowed()?"true":"false"));
+                
+                userProduct(result);
+                initListener(rootView);
+            }
+        }
     }
 
     private void initListener(View rootView) {
@@ -88,34 +143,39 @@ public class RightFragment extends Fragment {
                 startActivity(new Intent(getActivity(), SettingActivity.class));
             }
         });
-        rootView.findViewById(R.id.inf_avt_btn_follow).setOnClickListener(new OnClickListener() {
+        ImageView img_follow = (ImageView) rootView.findViewById(R.id.img_follow);
+        img_follow.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				doFollow();
+				doFollowFunction(v);
 			}
 		});
-        rootView.findViewById(R.id.inf_avt_btn_unfollow).setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				doUnfollow();
-			}
-		});
-
-        if (mode == ListProductFragment.MODE_USER_PRODUCT) {
-            rootView.findViewById(R.id.inf_avt_setting).setVisibility(View.INVISIBLE);
-//            rootView.findViewById(R.id.ln_group_control).setVisibility(View.GONE);
-            UserModel currentUser = PreferenceHelper.getInstance(getActivity()).getCurrentUser();
-            if (currentUser != null && userModel != null && currentUser.getId() != userModel.getId()) {
-            	rootView.findViewById(R.id.inf_avt_ln_follow).setVisibility(View.VISIBLE);
-            	rootView.findViewById(R.id.btn_msg).setVisibility(View.GONE);
-            	rootView.findViewById(R.id.btn_liked).setVisibility(View.GONE);
-            	rootView.findViewById(R.id.img_follow).setVisibility(View.VISIBLE);
-			}
-        }
+        rootView.findViewById(R.id.btn_follower).setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+//                new GetFollowListTask(GET_FOLLOWERS).execute(1);
+                Intent intent = new Intent(getActivity(), FollowerFollowingActivity.class);
+                intent.putExtra(CommonConstant.INTENT_USER_DATA_VIA_ID, userModel.getId());
+                intent.putExtra(CommonConstant.INTENT_GET_FOLLOW_LIST, GET_FOLLOWERS);
+                startActivity(intent);
+            }
+        });
+        rootView.findViewById(R.id.btn_following).setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+//                new GetFollowListTask(GET_FOLLOWINGS).execute(1);
+                Intent intent = new Intent(getActivity(), FollowerFollowingActivity.class);
+                intent.putExtra(CommonConstant.INTENT_USER_DATA_VIA_ID, userModel.getId());
+                intent.putExtra(CommonConstant.INTENT_GET_FOLLOW_LIST, GET_FOLLOWINGS);
+                startActivity(intent);
+            }
+        });
     }
 
+    //init list product of user
     private void userProduct(UserModel userModel) {
         ListProductFragment productFragmentGrid = null;
         if (mode == ListProductFragment.MODE_USER_PRODUCT) {
@@ -131,21 +191,35 @@ public class RightFragment extends Fragment {
         getFragmentManager().beginTransaction().replace(R.id.content_list, productFragmentGrid).commit();
     }
     
-    public void doFollow() {
-    	new FollowUserTask(FOLLOW).execute(userModel.getId());
+    //follow or unfollow a user
+    public void doFollowFunction(View v) {
+    	if (v.isSelected()) {
+			v.setSelected(false);
+			new FollowUserTask(UNFOLLOW).execute(userModel.getId());
+		} else {
+			v.setSelected(true);
+			new FollowUserTask(FOLLOW).execute(userModel.getId());
+		}
     }
     
-    public void doUnfollow() {
-    	new FollowUserTask(UNFOLLOW).execute(userModel.getId());
-    }
-    
+    //call web service to follow or unfollow a user
     private class FollowUserTask extends AsyncTask<Integer, Void, String> {
 
     	boolean followMode;
+    	ProgressDialog dialog;
     	
     	public FollowUserTask(boolean followMode) {
     		this.followMode = followMode;
 		}
+    	
+    	@Override
+    	protected void onPreExecute() {
+    		// TODO Auto-generated method stub
+    		super.onPreExecute();
+    		dialog = new ProgressDialog(getActivity());
+    		dialog.setMessage(getActivity().getString(R.string.please_wait));
+    		dialog.show();
+    	}
     	
 		@Override
 		protected String doInBackground(Integer... params) {
@@ -162,9 +236,9 @@ public class RightFragment extends Fragment {
 		
 		@Override
 		protected void onPostExecute(String result) {
-				Intent intent = new Intent(getActivity(), FollowActivity.class);
-				intent.putExtra("intent_data", result);
-		    	startActivity(intent);
+			if (dialog != null && dialog.isShowing()) {
+				dialog.dismiss();
+			}
 		}
     }
 

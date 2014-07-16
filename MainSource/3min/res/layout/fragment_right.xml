@@ -70,6 +70,7 @@
             threemins:customTypeface="@string/font_semibold" />
 
         <FrameLayout
+            android:id="@+id/btn_msg_divider"
             android:layout_width="1.5dp"
             android:layout_height="fill_parent"
             android:layout_marginBottom="@dimen/common_spacing"
@@ -91,7 +92,7 @@
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:layout_centerHorizontal="true"
-                android:text="32"
+                android:text="..."
                 android:textColor="@color/common_black"
                 android:textSize="@dimen/textsize_large"
                 threemins:customTypeface="@string/font_bold" />
@@ -131,7 +132,7 @@
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:layout_centerHorizontal="true"
-                android:text="1032"
+                android:text="..."
                 android:textColor="@color/common_black"
                 android:textSize="@dimen/textsize_large"
                 threemins:customTypeface="@string/font_bold" />

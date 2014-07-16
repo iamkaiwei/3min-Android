@@ -28,4 +28,6 @@ public class WebserviceConstant {
 	public static final String GET_USER_VIA_ID=URL_HOST + API + "/users";
 	public static final String FOLLOW_USER = URL_HOST + API + "/relationships.json";
 	public static final String UNFOLLOW_USER = URL_HOST + API + "/relationships/unfollow";
+	public static final String GET_FOLLOWERS = URL_HOST + API + "/users/%s/followers.json";
+	public static final String GET_FOLLOWINGS = URL_HOST + API + "/users/%s/followings.json";
 }
