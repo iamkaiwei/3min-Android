@@ -15,10 +15,10 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_toRightOf="@+id/nav_avatar"
-        android:layout_alignTop="@+id/nav_avatar"
         android:layout_alignBottom="@+id/nav_avatar"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/nav_avatar"
+        android:layout_toRightOf="@+id/nav_avatar"
         android:orientation="vertical" >
 
         <com.lanna.droidlib.view.CustomTextView
@@ -30,17 +30,18 @@
             android:textColor="@color/text_color_grouplayout"
             android:textSize="@dimen/textsize_avatar"
             threemins:customTypeface="@string/font_semibold" />
-        
+
         <!-- group feedback and setting -->
-        
-        <RelativeLayout 
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/common_spacing"
-            android:layout_marginRight="@dimen/common_spacing_triple">
-            
+            android:layout_marginRight="@dimen/common_spacing_triple"
+            android:layout_marginTop="@dimen/common_spacing" >
+
             <!-- feedback -->
-            <!-- <LinearLayout 
+            <!--
+            <LinearLayout 
                 android:orientation="horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -66,19 +67,20 @@
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
                     android:background="@color/common_grey"/>
-            </LinearLayout> -->
-            
+            </LinearLayout>
+            -->
             <!-- setting -->
-            <ImageView 
+
+            <ImageView
                 android:id="@+id/inf_avt_setting"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:src="@drawable/ic_setting"/>
-            
+                android:src="@drawable/ic_setting" />
         </RelativeLayout>
-
     </LinearLayout>
+
+    
 
 </RelativeLayout>

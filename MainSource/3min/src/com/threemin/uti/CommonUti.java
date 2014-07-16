@@ -17,6 +17,8 @@ import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.Settings.Secure;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -143,9 +145,45 @@ public class CommonUti {
 		      Context.INPUT_METHOD_SERVICE);
 		imm.hideSoftInputFromWindow(stuff.getWindowToken(), 0);
 	}
-	
+	//TODO
 	//share product on facebook ********************************************************
-	public static void doShareProductOnFacebook(Context context, LoginButton loginButton, ProductModel product) {
+	public static final int SHOW_LOADING_DIALOG = 1;
+	public static final int HIDE_LOADING_DIALOG = 2;
+	public static final int LOAD_IMG = 3;
+	public List<Bitmap> mListBitmap = new ArrayList<Bitmap>();
+	public int mNumBitmap;
+	public Context mShareContext;
+	public ProgressDialog mProgressDialog;
+	
+	public Handler mShareHandler = new Handler() {
+		public void handleMessage(android.os.Message msg){
+			switch (msg.what) {
+			case LOAD_IMG:
+				mListBitmap.add((Bitmap)msg.obj);
+				if (mListBitmap.size() == mNumBitmap) {
+					doShowShareDialog(mShareContext, mListBitmap);
+				}
+				break;
+			case SHOW_LOADING_DIALOG:
+				mProgressDialog = new ProgressDialog(mShareContext);
+				mProgressDialog.setMessage(mShareContext.getResources().getString(R.string.please_wait));
+				mProgressDialog.show();
+				break;
+				
+			case HIDE_LOADING_DIALOG:
+				if (mProgressDialog != null && mProgressDialog.isShowing()) {
+					mProgressDialog.dismiss();
+				}
+				break;
+
+			default:
+				break;
+			}
+		}
+	};
+	
+	
+	public void doShareProductOnFacebook(Context context, LoginButton loginButton, ProductModel product) {
 		// check logged in or not:
 		final LoginButton loginBtn = loginButton;
 		Session session = Session.getActiveSession();
@@ -176,152 +214,63 @@ public class CommonUti {
 		}
 	}
 	
-	public static void showShareDialog(final Context context, final Session session, final ProductModel product) {
-		
-		//check if can use the share dialog or not
+	public void showShareDialog(final Context context, final Session session, final ProductModel product) {
 		if (FacebookDialog.canPresentShareDialog(context,FacebookDialog.ShareDialogFeature.PHOTOS)) {
-			String url = product.getImages().get(0).getOrigin();
-			 Bitmap loadedBmp = UrlImageViewHelper.getCachedBitmap(url);
-			 if (loadedBmp != null) {
-				 doShowShareDialog(context, loadedBmp);
-
-			} else {
-				final ProgressDialog progressDialog = new ProgressDialog(context);
-				progressDialog.setTitle(context.getResources().getString(R.string.loading_image));
-				progressDialog.setMessage(context.getResources().getString(R.string.please_wait));
-				progressDialog.show();
-				UrlImageViewHelper.setUrlDrawable(new ImageView(context), url, new UrlImageViewCallback() {
+			mShareHandler.sendEmptyMessage(SHOW_LOADING_DIALOG);
+			mNumBitmap = product.getImages().size();
+			mShareContext = context;
+			for (int i = 0; i < mNumBitmap; i++) {
+				final String url = product.getImages().get(i).getOrigin();
+				Thread threadLoadImage = new Thread(new Runnable() {
 					
 					@Override
-					public void onLoaded(ImageView imageView, Bitmap loadedBitmap, String url,boolean loadedFromCache) {
-						if (progressDialog != null && progressDialog.isShowing()) {
-							progressDialog.dismiss();
+					public void run() {
+						// TODO Auto-generated method stub
+						Bitmap cachedBitmap = UrlImageViewHelper.getCachedBitmap(url);
+						if (cachedBitmap != null) {
+							mShareHandler.sendEmptyMessage(HIDE_LOADING_DIALOG);
+							Message msg = new Message();
+							msg.what = LOAD_IMG;
+							msg.obj = cachedBitmap;
+							mShareHandler.sendMessage(msg);
+						} else {
+							UrlImageViewHelper.setUrlDrawable(new ImageView(mShareContext), url, new UrlImageViewCallback() {
+								
+								@Override
+								public void onLoaded(ImageView imageView, Bitmap loadedBitmap, String url,
+										boolean loadedFromCache) {
+									mShareHandler.sendEmptyMessage(HIDE_LOADING_DIALOG);
+									Message msg = new Message();
+									msg.what = LOAD_IMG;
+									msg.obj = loadedBitmap;
+									mShareHandler.sendMessage(msg);
+								}
+							});
 						}
-						doShowShareDialog(context, loadedBitmap);
-
 					}
 				});
+				threadLoadImage.start();
 			}
+			
+//			Thread threadTimeOut = new Thread(new Runnable() {
+//				
+//				@Override
+//				public void run() {
+//					mShareHandler.sendEmptyMessageDelayed(TIME_OUT, 10000);
+//				}
+//			});
+//			threadTimeOut.start();
 		} else {
 			Toast.makeText(context, "Please install Facebook for Android to share easier!", Toast.LENGTH_LONG).show();
 		}
 	}
 	
-	public static void doShowShareDialog(Context context, Bitmap bmp) {
-		List<Bitmap> data=new ArrayList<Bitmap>();
-		 data.add(bmp);
+	public static void doShowShareDialog(Context context, List<Bitmap> data) {
 		 FacebookDialog shareDialog = new FacebookDialog.PhotoShareDialogBuilder((Activity)context)
 		 									.addPhotos(data)
 		 									.build();
 		 shareDialog.present();
 	}
-	
-	
-	//can use in future: share dialog coded by myself===================================================================
-//	public static void showShareDialog(final Context context, final Session session, final ProductModel product) {
-//		final Dialog dialog = new Dialog(context);
-//		dialog.setContentView(R.layout.dialog_share_facebook);
-//		dialog.setTitle(context.getResources().getString(R.string.dialog_share_fb_title));
-//		
-//		final EditText etCaption = (EditText) dialog.findViewById(R.id.dialog_share_fb_et_caption);
-//		ImageView imgProduct = (ImageView) dialog.findViewById(R.id.dialog_share_fb_img_product);
-//		Button btnPost = (Button) dialog.findViewById(R.id.dialog_share_fb_btn_post);
-//		Button btnCancel = (Button) dialog.findViewById(R.id.dialog_share_fb_btn_cancel);
-//		
-//		List<ImageModel> listImgs = product.getImages();
-//		if (listImgs.size() > 0) {
-//			UrlImageViewHelper.setUrlDrawable(imgProduct, listImgs.get(0).getOrigin(), R.drawable.stuff_img);
-//		} else {
-//			imgProduct.setImageResource(R.drawable.stuff_img);
-//		}
-//		
-//		btnPost.setOnClickListener(new OnClickListener() {
-//			
-//			@Override
-//			public void onClick(View v) {
-//				// TODO Auto-generated method stub
-//				final String caption = etCaption.getText().toString();
-//				doPostToWall(context, session, product, caption);
-//				dialog.dismiss();
-//			}
-//		});
-//		
-//		btnCancel.setOnClickListener(new OnClickListener() {
-//			
-//			@Override
-//			public void onClick(View v) {
-//				// TODO Auto-generated method stub
-//				dialog.dismiss();
-//			}
-//		});
-//		
-//		dialog.show();		
-//	}
-	//can use in future===================================================================
-	
-	
-//	//can use in future===================================================================
-//	public static void doPostToWall(final Context context, final Session session, final ProductModel product, final String caption) {
-//		Log.i("CommonUti", "start doPostToWall");
-////		final String caption = "Check out " + product.getName() + " on 3mins app (available for Android and iOS)";
-//		final String imgURL = product.getImages().get(0).getOrigin();
-//		final String link = "https://play.google.com/store/apps/details?id=com.threemins";
-//
-//		
-//		Bitmap bitmap = UrlImageViewHelper.getCachedBitmap(imgURL);
-//		if (bitmap != null) {
-//			Request request = Request.newUploadPhotoRequest(session, bitmap, new Callback() {
-//				
-//				@Override
-//				public void onCompleted(Response response) {
-//					// TODO Auto-generated method stub
-//					if (response.getError() == null) {
-//			        	Log.i("CommonUti", "doPostToWall done");
-//			        	Toast.makeText(context, "Post success", Toast.LENGTH_LONG).show();
-//			        } else {
-//			        	Log.i("CommonUti", "doPostToWall Ex" + response.toString());
-//					}
-//				}
-//			});
-//			
-//			Bundle bundle = request.getParameters();
-//			bundle.putString("message", caption + "\n" + link);
-//			request.setParameters(bundle);
-//			request.executeAsync();
-//			Log.i("CommonUti", "request.executeAsync()");
-//		} else {
-//			Log.i("CommonUti", "bitmap null");
-//			UrlImageViewHelper.setUrlDrawable(new ImageView(context), imgURL, new UrlImageViewCallback() {
-//				
-//				@Override
-//				public void onLoaded(ImageView imageView, Bitmap loadedBitmap, String url,
-//						boolean loadedFromCache) {
-//					Request request = Request.newUploadPhotoRequest(session, loadedBitmap, new Callback() {
-//						
-//						@Override
-//						public void onCompleted(Response response) {
-//							// TODO Auto-generated method stub
-//							if (response.getError() == null) {
-//					        	Log.i("CommonUti", "Loaded, doPostToWall done");
-//					        	Toast.makeText(context, "Post success", Toast.LENGTH_LONG).show();
-//					        }
-//						}
-//					});
-//					
-//					Bundle bundle = request.getParameters();
-//					bundle.putString("message", caption + "\n" + link);
-//					request.setParameters(bundle);
-//					request.executeAsync();
-//					Log.i("CommonUti", "Loaded, request.executeAsync()");
-//				}
-//			});
-//		}
-//		
-//		
-//		
-//		Log.i("CommonUti", "end doPostToWall");
-//	}
-//	//can use in future===================================================================
 	
 	//share product on facebook ********************************************************
 	

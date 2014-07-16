@@ -162,6 +162,7 @@ public class ProductFragmentGrid extends BaseProductFragment {
         t.start();
     }
 
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         // TODO Auto-generated method stub

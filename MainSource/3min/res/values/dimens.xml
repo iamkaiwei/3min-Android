@@ -117,5 +117,8 @@
     
     <!-- dialog share on facebook -->
     <dimen name="dialog_share_fb_img_width">100dp</dimen>
+    
+    <!-- inflater follow -->
+    <dimen name="inflater_follow_avatar_size">35dp</dimen>
 
 </resources>
