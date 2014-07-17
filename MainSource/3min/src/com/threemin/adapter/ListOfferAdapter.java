@@ -58,7 +58,7 @@ public class ListOfferAdapter extends BaseAdapter {
 			TextView tv_time = (TextView) convertView.findViewById(R.id.inflater_heeader_product_tv_time);
 			tv_time.setText(DateUtils.getRelativeTimeSpanString(conversation.getLastest_update() * 1000,
 					System.currentTimeMillis(), 0L, DateUtils.FORMAT_ABBREV_RELATIVE));
-
+			
 			if (conversation.getProduct() != null) {
 				ImageView imageViewProduct = (ImageView) convertView.findViewById(R.id.imageView1);
 				int size = conversation.getProduct().getImages().size();

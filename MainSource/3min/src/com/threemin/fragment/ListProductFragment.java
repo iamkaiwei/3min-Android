@@ -22,9 +22,11 @@ import com.threemin.app.DetailActivity;
 import com.threemin.model.ProductModel;
 import com.threemin.model.UserModel;
 import com.threemin.uti.CommonConstant;
+import com.threemin.uti.CommonUti;
 import com.threemin.uti.PreferenceHelper;
 import com.threemin.view.QuickReturnGridView;
 import com.threemin.view.QuickReturnGridView.OnItemDoubleTapLister;
+import com.threemin.webservice.RelationshipWebService;
 import com.threemin.webservice.UserWebService;
 import com.threemins.R;
 
@@ -36,6 +38,7 @@ public class ListProductFragment extends BaseProductFragment {
     public static int MODE_MY_PRODUCT = 1;
     public static int MODE_USER_LIKED_PRODUCT = 2;
     public static int MODE_USER_PRODUCT = 3;
+    public static int MODE_FOLLOWED_PRODUCT = 4;
     public static int STEP_INIT = 0;
     public static int STEP_ADDMORE = 1;
     public static int STEP_REFRESH = 2;
@@ -59,12 +62,13 @@ public class ListProductFragment extends BaseProductFragment {
         View v = inflater.inflate(R.layout.fragment_product_gridview, null);
         swipeLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_gridview);
         int color = R.color.red_background;
-        swipeLayout.setColorScheme(color, color, color, color);
+        int color2 = R.color.common_grey;
+        swipeLayout.setColorScheme(color, color2, color, color2);
         mGrid = (QuickReturnGridView) v.findViewById(R.id.gv_product);
 
         if (mAdapter == null) {
             // TODO
-            mAdapter = new ProductGridAdapter(productModels, mContext, mLoginButton);
+            mAdapter = new ProductGridAdapter(productModels, mContext, mLoginButton,CommonUti.calcWidthItem(mContext));
         }
         mGrid.setAdapter(mAdapter);
 
@@ -125,6 +129,7 @@ public class ListProductFragment extends BaseProductFragment {
                     Intent intent = new Intent(getActivity(), DetailActivity.class);
                     intent.putExtra(CommonConstant.INTENT_PRODUCT_DATA, data);
                     getActivity().startActivity(intent);
+                    getActivity().overridePendingTransition(R.anim.anim_right_in, R.anim.anim_no_animation);
                 }
             }
 
@@ -147,7 +152,7 @@ public class ListProductFragment extends BaseProductFragment {
     public void updateUI() {
         if (mAdapter == null) {
             // TODO
-            mAdapter = new ProductGridAdapter(productModels, mContext, mLoginButton);
+            mAdapter = new ProductGridAdapter(productModels, mContext, mLoginButton,CommonUti.calcWidthItem(mContext));
         }
         mAdapter.updateData(productModels);
     }
@@ -195,6 +200,8 @@ public class ListProductFragment extends BaseProductFragment {
                     return new UserWebService().getUserLikedProduct(tokken, page);
                 } else if (mode == MODE_USER_PRODUCT) {
                     return new UserWebService().getUserProduct(tokken, userModel.getId(), page);
+                } else if (mode == MODE_FOLLOWED_PRODUCT) {
+                	return new RelationshipWebService().getProductsFollowed(tokken, page);
                 } else {
                     return null;
                 }

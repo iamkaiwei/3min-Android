@@ -50,7 +50,8 @@ public class ProductFragmentList extends BaseProductFragment {
 		View v = inflater.inflate(R.layout.fragment_product_listview, null);
 		swipeLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe);
 		int color = R.color.red_background;
-		swipeLayout.setColorScheme(color, color, color, color);
+        int color2 = R.color.common_grey;
+        swipeLayout.setColorScheme(color, color2, color, color2);
 		rlNoItems = (RelativeLayout) v.findViewById(R.id.fragment_product_listview_layout_no_items);
 		list = (QuickReturnListView) v.findViewById(R.id.lv_product);
 		if (adapter == null) {

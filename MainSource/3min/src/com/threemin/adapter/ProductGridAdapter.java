@@ -5,14 +5,14 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.animation.Animation.AnimationListener;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -21,7 +21,7 @@ import android.widget.TextView;
 import com.facebook.widget.LoginButton;
 import com.google.gson.Gson;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
-import com.threemin.app.HomeActivity;
+import com.squareup.picasso.Picasso;
 import com.threemin.app.ProfileActivity;
 import com.threemin.model.ProductModel;
 import com.threemin.uti.CommonConstant;
@@ -32,11 +32,17 @@ public class ProductGridAdapter extends BaseAdapter {
 	private List<ProductModel> mData;
 	private Context mContext;
 	private LoginButton mLoginButton;
+	LayoutInflater inflater;
+	int widthItem;
 
-	public ProductGridAdapter(List<ProductModel> data, Context context, LoginButton btn) {
+	public ProductGridAdapter(List<ProductModel> data, Context context, LoginButton btn, int widthItem) {
 		this.mData = data;
 		mContext = context;
 		mLoginButton = btn;
+		
+	    inflater = (LayoutInflater) context.getSystemService(
+	            Context.LAYOUT_INFLATER_SERVICE);
+	    this.widthItem=widthItem;
 	}
 
 	public List<ProductModel> getListProducts() {
@@ -65,20 +71,26 @@ public class ProductGridAdapter extends BaseAdapter {
 	public long getItemId(int position) {
 		return position;
 	}
-
+	
+	
+    long logTime;
+	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+	    
+	   logTime = System.currentTimeMillis();
+	        
 		LinearLayout layout = null;
 
 		if (convertView == null) {
-			LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService(
-					Context.LAYOUT_INFLATER_SERVICE);
+			
 			layout = (LinearLayout) inflater.inflate(R.layout.inflater_body_product_grid, null);
 		} else {
 			layout = (LinearLayout) convertView;
 		}
-
+		Log.d("3min", "Inflation time = "+ (System.currentTimeMillis() - logTime));
 		initBody(position, layout);
+		Log.d("3min", "Complete time = "+ (System.currentTimeMillis() - logTime));
 		return layout;
 	}
 
@@ -90,9 +102,16 @@ public class ProductGridAdapter extends BaseAdapter {
 
 		if (model != null) {
 			ImageView image = (ImageView) convertView.findViewById(R.id.inflater_body_product_grid_image);
+//			LayoutParams param=image.getLayoutParams();
+//			param.height=widthItem;
+//			image.setLayoutParams(param);
+			
 			if (model.getImages().size() > 0) {
-				UrlImageViewHelper.setUrlDrawable(image, model.getImages().get(0).getMedium(), R.drawable.stuff_img);
+//			    Log.d("image", "height="+image.getHeight());
+				UrlImageViewHelper.setUrlDrawable(image, model.getImages().get(0).getMedium(),R.drawable.stuff_img);
 //				imageLoader.displayImage( model.getImages().get(0).getOrigin(),image,options);
+//			    Log.d("3min", "Image: "+model.getImages().get(0).getSquare());
+//			    Picasso.with(mContext).load(model.getImages().get(0).getOrigin()).placeholder(R.drawable.stuff_img).into(image);
 			}
 
 			TextView tv_name = (TextView) convertView.findViewById(R.id.inflater_body_product_grid_tv_name);
@@ -114,7 +133,7 @@ public class ProductGridAdapter extends BaseAdapter {
 			} else {
 				img_like.setSelected(false);
 			}
-			if (model.getOwner() == null) {
+			if (model.getOwner() == null ) {
 				convertView.findViewById(R.id.owner_view).setVisibility(View.GONE);
 				convertView.findViewById(R.id.inflater_body_product_grid_divider).setVisibility(View.GONE);
 			} else {
@@ -146,7 +165,7 @@ public class ProductGridAdapter extends BaseAdapter {
 					
 					@Override
 					public void onClick(View v) {
-						CommonUti.doShareProductOnFacebook(mContext, mLoginButton, mData.get(finalPosition));
+						new CommonUti().doShareProductOnFacebook(mContext, mLoginButton, mData.get(finalPosition));
 					}
 				});
 			}

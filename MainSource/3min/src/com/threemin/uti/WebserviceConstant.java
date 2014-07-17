@@ -10,6 +10,7 @@ public class WebserviceConstant {
 	public static final String GET_CATE_DISPLAY = URL_HOST + API + "/categories/display.json";
 	public static final String GET_PRODUCT = URL_HOST + API + "/products.json";
 	public static final String GET_PRODUCT_VIA_ID = URL_HOST + API + "/products";
+	public static final String GET_PRODUCT_FOLLOWED = URL_HOST + API + "/products/followed.json";
 	public static final String CREATE_PRODUCT = URL_HOST + API + "/products";
 	public static final String LIKE = URL_HOST + API + "/products/%s/likes";
 	public static final String GET_MY_PRODUCT = URL_HOST + API + "/products/me.json";
@@ -24,4 +25,9 @@ public class WebserviceConstant {
 	public static final String POST_BUNDLE_MESSAGE=URL_HOST + API + "/conversations/%s/conversation_replies/bulk_create.json";
 	public static final String GET_ACTIVITIES = URL_HOST + API + "/activities.json/";
 	public static final String GET_USER_PRODUCT=URL_HOST + API +"/users/%s/products.json";
+	public static final String GET_USER_VIA_ID=URL_HOST + API + "/users";
+	public static final String FOLLOW_USER = URL_HOST + API + "/relationships.json";
+	public static final String UNFOLLOW_USER = URL_HOST + API + "/relationships/unfollow";
+	public static final String GET_FOLLOWERS = URL_HOST + API + "/users/%s/followers.json";
+	public static final String GET_FOLLOWINGS = URL_HOST + API + "/users/%s/followings.json";
 }

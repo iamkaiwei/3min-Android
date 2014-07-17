@@ -39,6 +39,8 @@
     <string name="loading_image">Loading image...</string>
     <string name="location">Location</string>
     <string name="currency">kVND</string>
+    <string name="followers">Followers</string>
+    <string name="following">Following</string>
 
     <!-- action bar -->
     <string name="action_bar_search_title">Search</string>
@@ -115,6 +117,9 @@
     
     <!-- activity about -->
     <string name="activity_about_title">About</string>
+    
+    <!-- activity follow -->
+    <string name="activity_follow_title">Follow</string>
     
     <!-- dialog share on facebook -->
     <string name="dialog_share_fb_question">What is on your mind?</string>

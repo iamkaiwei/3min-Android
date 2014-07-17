@@ -6,14 +6,29 @@
     android:background="@drawable/inflater_body_product_grid_bg_with_shadow"
     android:orientation="vertical" >
 
-    <com.threemin.view.RoundedImageView
-        android:id="@+id/inflater_body_product_grid_image"
-        android:layout_width="match_parent"
+    <RelativeLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        android:scaleType="fitXY" 
-        android:src="@drawable/stuff_img"/>
+        android:background="@android:color/white" >
 
+        <ImageView
+            android:id="@+id/inflater_body_product_grid_image"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/stuff_img" />
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/inflater_body_product_grid_image"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignRight="@+id/inflater_body_product_grid_image" 
+            android:background="@drawable/bg_overlay">
+        </FrameLayout>
+    </RelativeLayout>
     <!-- name of product -->
 
     <LinearLayout
@@ -80,11 +95,12 @@
                 android:id="@+id/inflater_body_product_grid_group_img_comment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/inflater_body_product_grid_group_like"
                 android:layout_marginLeft="@dimen/common_spacing"
+                android:layout_toRightOf="@id/inflater_body_product_grid_group_like"
                 android:orientation="horizontal"
                 android:visibility="invisible" >
 
+                <!--
                 <ImageView
                     android:id="@+id/inflater_body_product_grid_img_comment"
                     android:layout_width="wrap_content"
@@ -102,6 +118,7 @@
                     android:textColor="@color/common_grey"
                     android:textSize="@dimen/textsize_small"
                     threemins:customTypeface="@string/font_regular" />
+                -->
             </LinearLayout>
 
             <!-- img share -->
@@ -115,12 +132,12 @@
                 android:src="@drawable/selector_share_on_facebook" />
         </RelativeLayout>
     </LinearLayout>
-    
-    <View 
+
+    <View
         android:id="@+id/inflater_body_product_grid_divider"
         android:layout_width="fill_parent"
         android:layout_height="1dp"
-        android:background="@color/background_grey"/>
+        android:background="@color/background_grey" />
 
     <LinearLayout
         android:id="@+id/owner_view"
@@ -161,25 +178,28 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/inflater_header_product_grid_tv_name" >
 
-                <ImageView
+                <!--
+                     <ImageView
                     android:id="@+id/inflater_header_product_grid_image_clock"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:src="@drawable/clock" />
+                -->
 
                 <com.lanna.droidlib.view.CustomTextView
                     android:id="@+id/inflater_header_product_grid_tv_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/inflater_body_product_grid_common_spacing"
-                    android:layout_toRightOf="@+id/inflater_header_product_grid_image_clock"
+                    android:drawableLeft="@drawable/clock"
                     android:text="2 days ago"
                     android:textColor="@color/common_grey"
                     android:textSize="@dimen/textsize_small"
-                    threemins:customTypeface="@string/font_regular" />
+                    threemins:customTypeface="@string/font_regular"
+                    android:drawablePadding="2dp"
+                     />
             </RelativeLayout>
         </RelativeLayout>
     </LinearLayout>
