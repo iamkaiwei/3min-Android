@@ -9,6 +9,7 @@
     android:paddingTop="@dimen/common_spacing_double" >
 
     <LinearLayout
+        android:id="@+id/inflater_follow_ln_user_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"

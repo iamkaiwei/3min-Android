@@ -109,6 +109,7 @@ public class RightFragment extends Fragment {
                 Log.i("RightFragment: ", result.getFirstName() + "isFollowed: " + (result.isFollowed()?"true":"false"));
                 
                 userProduct(result);
+                userModel = result;
                 initListener(rootView);
             }
         }
@@ -159,6 +160,7 @@ public class RightFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), FollowerFollowingActivity.class);
                 intent.putExtra(CommonConstant.INTENT_USER_DATA_VIA_ID, userModel.getId());
                 intent.putExtra(CommonConstant.INTENT_GET_FOLLOW_LIST, GET_FOLLOWERS);
+                intent.putExtra(CommonConstant.INTENT_GET_FOLLOW_COUNT, userModel.getCountFollowers());
                 startActivity(intent);
             }
         });
@@ -170,6 +172,7 @@ public class RightFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), FollowerFollowingActivity.class);
                 intent.putExtra(CommonConstant.INTENT_USER_DATA_VIA_ID, userModel.getId());
                 intent.putExtra(CommonConstant.INTENT_GET_FOLLOW_LIST, GET_FOLLOWINGS);
+                intent.putExtra(CommonConstant.INTENT_GET_FOLLOW_COUNT, userModel.getCountFollowing());
                 startActivity(intent);
             }
         });

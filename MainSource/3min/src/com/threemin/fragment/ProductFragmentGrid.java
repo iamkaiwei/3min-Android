@@ -1,16 +1,19 @@
 package com.threemin.fragment;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
+import android.view.WindowManager;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
@@ -24,6 +27,7 @@ import com.threemin.adapter.ProductGridAdapter;
 import com.threemin.app.DetailActivity;
 import com.threemin.model.ProductModel;
 import com.threemin.uti.CommonConstant;
+import com.threemin.uti.CommonUti;
 import com.threemin.uti.PreferenceHelper;
 import com.threemin.view.QuickReturnGridView;
 import com.threemin.view.QuickReturnGridView.OnItemDoubleTapLister;
@@ -32,212 +36,137 @@ import com.threemins.R;
 
 public class ProductFragmentGrid extends BaseProductFragment {
 
-	
-	private Context mContext;
-	private LoginButton mLoginButton;
+    private Context mContext;
+    private LoginButton mLoginButton;
 
-	// no items:
-	private RelativeLayout rlNoItems;
-	private boolean isSwitched;
+    // no items:
+    private RelativeLayout rlNoItems;
+    private boolean isSwitched;
 
-	private QuickReturnGridView mGrid;
-	private ProductGridAdapter mAdapter;
-	View bottomView;
-
-	private int mQuickReturnHeight;
-
-	private static final int STATE_ONSCREEN = 0;
-	private static final int STATE_OFFSCREEN = 1;
-	private static final int STATE_RETURNING = 2;
-	private int mState = STATE_ONSCREEN;
-	private int mScrollY;
-	private int mMinRawY = 0;
-	private boolean isRequestLike;
-	private int bottomHeight;
-	
-	public ProductFragmentGrid(View bottomView, Context context, LoginButton btn) {
-		super();
-		this.bottomView = bottomView;
-		this.mContext = context;
-		this.mLoginButton = btn;
-		this.isSwitched = false;
-	}
-
-	public ProductFragmentGrid() {
-		super();
-		this.isSwitched = false;
-	}
-
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View v = inflater.inflate(R.layout.fragment_product_gridview, null);
-		swipeLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_gridview);
-		int color = R.color.red_background;
-		int color2 = R.color.common_grey;
-        swipeLayout.setColorScheme(color, color2, color, color2);
-		rlNoItems = (RelativeLayout) v.findViewById(R.id.fragment_product_gridview_layout_no_items);
-		mGrid = (QuickReturnGridView) v.findViewById(R.id.gv_product);
-
-		if (mAdapter == null) {
-			// TODO
-			mAdapter = new ProductGridAdapter(productModels, mContext, mLoginButton);
-		}
-		mGrid.setAdapter(mAdapter);
-
-		initListner();
-		if(homeFragment==null){
-			homeFragment=(HomeFragment) getParentFragment();
-		}
-		homeFragment.setBottomView();
-		if (isSwitched) {
-			changeIfNoItem();
-		}
-		return v;
-	}
+    private QuickReturnGridView mGrid;
+    private ProductGridAdapter mAdapter;
+    View bottomView;
 
 
+    private int bottomHeight;
 
-	@Override
-	public void updateUI() {
-		if (mAdapter == null) {
-			// TODO
-			mAdapter = new ProductGridAdapter(productModels, mContext, mLoginButton);
-		}
-		mAdapter.updateData(productModels);
-		changeIfNoItem();
-	}
+    public ProductFragmentGrid(View bottomView, Context context, LoginButton btn) {
+        super();
+        this.bottomView = bottomView;
+        this.mContext = context;
+        this.mLoginButton = btn;
+        this.isSwitched = false;
+    }
 
-	@Override
-	public void changeIfNoItem() {
-		if (rlNoItems == null || mGrid == null) {
-			return;
-		}
-		if (mAdapter.getListProducts() == null || mAdapter.getListProducts().size() == 0) {
-			rlNoItems.setVisibility(View.VISIBLE);
-			mGrid.setVisibility(View.GONE);
-		} else {
-			rlNoItems.setVisibility(View.GONE);
-			mGrid.setVisibility(View.VISIBLE);
-		}
-	}
+    public ProductFragmentGrid() {
+        super();
+        this.isSwitched = false;
+    }
 
-	private void handleQuickReturn() {
-		mScrollY = 0;
-		int translationY = 0;
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+       
+        View v = inflater.inflate(R.layout.fragment_product_gridview, null);
+        swipeLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_gridview);
+        int color = R.color.red_background;
+        swipeLayout.setColorScheme(color, color, color, color);
+        rlNoItems = (RelativeLayout) v.findViewById(R.id.fragment_product_gridview_layout_no_items);
+        mGrid = (QuickReturnGridView) v.findViewById(R.id.gv_product);
 
-		if (mGrid.scrollYIsComputed()) {
-			mScrollY = mGrid.getComputedScrollY();
-		}
+        if (mAdapter == null) {
+            // TODO
+            mAdapter = new ProductGridAdapter(productModels, mContext, mLoginButton, CommonUti.calcWidthItem(mContext));
+        }
+        mGrid.setAdapter(mAdapter);
 
-		int rawY = mScrollY;
+        initListner();
+        if (homeFragment == null) {
+            homeFragment = (HomeFragment) getParentFragment();
+        }
+        homeFragment.setBottomView();
+        if (isSwitched) {
+            changeIfNoItem();
+        }
+        return v;
+    }
 
-		switch (mState) {
-		case STATE_OFFSCREEN:
-			if (rawY >= mMinRawY) {
-				mMinRawY = rawY;
-			} else {
-				mState = STATE_RETURNING;
-			}
-			translationY = rawY;
-			break;
+   
 
-		case STATE_ONSCREEN:
-			if (rawY > mQuickReturnHeight) {
-				mState = STATE_OFFSCREEN;
-				mMinRawY = rawY;
-			}
-			translationY = rawY;
-			break;
+    @Override
+    public void updateUI() {
+        if (mAdapter == null) {
+            // TODO
+            mAdapter = new ProductGridAdapter(productModels, mContext, mLoginButton,CommonUti.calcWidthItem(mContext));
+        }
+        mAdapter.updateData(productModels);
+        changeIfNoItem();
+    }
 
-		case STATE_RETURNING:
+    @Override
+    public void changeIfNoItem() {
+        if (rlNoItems == null || mGrid == null) {
+            return;
+        }
+        if (mAdapter.getListProducts() == null || mAdapter.getListProducts().size() == 0) {
+            rlNoItems.setVisibility(View.VISIBLE);
+            mGrid.setVisibility(View.GONE);
+        } else {
+            rlNoItems.setVisibility(View.GONE);
+            mGrid.setVisibility(View.VISIBLE);
+        }
+    }
 
-			translationY = (rawY - mMinRawY) + mQuickReturnHeight;
 
-			System.out.println(translationY);
-			if (translationY < 0) {
-				translationY = 0;
-				mMinRawY = rawY + mQuickReturnHeight;
-			}
+    @Override
+    public void setBottomView(View bottomView) {
+        this.bottomView = bottomView;
+    }
 
-			if (rawY == 0) {
-				mState = STATE_ONSCREEN;
-				translationY = 0;
-			}
+    public void setIsSwitched(boolean isSwitched) {
+        this.isSwitched = isSwitched;
+    }
 
-			if (translationY > mQuickReturnHeight) {
-				mState = STATE_OFFSCREEN;
-				mMinRawY = rawY;
-			}
-			break;
-		}
-		if (bottomView != null)
-			bottomView.setTranslationY(translationY);
-	}
+    private void requestLike(final ProductModel productModel, View view) {
+        final String tokken = PreferenceHelper.getInstance(getActivity()).getTokken();
 
-	@Override
-	public void setBottomView(View bottomView) {
-		this.bottomView = bottomView;
-	}
+        productModel.setLiked(!productModel.isLiked());
+        if (productModel.isLiked()) {
+            productModel.setLike(productModel.getLike() + 1);
+        } else {
+            productModel.setLike(productModel.getLike() - 1);
+        }
 
-	public void setIsSwitched(boolean isSwitched) {
-		this.isSwitched = isSwitched;
-	}
-	
-	private void requestLike(final ProductModel productModel,View view){
-		isRequestLike=true;
-		final String tokken=PreferenceHelper.getInstance(getActivity()).getTokken();
-		
-		
-		
-		productModel.setLiked(!productModel.isLiked());
-		if (productModel.isLiked()) {
-			productModel.setLike(productModel.getLike() + 1);
-		} else {
-			productModel.setLike(productModel.getLike() - 1);
-		}
-		
-		TextView tv_like = (TextView) view.findViewById(R.id.inflater_body_product_grid_tv_like);
-		if (productModel.getLike() > 0) {
-			tv_like.setText("" + productModel.getLike());
-		} else {
-			tv_like.setText("");
-		}
+        TextView tv_like = (TextView) view.findViewById(R.id.inflater_body_product_grid_tv_like);
+        if (productModel.getLike() > 0) {
+            tv_like.setText("" + productModel.getLike());
+        } else {
+            tv_like.setText("");
+        }
 
-		ImageView img_like = (ImageView) view.findViewById(R.id.inflater_body_product_grid_img_like);
-		if (productModel.isLiked()) {
-			img_like.setSelected(true);
-		} else {
-			img_like.setSelected(false);
-		}
-		
-//		mAdapter.notifyDataSetChanged();
-		Thread t=new Thread(new Runnable() {
-			
-			@Override
-			public void run() {
-				boolean result=new UserWebService().productLike(productModel.getId(), tokken, productModel.isLiked());
-				Log.d("result", "result="+result);
-				isRequestLike=false;
-			}
-		});
-		t.start();
-	}
-    
+        ImageView img_like = (ImageView) view.findViewById(R.id.inflater_body_product_grid_img_like);
+        if (productModel.isLiked()) {
+            img_like.setSelected(true);
+        } else {
+            img_like.setSelected(false);
+        }
+
+        // mAdapter.notifyDataSetChanged();
+        Thread t = new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                boolean result = new UserWebService().productLike(productModel.getId(), tokken, productModel.isLiked());
+                Log.d("result", "result=" + result);
+            }
+        });
+        t.start();
+    }
+
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onActivityCreated(savedInstanceState);
-        // mGrid.getViewTreeObserver().addOnGlobalLayoutListener(new
-        // ViewTreeObserver.OnGlobalLayoutListener() {
-        // @Override
-        // public void onGlobalLayout() {
-        // mQuickReturnHeight = mGrid.getHeight();
-        // if (isRequestLike) {
-        // return;
-        // }
-        // // mGrid.computeScrollY();
-        // }
-        // });
         bottomView.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
 
             @Override
@@ -283,16 +212,22 @@ public class ProductFragmentGrid extends BaseProductFragment {
                 if (view.getId() == mGrid.getId()) {
                     final int currentFirstVisibleItem = mGrid.getFirstVisiblePosition();
                     if (currentFirstVisibleItem > mLastFirstVisibleItem) {
-                        Log.i("a", "scrolling down...");
+                        // Log.i("a", "scrolling down...");
                         if (mIsScrollingUp) {
                             mIsScrollingUp = false;
-                            bottomView.setTranslationY(bottomHeight);
+                           ObjectAnimator animator= ObjectAnimator.ofFloat(bottomView, "TranslationY", bottomHeight);
+                           animator.setDuration(300);
+                           animator.start();
+//                            bottomView.setTranslationY(bottomHeight);
                         }
                     } else if (currentFirstVisibleItem < mLastFirstVisibleItem) {
-                        Log.i("a", "scrolling up...");
+                        // Log.i("a", "scrolling up...");
                         if (!mIsScrollingUp) {
                             mIsScrollingUp = true;
-                            bottomView.setTranslationY(0);
+//                            bottomView.setTranslationY(0);
+                            ObjectAnimator animator= ObjectAnimator.ofFloat(bottomView, "TranslationY", 0);
+                            animator.setDuration(300);
+                            animator.start();
                         }
                     }
 
@@ -312,7 +247,7 @@ public class ProductFragmentGrid extends BaseProductFragment {
                     Intent intent = new Intent(getActivity(), DetailActivity.class);
                     intent.putExtra(CommonConstant.INTENT_PRODUCT_DATA, data);
                     getActivity().startActivity(intent);
-                    getActivity().overridePendingTransition(R.anim.anim_right_in,R.anim.anim_no_animation);
+                    getActivity().overridePendingTransition(R.anim.anim_right_in, R.anim.anim_no_animation);
                 }
             }
 
