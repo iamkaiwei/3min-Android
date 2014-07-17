@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <!-- urban airship -->
+    <string name="gcmSender">400375101132</string>
+    <string name="developmentAppKey">YmOWEA0lR7aW77MI2u-SAQ</string>
+    <string name="developmentAppSecret">gL0ScP2vSAGohDRfZjHDeA</string>
+    <string name="productionAppKey">YmOWEA0lR7aW77MI2u-SAQ</string>
+    <string name="productionAppSecret">gL0ScP2vSAGohDRfZjHDeA</string>
+
+    <string name="font_semibold">OpenSans-Semibold.ttf</string>
+    <string name="font_bold">OpenSans-Bold.ttf</string>
+    <string name="font_extrabold">OpenSans-ExtraBold.ttf</string>
+    <string name="font_extraBoldItalic">OpenSans-ExtraBoldItalic.ttf</string>
+    <string name="font_italic">OpenSans-Italic.ttf</string>
+    <string name="font_light">OpenSans-Light.ttf</string>
+    <string name="font_lightItalic">OpenSans-LightItalic.ttf</string>
+    <string name="font_regular">OpenSans-Regular.ttf</string>
+    <string name="font_semibolditalic">OpenSans-SemiboldItalic.ttf</string>
+    <!-- <string name="login_3mins">Snap a photo to start \nselling in 3 mins !</string> -->
+    <string name="login_3mins">Chụp ảnh để bắt đầu \nbán trong 3 phút !</string>
+    
+    <!-- <string name="login_bestdeal">Find the best deals in town</string> -->
+    <string name="login_bestdeal">Tìm sản phẩm giá tốt nhất trong thành phố</string>
+    
+    <string name="login_bestdeal_sub">\nGet the best value shopping in town from \nreviewed sellers all from your phone. </string>
+    
+    <!-- <string name="login_chatapp">Buy with private chat in app </string> -->
+    <string name="login_chatapp">Mua sắm với chức năng chat riêng tư</string>
+    
+    <!-- <string name="login_chatapp_sub">\nBuy securely with an in app chat \nthat protects your identity.</string> -->
+    <string name="login_chatapp_sub">\nMua sắm an toàn với chức năng chat bên trong ứng dụng\ngiúp bảo vệ danh tính của bạn.</string>
+    
+    <string name="home_list">List</string>
+    <string name="profile_list">Listings</string>
+    <string name="home_thumbnail">Thumbnails</string>
+    
+    <!-- <string name="browse">Everything</string> -->
+    <string name="browse">Tất cả</string>
+    
+    <!-- <string name="navigation_mylisting">My Listings</string> -->
+    <string name="navigation_mylisting">Sản phẩm của tôi</string>
+    
+    <string name="navigation_offer">Offer I made</string>
+    <string name="navigation_like">Stuff I liked</string>
+    <string name="navigation_share_friends">Share with your friends</string>
+    <string name="app_name">3 mins</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="app_id">580806171975545</string>
+    <string name="activity_login_btn_login_gg"></string>
+    
+    <!-- <string name="please_wait">Please wait</string> -->
+    <string name="please_wait">Vui lòng đợi</string>
+    
+    <!-- <string name="loading_image">Loading image...</string> -->
+    <string name="loading_image">Đang tải hình ảnh...</string>
+    
+    <!-- <string name="location">Location</string> -->
+    <string name="location">Địa điểm</string>
+    
+    <string name="currency">kVND</string>
+    <string name="followers">Followers</string>
+    <string name="following">Following</string>
+
+    <!-- action bar -->
+    <!-- <string name="action_bar_search_title">Search</string> -->
+    <string name="action_bar_search_title">Tìm kiếm</string>
+
+    <!-- activity_imageview.xml -->
+    
+    <!-- <string name="activity_imageview_category">Category</string> -->
+    <string name="activity_imageview_category">Danh mục</string>
+    
+    <!-- <string name="activity_imageview_item">Item</string> -->
+    <string name="activity_imageview_item">Sản phẩm</string>
+    
+    <!-- <string name="activity_imageview_price">Price</string> -->
+    <string name="activity_imageview_price">Giá</string>
+    
+    <!-- <string name="activity_imageview_location">Location</string> -->
+    <string name="activity_imageview_location">Địa điểm</string>
+    
+    <!-- <string name="activity_imageview_share_on_facebook">Share on facebook</string> -->
+    <string name="activity_imageview_share_on_facebook">Chia sẻ trên Facebook</string>
+    
+    <!-- <string name="activity_imageview_take_a_photo">Take a photo</string> -->
+    <string name="activity_imageview_take_a_photo">Chụp ảnh</string>
+    
+    <!-- <string name="activity_imageview_select_from_gallery">Select from Gallery</string> -->
+    <string name="activity_imageview_select_from_gallery">Chọn trong bộ sưu tập</string>
+    
+    <!-- <string name="activity_imageview_delete">Delete</string> -->
+    <string name="activity_imageview_delete">Xóa</string>
+    
+    <!-- <string name="activity_imageview_add_photo">Add photo...</string> -->
+    <string name="activity_imageview_add_photo">Thêm ảnh...</string>
+    
+    <!-- <string name="activity_imageview_category_hint">Books</string> -->
+    <string name="activity_imageview_category_hint">Sách</string>
+    
+    <!-- <string name="activity_imageview_item_hint">What are you selling?</string> -->
+    <string name="activity_imageview_item_hint">Bạn đang bán sản phẩm gì?</string>
+    
+    <!-- <string name="activity_imageview_price_hint">Set a price</string> -->
+    <string name="activity_imageview_price_hint">Giá sản phẩm</string>
+    
+    <!-- <string name="activity_imageview_et_description_hint">Enter product description</string> -->
+    <string name="activity_imageview_et_description_hint">Thông tin sản phẩm</string>
+    
+    <!-- <string name="error_empty_image">Please enter at least one image</string> -->
+    <string name="error_empty_image">Vui lòng chọn ít nhất một hình ảnh</string>
+    
+    <!-- <string name="error_miss_field">Please enter all require field</string> -->
+    <string name="error_miss_field">Vui lòng điền đẩy đủ thông tin</string>
+    
+    <!-- <string name="error_upload">Fail to upload product</string> -->
+    <string name="error_upload">Tải sản phẩm lên thất bại</string>
+    
+    <string name="google_map_API">AIzaSyA7LzP742pWpP0Vfmkf0GVwT22-gUzL7Nc</string>
+    
+    <!-- <string name="title_activity_detail">DetailActivity</string> -->
+    <string name="title_activity_detail">Chi tiết sản phẩm</string>
+    
+    <!-- <string name="camera_filter">Filters</string> -->
+    <string name="camera_filter">Hiệu ứng</string>
+    
+    <string name="camera_album">Album</string>
+
+    <!-- no items -->
+    <!-- <string name="no_items_line_1">Tap on the icon below</string> -->
+    <string name="no_items_line_1">Nhấn vào biểu tượng bên dưới</string>
+    
+    <!-- <string name="no_items_line_2">to start listing yours items for sell</string> -->
+    <string name="no_items_line_2">để tạo danh sách sản phẩm muốn bán của bạn</string>
+
+    <!-- chat to buy -->
+    <!-- <string name="activity_chat_price_label">Listed Price</string> -->
+    <string name="activity_chat_price_label">Giá niêm yết</string>
+    
+    <!-- <string name="activity_chat_price_offered_label">Price Offered</string> -->
+    <string name="activity_chat_price_offered_label">Giá đề nghị</string>
+    
+    <!-- <string name="activity_chat_chat_input_hint">Type message here to chat</string> -->
+    <string name="activity_chat_chat_input_hint">Nhập tin nhắn tại đây để chat</string>
+    
+    <!-- <string name="activity_chat_chat_content_label">Chat privately with</string> -->
+    <string name="activity_chat_chat_content_label">Chat riêng tư với</string>
+    
+    <!-- <string name="profile_liked">Liked</string> -->
+    <string name="profile_liked">Thích</string>
+    
+    <!-- <string name="profile_message">Messages</string> -->
+    <string name="profile_message">Tin nhắn</string>
+    
+    <!-- <string name="profile_mylist">My Listings</string> -->
+    <string name="profile_mylist">Sản phẩm của tôi</string>
+    
+    <!-- <string name="mylike">My likes</string> -->
+    <string name="mylike">Sản phẩm yêu thích</string>
+    
+    <!-- <string name="postOffer_your_offer">Your offer</string> -->
+    <string name="postOffer_your_offer">Đề nghị của bạn</string>
+    
+    <!-- <string name="postoffer_start_chatting">Make an offer to start chatting</string> -->
+    <string name="postoffer_start_chatting">Đưa ra đề nghị để bắt đầu trao đổi</string>
+    
+    <!-- <string name="postoffer_tap_to_change">tap to change</string> -->
+    <string name="postoffer_tap_to_change">nhấn để thay đổi</string>
+    
+    <!-- <string formatted="false" name="postoffer_title">%s is selling it for %s kVND</string> -->
+    <string formatted="false" name="postoffer_title">%s đang bán sản phẩm này với giá %sk Vnd</string>
+    
+    <!-- fragment filter -->
+    <!-- <string name="fm_filter_search_hint">Search for products</string> -->
+    <string name="fm_filter_search_hint">Tìm kiếm sản phẩm</string>
+    
+    <!-- <string name="fm_filter_sort_by">SORT BY</string> -->
+    <string name="fm_filter_sort_by">SẮP XẾP THEO</string>
+    
+    <!-- <string name="fm_filter_popular">Popular</string> -->
+    <string name="fm_filter_popular">Phổ biến</string>
+    
+    <!-- <string name="fm_filter_recent">Recent</string> -->
+    <string name="fm_filter_recent">Gần đây</string>
+    
+    <!-- <string name="fm_filter_lowest">Lowest Price</string> -->
+    <string name="fm_filter_lowest">Giá thấp nhất</string>
+    
+    <!-- <string name="fm_filter_highest">Highest Price</string> -->
+    <string name="fm_filter_highest">Giá cao nhất</string>
+    
+    <!-- <string name="fm_filter_nearest">Nearest</string> -->
+    <string name="fm_filter_nearest">Gần nhất</string>
+    
+    <!-- <string name="fm_filter_price_range">PRICE RANGE</string> -->
+    <string name="fm_filter_price_range">MỨC GIÁ</string>
+    
+    <!-- <string name="fm_filter_min">Minimum</string> -->
+    <string name="fm_filter_min">Thấp nhất</string>
+    
+    <!-- <string name="fm_filter_max">Maximum</string> -->
+    <string name="fm_filter_max">Cao nhất</string>
+    
+    <string name="offer">Offers</string>
+    
+    <!-- activity user activity -->
+    <!-- <string name="activity_title">Activity</string> -->
+    <string name="activity_title">Hoạt động</string>
+    
+    
+    <!-- activity setting -->
+    <!-- <string name="act_setting_label">Settings</string> -->
+    <string name="act_setting_label">Thiết lập</string>
+    
+    <!-- <string name="about">About 3mins</string> -->
+    <string name="about">Thông tin về 3mins</string>
+    
+    <!-- <string name="send_suggestions">Send us your suggestions</string> -->
+    <string name="send_suggestions">Gửi cho chúng tôi những đề xuất của bạn</string>
+    
+    <!-- <string name="rate">Rate us on Appstore</string> -->
+    <string name="rate">Đánh giá trên Appstore</string>
+    
+    <!-- <string name="share_label">Recommend to friends</string> -->
+    <string name="share_label">Giới thiệu với bạn bè</string>
+    
+    <!-- <string name="log_out">Log out</string> -->
+    <string name="log_out">Đăng xuất</string>
+    
+    <!-- activity crop image -->
+    <!-- <string name="act_crop_img_crop">CROP</string> -->
+    <string name="act_crop_img_crop">Cắt ảnh</string>
+    
+    <!-- activity about -->
+    <!-- <string name="activity_about_title">About</string> -->
+    <string name="activity_about_title">Thông tin</string>
+
+</resources>
