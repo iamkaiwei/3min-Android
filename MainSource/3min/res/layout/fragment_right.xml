@@ -93,7 +93,7 @@
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:layout_centerHorizontal="true"
-                android:text="1"
+                android:text="..."
                 android:textColor="@color/common_black"
                 android:textSize="@dimen/textsize_large"
                 threemins:customTypeface="@string/font_bold" />
