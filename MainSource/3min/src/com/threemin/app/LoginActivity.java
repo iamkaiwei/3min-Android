@@ -315,9 +315,9 @@ public class LoginActivity extends FragmentActivity implements ConnectionCallbac
 			} else {
 				Log.i("tructran", "Can not authorize webservice: user returned is null");
 				new AlertDialog.Builder(mContext)
-					.setTitle("Authorization failed!")
-					.setMessage("User is not authorized. Please try again!")
-					.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+					.setTitle(mContext.getString(R.string.activity_login_fail_dialog_title))
+					.setMessage(mContext.getString(R.string.activity_login_fail_dialog_message))
+					.setPositiveButton(mContext.getString(R.string.activity_login_fail_dialog_btn_ok), new DialogInterface.OnClickListener() {
 						
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
@@ -475,9 +475,9 @@ public class LoginActivity extends FragmentActivity implements ConnectionCallbac
 				} else {
 					Log.i("tructran", "Can not authorize webservice: user returned is null");
 					new AlertDialog.Builder(mContext)
-						.setTitle("Authorization failed!")
-						.setMessage("User is not authorized. Please try again!")
-						.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+						.setTitle(mContext.getString(R.string.activity_login_fail_dialog_title))
+						.setMessage(mContext.getString(R.string.activity_login_fail_dialog_message))
+						.setPositiveButton(mContext.getString(R.string.activity_login_fail_dialog_btn_ok), new DialogInterface.OnClickListener() {
 							
 							@Override
 							public void onClick(DialogInterface dialog, int which) {

@@ -18,8 +18,7 @@
         android:id="@+id/ln_group_control"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingBottom="@dimen/common_spacing" >
+        android:orientation="horizontal" >
         
         <!-- follow -->
         <ImageView 
@@ -40,6 +39,7 @@
             android:layout_weight="1"
             android:drawableTop="@drawable/ic_like"
             android:gravity="center_horizontal"
+            android:layout_gravity="bottom"
             android:singleLine="true"
             android:text="@string/profile_liked"
             android:textColor="@color/common_grey"
@@ -63,6 +63,7 @@
             android:layout_weight="1"
             android:drawableTop="@drawable/ic_message"
             android:gravity="center_horizontal"
+            android:layout_gravity="bottom"
             android:singleLine="true"
             android:text="@string/profile_message"
             android:textColor="@color/common_grey"
@@ -92,7 +93,7 @@
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:layout_centerHorizontal="true"
-                android:text="..."
+                android:text="1"
                 android:textColor="@color/common_black"
                 android:textSize="@dimen/textsize_large"
                 threemins:customTypeface="@string/font_bold" />

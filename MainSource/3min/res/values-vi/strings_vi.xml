@@ -17,23 +17,23 @@
     <string name="font_lightItalic">OpenSans-LightItalic.ttf</string>
     <string name="font_regular">OpenSans-Regular.ttf</string>
     <string name="font_semibolditalic">OpenSans-SemiboldItalic.ttf</string>
+    
     <!-- <string name="login_3mins">Snap a photo to start \nselling in 3 mins !</string> -->
     <string name="login_3mins">Chụp ảnh để bắt đầu \nbán trong 3 phút !</string>
     
     <!-- <string name="login_bestdeal">Find the best deals in town</string> -->
-    <string name="login_bestdeal">Tìm sản phẩm giá tốt nhất trong thành phố</string>
+    <string name="login_bestdeal">Tìm giá tốt nhất trong khu vực</string>
     
-    <string name="login_bestdeal_sub">\nGet the best value shopping in town from \nreviewed sellers all from your phone. </string>
+    <!-- <string name="login_bestdeal_sub">\nGet the best value shopping in town from \nreviewed sellers all from your phone. </string> -->
+    <string name="login_bestdeal_sub">\nMua sắm tối ưu từ những người bán đã được\nđánh giá trong khu vực bằng điện thoại.</string>
     
     <!-- <string name="login_chatapp">Buy with private chat in app </string> -->
-    <string name="login_chatapp">Mua sắm với chức năng chat riêng tư</string>
+    <string name="login_chatapp">Mua sắm bằng trao đổi riêng</string>
     
     <!-- <string name="login_chatapp_sub">\nBuy securely with an in app chat \nthat protects your identity.</string> -->
-    <string name="login_chatapp_sub">\nMua sắm an toàn với chức năng chat bên trong ứng dụng\ngiúp bảo vệ danh tính của bạn.</string>
+    <string name="login_chatapp_sub">\nMua sắm an toàn với chức năng chat của ứng dụng\ngiúp bảo vệ danh tính của bạn.</string>
     
-    <string name="home_list">List</string>
-    <string name="profile_list">Listings</string>
-    <string name="home_thumbnail">Thumbnails</string>
+    <string name="profile_list">Sản phẩm</string>
     
     <!-- <string name="browse">Everything</string> -->
     <string name="browse">Tất cả</string>
@@ -41,14 +41,13 @@
     <!-- <string name="navigation_mylisting">My Listings</string> -->
     <string name="navigation_mylisting">Sản phẩm của tôi</string>
     
-    <string name="navigation_offer">Offer I made</string>
-    <string name="navigation_like">Stuff I liked</string>
-    <string name="navigation_share_friends">Share with your friends</string>
-    <string name="app_name">3 mins</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <!-- <string name="app_name">3 mins</string> -->
+    <string name="app_name">3 phút</string>
+    
+    <!-- <string name="action_settings">Settings</string> -->
+    <string name="action_settings">Cài đặt</string>
+    
     <string name="app_id">580806171975545</string>
-    <string name="activity_login_btn_login_gg"></string>
     
     <!-- <string name="please_wait">Please wait</string> -->
     <string name="please_wait">Vui lòng đợi</string>
@@ -59,13 +58,27 @@
     <!-- <string name="location">Location</string> -->
     <string name="location">Địa điểm</string>
     
-    <string name="currency">kVND</string>
-    <string name="followers">Followers</string>
-    <string name="following">Following</string>
+    <string name="currency">k Vnd</string>
+    <!-- <string name="followers">Followers</string> -->
+    <string name="followers">Được theo dõi bởi</string>
+    
+    <!-- <string name="following">Following</string> -->
+    <string name="following">Đang theo dõi</string>
 
     <!-- action bar -->
     <!-- <string name="action_bar_search_title">Search</string> -->
     <string name="action_bar_search_title">Tìm kiếm</string>
+    
+    <!-- login activity -->
+    
+    <!-- <string name="activity_login_fail_dialog_title">Authorization failed!</string> -->
+    <string name="activity_login_fail_dialog_title">Quá trình ủy quyền thất bại!</string>
+    
+    <!-- <string name="activity_login_fail_dialog_message">User is not authorized. Please try again!</string> -->
+    <string name="activity_login_fail_dialog_message">Người dùng chưa được ủy quyền. Vui lòng thử lại!</string>
+    
+    <!-- <string name="activity_login_fail_dialog_btn_ok">OK</string> -->
+    <string name="activity_login_fail_dialog_btn_ok">Đồng ý</string>
 
     <!-- activity_imageview.xml -->
     
@@ -107,6 +120,20 @@
     
     <!-- <string name="activity_imageview_et_description_hint">Enter product description</string> -->
     <string name="activity_imageview_et_description_hint">Thông tin sản phẩm</string>
+    
+    
+    <!-- <string name="activity_imageview_facebook_dialog_title">Login Facebook</string> -->
+    <string name="activity_imageview_facebook_dialog_title">Bạn chưa đăng nhập Facebook</string>
+    
+    <!-- <string name="activity_imageview_facebook_dialog_message">Please login Facebook to share on it.</string> -->
+    <string name="activity_imageview_facebook_dialog_message">Vui lòng đăng nhập Facebook để chia sẻ sản phẩm.</string>
+    
+    <!-- <string name="activity_imageview_facebook_dialog_btn_ok">OK</string> -->
+    <string name="activity_imageview_facebook_dialog_btn_ok">Đồng ý</string>
+    
+    <!-- <string name="activity_imageview_facebook_dialog_btn_cancel">Cancel</string> -->
+    <string name="activity_imageview_facebook_dialog_btn_cancel">Bỏ qua</string>
+    
     
     <!-- <string name="error_empty_image">Please enter at least one image</string> -->
     <string name="error_empty_image">Vui lòng chọn ít nhất một hình ảnh</string>
@@ -169,7 +196,7 @@
     <string name="postoffer_tap_to_change">nhấn để thay đổi</string>
     
     <!-- <string formatted="false" name="postoffer_title">%s is selling it for %s kVND</string> -->
-    <string formatted="false" name="postoffer_title">%s đang bán sản phẩm này với giá %sk Vnd</string>
+    <string formatted="false" name="postoffer_title">%s đang bán sản phẩm này\nvới giá %sk Vnd</string>
     
     <!-- fragment filter -->
     <!-- <string name="fm_filter_search_hint">Search for products</string> -->
@@ -235,5 +262,13 @@
     <!-- activity about -->
     <!-- <string name="activity_about_title">About</string> -->
     <string name="activity_about_title">Thông tin</string>
+    
+    <!-- fragment detail -->
+    <!-- <string name="fm_detail_1_person_liked"> person liked this</string> -->
+    <string name="fm_detail_1_person_liked"> người thích sản phẩm này</string>
+    
+    <!-- <string name="fm_detail_many_people_liked"> people liked this</string> -->
+    <string name="fm_detail_many_people_liked"> người thích sản phẩm này</string>
+    
 
 </resources>

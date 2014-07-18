@@ -32,6 +32,7 @@ public class LeftFragment extends Fragment implements OnClickListener {
 	RelativeLayout rlPopular, rlRecent, rlLowest, rlHighest, rlNearest;
 	TextView tvPopular, tvRecent, tvLowest, tvHighest, tvNearest;
 	ImageView imgPopular, imgRecent, imgLowest, imgHighest, imgNearest;
+	ImageView imgClearSearch, imgClearMax, imgClearMin;
 	
 	ImageView imgResetFilter;
 	
@@ -79,6 +80,10 @@ public class LeftFragment extends Fragment implements OnClickListener {
 		imgHighest = (ImageView) rootView.findViewById(R.id.fm_filter_img_check_highest);
 		imgNearest = (ImageView) rootView.findViewById(R.id.fm_filter_img_check_nearest);
 		
+		imgClearMax = (ImageView) rootView.findViewById(R.id.fm_filter_img_clear_maximum);
+		imgClearMin = (ImageView) rootView.findViewById(R.id.fm_filter_img_clear_minimum);
+		imgClearSearch = (ImageView) rootView.findViewById(R.id.fm_filter_img_clear_search);
+		
 		imgResetFilter = (ImageView) rootView.findViewById(R.id.fm_filter_img_reset_filter);
 		
 		setEvents(rootView);
@@ -96,6 +101,10 @@ public class LeftFragment extends Fragment implements OnClickListener {
 		rlLowest.setOnClickListener(this);
 		rlHighest.setOnClickListener(this);
 		rlNearest.setOnClickListener(this);
+		
+		imgClearMax.setOnClickListener(this);
+		imgClearMin.setOnClickListener(this);
+		imgClearSearch.setOnClickListener(this);
 		
 		imgResetFilter.setOnClickListener(this);
 	}
@@ -145,6 +154,18 @@ public class LeftFragment extends Fragment implements OnClickListener {
 		case R.id.fm_filter_rl_nearest:
 			setRowSelected(v, tvNearest, imgNearest);
 			break;
+			
+		case R.id.fm_filter_img_clear_maximum:
+		    etMaxPrice.setText("");
+		    break;
+		    
+		case R.id.fm_filter_img_clear_minimum:
+		    etMinPrice.setText("");
+            break;
+            
+		case R.id.fm_filter_img_clear_search:
+		    etSearch.setText("");
+            break;
 			
 		case R.id.fm_filter_img_reset_filter:
 			setUnselectedAll();

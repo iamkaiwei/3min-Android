@@ -80,9 +80,7 @@ public class CropImageActivity extends Activity {
 	
 	public void initWidgets() {
 		img = (ImageView) findViewById(R.id.act_crop_img);
-//		img.setVisibility(View.VISIBLE);
 		cropImg = (CropImageView) findViewById(R.id.act_crop_crop_img);
-//		cropImg.setVisibility(View.INVISIBLE);
 	}
 	
 	public void initData() {
@@ -137,19 +135,7 @@ public class CropImageActivity extends Activity {
 			@Override
 			public void onLoaded(ImageView imageView, Bitmap loadedBitmap, String url, boolean loadedFromCache) {
 				Log.d("url", url);
-				Log.i("Bitmap", "LoadedBmp: W x H: " + loadedBitmap.getWidth() + " x " + loadedBitmap.getHeight());
-//				cropImg.setImageBitmap(loadedBitmap);
-//				ImageModel imageModel=new ImageModel();
-//				if (url.contains("content://com.google.android.apps.photos.content")) {
-//					imageModel.setUrl(saveImagetoLocal(loadedBitmap));
-//					Log.d("path", imageModel.getUrl());
-//				} else {
-//					String pathImage=getPath(Uri.parse(url));
-//					Log.d("path", pathImage);
-//					imageModel.setUrl(pathImage);
-//				}
-//				imageView.setTag(imageModel);
-				
+				Log.i("Bitmap", "LoadedBmp: W x H: " + loadedBitmap.getWidth() + " x " + loadedBitmap.getHeight());				
 				
 				if (url.contains("content://com.google.android.apps.photos.content")) {
 					mPathImage = saveImagetoLocal(loadedBitmap);

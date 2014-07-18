@@ -98,8 +98,13 @@ public class DetailFragment extends Fragment {
 			tv_price.setText(productModel.getPrice() + CommonConstant.CURRENCY);
 
 			TextView tv_like = (TextView) convertView.findViewById(R.id.inflater_body_product_tv_like);
-			if (productModel.getLike() > 0) {
-				tv_like.setText("" + productModel.getLike() + " people like this");
+			int numLike = productModel.getLike();
+			if (numLike > 0) {
+			    if (numLike == 1) {
+			        tv_like.setText("" + productModel.getLike() + getActivity().getString(R.string.fm_detail_1_person_liked));
+                } else {
+                    tv_like.setText("" + productModel.getLike() + getActivity().getString(R.string.fm_detail_many_people_liked));
+                }
 			} else {
 				tv_like.setVisibility(View.GONE);
 			}
