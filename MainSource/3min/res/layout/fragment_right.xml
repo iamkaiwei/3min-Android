@@ -18,17 +18,20 @@
         android:id="@+id/ln_group_control"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
-        
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/common_spacing"
+        android:paddingTop="@dimen/common_spacing" >
+
         <!-- follow -->
-        <ImageView 
+
+        <ImageView
             android:id="@+id/img_follow"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_weight="1"
             android:src="@drawable/selector_follow"
-            android:layout_gravity="center"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <!-- liked -->
 
@@ -36,10 +39,10 @@
             android:id="@+id/btn_liked"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
             android:layout_weight="1"
             android:drawableTop="@drawable/ic_like"
             android:gravity="center_horizontal"
-            android:layout_gravity="bottom"
             android:singleLine="true"
             android:text="@string/profile_liked"
             android:textColor="@color/common_grey"
@@ -49,8 +52,6 @@
         <FrameLayout
             android:layout_width="1.5dp"
             android:layout_height="fill_parent"
-            android:layout_marginBottom="@dimen/common_spacing"
-            android:layout_marginTop="@dimen/common_spacing"
             android:background="@color/common_grey" >
         </FrameLayout>
 
@@ -60,10 +61,10 @@
             android:id="@+id/btn_msg"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
             android:layout_weight="1"
             android:drawableTop="@drawable/ic_message"
             android:gravity="center_horizontal"
-            android:layout_gravity="bottom"
             android:singleLine="true"
             android:text="@string/profile_message"
             android:textColor="@color/common_grey"
@@ -74,83 +75,46 @@
             android:id="@+id/btn_msg_divider"
             android:layout_width="1.5dp"
             android:layout_height="fill_parent"
-            android:layout_marginBottom="@dimen/common_spacing"
-            android:layout_marginTop="@dimen/common_spacing"
             android:background="@color/common_grey" >
         </FrameLayout>
 
         <!-- follower -->
 
-        <RelativeLayout
+        <com.lanna.droidlib.view.CustomTextView
             android:id="@+id/btn_follower"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1" >
-            
-            <com.lanna.droidlib.view.CustomTextView
-                android:id="@+id/btn_follower_number"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:layout_centerHorizontal="true"
-                android:text="..."
-                android:textColor="@color/common_black"
-                android:textSize="@dimen/textsize_large"
-                threemins:customTypeface="@string/font_bold" />
+            android:layout_gravity="bottom"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/ic_follower"
+            android:gravity="center_horizontal"
+            android:singleLine="true"
+            android:text="..."
+            android:textColor="@color/common_grey"
+            android:textSize="@dimen/textsize_medium"
+            threemins:customTypeface="@string/font_semibold" />
 
-            <com.lanna.droidlib.view.CustomTextView
-                android:id="@+id/btn_follower_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@+id/btn_follower_number"
-                android:text="@string/followers"
-                android:textColor="@color/common_grey"
-                android:textSize="@dimen/textsize_medium"
-                threemins:customTypeface="@string/font_semibold" />
-        </RelativeLayout>
-        
         <FrameLayout
             android:layout_width="1.5dp"
             android:layout_height="fill_parent"
-            android:layout_marginBottom="@dimen/common_spacing"
-            android:layout_marginTop="@dimen/common_spacing"
             android:background="@color/common_grey" >
         </FrameLayout>
-        
+
         <!-- following -->
 
-        <RelativeLayout
+        <com.lanna.droidlib.view.CustomTextView
             android:id="@+id/btn_following"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1" >
-            
-            <com.lanna.droidlib.view.CustomTextView
-                android:id="@+id/btn_following_number"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:layout_centerHorizontal="true"
-                android:text="..."
-                android:textColor="@color/common_black"
-                android:textSize="@dimen/textsize_large"
-                threemins:customTypeface="@string/font_bold" />
-
-            <com.lanna.droidlib.view.CustomTextView
-                android:id="@+id/btn_following_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@+id/btn_following_number"
-                android:text="@string/following"
-                android:textColor="@color/common_grey"
-                android:textSize="@dimen/textsize_medium"
-                threemins:customTypeface="@string/font_semibold" />
-        </RelativeLayout>
-        
+            android:layout_gravity="bottom"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/ic_following"
+            android:gravity="center_horizontal"
+            android:singleLine="true"
+            android:text="..."
+            android:textColor="@color/common_grey"
+            android:textSize="@dimen/textsize_medium"
+            threemins:customTypeface="@string/font_semibold" />
     </LinearLayout>
 
     <FrameLayout

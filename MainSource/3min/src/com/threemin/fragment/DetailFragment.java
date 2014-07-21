@@ -148,6 +148,7 @@ public class DetailFragment extends Fragment {
 					}
 				});
 			} else {
+			    btnChatToBuy.setVisibility(View.INVISIBLE);
 				checkListOffer();
 				btnChatToBuy.setBackgroundResource(R.drawable.bt_view_offers);
 				btnChatToBuy.setOnClickListener(new OnClickListener() {
@@ -194,7 +195,6 @@ public class DetailFragment extends Fragment {
 			imageView.setLayoutParams(params);
 			lnImgs.addView(imageView);
 			UrlImageViewHelper.setUrlDrawable(imageView, imageModel.getMedium(), R.drawable.stuff_img);
-//			UrlImageViewHelper.setUrlDrawable(imageView, imageModel.getOrigin());
 		}
 	}
 
@@ -258,6 +258,7 @@ public class DetailFragment extends Fragment {
 				if(conversations==null || conversations.isEmpty()){
 					btnChatToBuy.setBackgroundResource(R.drawable.selector_btn_no_offer_yet);
 				}
+				btnChatToBuy.setVisibility(View.VISIBLE);
 				break;
 			default:
 				break;

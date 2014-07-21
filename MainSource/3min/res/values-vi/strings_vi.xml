@@ -279,4 +279,7 @@
     <!-- <string name="facebook_app_missed_error">Please install Facebook for Android to share easier!</string> -->
     <string name="facebook_app_missed_error">Vui lòng cài đặt ứng dụng Facebook để chia sẻ dễ dàng hơn!</string>
     
+    <!-- <string name="share_three_min_info">Hi Guys, Try this app https://play.google.com/store/apps/details?id=com.threemins</string> -->
+    <string name="share_three_min_info">Chào các bạn, hãy dùng thử ứng dụng này https://play.google.com/store/apps/details?id=com.threemins</string>
+    
 </resources>

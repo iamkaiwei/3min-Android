@@ -45,7 +45,7 @@ public class CommonUti {
 		return Secure.getString(context.getContentResolver(), Secure.ANDROID_ID);
 	}
 
-	public static OnClickListener shareFacebook() {
+	public static OnClickListener shareFacebook(final Context context) {
 		return new OnClickListener() {
 
 			@Override
@@ -53,7 +53,7 @@ public class CommonUti {
 				Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
 				shareIntent.setType("text/plain");
 				shareIntent.putExtra(android.content.Intent.EXTRA_TEXT,
-						"Hi Guys, Try this app https://play.google.com/store/apps/details?id=com.threemins");
+						context.getString(R.string.share_three_min_info));
 				PackageManager pm = v.getContext().getPackageManager();
 				List<ResolveInfo> activityList = pm.queryIntentActivities(shareIntent, 0);
 				for (final ResolveInfo app : activityList) {
@@ -82,7 +82,7 @@ public class CommonUti {
 				i.putExtra(Intent.EXTRA_EMAIL, new String[] { "" });
 				i.putExtra(Intent.EXTRA_SUBJECT, "Three mins");
 				i.putExtra(Intent.EXTRA_TEXT,
-						"Hi Guys, Try this app https://play.google.com/store/apps/details?id=com.threemins");
+				        context.getString(R.string.share_three_min_info));
 				try {
 					context.startActivity(Intent.createChooser(i, "Send mail..."));
 				} catch (android.content.ActivityNotFoundException ex) {
@@ -121,7 +121,7 @@ public class CommonUti {
 				if(intent!=null){
 				intent.setType("vnd.android-dir/mms-sms");
 				intent.putExtra("sms_body",
-						"Hi Guys, Try this app https://play.google.com/store/apps/details?id=com.threemins");
+				        context.getString(R.string.share_three_min_info));
 				context.startActivity(intent);
 				}
 			}
