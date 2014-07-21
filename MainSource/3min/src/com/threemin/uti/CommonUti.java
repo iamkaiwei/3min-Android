@@ -189,9 +189,9 @@ public class CommonUti {
 		Session session = Session.getActiveSession();
 		if (session == null || !session.isOpened()) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(context);
-			builder.setTitle("Login Facebook");
-			builder.setMessage("Please login Facebook to share on it.");
-			builder.setPositiveButton("OK",
+			builder.setTitle(context.getString(R.string.activity_imageview_facebook_dialog_title));
+			builder.setMessage(context.getString(R.string.activity_imageview_facebook_dialog_message));
+			builder.setPositiveButton(context.getString(R.string.activity_imageview_facebook_dialog_btn_ok),
 					new DialogInterface.OnClickListener() {
 
 						@Override
@@ -200,7 +200,7 @@ public class CommonUti {
 							dialog.dismiss();
 						}
 					});
-			builder.setNegativeButton("Cancel",
+			builder.setNegativeButton(context.getString(R.string.activity_imageview_facebook_dialog_btn_cancel),
 					new DialogInterface.OnClickListener() {
 
 						@Override
@@ -251,17 +251,8 @@ public class CommonUti {
 				});
 				threadLoadImage.start();
 			}
-			
-//			Thread threadTimeOut = new Thread(new Runnable() {
-//				
-//				@Override
-//				public void run() {
-//					mShareHandler.sendEmptyMessageDelayed(TIME_OUT, 10000);
-//				}
-//			});
-//			threadTimeOut.start();
 		} else {
-			Toast.makeText(context, "Please install Facebook for Android to share easier!", Toast.LENGTH_LONG).show();
+			Toast.makeText(context, context.getString(R.string.facebook_app_missed_error), Toast.LENGTH_LONG).show();
 		}
 	}
 	

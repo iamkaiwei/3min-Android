@@ -125,14 +125,19 @@
     <!-- <string name="activity_imageview_facebook_dialog_title">Login Facebook</string> -->
     <string name="activity_imageview_facebook_dialog_title">Bạn chưa đăng nhập Facebook</string>
     
-    <!-- <string name="activity_imageview_facebook_dialog_message">Please login Facebook to share on it.</string> -->
-    <string name="activity_imageview_facebook_dialog_message">Vui lòng đăng nhập Facebook để chia sẻ sản phẩm.</string>
+    <!-- <string name="activity_imageview_facebook_dialog_message">Please login Facebook and try again.</string> -->
+    <string name="activity_imageview_facebook_dialog_message">Vui lòng đăng nhập Facebook và thử lại.</string>
     
     <!-- <string name="activity_imageview_facebook_dialog_btn_ok">OK</string> -->
     <string name="activity_imageview_facebook_dialog_btn_ok">Đồng ý</string>
     
     <!-- <string name="activity_imageview_facebook_dialog_btn_cancel">Cancel</string> -->
     <string name="activity_imageview_facebook_dialog_btn_cancel">Bỏ qua</string>
+    
+    <string name="activity_imageview_facebook_caption_name">Tên sản phẩm:</string>
+    <string name="activity_imageview_facebook_caption_price">\nGiá:</string>
+    <string name="activity_imageview_facebook_caption_description">\nMô tả:</string>
+    <string name="activity_imageview_facebook_post_successfully">Đã chia sẻ trên Facebook.</string>
     
     
     <!-- <string name="error_empty_image">Please enter at least one image</string> -->
@@ -270,5 +275,8 @@
     <!-- <string name="fm_detail_many_people_liked"> people liked this</string> -->
     <string name="fm_detail_many_people_liked"> người thích sản phẩm này</string>
     
-
+    <!-- common util -->
+    <!-- <string name="facebook_app_missed_error">Please install Facebook for Android to share easier!</string> -->
+    <string name="facebook_app_missed_error">Vui lòng cài đặt ứng dụng Facebook để chia sẻ dễ dàng hơn!</string>
+    
 </resources>

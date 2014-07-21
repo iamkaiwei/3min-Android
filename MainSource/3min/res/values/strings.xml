@@ -38,7 +38,7 @@
     <string name="please_wait">Please wait</string>
     <string name="loading_image">Loading image...</string>
     <string name="location">Location</string>
-    <string name="currency">kVND</string>
+    <string name="currency">k Vnd</string>
     <string name="followers">Followers</string>
     <string name="following">Following</string>
 
@@ -68,9 +68,13 @@
     <string name="activity_imageview_action_cancel_title">Cancel</string>
     
     <string name="activity_imageview_facebook_dialog_title">Login Facebook</string>
-    <string name="activity_imageview_facebook_dialog_message">Please login Facebook to share on it.</string>
+    <string name="activity_imageview_facebook_dialog_message">Please login Facebook and try again.</string>
     <string name="activity_imageview_facebook_dialog_btn_ok">OK</string>
     <string name="activity_imageview_facebook_dialog_btn_cancel">Cancel</string>
+    <string name="activity_imageview_facebook_caption_name">Name:</string>
+    <string name="activity_imageview_facebook_caption_price">\nPrice:</string>
+    <string name="activity_imageview_facebook_caption_description">\nDescription:</string>
+    <string name="activity_imageview_facebook_post_successfully">Shared on Facebook.</string>
     
     <string name="error_empty_image">Please enter at least one image</string>
     <string name="error_miss_field">Please enter all require field</string>
@@ -96,7 +100,7 @@
     <string name="postOffer_your_offer">Your offer</string>
     <string name="postoffer_start_chatting">Make an offer to start chatting</string>
     <string name="postoffer_tap_to_change">tap to change</string>
-    <string formatted="false" name="postoffer_title">%s is selling it for %s kVND</string>
+    <string formatted="false" name="postoffer_title">%s is selling it for %sk Vnd</string>
     
     <!-- fragment filter -->
     <string name="fm_filter_search_hint">Search for products</string>
@@ -142,5 +146,8 @@
     <!-- fragment detail -->
     <string name="fm_detail_1_person_liked"> person liked this</string>
     <string name="fm_detail_many_people_liked"> people liked this</string>
+    
+    <!-- common util -->
+    <string name="facebook_app_missed_error">Please install Facebook for Android to share easier!</string>
 
 </resources>
