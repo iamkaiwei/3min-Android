@@ -148,34 +148,64 @@ public class CommonUti {
 	//TODO
 	//share product on facebook ********************************************************
 	public static final int SHOW_LOADING_DIALOG = 1;
-	public static final int HIDE_LOADING_DIALOG = 2;
 	public static final int LOAD_IMG = 3;
+	public static final int LOAD_IMG_FAIL = 4;
+	public static final int MAX_RETRY_TIMES = 3;
 	public List<Bitmap> mListBitmap = new ArrayList<Bitmap>();
 	public int mNumBitmap;
+	public int mNumBitmapLoaded;
 	public Context mShareContext;
+	public ProductModel mProducModel;
 	public ProgressDialog mProgressDialog;
+	public int[] mRetryCount ;
+	public class UrlPosition {
+	    public String url;
+	    public int position;
+	}
 	
 	public Handler mShareHandler = new Handler() {
 		public void handleMessage(android.os.Message msg){
 			switch (msg.what) {
 			case LOAD_IMG:
 				mListBitmap.add((Bitmap)msg.obj);
-				if (mListBitmap.size() == mNumBitmap) {
+				mNumBitmapLoaded ++;
+				if (mNumBitmapLoaded == mNumBitmap && mListBitmap.size() > 0) {
+				    if (mProgressDialog != null && mProgressDialog.isShowing()) {
+	                    mProgressDialog.dismiss();
+	                }
 					doShowShareDialog(mShareContext, mListBitmap);
 				}
 				break;
+				
+			case LOAD_IMG_FAIL:
+			    UrlPosition urlPos = (UrlPosition) msg.obj;
+			    mRetryCount[urlPos.position] ++;
+			    Log.i("LoadBmp", "retry: " + mRetryCount[urlPos.position]);
+			    if (mRetryCount[urlPos.position] < MAX_RETRY_TIMES) {
+                    loadBimapToLocal(urlPos.position, urlPos.url);
+                } else {
+                    mNumBitmapLoaded++;
+                    if (mNumBitmapLoaded == mNumBitmap) {
+                        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+                            mProgressDialog.dismiss();
+                        }
+                        if (mListBitmap.size() == 0) {
+                            mListBitmap.add(UrlImageViewHelper.getCachedBitmap(mProducModel.getImages().get(0).getMedium()));
+                            Toast.makeText(mShareContext, mShareContext.getText(R.string.cannot_load_image_error), Toast.LENGTH_LONG).show();
+                        }
+                        if (mListBitmap.size() != 0) {
+                            doShowShareDialog(mShareContext, mListBitmap);
+                        }
+                    }
+                }
+                break;
+				
 			case SHOW_LOADING_DIALOG:
 				mProgressDialog = new ProgressDialog(mShareContext);
 				mProgressDialog.setMessage(mShareContext.getResources().getString(R.string.please_wait));
 				mProgressDialog.show();
 				break;
 				
-			case HIDE_LOADING_DIALOG:
-				if (mProgressDialog != null && mProgressDialog.isShowing()) {
-					mProgressDialog.dismiss();
-				}
-				break;
-
 			default:
 				break;
 			}
@@ -218,42 +248,60 @@ public class CommonUti {
 		if (FacebookDialog.canPresentShareDialog(context,FacebookDialog.ShareDialogFeature.PHOTOS)) {
 			mShareHandler.sendEmptyMessage(SHOW_LOADING_DIALOG);
 			mNumBitmap = product.getImages().size();
+			mNumBitmapLoaded = 0;
 			mShareContext = context;
+			mProducModel = product;
+			mRetryCount = new int[] {0, 0, 0, 0};
 			for (int i = 0; i < mNumBitmap; i++) {
+			    Log.i("LoadBmp", "loop: "  + i);
 				final String url = product.getImages().get(i).getOrigin();
-				Thread threadLoadImage = new Thread(new Runnable() {
-					
-					@Override
-					public void run() {
-						// TODO Auto-generated method stub
-						Bitmap cachedBitmap = UrlImageViewHelper.getCachedBitmap(url);
-						if (cachedBitmap != null) {
-							mShareHandler.sendEmptyMessage(HIDE_LOADING_DIALOG);
-							Message msg = new Message();
-							msg.what = LOAD_IMG;
-							msg.obj = cachedBitmap;
-							mShareHandler.sendMessage(msg);
-						} else {
-							UrlImageViewHelper.setUrlDrawable(new ImageView(mShareContext), url, new UrlImageViewCallback() {
-								
-								@Override
-								public void onLoaded(ImageView imageView, Bitmap loadedBitmap, String url,
-										boolean loadedFromCache) {
-									mShareHandler.sendEmptyMessage(HIDE_LOADING_DIALOG);
-									Message msg = new Message();
-									msg.what = LOAD_IMG;
-									msg.obj = loadedBitmap;
-									mShareHandler.sendMessage(msg);
-								}
-							});
-						}
-					}
-				});
-				threadLoadImage.start();
+				loadBimapToLocal(i, url);
 			}
 		} else {
 			Toast.makeText(context, context.getString(R.string.facebook_app_missed_error), Toast.LENGTH_LONG).show();
 		}
+	}
+	
+	public void loadBimapToLocal(final int position, final String url) {
+	    Log.i("LoadBmp", "Pos: " + position + " url: " + url);
+	    Thread threadLoadImage = new Thread(new Runnable() {
+            
+            @Override
+            public void run() {
+                Bitmap cachedBitmap = UrlImageViewHelper.getCachedBitmap(url);
+                if (cachedBitmap != null) {
+                    Message msg = new Message();
+                    msg.what = LOAD_IMG;
+                    msg.obj = cachedBitmap;
+                    mShareHandler.sendMessage(msg);
+                } else {
+                    UrlImageViewHelper.setUrlDrawable(new ImageView(mShareContext), url, new UrlImageViewCallback() {
+                        
+                        @Override
+                        public void onLoaded(ImageView imageView, Bitmap loadedBitmap, String url,
+                                boolean loadedFromCache) {
+                            if (loadedBitmap != null) {
+                                Message msg = new Message();
+                                msg.what = LOAD_IMG;
+                                msg.obj = loadedBitmap;
+                                mShareHandler.sendMessage(msg);
+                                Log.i("LoadBmp", "Pos: " + position + " success");
+                            } else {
+                                Message msg = new Message();
+                                UrlPosition urlPos = new UrlPosition();
+                                urlPos.position = position;
+                                urlPos.url = url;
+                                msg.obj = urlPos;
+                                msg.what = LOAD_IMG_FAIL;
+                                mShareHandler.sendMessage(msg);
+                                Log.i("LoadBmp", "Pos: " + position + " fail");
+                            }
+                        }
+                    });
+                }
+            }
+        });
+        threadLoadImage.start();
 	}
 	
 	public static void doShowShareDialog(Context context, List<Bitmap> data) {

@@ -150,5 +150,6 @@
     <!-- common util -->
     <string name="facebook_app_missed_error">Please install Facebook for Android to share easier!</string>
     <string name="share_three_min_info">Hi Guys, Try this app https://play.google.com/store/apps/details?id=com.threemins</string>
+    <string name="cannot_load_image_error">Can not load the original images of this product to share.\nUse the medium image instead</string>
 
 </resources>
