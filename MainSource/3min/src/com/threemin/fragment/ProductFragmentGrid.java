@@ -14,6 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.WindowManager;
+import android.view.animation.BounceInterpolator;
+import android.view.animation.OvershootInterpolator;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
@@ -217,6 +219,7 @@ public class ProductFragmentGrid extends BaseProductFragment {
                             mIsScrollingUp = false;
                            ObjectAnimator animator= ObjectAnimator.ofFloat(bottomView, "TranslationY", bottomHeight);
                            animator.setDuration(300);
+                           animator.setInterpolator(new OvershootInterpolator());
                            animator.start();
 //                            bottomView.setTranslationY(bottomHeight);
                         }
@@ -227,6 +230,7 @@ public class ProductFragmentGrid extends BaseProductFragment {
 //                            bottomView.setTranslationY(0);
                             ObjectAnimator animator= ObjectAnimator.ofFloat(bottomView, "TranslationY", 0);
                             animator.setDuration(300);
+                            animator.setInterpolator(new OvershootInterpolator());
                             animator.start();
                         }
                     }
