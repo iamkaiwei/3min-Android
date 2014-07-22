@@ -98,8 +98,8 @@
 
         <ImageView
             android:id="@+id/img_hide"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/activity_camera_btn_down_size"
+            android:layout_height="@dimen/activity_camera_btn_down_size"
             android:layout_gravity="center_horizontal"
             android:padding="@dimen/common_spacing"
             android:src="@drawable/btn_down" />

@@ -120,5 +120,8 @@
     
     <!-- inflater follow -->
     <dimen name="inflater_follow_avatar_size">35dp</dimen>
+    
+    <!-- activity camera -->
+    <dimen name="activity_camera_btn_down_size">50dp</dimen>
 
 </resources>

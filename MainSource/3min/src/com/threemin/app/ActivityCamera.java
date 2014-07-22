@@ -128,8 +128,6 @@ public class ActivityCamera extends Activity implements OnSeekBarChangeListener,
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				resetAll();
 				view.setSelected(true);
-				//hide the list filters 
-				hideView(TIME_TRANSLATE);
 				switch (position) {
 				case 0:
 					switchFilterTo(new GPUImagePixelationFilter());
@@ -296,6 +294,7 @@ public class ActivityCamera extends Activity implements OnSeekBarChangeListener,
 	}
 
 	private void hideView(int time) {
+	    enableWhenHideView();
 		TranslateAnimation ta = new TranslateAnimation(0, 0, 0, lnFilter.getHeight());
 		ta.setDuration(time);
 		ta.setAnimationListener(new AnimationListener() {
@@ -319,6 +318,7 @@ public class ActivityCamera extends Activity implements OnSeekBarChangeListener,
 	}
 
 	private void showView(int time) {
+	    disableWhenShowView();
 		TranslateAnimation ta = new TranslateAnimation(0, 0, lnFilter.getHeight(), 0);
 		ta.setDuration(TIME_TRANSLATE);
 		ta.setAnimationListener(new AnimationListener() {
@@ -339,6 +339,18 @@ public class ActivityCamera extends Activity implements OnSeekBarChangeListener,
 			}
 		});
 		lnFilter.startAnimation(ta);
+	}
+	
+	public void disableWhenShowView() {
+	    findViewById(R.id.chooseGallery).setEnabled(false);
+	    findViewById(R.id.button_capture).setEnabled(false);
+	    findViewById(R.id.img_switch_camera).setEnabled(false);
+	}
+	
+	public void enableWhenHideView() {
+	    findViewById(R.id.chooseGallery).setEnabled(true);
+        findViewById(R.id.button_capture).setEnabled(true);
+        findViewById(R.id.img_switch_camera).setEnabled(true);
 	}
 
 	private Camera.Size getOptimalSize(List<Camera.Size> sizes) {
