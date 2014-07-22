@@ -292,9 +292,9 @@ public class ImageViewActivity extends Activity {
                     Session session = Session.getActiveSession();
                     if (session == null || !session.isOpened()) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                        builder.setTitle("Login Facebook");
-                        builder.setMessage("Please login Facebook to share on it.");
-                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        builder.setTitle(mContext.getString(R.string.activity_imageview_facebook_dialog_title));
+                        builder.setMessage(mContext.getString(R.string.activity_imageview_facebook_dialog_message));
+                        builder.setPositiveButton(mContext.getString(R.string.activity_imageview_facebook_dialog_btn_ok), new DialogInterface.OnClickListener() {
                             
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -302,7 +302,7 @@ public class ImageViewActivity extends Activity {
                                 dialog.dismiss();
                             }
                         });
-                        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        builder.setNegativeButton(mContext.getString(R.string.activity_imageview_facebook_dialog_btn_cancel), new DialogInterface.OnClickListener() {
                             
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -459,8 +459,9 @@ public class ImageViewActivity extends Activity {
 		String item = etName.getText().toString();
 		String price = etPrice.getText().toString();
 		String description = etDescription.getText().toString();
-		String caption = "Name: " + item + "\nPrice: " + price
-				+ "\nDescription: " + description;
+		String caption = getString(R.string.activity_imageview_facebook_caption_name) + " " + item 
+		        + getString(R.string.activity_imageview_facebook_caption_price) + " " + price + "k Vnd"
+				+ getString(R.string.activity_imageview_facebook_caption_description) + " " + description;
 		if (draw1 != null) {
 			batch.add(createRequestFromFile(draw1.getUrl(), caption));
 		}
@@ -490,7 +491,7 @@ public class ImageViewActivity extends Activity {
 
 						@Override
 						public void onCompleted(Response response) {
-							Toast.makeText(ImageViewActivity.this, "Post image success", Toast.LENGTH_LONG).show();
+							Toast.makeText(ImageViewActivity.this, getString(R.string.activity_imageview_facebook_post_successfully), Toast.LENGTH_LONG).show();
 							Log.i("tructran", "Post image done");
 						}
 					});

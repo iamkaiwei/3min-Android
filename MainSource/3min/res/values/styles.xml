@@ -80,7 +80,7 @@
 
     <!-- activity_login.xml -->
     <style name="activity_login_btn_login_facebook">
-        <item name="android:background">@drawable/bt_login_facebook</item>
+        <item name="android:background">@drawable/selector_btn_login_facebook</item>
         <item name="android:textSize">0dp</item>
     </style>
     
@@ -122,12 +122,8 @@
         <item name="android:layout_alignParentRight">true</item>
         <item name="android:layout_centerVertical">true</item>
         <item name="android:layout_marginRight">@dimen/common_spacing_triple</item>
-        <item name="android:gravity">right|center_vertical</item>
         <item name="android:paddingLeft">@dimen/common_spacing</item>
-        <item name="android:paddingRight">@dimen/common_spacing</item>
-        <item name="android:textSize">@dimen/textsize_avatar</item>
-        <item name="android:inputType">number</item>
-        <item name="android:singleLine">true</item>
+        <item name="android:paddingRight">@dimen/common_spacing_double</item>
     </style>
     
     <!-- activity setting -->

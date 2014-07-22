@@ -58,7 +58,7 @@ public class SettingActivity extends Activity implements OnClickListener {
 		mImgShareEmail = (ImageView) findViewById(R.id.act_setting_img_share_email);
 		mImgShareMessage = (ImageView) findViewById(R.id.act_setting_img_share_message);
 		
-		mImgShareFacebook.setOnClickListener(CommonUti.shareFacebook());
+		mImgShareFacebook.setOnClickListener(CommonUti.shareFacebook(mContext));
 		mImgShareEmail.setOnClickListener(CommonUti.shareEmail(mContext));
 		mImgShareMessage.setOnClickListener(CommonUti.shareMessage(mContext));
 		

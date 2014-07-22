@@ -146,7 +146,7 @@ public class ChatToBuyActivity extends Activity {
 		mOfferedPrice = conversation.getOffer() + "";
 		int size = mProductModel.getImages().size();
 		if (size > 0) {
-			UrlImageViewHelper.setUrlDrawable(mImgProduct, mProductModel.getImages().get(0).getOrigin());
+			UrlImageViewHelper.setUrlDrawable(mImgProduct, mProductModel.getImages().get(0).getMedium());
 		} else {
 			mImgProduct.setImageResource(R.drawable.stuff_img);
 		}
@@ -368,23 +368,6 @@ public class ChatToBuyActivity extends Activity {
 			mMessageAdapter.addListData(historyChat);
 		};
 	};
-	
-//	private class GetProductViaIdTask extends AsyncTask<String, Void, ProductModel> {
-//		
-//		@Override
-//		protected ProductModel doInBackground(String... params) {
-//			return new ProductWebservice().getProductViaID(mTokken, params[0]);
-//		}
-//		
-//		@Override
-//		protected void onPostExecute(ProductModel result) {
-//			super.onPostExecute(result);
-//			if (result != null) {
-//				mProductModel = result;
-//				new GetConversationViaIdTask().execute(mConversationID);
-//			}
-//		}
-//	}
 	
 	private class GetConversationViaIdTask extends AsyncTask<String, Void, String> {
 
