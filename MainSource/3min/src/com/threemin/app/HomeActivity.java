@@ -54,7 +54,6 @@ public class HomeActivity extends SwipeBackActivity {
 
 	// button to login facebook
 	LoginButton mBtnLoginFacebook;
-	UiLifecycleHelper uiHelper;
 
 	// view pager
 	public static final int NUM_PAGES = 3;
@@ -87,8 +86,6 @@ public class HomeActivity extends SwipeBackActivity {
 		super.onCreate(savedInstanceState);
 		Log.i("access_token", PreferenceHelper.getInstance(this).getTokken());
 		mContext = this;
-		uiHelper = new UiLifecycleHelper(this, null);
-		uiHelper.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
 		
 		//disable swipe back
@@ -148,56 +145,8 @@ public class HomeActivity extends SwipeBackActivity {
             Log.i("HomeActivity", "session null");
         }
         
-        /*can use in future=====================================================================
-        uiHelper.onActivityResult(requestCode, resultCode, data, new FacebookDialog.Callback() {
-			
-			@Override
-			public void onError(PendingCall pendingCall, Exception error, Bundle data) {
-				// TODO Auto-generated method stub
-				Toast.makeText(mContext, "Posting Failed", Toast.LENGTH_LONG).show();
-				Log.i("HomeActivity", "post error" + error.toString());
-			}
-			
-			@Override
-			public void onComplete(PendingCall pendingCall, Bundle data) {
-				// TODO Auto-generated method stub
-				Toast.makeText(mContext, "Shared on Facebook", Toast.LENGTH_LONG).show();
-				Log.i("HomeActivity", "post success");
-			}
-		});
-		can use in future=====================================================================*/
 	}
 	
-	/*can use in future=====================================================================
-	@Override
-	protected void onResume() {
-	    super.onResume();
-	    uiHelper.onResume();
-	}
-
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-	    super.onSaveInstanceState(outState);
-	    uiHelper.onSaveInstanceState(outState);
-	}
-
-	@Override
-	public void onPause() {
-	    super.onPause();
-	    uiHelper.onPause();
-	}
-
-	@Override
-	public void onDestroy() {
-	    super.onDestroy();
-	    uiHelper.onDestroy();
-	}
-	
-	public UiLifecycleHelper getUiHelper() {
-		return uiHelper;
-	}
-	can use in future=====================================================================*/
-
 	public void doPageChange(int position) {
 		prevPage = currentPage;
 		currentPage = position;
@@ -319,7 +268,6 @@ public class HomeActivity extends SwipeBackActivity {
 
 						CategoryModel categoryModel = (CategoryModel) parent
 								.getItemAtPosition(position);
-//						mBtnActionbarCenterTitle.setText(categoryModel.getName());
 						if (categoryModel.getName().equals(
 								getString(R.string.browse))) {
 							onSwitchCate(null);

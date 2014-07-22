@@ -97,10 +97,10 @@ public class RightFragment extends Fragment {
         @Override
         protected void onPostExecute(UserModel result) {
             if (result != null) {
-                TextView tv_followers_number = (TextView) rootView.findViewById(R.id.btn_follower_number);
+                TextView tv_followers_number = (TextView) rootView.findViewById(R.id.btn_follower);
                 tv_followers_number.setText("" + result.getCountFollowers());
                 
-                TextView tv_followings_number = (TextView) rootView.findViewById(R.id.btn_following_number);
+                TextView tv_followings_number = (TextView) rootView.findViewById(R.id.btn_following);
                 tv_followings_number.setText("" + result.getCountFollowing());
                 
                 ImageView img_follow = (ImageView) rootView.findViewById(R.id.img_follow);

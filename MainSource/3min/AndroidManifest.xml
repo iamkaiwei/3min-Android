@@ -169,7 +169,7 @@
         
         <activity
             android:name="com.threemin.app.CropImageActivity"
-            android:label="CROP"
+            android:label="@string/act_crop_img_crop"
             android:screenOrientation="portrait"
             android:theme="@style/CustomActionBarTheme" >
         </activity>

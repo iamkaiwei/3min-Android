@@ -192,7 +192,7 @@ public class ActivityCamera extends Activity implements OnSeekBarChangeListener,
 	}
 
 	private void resetAll() {
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 6; i++) {
 			listfilters.getChildAt(i).setSelected(false);
 		}
 	}
