@@ -21,6 +21,7 @@ import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.VelocityTrackerCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ScrollerCompat;
+import android.util.Log;
 import android.view.*;
 import android.view.animation.Interpolator;
 
@@ -966,16 +967,18 @@ public class ViewDragHelper {
      * @return true if capture was successful
      */
     boolean tryCaptureViewForDrag(View toCapture, int pointerId) {
+        boolean returnValue = false;
         if (toCapture == mCapturedView && mActivePointerId == pointerId) {
             // Already done!
-            return true;
+            returnValue = true;
         }
         if (toCapture != null && mCallback.tryCaptureView(toCapture, pointerId)) {
             mActivePointerId = pointerId;
             captureChildView(toCapture, pointerId);
-            return true;
+            returnValue = true;
         }
-        return false;
+//        Log.i("lanna", "tryCaptureViewForDrag="+returnValue);
+        return returnValue;
     }
 
     /**
@@ -1104,7 +1107,11 @@ public class ViewDragHelper {
                     }
 
                     final View toCapture = findTopChildUnder((int) x, (int) y);
-                    if (toCapture != null && checkTouchSlop(toCapture, dx, dy)
+                    
+                    //TODO: modify
+                    //dx > dy because we hard code that just use swipe from left to right to finish activity
+                    if (dx > 20 && dx > dy
+                            && toCapture != null && checkTouchSlop(toCapture, dx, dy)
                             && tryCaptureViewForDrag(toCapture, pointerId)) {
                         break;
                     }
@@ -1233,7 +1240,16 @@ public class ViewDragHelper {
                         }
 
                         final View toCapture = findTopChildUnder((int) x, (int) y);
-                        if (checkTouchSlop(toCapture, dx, dy)
+                        
+//                        if (checkTouchSlop(toCapture, dx, dy)
+//                                && tryCaptureViewForDrag(toCapture, pointerId)) {
+//                            break;
+//                        }
+                        
+                        //TODO: modify
+                        //dx > dy because we hard code that just use swipe from left to right to finish activity
+                        if (dx > 20 && dx > dy
+                                && toCapture != null && checkTouchSlop(toCapture, dx, dy)
                                 && tryCaptureViewForDrag(toCapture, pointerId)) {
                             break;
                         }
@@ -1325,11 +1341,21 @@ public class ViewDragHelper {
                 || (absDelta <= mTouchSlop && absODelta <= mTouchSlop)) {
             return false;
         }
+
         if (absDelta < absODelta * 0.5f && mCallback.onEdgeLock(edge)) {
             mEdgeDragsLocked[pointerId] |= edge;
             return false;
         }
+        
+        //TODO: modify
+//        if (absDelta < absODelta/* * 0.5f*/ && mCallback.onEdgeLock(edge)) {
+//            mEdgeDragsLocked[pointerId] |= edge;
+//            return false;
+//        }
+        
         return (mEdgeDragsInProgress[pointerId] & edge) == 0 && absDelta > mTouchSlop;
+        //TODO: modify
+//        return (mEdgeDragsInProgress[pointerId] & edge) == 0 && absDelta > 20 /*mTouchSlop*/;
     }
 
     /**
@@ -1549,18 +1575,29 @@ public class ViewDragHelper {
     }
 
     private int getEdgeTouched(int x, int y) {
-        int result = 0;
-
-        if (x < mParentView.getLeft() + mEdgeSize)
-            result = EDGE_LEFT;
-        if (y < mParentView.getTop() + mEdgeSize)
-            result = EDGE_TOP;
-        if (x > mParentView.getRight() - mEdgeSize)
-            result = EDGE_RIGHT;
-        if (y > mParentView.getBottom() - mEdgeSize)
-            result = EDGE_BOTTOM;
-
+//        int result = 0;
+//
+//        if (x < mParentView.getLeft() + mEdgeSize)
+//            result = EDGE_LEFT;
+//        if (y < mParentView.getTop() + mEdgeSize)
+//            result = EDGE_TOP;
+//        if (x > mParentView.getRight() - mEdgeSize)
+//            result = EDGE_RIGHT;
+//        if (y > mParentView.getBottom() - mEdgeSize)
+//            result = EDGE_BOTTOM;
+//
 //        return result;
-        return EDGE_LEFT;
+        
+        //TODO:==========MODIFY=========================
+        
+      int result = EDGE_LEFT;
+
+      if (y < mParentView.getTop() + mEdgeSize)
+          result = EDGE_TOP;
+
+      if (y > mParentView.getBottom() - mEdgeSize)
+          result = EDGE_BOTTOM;
+
+      return result;
     }
 }
