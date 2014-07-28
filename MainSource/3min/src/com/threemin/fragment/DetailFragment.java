@@ -51,7 +51,7 @@ public class DetailFragment extends Fragment {
 	View rootView;
 	ProductModel productModel;
 	ViewPager pager;
-	Button btnChatToBuy, btnViewOffers;
+	Button btnChatToBuy;
 	LinearLayout lnImgs, btnLike;
 	ProgressDialog dialog, dialogPushReceived;
 	String conversationData;
