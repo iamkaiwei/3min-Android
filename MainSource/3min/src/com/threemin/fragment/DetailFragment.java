@@ -150,7 +150,7 @@ public class DetailFragment extends Fragment {
 			} else {
 			    btnChatToBuy.setVisibility(View.INVISIBLE);
 				checkListOffer();
-				btnChatToBuy.setBackgroundResource(R.drawable.bt_view_offers);
+				btnChatToBuy.setBackgroundResource(R.drawable.selector_btn_view_offers);
 				btnChatToBuy.setOnClickListener(new OnClickListener() {
 					
 					@Override
@@ -257,7 +257,12 @@ public class DetailFragment extends Fragment {
 			case REQUEST_GET_LIST_OFFER:
 				if(conversations==null || conversations.isEmpty()){
 					btnChatToBuy.setBackgroundResource(R.drawable.selector_btn_no_offer_yet);
-				}
+				} else if (conversations.size() == 1) {
+                    btnChatToBuy.setText(getActivity().getString(R.string.fm_detail_view_1_offer));
+                } else {
+                    String str = String.format(getActivity().getString(R.string.fm_detail_view_many_offers), "" + conversations.size()) ;
+                    btnChatToBuy.setText(str);
+                }
 				btnChatToBuy.setVisibility(View.VISIBLE);
 				break;
 			default:
