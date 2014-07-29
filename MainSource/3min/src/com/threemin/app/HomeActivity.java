@@ -95,7 +95,7 @@ public class HomeActivity extends SwipeBackActivity {
 				.addApi(Plus.API, null).addScope(Plus.SCOPE_PLUS_PROFILE)
 				.build();
 		mGoogleApiClient.connect();
-		initActionBar();
+		
 
 		// button login facebook
 		mBtnLoginFacebook = (LoginButton) findViewById(R.id.activity_home_btn_login_facebook);
@@ -112,9 +112,7 @@ public class HomeActivity extends SwipeBackActivity {
 		mViewPagerMainContent.setAdapter(mViewPagerAdapter);
 		mViewPagerMainContent.setCurrentItem(PAGE_CENTER);
 
-		mSpnActionbarCenterTitle.setSelected(true);
-		mImgActionbarProfile.setSelected(false);
-		mImgActionbarSearch.setSelected(false);
+
 		mViewPagerMainContent.setOnPageChangeListener(new OnPageChangeListener() {
 			
 			@Override
@@ -132,7 +130,14 @@ public class HomeActivity extends SwipeBackActivity {
 				
 			}
 		});
+		initActionBar();
 		
+	}
+	
+	@Override
+	protected void onResume() {
+	    // TODO Auto-generated method stub
+	    super.onResume();
 	}
 	
 	@Override
@@ -268,8 +273,8 @@ public class HomeActivity extends SwipeBackActivity {
 
 						CategoryModel categoryModel = (CategoryModel) parent
 								.getItemAtPosition(position);
-						if (categoryModel.getName().equals(
-								getString(R.string.browse))) {
+						String cate = getString(R.string.browse);
+						if (categoryModel.getName().equals("Everything") || categoryModel.getName().equals("Tất cả")) {
 							onSwitchCate(null);
 						} else {
 							onSwitchCate(categoryModel);
@@ -294,7 +299,9 @@ public class HomeActivity extends SwipeBackActivity {
 		});
 
 		disableSpinnerBackground();
-
+        mSpnActionbarCenterTitle.setSelected(true);
+        mImgActionbarProfile.setSelected(false);
+        mImgActionbarSearch.setSelected(false);
 	}
 
 	@Override
@@ -366,6 +373,9 @@ public class HomeActivity extends SwipeBackActivity {
 
 	public void onSwitchCate(CategoryModel categoryModel) {
 		mViewPagerMainContent.setCurrentItem(PAGE_CENTER);
+		if (homeFragment == null) {
+            homeFragment = new HomeFragment();
+        }
 		homeFragment.onSwichCategory(categoryModel);
 		if (categoryModel == null) {
 			getActionBar().setTitle(R.string.browse);
