@@ -77,9 +77,9 @@ public class HomeActivity extends SwipeBackActivity {
 	RelativeLayout layoutFilter;
 
 	GoogleApiClient mGoogleApiClient;
-	HomeFragment homeFragment;
-	LeftFragment leftFragment;
-	RightFragment rightFragment;
+	static HomeFragment homeFragment;
+	static LeftFragment leftFragment;
+	static RightFragment rightFragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -103,11 +103,8 @@ public class HomeActivity extends SwipeBackActivity {
 		// view pager implementation
 		currentPage = PAGE_CENTER;
 		prevPage = -1;
-		homeFragment = new HomeFragment();
-		leftFragment = new LeftFragment();
-		rightFragment = new RightFragment();
 		mViewPagerMainContent = (ViewPager) findViewById(R.id.activity_home_view_pager);
-		mViewPagerAdapter = new PagerAdapter(getSupportFragmentManager());
+		mViewPagerAdapter = new PagerAdapter(getSupportFragmentManager(),this);
 		mViewPagerMainContent.setOffscreenPageLimit(3);
 		mViewPagerMainContent.setAdapter(mViewPagerAdapter);
 		mViewPagerMainContent.setCurrentItem(PAGE_CENTER);
@@ -263,7 +260,7 @@ public class HomeActivity extends SwipeBackActivity {
 		});
 
 		mSpnActionbarCenterTitle = (CustomSpinner) findViewById(R.id.home_activity_action_bar_center_title);
-		new InitCategory().execute();
+		new InitCategory(this).execute();
 		mSpnActionbarCenterTitle
 				.setOnItemSelectedListener(new OnItemSelectedListener() {
 
@@ -347,21 +344,32 @@ public class HomeActivity extends SwipeBackActivity {
 			mViewPagerMainContent.setCurrentItem(PAGE_CENTER);
 		}
 	}
-	private class PagerAdapter extends FragmentStatePagerAdapter {
-
-		public PagerAdapter(FragmentManager fm) {
+	private static class PagerAdapter extends FragmentStatePagerAdapter {
+		HomeActivity homeActivity;
+		public PagerAdapter(FragmentManager fm, HomeActivity homeActivity) {
 			super(fm);
+			this.homeActivity=homeActivity;
 		}
 
 		@Override
 		public Fragment getItem(int position) {
 			if (position == 1) {
-				return homeFragment;
+				if(homeActivity.homeFragment==null){
+					Log.d("life", "new");
+					homeActivity.homeFragment=new HomeFragment();
+				}
+				return homeActivity.homeFragment;
 			}
 			if (position == 0) {
-				return leftFragment;
+				if(homeActivity.leftFragment==null){
+					homeActivity.leftFragment=new LeftFragment();
+				}
+				return homeActivity.leftFragment;
 			}
-			return rightFragment;
+			if(homeActivity.rightFragment==null){
+				homeActivity.rightFragment=new RightFragment();
+			}
+			return homeActivity.rightFragment;
 		}
 
 		@Override
@@ -371,7 +379,7 @@ public class HomeActivity extends SwipeBackActivity {
 
 	}
 
-	public void onSwitchCate(CategoryModel categoryModel) {
+	private void onSwitchCate(CategoryModel categoryModel) {
 		mViewPagerMainContent.setCurrentItem(PAGE_CENTER);
 		if (homeFragment == null) {
             homeFragment = new HomeFragment();
@@ -385,8 +393,12 @@ public class HomeActivity extends SwipeBackActivity {
 	}
 
 	// create list category to add to spinner
-	private class InitCategory extends
+	private static class InitCategory extends
 			AsyncTask<Void, Void, List<CategoryModel>> {
+		HomeActivity homeActivity;
+		public InitCategory(HomeActivity homeActivity){
+			this.homeActivity=homeActivity;
+		}
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
@@ -396,7 +408,7 @@ public class HomeActivity extends SwipeBackActivity {
 		protected List<CategoryModel> doInBackground(Void... arg0) {
 			try {
 				return CategoryWebservice.getInstance().getAllCategory(
-						HomeActivity.this);
+						homeActivity);
 			} catch (Exception e) {
 				e.printStackTrace();
 				return null;
@@ -407,11 +419,11 @@ public class HomeActivity extends SwipeBackActivity {
 		protected void onPostExecute(List<CategoryModel> result) {
 			if (result != null) {
 
-				categoryAdapter = new CategoryAdapter(HomeActivity.this,
-						result, true, mSpnActionbarCenterTitle);
-				mSpnActionbarCenterTitle.setAdapter(categoryAdapter);
-				mSpnActionbarCenterTitle.setSelected(true);
-				mSpnActionbarCenterTitle
+				homeActivity.categoryAdapter = new CategoryAdapter(homeActivity,
+						result, true, homeActivity.mSpnActionbarCenterTitle);
+				homeActivity.mSpnActionbarCenterTitle.setAdapter(homeActivity.categoryAdapter);
+				homeActivity.mSpnActionbarCenterTitle.setSelected(true);
+				homeActivity.mSpnActionbarCenterTitle
 						.setBackgroundResource(R.drawable.selector_home_action_bar_spn_bg);
 			}
 			super.onPostExecute(result);

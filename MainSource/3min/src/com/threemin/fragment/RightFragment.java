@@ -71,15 +71,18 @@ public class RightFragment extends Fragment {
         
         Log.i("RightFragment: ", userModel.getFirstName() + "isFollowed: " + (userModel.isFollowed()?"true":"false"));
         
-        new GetFollowInfoTask().execute(userModel.getId());
+        new GetFollowInfoTask(this).execute(userModel.getId());
 //        userProduct(userModel);
 //        initListener(rootView);
         return rootView;
     }
     
   //get the number of followers and followings, and the the state that this user is followed or not
-    private class GetFollowInfoTask extends AsyncTask<Integer, Void, UserModel> {
-        
+    private static class GetFollowInfoTask extends AsyncTask<Integer, Void, UserModel> {
+    	RightFragment rightFragment;
+    	public GetFollowInfoTask(RightFragment rightFragment){
+    		this.rightFragment=rightFragment;
+    	}
         @Override
         protected void onPreExecute() {
             // TODO Auto-generated method stub
@@ -88,34 +91,33 @@ public class RightFragment extends Fragment {
         
         @Override
         protected UserModel doInBackground(Integer... params) {
-            String token = PreferenceHelper.getInstance(getActivity()).getTokken();
-            UserModel model = new UserWebService().getUserViaId(token, "" + userModel.getId());
-            Log.i("RightFragment", model.getFullName() + " followers: " + model.getCountFollowers() + " following: " + model.getCountFollowing());
+            String token = PreferenceHelper.getInstance(rightFragment.getActivity()).getTokken();
+            UserModel model = new UserWebService().getUserViaId(token, "" + rightFragment.userModel.getId());
             return model;
         }
         
         @Override
         protected void onPostExecute(UserModel result) {
             if (result != null) {
-                TextView tv_followers_number = (TextView) rootView.findViewById(R.id.btn_follower);
+                TextView tv_followers_number = (TextView) rightFragment.rootView.findViewById(R.id.btn_follower);
                 tv_followers_number.setText("" + result.getCountFollowers());
                 
-                TextView tv_followings_number = (TextView) rootView.findViewById(R.id.btn_following);
+                TextView tv_followings_number = (TextView) rightFragment.rootView.findViewById(R.id.btn_following);
                 tv_followings_number.setText("" + result.getCountFollowing());
                 
-                ImageView img_follow = (ImageView) rootView.findViewById(R.id.img_follow);
+                ImageView img_follow = (ImageView) rightFragment.rootView.findViewById(R.id.img_follow);
                 img_follow.setSelected(result.isFollowed());
                 
                 Log.i("RightFragment: ", result.getFirstName() + "isFollowed: " + (result.isFollowed()?"true":"false"));
                 
-                userProduct(result);
-                userModel = result;
-                initListener(rootView);
+                rightFragment.userProduct(result);
+                rightFragment.userModel = result;
+                rightFragment.initListener(rightFragment.rootView);
             }
         }
     }
 
-    private void initListener(View rootView) {
+    public void initListener(View rootView) {
         rootView.findViewById(R.id.btn_liked).setOnClickListener(new OnClickListener() {
 
             @Override
@@ -200,35 +202,37 @@ public class RightFragment extends Fragment {
     public void doFollowFunction(View v) {
     	if (v.isSelected()) {
 			v.setSelected(false);
-			new FollowUserTask(UNFOLLOW).execute(userModel.getId());
+			new FollowUserTask(UNFOLLOW,this).execute(userModel.getId());
 		} else {
 			v.setSelected(true);
-			new FollowUserTask(FOLLOW).execute(userModel.getId());
+			new FollowUserTask(FOLLOW,this).execute(userModel.getId());
 		}
     }
     
     //call web service to follow or unfollow a user
-    private class FollowUserTask extends AsyncTask<Integer, Void, String> {
+    private static class FollowUserTask extends AsyncTask<Integer, Void, String> {
 
     	boolean followMode;
     	ProgressDialog dialog;
+    	RightFragment rightFragment;
     	
-    	public FollowUserTask(boolean followMode) {
+    	public FollowUserTask(boolean followMode,RightFragment rightFragment) {
     		this.followMode = followMode;
+    		this.rightFragment=rightFragment;
 		}
     	
     	@Override
     	protected void onPreExecute() {
     		// TODO Auto-generated method stub
     		super.onPreExecute();
-    		dialog = new ProgressDialog(getActivity());
-    		dialog.setMessage(getActivity().getString(R.string.please_wait));
+    		dialog = new ProgressDialog(rightFragment.getActivity());
+    		dialog.setMessage(rightFragment.getActivity().getString(R.string.please_wait));
     		dialog.show();
     	}
     	
 		@Override
 		protected String doInBackground(Integer... params) {
-			String tokken = PreferenceHelper.getInstance(getActivity()).getTokken();
+			String tokken = PreferenceHelper.getInstance(rightFragment.getActivity()).getTokken();
 			String result;
 			if (followMode == FOLLOW) {
 				result = new RelationshipWebService().followUser(tokken, params[0]);

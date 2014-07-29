@@ -46,7 +46,6 @@ public class HomeFragment extends Fragment {
 	public static int STEP_ADDMORE = 1;
 	public static int STEP_REFRESH = 2;
 	
-	ProductFragmentGrid productFragmentGrid;
 	BaseProductFragment currentFragment;
 	static int page;
 	View bottomView;
@@ -58,21 +57,22 @@ public class HomeFragment extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		Log.e("life", "onCreateView");
 		View v = inflater.inflate(R.layout.fragment_home, null);		
 		bottomView = v.findViewById(R.id.bottom);
 
 		// init: list of products is shown in list view:
 		mModeView = MODE_GRID_VIEW;
-		productFragmentGrid = new ProductFragmentGrid();
-		productFragmentGrid.setHomeFragment(this);
-		getChildFragmentManager().beginTransaction().replace(R.id.content_fragment, productFragmentGrid).commit();
-		currentFragment = productFragmentGrid;
-
+		if(getChildFragmentManager().findFragmentByTag(ProductFragmentGrid.class.getName())==null){
+			Log.d("life", "add");
+		getChildFragmentManager().beginTransaction().replace(R.id.content_fragment, new ProductFragmentGrid(),ProductFragmentGrid.class.getName()).commit();
+		} else{
+			currentFragment=(BaseProductFragment) getChildFragmentManager().findFragmentByTag(ProductFragmentGrid.class.getName());
+			getChildFragmentManager().beginTransaction().replace(R.id.content_fragment, currentFragment,ProductFragmentGrid.class.getName()).commit();
+        }
 		// create the fragment to switch between grid view and list view
-
-
+		currentFragment=(BaseProductFragment) getChildFragmentManager().findFragmentByTag(ProductFragmentGrid.class.getName());
 		v.findViewById(R.id.home_camera).setOnClickListener(onSellClick());
-
 		return v;
 	}
 	
@@ -147,7 +147,7 @@ public class HomeFragment extends Fragment {
 	}
 
 	public void setBottomView() {
-		productFragmentGrid.setBottomView(bottomView);
+		currentFragment.setBottomView(bottomView);
 	}
 	private OnClickListener onSellClick() {
 		return new OnClickListener() {
@@ -160,16 +160,12 @@ public class HomeFragment extends Fragment {
 	}
 	
     public void onSwichCategory(CategoryModel categoryModel) {
+    	Log.e("life", "onswitch");
         currentCate = categoryModel;
-        if (getChildFragmentManager().getFragments() == null || getChildFragmentManager().getFragments().size() == 0) {
-            productFragmentGrid = new ProductFragmentGrid();
-            productFragmentGrid.setHomeFragment(this);
-            getChildFragmentManager().beginTransaction().replace(R.id.content_fragment, productFragmentGrid).commit();
-            currentFragment = productFragmentGrid;
-        } else {
-            currentFragment = (BaseProductFragment) getChildFragmentManager().getFragments().get(0);;
-        }
 //        BaseProductFragment baseProductFragment=(BaseProductFragment) getChildFragmentManager().getFragments().get(0);
+        if(currentFragment==null){
+        	currentFragment=(BaseProductFragment) getChildFragmentManager().findFragmentByTag(ProductFragmentGrid.class.getName());
+        } 
         new GetProductTaks(currentFragment).execute(STEP_INIT);
     }
 
@@ -181,33 +177,33 @@ public class HomeFragment extends Fragment {
 				Log.i("HomeFragment", data.getStringExtra(CommonConstant.INTENT_PRODUCT_DATA));
 				ProductModel productModel = new Gson().fromJson(
 						data.getStringExtra(CommonConstant.INTENT_PRODUCT_DATA), ProductModel.class);
-				new UploadProduct((HomeActivity) getActivity()).execute(productModel);
+				new UploadProduct(this).execute(productModel);
 			}
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
-	private class UploadProduct extends AsyncTask<ProductModel, Void, ProductModel> {
+	private static class UploadProduct extends AsyncTask<ProductModel, Void, ProductModel> {
 		CategoryModel categoryModel;
-
-		public UploadProduct(HomeActivity activity) {
+		HomeFragment homeFragment;
+		public UploadProduct(HomeFragment homeFragment) {
 		}
 
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			currentFragment.getRefreshLayout().setRefreshing(true);
+			homeFragment.currentFragment.getRefreshLayout().setRefreshing(true);
 		}
 
 		@Override
 		protected void onPostExecute(ProductModel result) {
 			super.onPostExecute(result);
-			if (getActivity() != null && currentFragment != null) {
-				currentFragment.getRefreshLayout().setRefreshing(false);
+			if (homeFragment.getActivity() != null && homeFragment.currentFragment != null) {
+				homeFragment.currentFragment.getRefreshLayout().setRefreshing(false);
 				if (result != null) {
-					addNewProducts(result, categoryModel);
+					homeFragment.addNewProducts(result, categoryModel);
 				} else {
-					Toast.makeText(getActivity(), R.string.error_upload, Toast.LENGTH_SHORT).show();
+					Toast.makeText(homeFragment.getActivity(), R.string.error_upload, Toast.LENGTH_SHORT).show();
 				}
 			}
 		}
@@ -215,7 +211,7 @@ public class HomeFragment extends Fragment {
 		@Override
 		protected ProductModel doInBackground(ProductModel... params) {
 			ProductModel model = params[0];
-			String tokken = PreferenceHelper.getInstance(getActivity()).getTokken();
+			String tokken = PreferenceHelper.getInstance(homeFragment.getActivity()).getTokken();
 			categoryModel = model.getCategory();
 			HttpResponse reponese = new UploaderImageUlti().uploadUserPhoto(WebserviceConstant.CREATE_PRODUCT, model,
 					tokken);

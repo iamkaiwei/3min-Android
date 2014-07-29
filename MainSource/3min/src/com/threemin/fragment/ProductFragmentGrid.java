@@ -71,9 +71,9 @@ public class ProductFragmentGrid extends BaseProductFragment {
        
         View v = inflater.inflate(R.layout.fragment_product_gridview, null);
         if(getParentFragment() instanceof HomeFragment){
-            HomeFragment fragment=(HomeFragment) getParentFragment();
-            bottomView = fragment.getBottomView();
-            mLoginButton = fragment.getLoginButton();        
+        	homeFragment=(HomeFragment) getParentFragment();
+            bottomView = homeFragment.getBottomView();
+            mLoginButton = homeFragment.getLoginButton();        
         }
         swipeLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_gridview);
         int color = R.color.red_background;
@@ -89,10 +89,6 @@ public class ProductFragmentGrid extends BaseProductFragment {
         mGrid.setAdapter(mAdapter);
 
         initListner();
-        if (homeFragment == null) {
-            homeFragment = (HomeFragment) getParentFragment();
-        }
-        homeFragment.setBottomView();
         if (isSwitched) {
             changeIfNoItem();
         }
