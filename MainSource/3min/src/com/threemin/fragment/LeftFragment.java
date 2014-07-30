@@ -204,9 +204,6 @@ public class LeftFragment extends Fragment implements OnClickListener {
 	}
 	
 	public void hideKeyboard() {
-	    if (etMaxPrice == null || etMinPrice == null || etSearch == null) {
-            return;
-        }
 		CommonUti.hideKeyboard(etMaxPrice, getActivity());
 		CommonUti.hideKeyboard(etMinPrice, getActivity());
 		CommonUti.hideKeyboard(etSearch, getActivity());

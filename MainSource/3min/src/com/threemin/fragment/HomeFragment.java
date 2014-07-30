@@ -11,7 +11,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -23,7 +22,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.facebook.Session;
 import com.facebook.widget.LoginButton;
 import com.google.gson.Gson;
 import com.threemin.app.HomeActivity;
@@ -164,7 +162,7 @@ public class HomeFragment extends Fragment {
         if (getChildFragmentManager().getFragments() == null || getChildFragmentManager().getFragments().size() == 0) {
             productFragmentGrid = new ProductFragmentGrid();
             productFragmentGrid.setHomeFragment(this);
-            getChildFragmentManager().beginTransaction().replace(R.id.content_fragment, productFragmentGrid).commit();
+//            getChildFragmentManager().beginTransaction().replace(R.id.content_fragment, productFragmentGrid).commit();
             currentFragment = productFragmentGrid;
         } else {
             currentFragment = (BaseProductFragment) getChildFragmentManager().getFragments().get(0);;
