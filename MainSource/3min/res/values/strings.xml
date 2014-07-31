@@ -146,6 +146,8 @@
     <!-- fragment detail -->
     <string name="fm_detail_1_person_liked"> person liked this</string>
     <string name="fm_detail_many_people_liked"> people liked this</string>
+    <string name="fm_detail_view_1_offer">View 1 offer</string>
+    <string name="fm_detail_view_many_offers">View %s offers</string>
     
     <!-- common util -->
     <string name="facebook_app_missed_error">Please install Facebook for Android to share easier!</string>

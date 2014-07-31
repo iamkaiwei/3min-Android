@@ -1,6 +1,7 @@
 package com.threemin.app;
 
 import java.util.List;
+import java.util.Locale;
 
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 import android.app.ActionBar;
@@ -19,6 +20,7 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
@@ -76,13 +78,19 @@ public class HomeActivity extends SwipeBackActivity {
 	// right drawer
 	RelativeLayout layoutFilter;
 
-	GoogleApiClient mGoogleApiClient;
+//	GoogleApiClient mGoogleApiClient;
 	HomeFragment homeFragment;
 	LeftFragment leftFragment;
 	RightFragment rightFragment;
+	public static final String TAG_HOME_FRAGMENT = "HomeFragment";
+	public static final String TAG_LEFT_FRAGMENT = "LeftFragment";
+	public static final String TAG_RIGHT_FRAGMENT = "RightFragment";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+	    
+	    Log.i("LifeCycle", "onCreate");
+	    
 		super.onCreate(savedInstanceState);
 		Log.i("access_token", PreferenceHelper.getInstance(this).getTokken());
 		mContext = this;
@@ -91,11 +99,11 @@ public class HomeActivity extends SwipeBackActivity {
 		//disable swipe back
 		getSwipeBackLayout().setEnableGesture(false);
 
-		mGoogleApiClient = new GoogleApiClient.Builder(this)
-				.addApi(Plus.API, null).addScope(Plus.SCOPE_PLUS_PROFILE)
-				.build();
-		mGoogleApiClient.connect();
-		initActionBar();
+//		mGoogleApiClient = new GoogleApiClient.Builder(this)
+//				.addApi(Plus.API, null).addScope(Plus.SCOPE_PLUS_PROFILE)
+//				.build();
+//		mGoogleApiClient.connect();
+		
 
 		// button login facebook
 		mBtnLoginFacebook = (LoginButton) findViewById(R.id.activity_home_btn_login_facebook);
@@ -103,18 +111,28 @@ public class HomeActivity extends SwipeBackActivity {
 		// view pager implementation
 		currentPage = PAGE_CENTER;
 		prevPage = -1;
-		homeFragment = new HomeFragment();
-		leftFragment = new LeftFragment();
-		rightFragment = new RightFragment();
+		if (savedInstanceState != null) {
+		    homeFragment = (HomeFragment) getSupportFragmentManager().getFragment(savedInstanceState, TAG_HOME_FRAGMENT);
+		    leftFragment = (LeftFragment) getSupportFragmentManager().getFragment(savedInstanceState, TAG_LEFT_FRAGMENT);
+		    rightFragment = (RightFragment) getSupportFragmentManager().getFragment(savedInstanceState, TAG_RIGHT_FRAGMENT);
+        } 
+		if (homeFragment == null) {
+            
+		    homeFragment = new HomeFragment();
+        }
+		if (leftFragment == null) {
+		    leftFragment = new LeftFragment();
+        }
+		if (rightFragment == null) {
+		    rightFragment = new RightFragment();
+        }
 		mViewPagerMainContent = (ViewPager) findViewById(R.id.activity_home_view_pager);
 		mViewPagerAdapter = new PagerAdapter(getSupportFragmentManager());
 		mViewPagerMainContent.setOffscreenPageLimit(3);
 		mViewPagerMainContent.setAdapter(mViewPagerAdapter);
 		mViewPagerMainContent.setCurrentItem(PAGE_CENTER);
 
-		mSpnActionbarCenterTitle.setSelected(true);
-		mImgActionbarProfile.setSelected(false);
-		mImgActionbarSearch.setSelected(false);
+
 		mViewPagerMainContent.setOnPageChangeListener(new OnPageChangeListener() {
 			
 			@Override
@@ -132,7 +150,73 @@ public class HomeActivity extends SwipeBackActivity {
 				
 			}
 		});
+		initActionBar();
 		
+	}
+	
+	@Override
+	protected void onStart() {
+	    // TODO Auto-generated method stub
+	    
+	    Log.i("LifeCycle", "onStart");
+	    
+	    super.onStart();
+//	    mGoogleApiClient.connect();
+	}
+	
+	@Override
+	protected void onResume() {
+	    // TODO Auto-generated method stub
+        
+        Log.i("LifeCycle", "onResume");
+        
+	    super.onResume();
+	}
+	
+	@Override
+	protected void onPause() {
+	    // TODO Auto-generated method stub
+        
+        Log.i("LifeCycle", "onPause");
+        
+	    super.onPause();
+	}
+	
+	@Override
+	protected void onStop() {
+	    // TODO Auto-generated method stub
+        
+        Log.i("LifeCycle", "onStop");
+        
+	    super.onStop();
+//	    mGoogleApiClient.disconnect();
+	}
+	
+	@Override
+	protected void onRestart() {
+	    // TODO Auto-generated method stub
+        
+        Log.i("LifeCycle", "onRestart");
+        
+	    super.onRestart();
+	}
+	
+	@Override
+	protected void onDestroy() {
+	    // TODO Auto-generated method stub
+        
+        Log.i("LifeCycle", "onDestroy");
+        
+	    super.onDestroy();
+	}
+	
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+	    // TODO Auto-generated method stub
+	    super.onSaveInstanceState(outState);
+	    getSupportFragmentManager().putFragment(outState, TAG_HOME_FRAGMENT, homeFragment);
+	    getSupportFragmentManager().putFragment(outState, TAG_LEFT_FRAGMENT, leftFragment);
+	    getSupportFragmentManager().putFragment(outState, TAG_RIGHT_FRAGMENT, rightFragment);
 	}
 	
 	@Override
@@ -268,8 +352,7 @@ public class HomeActivity extends SwipeBackActivity {
 
 						CategoryModel categoryModel = (CategoryModel) parent
 								.getItemAtPosition(position);
-						if (categoryModel.getName().equals(
-								getString(R.string.browse))) {
+						if (categoryModel.getId() == 0) {
 							onSwitchCate(null);
 						} else {
 							onSwitchCate(categoryModel);
@@ -294,7 +377,9 @@ public class HomeActivity extends SwipeBackActivity {
 		});
 
 		disableSpinnerBackground();
-
+        mSpnActionbarCenterTitle.setSelected(true);
+        mImgActionbarProfile.setSelected(false);
+        mImgActionbarSearch.setSelected(false);
 	}
 
 	@Override
@@ -309,26 +394,26 @@ public class HomeActivity extends SwipeBackActivity {
 		// Pass any configuration change to the drawer toggls
 	}
 
-	public OnClickListener doLogout() {
-		return new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				Session session = Session.getActiveSession();
-				if (session != null && session.isOpened()) {
-					session.closeAndClearTokenInformation();
-				}
-
-				if (mGoogleApiClient.isConnected()) {
-					Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
-					mGoogleApiClient.disconnect();
-					mGoogleApiClient.connect();
-				}
-				finish();
-				startActivity(new Intent(mContext, LoginActivity.class));
-			}
-		};
-	}
+//	public OnClickListener doLogout() {
+//		return new OnClickListener() {
+//
+//			@Override
+//			public void onClick(View v) {
+//				Session session = Session.getActiveSession();
+//				if (session != null && session.isOpened()) {
+//					session.closeAndClearTokenInformation();
+//				}
+//
+//				if (mGoogleApiClient.isConnected()) {
+//					Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
+//					mGoogleApiClient.disconnect();
+//					mGoogleApiClient.connect();
+//				}
+//				finish();
+//				startActivity(new Intent(mContext, LoginActivity.class));
+//			}
+//		};
+//	}
 
 	// view pager implementation
 
@@ -366,12 +451,15 @@ public class HomeActivity extends SwipeBackActivity {
 
 	public void onSwitchCate(CategoryModel categoryModel) {
 		mViewPagerMainContent.setCurrentItem(PAGE_CENTER);
+		if (homeFragment == null) {
+            homeFragment = new HomeFragment();
+        }
 		homeFragment.onSwichCategory(categoryModel);
-		if (categoryModel == null) {
-			getActionBar().setTitle(R.string.browse);
-		} else {
-			getActionBar().setTitle(categoryModel.getName());
-		}
+//		if (categoryModel == null) {
+//			getActionBar().setTitle(R.string.browse);
+//		} else {
+//			getActionBar().setTitle(categoryModel.getName());
+//		}
 	}
 
 	// create list category to add to spinner

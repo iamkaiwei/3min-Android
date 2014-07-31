@@ -32,7 +32,9 @@ public class UserLikeProductActivity extends FragmentActivity {
 
 		if (savedInstanceState == null) {
 			// TODO
-			ListProductFragment listProductFragment=new ListProductFragment(UserLikeProductActivity.this, mLoginButton);
+//			ListProductFragment listProductFragment=new ListProductFragment(UserLikeProductActivity.this, mLoginButton);
+		    ListProductFragment listProductFragment=new ListProductFragment();
+		    
 			listProductFragment.setMode(ListProductFragment.MODE_USER_LIKED_PRODUCT);
 			getSupportFragmentManager().beginTransaction().add(R.id.container,listProductFragment).commit();
 		}
@@ -69,5 +71,9 @@ public class UserLikeProductActivity extends FragmentActivity {
         int screenWidth = CommonUti.getWidthInPixel(this);
         txtTitle.setWidth(screenWidth);
 		
+	}
+	
+	public LoginButton getLoginButton() {
+	    return mLoginButton;
 	}
 }

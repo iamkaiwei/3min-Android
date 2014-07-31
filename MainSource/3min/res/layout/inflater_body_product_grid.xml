@@ -25,8 +25,8 @@
             android:layout_alignBottom="@+id/inflater_body_product_grid_image"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_alignRight="@+id/inflater_body_product_grid_image" 
-            android:background="@drawable/bg_overlay">
+            android:layout_alignRight="@+id/inflater_body_product_grid_image"
+            android:background="@drawable/bg_overlay" >
         </FrameLayout>
     </RelativeLayout>
     <!-- name of product -->
@@ -146,7 +146,8 @@
         android:orientation="horizontal"
         android:padding="@dimen/inflater_header_grid_padding" >
 
-        <com.meg7.widget.SvgImageView
+        <!--
+             <com.meg7.widget.SvgImageView
             android:id="@+id/inflater_header_product_grid_image"
             android:layout_width="@dimen/inflater_header_grid_avatar_size"
             android:layout_height="@dimen/inflater_header_grid_avatar_size"
@@ -154,6 +155,30 @@
             android:scaleType="centerCrop"
             android:src="@drawable/ic_launcher"
             threemins:svg_raw_resource="@raw/shape_avatar" />
+        -->
+
+        <FrameLayout
+            android:layout_width="@dimen/inflater_header_grid_avatar_size"
+            android:layout_height="@dimen/inflater_header_grid_avatar_size" >
+
+            <!-- overlay view -->
+
+           
+
+            <ImageView
+                android:id="@+id/inflater_header_product_grid_image"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_launcher"
+                />
+             <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" 
+                android:src="@drawable/border_avatar"
+                android:scaleType="fitXY"
+                />
+        </FrameLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -194,12 +219,11 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:drawableLeft="@drawable/clock"
+                    android:drawablePadding="2dp"
                     android:text="2 days ago"
                     android:textColor="@color/common_grey"
                     android:textSize="@dimen/textsize_small"
-                    threemins:customTypeface="@string/font_regular"
-                    android:drawablePadding="2dp"
-                     />
+                    threemins:customTypeface="@string/font_regular" />
             </RelativeLayout>
         </RelativeLayout>
     </LinearLayout>

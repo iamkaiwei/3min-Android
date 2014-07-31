@@ -31,6 +31,7 @@
     <dimen name="textsize_medium">15sp</dimen>
     <dimen name="textsize_small">12.5sp</dimen>
     <dimen name="textsize_very_small">10sp</dimen>
+    <dimen name="textsize_fm_detail_btn_view_offers">17sp</dimen>
     
     <dimen name="home_height_tab">37.5dp</dimen>
     
@@ -120,5 +121,8 @@
     
     <!-- inflater follow -->
     <dimen name="inflater_follow_avatar_size">35dp</dimen>
+    
+    <!-- activity camera -->
+    <dimen name="activity_camera_btn_down_size">50dp</dimen>
 
 </resources>

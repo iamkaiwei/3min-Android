@@ -18,6 +18,7 @@ import com.threemin.uti.CommonUti;
 import com.threemins.R;
 
 public class PostOfferActivity extends FragmentActivity {
+    public static final String TAG_POST_OFFER_FRAGMENT = "PostOfferFragment";
 	PostOfferFragment postOfferFragment;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +30,9 @@ public class PostOfferActivity extends FragmentActivity {
 		if (savedInstanceState == null) {
 			postOfferFragment = new PostOfferFragment();
 			getSupportFragmentManager().beginTransaction().add(R.id.container, postOfferFragment).commit();
-		}
+		} else {
+            postOfferFragment = (PostOfferFragment) getSupportFragmentManager().getFragment(savedInstanceState, TAG_POST_OFFER_FRAGMENT);
+        }
 	}
 
 	private void initActionBar() {
@@ -54,25 +57,31 @@ public class PostOfferActivity extends FragmentActivity {
 		
 	}
 	
-	   
-		@Override
-		public boolean onOptionsItemSelected(MenuItem item) {
-			switch (item.getItemId()) {
-			case android.R.id.home:
-				onBackPressed();
-				return true;
-			case R.id.action_submit:
-				postOfferFragment.postOffer();
-				return true;
-			default:
-				return super.onOptionsItemSelected(item);
-			}
-		}
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case android.R.id.home:
+            onBackPressed();
+            return true;
+        case R.id.action_submit:
+            postOfferFragment.postOffer();
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
+    }
 
-		@Override
-		public boolean onCreateOptionsMenu(Menu menu) {
-			MenuInflater inflater = getMenuInflater();
-			inflater.inflate(R.menu.menu_post_product, menu);
-			return super.onCreateOptionsMenu(menu);
-		}
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_post_product, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+    
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        // TODO Auto-generated method stub
+        super.onSaveInstanceState(outState);
+        getSupportFragmentManager().putFragment(outState, TAG_POST_OFFER_FRAGMENT, postOfferFragment);
+    }
 }

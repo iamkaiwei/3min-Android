@@ -27,6 +27,7 @@ import com.facebook.widget.LoginButton;
 import com.google.gson.Gson;
 import com.threemin.adapter.ProductGridAdapter;
 import com.threemin.app.DetailActivity;
+import com.threemin.app.HomeActivity;
 import com.threemin.model.ProductModel;
 import com.threemin.uti.CommonConstant;
 import com.threemin.uti.CommonUti;
@@ -52,13 +53,13 @@ public class ProductFragmentGrid extends BaseProductFragment {
 
     private int bottomHeight;
 
-    public ProductFragmentGrid(View bottomView, Context context, LoginButton btn) {
-        super();
-        this.bottomView = bottomView;
-        this.mContext = context;
-        this.mLoginButton = btn;
-        this.isSwitched = false;
-    }
+//    public ProductFragmentGrid(View bottomView, Context context, LoginButton btn) {
+//        super();
+//        this.bottomView = bottomView;
+//        this.mContext = context;
+//        this.mLoginButton = btn;
+//        this.isSwitched = false;
+//    }
 
     public ProductFragmentGrid() {
         super();
@@ -69,12 +70,18 @@ public class ProductFragmentGrid extends BaseProductFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
        
         View v = inflater.inflate(R.layout.fragment_product_gridview, null);
+        if(getParentFragment() instanceof HomeFragment){
+            HomeFragment fragment=(HomeFragment) getParentFragment();
+            bottomView = fragment.getBottomView();
+            mLoginButton = fragment.getLoginButton();        
+        }
         swipeLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_gridview);
         int color = R.color.red_background;
         swipeLayout.setColorScheme(color, color, color, color);
         rlNoItems = (RelativeLayout) v.findViewById(R.id.fragment_product_gridview_layout_no_items);
         mGrid = (QuickReturnGridView) v.findViewById(R.id.gv_product);
-
+        
+        mContext=getActivity();
         if (mAdapter == null) {
             // TODO
             mAdapter = new ProductGridAdapter(productModels, mContext, mLoginButton, CommonUti.calcWidthItem(mContext));
@@ -98,7 +105,10 @@ public class ProductFragmentGrid extends BaseProductFragment {
     public void updateUI() {
         if (mAdapter == null) {
             // TODO
-            mAdapter = new ProductGridAdapter(productModels, mContext, mLoginButton,CommonUti.calcWidthItem(mContext));
+            mAdapter = new ProductGridAdapter(productModels, 
+                                                mContext, 
+                                                mLoginButton,
+                                                CommonUti.calcWidthItem(mContext));
         }
         mAdapter.updateData(productModels);
         changeIfNoItem();
@@ -189,7 +199,7 @@ public class ProductFragmentGrid extends BaseProductFragment {
 
             @Override
             public void onRefresh() {
-                homeFragment.new GetProductTaks(ProductFragmentGrid.this).execute(HomeFragment.STEP_REFRESH);
+                new HomeFragment.GetProductTaks(ProductFragmentGrid.this).execute(HomeFragment.STEP_REFRESH);
             }
         });
 
@@ -208,7 +218,7 @@ public class ProductFragmentGrid extends BaseProductFragment {
                 boolean loadMore = firstVisibleItem + visibleItemCount >= totalItemCount - 1;
                 if (loadMore && totalItemCount > 1 && thelasttotalCount != totalItemCount) {
                     thelasttotalCount = totalItemCount;
-                    homeFragment.new GetProductTaks(ProductFragmentGrid.this).execute(HomeFragment.STEP_ADDMORE);
+                    new HomeFragment.GetProductTaks(ProductFragmentGrid.this).execute(HomeFragment.STEP_ADDMORE);
                 }
 
                 if (view.getId() == mGrid.getId()) {

@@ -19,6 +19,9 @@ import com.facebook.widget.LoginButton;
 import com.google.gson.Gson;
 import com.threemin.adapter.ProductGridAdapter;
 import com.threemin.app.DetailActivity;
+import com.threemin.app.HomeActivity;
+import com.threemin.app.ProfileActivity;
+import com.threemin.app.UserLikeProductActivity;
 import com.threemin.model.ProductModel;
 import com.threemin.model.UserModel;
 import com.threemin.uti.CommonConstant;
@@ -50,12 +53,16 @@ public class ListProductFragment extends BaseProductFragment {
     private int page;
     private int mode;
     private UserModel userModel;
-
-    public ListProductFragment(Context context, LoginButton btn) {
+    
+    public ListProductFragment() {
         super();
-        this.mContext = context;
-        this.mLoginButton = btn;
     }
+
+//    public ListProductFragment(Context context, LoginButton btn) {
+//        super();
+//        this.mContext = context;
+//        this.mLoginButton = btn;
+//    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -65,6 +72,15 @@ public class ListProductFragment extends BaseProductFragment {
         int color2 = R.color.common_grey;
         swipeLayout.setColorScheme(color, color2, color, color2);
         mGrid = (QuickReturnGridView) v.findViewById(R.id.gv_product);
+        
+        mContext = getActivity();
+        if (mContext instanceof HomeActivity) {
+            mLoginButton = ((HomeActivity)mContext).getLoginButton();
+        } else if (mContext instanceof UserLikeProductActivity) {
+            mLoginButton = ((UserLikeProductActivity)mContext).getLoginButton();
+        } else if (mContext instanceof ProfileActivity) {
+            mLoginButton = ((ProfileActivity)mContext).getLoginButton();
+        }
 
         if (mAdapter == null) {
             // TODO

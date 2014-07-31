@@ -51,7 +51,7 @@ public class DetailFragment extends Fragment {
 	View rootView;
 	ProductModel productModel;
 	ViewPager pager;
-	Button btnChatToBuy, btnViewOffers;
+	Button btnChatToBuy;
 	LinearLayout lnImgs, btnLike;
 	ProgressDialog dialog, dialogPushReceived;
 	String conversationData;
@@ -101,9 +101,9 @@ public class DetailFragment extends Fragment {
 			int numLike = productModel.getLike();
 			if (numLike > 0) {
 			    if (numLike == 1) {
-			        tv_like.setText("" + productModel.getLike() + getActivity().getString(R.string.fm_detail_1_person_liked));
+			        tv_like.setText("" + productModel.getLike() + " " + getActivity().getString(R.string.fm_detail_1_person_liked));
                 } else {
-                    tv_like.setText("" + productModel.getLike() + getActivity().getString(R.string.fm_detail_many_people_liked));
+                    tv_like.setText("" + productModel.getLike() + " " + getActivity().getString(R.string.fm_detail_many_people_liked));
                 }
 			} else {
 				tv_like.setVisibility(View.GONE);
@@ -150,7 +150,7 @@ public class DetailFragment extends Fragment {
 			} else {
 			    btnChatToBuy.setVisibility(View.INVISIBLE);
 				checkListOffer();
-				btnChatToBuy.setBackgroundResource(R.drawable.bt_view_offers);
+				btnChatToBuy.setBackgroundResource(R.drawable.selector_btn_view_offers);
 				btnChatToBuy.setOnClickListener(new OnClickListener() {
 					
 					@Override
@@ -257,7 +257,12 @@ public class DetailFragment extends Fragment {
 			case REQUEST_GET_LIST_OFFER:
 				if(conversations==null || conversations.isEmpty()){
 					btnChatToBuy.setBackgroundResource(R.drawable.selector_btn_no_offer_yet);
-				}
+				} else if (conversations.size() == 1) {
+                    btnChatToBuy.setText(getActivity().getString(R.string.fm_detail_view_1_offer));
+                } else {
+                    String str = String.format(getActivity().getString(R.string.fm_detail_view_many_offers), "" + conversations.size()) ;
+                    btnChatToBuy.setText(str);
+                }
 				btnChatToBuy.setVisibility(View.VISIBLE);
 				break;
 			default:

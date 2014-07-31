@@ -22,11 +22,11 @@ import com.threemin.uti.PreferenceHelper;
 import com.threemin.webservice.UserWebService;
 import com.threemins.R;
 
-public class ProfileActivity extends FragmentActivity {
+public class ProfileActivity extends SwipeBackActivity {
 	public final String tag = "ProfileActivity";
     LoginButton mLoginButton;
     UserModel userModel;
-//    SwipeBackLayout mSwipeBack;
+    SwipeBackLayout mSwipeBack;
     Bundle savedInstanceState;
     
     @Override
@@ -36,8 +36,8 @@ public class ProfileActivity extends FragmentActivity {
         this.savedInstanceState = savedInstanceState;
         
         // Init the swipe back mechanism
-//        mSwipeBack = getSwipeBackLayout();
-//        mSwipeBack.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
+        mSwipeBack = getSwipeBackLayout();
+        mSwipeBack.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
         
         mLoginButton = (LoginButton) findViewById(R.id.activity_detail_btn_login_facebook);
         
