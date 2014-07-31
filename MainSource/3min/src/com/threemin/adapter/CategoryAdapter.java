@@ -76,7 +76,10 @@ public class CategoryAdapter extends BaseAdapter implements SpinnerAdapter {
 		LayoutInflater inflater = LayoutInflater.from(mContext);
 		convertView = inflater.inflate(R.layout.inflater_category, parent, false);
 		ImageView img = (ImageView) convertView.findViewById(R.id.inflater_cate_image);
-		if (!data.get(position).getName().equals(parent.getContext().getString(R.string.browse))) {
+		
+		Log.i("CateID", ""+ position + ": " +  data.get(position).getId() + "Name: " + data.get(position).getName());
+		
+		if (data.get(position).getId() != 0) {
 			Log.d("postion", "" + position);
 			UrlImageViewHelper.setUrlDrawable(img, data.get(position).getImage().getUrl());
 		} else {

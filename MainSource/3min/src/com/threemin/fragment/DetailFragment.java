@@ -101,9 +101,9 @@ public class DetailFragment extends Fragment {
 			int numLike = productModel.getLike();
 			if (numLike > 0) {
 			    if (numLike == 1) {
-			        tv_like.setText("" + productModel.getLike() + getActivity().getString(R.string.fm_detail_1_person_liked));
+			        tv_like.setText("" + productModel.getLike() + " " + getActivity().getString(R.string.fm_detail_1_person_liked));
                 } else {
-                    tv_like.setText("" + productModel.getLike() + getActivity().getString(R.string.fm_detail_many_people_liked));
+                    tv_like.setText("" + productModel.getLike() + " " + getActivity().getString(R.string.fm_detail_many_people_liked));
                 }
 			} else {
 				tv_like.setVisibility(View.GONE);
