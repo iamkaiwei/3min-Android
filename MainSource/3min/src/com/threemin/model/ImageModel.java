@@ -1,5 +1,7 @@
 package com.threemin.model;
 
+import java.util.List;
+
 public class ImageModel {
 	private int id;
 	private String name;
@@ -9,6 +11,13 @@ public class ImageModel {
 	private String medium;
 	private String origin;
 	private String url;
+	List<Integer> dimensions;
+    public List<Integer> getDimensions() {
+        return dimensions;
+    }
+    public void setDimensions(List<Integer> dimensions) {
+        this.dimensions = dimensions;
+    }
 	public int getId() {
 		return id;
 	}
