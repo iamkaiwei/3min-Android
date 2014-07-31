@@ -249,14 +249,17 @@
         </LinearLayout>
     </ScrollView> <!-- Button chat to buy -->
 
-    <Button
+    <com.lanna.droidlib.view.CustomButton
         android:id="@+id/fragment_detail_btn_chat_to_buy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/common_spacing_double"
-        android:background="@drawable/bt_chat_to_buy" />
+        android:background="@drawable/bt_chat_to_buy"
+        android:textSize="@dimen/textsize_fm_detail_btn_view_offers"
+        android:textColor="@android:color/white"
+        threemins:customTypeface="@string/font_semibold" />
 
     <View
         android:layout_width="fill_parent"

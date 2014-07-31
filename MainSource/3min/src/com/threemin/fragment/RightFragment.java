@@ -182,13 +182,15 @@ public class RightFragment extends Fragment {
     private void userProduct(UserModel userModel) {
         ListProductFragment productFragmentGrid = null;
         if (mode == ListProductFragment.MODE_USER_PRODUCT) {
-            productFragmentGrid = new ListProductFragment(getActivity(),
-                    ((ProfileActivity) getActivity()).getLoginButton());
+//            productFragmentGrid = new ListProductFragment(getActivity(),
+//                    ((ProfileActivity) getActivity()).getLoginButton());
+            productFragmentGrid = new ListProductFragment();
             productFragmentGrid.setMode(ListProductFragment.MODE_USER_PRODUCT);
             productFragmentGrid.setUserModel(userModel);
         } else {
-            productFragmentGrid = new ListProductFragment(getActivity(),
-                    ((HomeActivity) getActivity()).getLoginButton());
+//            productFragmentGrid = new ListProductFragment(getActivity(),
+//                    ((HomeActivity) getActivity()).getLoginButton());
+            productFragmentGrid = new ListProductFragment();
             productFragmentGrid.setMode(ListProductFragment.MODE_MY_PRODUCT);
         }
         getFragmentManager().beginTransaction().replace(R.id.content_list, productFragmentGrid).commit();

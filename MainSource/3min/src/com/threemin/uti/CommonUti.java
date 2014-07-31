@@ -323,6 +323,10 @@ public class CommonUti {
 	}
 	
 	public static int calcWidthItem(Context context){
+	    if (context == null) {
+            Log.i("CommonUti", "Context null");
+            return 0;
+        }
 	        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
 	        Display display = wm.getDefaultDisplay();
 	        Point point = new Point();

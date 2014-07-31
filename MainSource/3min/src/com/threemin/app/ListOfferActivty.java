@@ -25,6 +25,7 @@ public class ListOfferActivty extends FragmentActivity {
 			getSupportFragmentManager().beginTransaction().add(R.id.container, new ListOfferFragment()).commit();
 		}
 		initActionBar();
+		setTitle(getString(R.string.offer));
 	}
 
 	private void initActionBar() {
@@ -46,7 +47,6 @@ public class ListOfferActivty extends FragmentActivity {
 		txtTitle.setGravity(Gravity.CENTER);
 		int screenWidth = CommonUti.getWidthInPixel(this);
 		txtTitle.setWidth(screenWidth);
-
 	}
 
 }

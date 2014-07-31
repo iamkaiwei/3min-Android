@@ -71,6 +71,7 @@ public class CategoryWebservice {
 		}
 			getDisplayCategory(context);
 			getTaggableCategory(context);
+			currCategoryModels.get(0).setName(context.getString(R.string.browse));
 		return currCategoryModels;
 	}
 

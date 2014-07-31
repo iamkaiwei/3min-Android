@@ -22,7 +22,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.facebook.Session;
+import com.facebook.widget.LoginButton;
 import com.google.gson.Gson;
 import com.threemin.app.HomeActivity;
 import com.threemin.app.ImageViewActivity;
@@ -46,13 +46,13 @@ public class HomeFragment extends Fragment {
 	
 	ProductFragmentGrid productFragmentGrid;
 	BaseProductFragment currentFragment;
-	int page;
+	static int page;
 	View bottomView;
 	public int mModeView;
-	protected CategoryModel currentCate;
-	protected List<ProductModel> productModels;
+	static protected CategoryModel currentCate;
+	static protected List<ProductModel> productModels;
 
-
+	
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -61,7 +61,7 @@ public class HomeFragment extends Fragment {
 
 		// init: list of products is shown in list view:
 		mModeView = MODE_GRID_VIEW;
-		productFragmentGrid = new ProductFragmentGrid(bottomView, getActivity(), ( (HomeActivity)getActivity() ).getLoginButton());
+		productFragmentGrid = new ProductFragmentGrid();
 		productFragmentGrid.setHomeFragment(this);
 		getChildFragmentManager().beginTransaction().replace(R.id.content_fragment, productFragmentGrid).commit();
 		currentFragment = productFragmentGrid;
@@ -70,12 +70,11 @@ public class HomeFragment extends Fragment {
 
 
 		v.findViewById(R.id.home_camera).setOnClickListener(onSellClick());
-//		new GetProductTaks(currentFragment).execute(STEP_INIT);
 
 		return v;
 	}
 	
-	public class GetProductTaks extends AsyncTask<Integer, Void, List<ProductModel>> {
+	public static class GetProductTaks extends AsyncTask<Integer, Void, List<ProductModel>> {
 		int currentStep;
 
 		BaseProductFragment baseProductFragment;
@@ -158,10 +157,19 @@ public class HomeFragment extends Fragment {
 		};
 	}
 	
-	public void onSwichCategory(CategoryModel categoryModel){
-		currentCate=categoryModel;
-		new GetProductTaks(currentFragment).execute(STEP_INIT);
-	}
+    public void onSwichCategory(CategoryModel categoryModel) {
+        currentCate = categoryModel;
+        if (getChildFragmentManager().getFragments() == null || getChildFragmentManager().getFragments().size() == 0) {
+            productFragmentGrid = new ProductFragmentGrid();
+            productFragmentGrid.setHomeFragment(this);
+//            getChildFragmentManager().beginTransaction().replace(R.id.content_fragment, productFragmentGrid).commit();
+            currentFragment = productFragmentGrid;
+        } else {
+            currentFragment = (BaseProductFragment) getChildFragmentManager().getFragments().get(0);;
+        }
+//        BaseProductFragment baseProductFragment=(BaseProductFragment) getChildFragmentManager().getFragments().get(0);
+        new GetProductTaks(currentFragment).execute(STEP_INIT);
+    }
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -229,5 +237,13 @@ public class HomeFragment extends Fragment {
 			}
 			return null;
 		}
+	}
+	
+	public LoginButton getLoginButton() {
+	    return ((HomeActivity)getActivity()).getLoginButton();
+	}
+	
+	public View getBottomView() {
+	    return bottomView;
 	}
 }
