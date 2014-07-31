@@ -11,6 +11,7 @@ import com.threemins.R;
 
 public class FilterAdapter extends BaseAdapter {
 
+    private int selectedPositon;
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
@@ -38,6 +39,11 @@ public class FilterAdapter extends BaseAdapter {
 		ImageView image = (ImageView) convertView.findViewById(R.id.inflater_filter_img);
 		TextView text = (TextView) convertView.findViewById(R.id.inflater_filter_text);
 		initItem(position, image, text);
+		if(position==selectedPositon){
+		    convertView.setSelected(true);
+		} else {
+		    convertView.setSelected(false);
+		}
 		return convertView;
 	}
 
@@ -73,5 +79,13 @@ public class FilterAdapter extends BaseAdapter {
 			break;
 		}
 	}
+
+    public int getSelectedPositon() {
+        return selectedPositon;
+    }
+
+    public void setSelectedPositon(int selectedPositon) {
+        this.selectedPositon = selectedPositon;
+    }
 
 }
