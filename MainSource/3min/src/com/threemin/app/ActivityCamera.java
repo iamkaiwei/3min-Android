@@ -86,7 +86,7 @@ public class ActivityCamera extends Activity implements OnSeekBarChangeListener,
 	private View imgHide;
 	private static int TIME_TRANSLATE=500;
 	private ImageButton mBtnCapture;
-
+	private FilterAdapter adapter;
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -109,7 +109,8 @@ public class ActivityCamera extends Activity implements OnSeekBarChangeListener,
 		}
 
 		listfilters = (HorizontalListView) findViewById(R.id.list_filter);
-		listfilters.setAdapter(new FilterAdapter());
+		adapter=new FilterAdapter();
+		listfilters.setAdapter(adapter);
 		getActionBar().setIcon(R.drawable.btn_cancel);
 		getActionBar().setHomeButtonEnabled(true);
 		gpuImageView = (GPUImageView) findViewById(R.id.gpuimage);
@@ -126,8 +127,9 @@ public class ActivityCamera extends Activity implements OnSeekBarChangeListener,
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				resetAll();
 				view.setSelected(true);
+				adapter.setSelectedPositon(position);
+				adapter.notifyDataSetChanged();
 				switch (position) {
 				case 0:
 					switchFilterTo(new GPUImagePixelationFilter());
@@ -189,11 +191,6 @@ public class ActivityCamera extends Activity implements OnSeekBarChangeListener,
 		return super.onMenuItemSelected(featureId, item);
 	}
 
-	private void resetAll() {
-		for (int i = 0; i < 6; i++) {
-			listfilters.getChildAt(i).setSelected(false);
-		}
-	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -209,7 +206,7 @@ public class ActivityCamera extends Activity implements OnSeekBarChangeListener,
 
 	private void handleImage(final Uri selectedImage) {
 //		gpuImageView.setImage(selectedImage);
-		resetAll();
+	    adapter.setSelectedPositon(0);
 		finishImage(selectedImage);
 	}
 
