@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.facebook.widget.LoginButton;
 import com.google.gson.Gson;
+import com.koushikdutta.urlimageviewhelper.UrlImageViewCallback;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.squareup.picasso.Picasso;
 import com.threemin.app.ProfileActivity;
@@ -108,7 +109,33 @@ public class ProductGridAdapter extends BaseAdapter {
 			
 			if (model.getImages().size() > 0) {
 //			    Log.d("image", "height="+image.getHeight());
-				UrlImageViewHelper.setUrlDrawable(image, model.getImages().get(0).getMedium(),R.drawable.stuff_img);
+			    List<Integer> dimens = model.getImages().get(0).getDimensions();
+			    if (dimens != null && dimens.size() == 2) {
+			        Log.i("dimen", "size: " + dimens.size());
+			        int w = model.getImages().get(0).getDimensions().get(0);
+			        int h = model.getImages().get(0).getDimensions().get(1);
+			        float ratio = (float)this.widthItem / (float)w;
+			        int heightItem = (int) (h * ratio);
+                    LayoutParams param = image.getLayoutParams();
+                    param.height = heightItem;
+                    image.setLayoutParams(param);
+                    UrlImageViewHelper.setUrlDrawable(image, model.getImages().get(0).getMedium(),R.drawable.stuff_img);
+                } else {
+                    UrlImageViewHelper.setUrlDrawable(image, model.getImages().get(0).getMedium(), R.drawable.stuff_img, new UrlImageViewCallback() {
+                        
+                        @Override
+                        public void onLoaded(ImageView imageView, Bitmap loadedBitmap, String url, boolean loadedFromCache) {
+                            float ratio = ( (float)widthItem / (float)loadedBitmap.getWidth() );
+                            int heightItem = (int) ((float)loadedBitmap.getHeight() * ratio);
+                            LayoutParams param=imageView.getLayoutParams();
+                            param.height=heightItem;
+                            imageView.setLayoutParams(param);
+                            imageView.setImageBitmap(loadedBitmap);
+                        }
+                    });
+                }
+				
+				
 //				imageLoader.displayImage( model.getImages().get(0).getOrigin(),image,options);
 //			    Log.d("3min", "Image: "+model.getImages().get(0).getSquare());
 //			    Picasso.with(mContext).load(model.getImages().get(0).getOrigin()).placeholder(R.drawable.stuff_img).into(image);
