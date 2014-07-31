@@ -141,6 +141,7 @@ public class HomeFragment extends Fragment {
 	public void addNewProducts(ProductModel result, CategoryModel categoryModel) {
 		if (currentCate == null || currentCate.getId() == categoryModel.getId()) {
 			productModels.add(0, result);
+			currentFragment.updateUI();
 		}
 	}
 
