@@ -54,7 +54,6 @@
             android:textColor="@color/common_orange"
             android:textSize="@dimen/textsize_small"
             threemins:customTypeface="@string/font_regular" />
-]
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -133,11 +132,17 @@
         </RelativeLayout>
     </LinearLayout>
 
-    <View
-        android:id="@+id/inflater_body_product_grid_divider"
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:background="@color/background_grey" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <View
+            android:id="@+id/inflater_body_product_grid_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/background_grey" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/owner_view"
@@ -163,21 +168,18 @@
 
             <!-- overlay view -->
 
-           
-
             <ImageView
                 android:id="@+id/inflater_header_product_grid_image"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_launcher"
-                />
-             <ImageView
+                android:src="@drawable/ic_launcher" />
+
+            <ImageView
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent" 
-                android:src="@drawable/border_avatar"
+                android:layout_height="fill_parent"
                 android:scaleType="fitXY"
-                />
+                android:src="@drawable/border_avatar" />
         </FrameLayout>
 
         <RelativeLayout
