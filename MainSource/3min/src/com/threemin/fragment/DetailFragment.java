@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,10 +21,12 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.koushikdutta.urlimageviewhelper.UrlImageViewCallback;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -187,14 +190,48 @@ public class DetailFragment extends Fragment {
 
 	private void initImage() {
 		for (ImageModel imageModel : productModel.getImages()) {
-			ImageView imageView = new ImageView(getActivity());
-			LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-			int spacing = (int) getResources().getDimension(R.dimen.common_spacing);
-			imageView.setAdjustViewBounds(true);
-			imageView.setPadding(0, spacing, 0, spacing);
-			imageView.setLayoutParams(params);
-			lnImgs.addView(imageView);
-			UrlImageViewHelper.setUrlDrawable(imageView, imageModel.getMedium(), R.drawable.stuff_img);
+            final int imageViewWidth = CommonUti.getWidthInPixel(getActivity())
+                    - getActivity().getResources().getDimensionPixelSize(R.dimen.common_spacing) * 2;
+            List<Integer> dimens = imageModel.getDimensions();
+            
+            if (dimens != null && dimens.size() > 1) {
+                int imageWidth = dimens.get(0);
+                int imageHeight = dimens.get(1);
+                float ratio = (float) imageViewWidth / (float) imageWidth;
+                int imageViewHeight = (int) (imageHeight * ratio);
+                
+                ImageView imageView = new ImageView(getActivity());
+                LayoutParams params = new LayoutParams(imageViewWidth, imageViewHeight);
+                int spacing = (int) getResources().getDimension(R.dimen.common_spacing);
+                imageView.setAdjustViewBounds(true);
+                imageView.setPadding(0, spacing, 0, spacing);
+                imageView.setLayoutParams(params);
+                imageView.setScaleType(ScaleType.FIT_XY);
+                lnImgs.addView(imageView);
+                UrlImageViewHelper.setUrlDrawable(imageView, imageModel.getMedium(), R.drawable.stuff_img);
+            } else {
+                ImageView imageView = new ImageView(getActivity());
+                
+                UrlImageViewHelper.setUrlDrawable(imageView, imageModel.getMedium(), R.drawable.stuff_img, new UrlImageViewCallback() {
+                    
+                    @Override
+                    public void onLoaded(ImageView imageView, Bitmap loadedBitmap, String url, boolean loadedFromCache) {
+                        int imageWidth = loadedBitmap.getWidth();
+                        int imageHeight = loadedBitmap.getHeight();
+                        float ratio = (float) imageViewWidth / (float) imageWidth;
+                        int imageViewHeight = (int) (imageHeight * ratio);
+                        
+                        LayoutParams params = new LayoutParams(imageViewWidth, imageViewHeight);
+                        int spacing = (int) getResources().getDimension(R.dimen.common_spacing);
+                        imageView.setAdjustViewBounds(true);
+                        imageView.setPadding(0, spacing, 0, spacing);
+                        imageView.setLayoutParams(params);
+                        imageView.setScaleType(ScaleType.FIT_XY);
+                        lnImgs.addView(imageView);
+                    }
+                });
+            }
+            
 		}
 	}
 
