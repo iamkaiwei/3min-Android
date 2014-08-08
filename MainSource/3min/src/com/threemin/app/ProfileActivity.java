@@ -71,7 +71,7 @@ public class ProfileActivity extends SwipeBackActivity {
     }
     
     public void initActionBar() {
-        getActionBar().setIcon(R.drawable.btn_back);
+        getActionBar().setIcon(R.drawable.ic_back);
         getActionBar().setHomeButtonEnabled(true);
         int id = Resources.getSystem().getIdentifier("action_bar_title", "id", "android");
         TextView txtTitle = (TextView) findViewById(id);
