@@ -32,4 +32,8 @@
     <color name="home_action_bar_text_color_enable">#ffffff</color> <!-- white no transparent -->
     <color name="home_action_bar_text_color_disable">#66ffffff</color> <!-- white transparent 40% -->
     
+    <!-- owner view -->
+    <color name="owner_view_onpress">#33000000</color>
+    <color name="owner_view">#ffffff</color>
+    
 </resources>

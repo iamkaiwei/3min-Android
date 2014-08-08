@@ -149,7 +149,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="@dimen/inflater_header_grid_padding" >
+        android:padding="@dimen/inflater_header_grid_padding"
+        android:background="@drawable/selector_owner_view">
 
         <!--
              <com.meg7.widget.SvgImageView
@@ -179,7 +180,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:scaleType="fitXY"
-                android:src="@drawable/border_avatar" />
+                android:src="@drawable/selector_border_avatar" />
         </FrameLayout>
 
         <RelativeLayout
