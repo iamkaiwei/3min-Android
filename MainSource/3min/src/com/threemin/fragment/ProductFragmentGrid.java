@@ -3,18 +3,14 @@ package com.threemin.fragment;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
-import android.view.WindowManager;
-import android.view.animation.BounceInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
@@ -23,11 +19,13 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.androidanimator.animation.Animation;
+import com.androidanimator.animation.AnimationListener;
+import com.androidanimator.animation.BlinkAnimation;
 import com.facebook.widget.LoginButton;
 import com.google.gson.Gson;
 import com.threemin.adapter.ProductGridAdapter;
 import com.threemin.app.DetailActivity;
-import com.threemin.app.HomeActivity;
 import com.threemin.model.ProductModel;
 import com.threemin.uti.CommonConstant;
 import com.threemin.uti.CommonUti;
@@ -163,7 +161,7 @@ public class ProductFragmentGrid extends BaseProductFragment {
         }
 
         // mAdapter.notifyDataSetChanged();
-        Thread t = new Thread(new Runnable() {
+        final Thread t = new Thread(new Runnable() {
 
             @Override
             public void run() {
@@ -171,7 +169,16 @@ public class ProductFragmentGrid extends BaseProductFragment {
                 Log.d("result", "result=" + result);
             }
         });
-        t.start();
+        new BlinkAnimation(view)
+        .setDuration(200)
+        .setListener(new AnimationListener() {
+            
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                // TODO Auto-generated method stub
+                t.start();
+            }
+        }).animate();
     }
 
 
@@ -269,7 +276,6 @@ public class ProductFragmentGrid extends BaseProductFragment {
             public void OnDoubleTap(AdapterView parent, View view, int position, long id) {
                 ProductModel model = (ProductModel) mGrid.getItemAtPosition(position);
                 if (model != null) {
-
                     requestLike(model, view);
                 }
             }
