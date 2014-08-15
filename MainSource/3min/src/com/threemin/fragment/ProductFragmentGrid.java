@@ -16,12 +16,13 @@ import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.androidanimator.animation.Animation;
 import com.androidanimator.animation.AnimationListener;
-import com.androidanimator.animation.BlinkAnimation;
+import com.androidanimator.animation.HighlightAnimation;
 import com.facebook.widget.LoginButton;
 import com.google.gson.Gson;
 import com.threemin.adapter.ProductGridAdapter;
@@ -169,7 +170,20 @@ public class ProductFragmentGrid extends BaseProductFragment {
                 Log.d("result", "result=" + result);
             }
         });
-        new BlinkAnimation(view)
+        LinearLayout animationView = (LinearLayout) view.findViewById(R.id.animation_linear_layout);
+//        it crash here if we use the given view by the onitemclick interface
+//        new HighlightAnimation(view)
+//        .setDuration(200)
+//        .setListener(new AnimationListener() {
+//            
+//            @Override
+//            public void onAnimationEnd(Animation animation) {
+//                // TODO Auto-generated method stub
+//                t.start();
+//            }
+//        }).animate();
+        
+        new HighlightAnimation(animationView)
         .setDuration(200)
         .setListener(new AnimationListener() {
             
