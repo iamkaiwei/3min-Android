@@ -65,6 +65,12 @@
     <!-- <string name="following">Following</string> -->
     <string name="following">Đang theo dõi</string>
     
+    <!-- <string name="follow">Follow</string> -->
+    <string name="follow">Theo dõi</string>
+    
+    <!-- <string name="unfollow">Unfollow</string> -->
+    <string name="unfollow">Bỏ theo dõi</string>
+    
     <!-- <string name="edit">Edit</string> -->
     <string name="edit">Chỉnh sửa/ncá nhân</string>
     

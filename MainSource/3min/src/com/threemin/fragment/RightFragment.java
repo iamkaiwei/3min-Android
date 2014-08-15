@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -51,22 +52,25 @@ public class RightFragment extends Fragment {
             TextView listing = (TextView) rootView.findViewById(R.id.tv_listing);
             listing.setText(R.string.profile_list);
             
-            rootView.findViewById(R.id.inf_avt_setting).setVisibility(View.INVISIBLE);
+//            rootView.findViewById(R.id.inf_avt_setting).setVisibility(View.INVISIBLE);
             UserModel currentUser = PreferenceHelper.getInstance(getActivity()).getCurrentUser();
             if (currentUser != null && userModel != null && currentUser.getId() != userModel.getId()) {
-            	rootView.findViewById(R.id.btn_msg).setVisibility(View.GONE);
-            	rootView.findViewById(R.id.btn_msg_divider).setVisibility(View.GONE);
-            	rootView.findViewById(R.id.btn_liked).setVisibility(View.GONE);
-            	rootView.findViewById(R.id.img_follow).setVisibility(View.VISIBLE);
+//            	rootView.findViewById(R.id.btn_msg).setVisibility(View.GONE);
+//            	rootView.findViewById(R.id.btn_msg_divider).setVisibility(View.GONE);
+//            	rootView.findViewById(R.id.btn_liked).setVisibility(View.GONE);
+//            	rootView.findViewById(R.id.img_follow).setVisibility(View.VISIBLE);
+//                rootView.findViewById(R.id.fm_right_btn_follow).setVisibility(View.VISIBLE);
+                rootView.findViewById(R.id.fm_right_group_control_divider).setVisibility(View.GONE);
+                rootView.findViewById(R.id.fm_right_group_control).setVisibility(View.GONE);
 			}
         } else {
             userModel = PreferenceHelper.getInstance(getActivity()).getCurrentUser();
             Log.i("RightFragment", userModel.getFirstName());
         }
-        ImageView img = (ImageView) rootView.findViewById(R.id.nav_avatar);
+        ImageView img = (ImageView) rootView.findViewById(R.id.fm_right_avatar);
         UrlImageViewHelper.setUrlDrawable(img, userModel.getFacebook_avatar());
 
-        TextView tv_name = (TextView) rootView.findViewById(R.id.navigation_name);
+        TextView tv_name = (TextView) rootView.findViewById(R.id.fm_right_tv_username);
         tv_name.setText(userModel.getFullName());
         
         Log.i("RightFragment: ", userModel.getFirstName() + "isFollowed: " + (userModel.isFollowed()?"true":"false"));
@@ -97,17 +101,33 @@ public class RightFragment extends Fragment {
         @Override
         protected void onPostExecute(UserModel result) {
             if (result != null) {
-                TextView tv_followers_number = (TextView) rootView.findViewById(R.id.btn_follower);
+                // TextView tv_followers_number = (TextView)
+                // rootView.findViewById(R.id.btn_follower);
+                TextView tv_followers_number = (TextView) rootView.findViewById(R.id.fm_right_tv_follower_number);
                 tv_followers_number.setText("" + result.getCountFollowers());
-                
-                TextView tv_followings_number = (TextView) rootView.findViewById(R.id.btn_following);
+
+                // TextView tv_followings_number = (TextView)
+                // rootView.findViewById(R.id.btn_following);
+                TextView tv_followings_number = (TextView) rootView.findViewById(R.id.fm_right_tv_following_number);
                 tv_followings_number.setText("" + result.getCountFollowing());
-                
-                ImageView img_follow = (ImageView) rootView.findViewById(R.id.img_follow);
-                img_follow.setSelected(result.isFollowed());
-                
-                Log.i("RightFragment: ", result.getFirstName() + "isFollowed: " + (result.isFollowed()?"true":"false"));
-                
+
+                // ImageView img_follow =
+                // (ImageView)rootView.findViewById(R.id.img_follow);
+                // img_follow.setSelected(result.isFollowed());
+
+                Button btn_follow = (Button) rootView.findViewById(R.id.fm_right_btn_follow);
+                btn_follow.setSelected(result.isFollowed());
+                if (mode == ListProductFragment.MODE_USER_PRODUCT
+                        && (PreferenceHelper.getInstance(getActivity()).getCurrentUser().getId() != userModel.getId())) {
+                    btn_follow.setVisibility(View.VISIBLE);
+                }
+                if (result.isFollowed()) {
+                    btn_follow.setText(getActivity().getString(R.string.unfollow));
+                }
+
+                Log.i("RightFragment: ", result.getFirstName() + "isFollowed: "
+                        + (result.isFollowed() ? "true" : "false"));
+
                 userProduct(result);
                 userModel = result;
                 initListener(rootView);
@@ -116,43 +136,64 @@ public class RightFragment extends Fragment {
     }
 
     private void initListener(View rootView) {
-        rootView.findViewById(R.id.btn_liked).setOnClickListener(new OnClickListener() {
+//        rootView.findViewById(R.id.btn_liked).setOnClickListener(new OnClickListener() {
+        rootView.findViewById(R.id.fm_right_tv_my_likes).setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), UserLikeProductActivity.class));
+                Intent intent = new Intent(getActivity(), UserLikeProductActivity.class);
+                intent.putExtra(CommonConstant.INTENT_PRODUCT_MODE, ListProductFragment.MODE_USER_LIKED_PRODUCT);
+                startActivity(intent);
             }
         });
-        rootView.findViewById(R.id.btn_msg).setOnClickListener(new OnClickListener() {
+        rootView.findViewById(R.id.fm_right_tv_my_items).setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), ListMessageActivity.class));
+                Intent intent = new Intent(getActivity(), UserLikeProductActivity.class);
+                intent.putExtra(CommonConstant.INTENT_PRODUCT_MODE, ListProductFragment.MODE_MY_PRODUCT);
+                startActivity(intent);
             }
         });
-        rootView.findViewById(R.id.nav_avatar).setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getActivity(), UserActivityActivity.class));
-            }
-        });
-        rootView.findViewById(R.id.inf_avt_setting).setOnClickListener(new OnClickListener() {
+//        rootView.findViewById(R.id.btn_msg).setOnClickListener(new OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//                startActivity(new Intent(getActivity(), ListMessageActivity.class));
+//            }
+//        });
+//        rootView.findViewById(R.id.nav_avatar).setOnClickListener(new OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//                startActivity(new Intent(getActivity(), UserActivityActivity.class));
+//            }
+//        });
+//        rootView.findViewById(R.id.inf_avt_setting).setOnClickListener(new OnClickListener() {
+        rootView.findViewById(R.id.fm_right_tv_edit).setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getActivity(), SettingActivity.class));
             }
         });
-        ImageView img_follow = (ImageView) rootView.findViewById(R.id.img_follow);
-        img_follow.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				doFollowFunction(v);
-			}
-		});
-        rootView.findViewById(R.id.btn_follower).setOnClickListener(new OnClickListener() {
+//        ImageView img_follow = (ImageView) rootView.findViewById(R.id.img_follow);
+//        img_follow.setOnClickListener(new OnClickListener() {
+//			
+//			@Override
+//			public void onClick(View v) {
+//				doFollowFunction(v);
+//			}
+//		});
+        Button btn_follow = (Button) rootView.findViewById(R.id.fm_right_btn_follow);
+        btn_follow.setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+                doFollowFunction(v);
+            }
+        });
+        rootView.findViewById(R.id.fm_right_ln_follower).setOnClickListener(new OnClickListener() {
             
             @Override
             public void onClick(View v) {
@@ -165,7 +206,7 @@ public class RightFragment extends Fragment {
                 getActivity().overridePendingTransition(R.anim.anim_right_in, R.anim.anim_no_animation);
             }
         });
-        rootView.findViewById(R.id.btn_following).setOnClickListener(new OnClickListener() {
+        rootView.findViewById(R.id.fm_right_ln_following).setOnClickListener(new OnClickListener() {
             
             @Override
             public void onClick(View v) {
@@ -189,22 +230,26 @@ public class RightFragment extends Fragment {
             productFragmentGrid = new ListProductFragment();
             productFragmentGrid.setMode(ListProductFragment.MODE_USER_PRODUCT);
             productFragmentGrid.setUserModel(userModel);
+            getFragmentManager().beginTransaction().replace(R.id.content_list, productFragmentGrid).commit();
         } else {
-//            productFragmentGrid = new ListProductFragment(getActivity(),
-//                    ((HomeActivity) getActivity()).getLoginButton());
-            productFragmentGrid = new ListProductFragment();
-            productFragmentGrid.setMode(ListProductFragment.MODE_MY_PRODUCT);
+////            productFragmentGrid = new ListProductFragment(getActivity(),
+////                    ((HomeActivity) getActivity()).getLoginButton());
+//            productFragmentGrid = new ListProductFragment();
+//            productFragmentGrid.setMode(ListProductFragment.MODE_MY_PRODUCT);
+            getFragmentManager().beginTransaction().add(R.id.content_list, new UserActivityFragment()).commit();
         }
-        getFragmentManager().beginTransaction().replace(R.id.content_list, productFragmentGrid).commit();
+//        getFragmentManager().beginTransaction().replace(R.id.content_list, productFragmentGrid).commit();
     }
     
     //follow or unfollow a user
     public void doFollowFunction(View v) {
     	if (v.isSelected()) {
 			v.setSelected(false);
+			((Button)v).setText(getActivity().getString(R.string.follow));
 			new FollowUserTask(UNFOLLOW).execute(userModel.getId());
 		} else {
 			v.setSelected(true);
+            ((Button)v).setText(getActivity().getString(R.string.unfollow));
 			new FollowUserTask(FOLLOW).execute(userModel.getId());
 		}
     }

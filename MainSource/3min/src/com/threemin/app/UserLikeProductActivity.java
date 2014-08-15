@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.facebook.Session;
 import com.facebook.widget.LoginButton;
 import com.threemin.fragment.ListProductFragment;
+import com.threemin.uti.CommonConstant;
 import com.threemin.uti.CommonUti;
 import com.threemins.R;
 
@@ -35,7 +36,13 @@ public class UserLikeProductActivity extends FragmentActivity {
 //			ListProductFragment listProductFragment=new ListProductFragment(UserLikeProductActivity.this, mLoginButton);
 		    ListProductFragment listProductFragment=new ListProductFragment();
 		    
-			listProductFragment.setMode(ListProductFragment.MODE_USER_LIKED_PRODUCT);
+		    int mode = getIntent().getIntExtra(CommonConstant.INTENT_PRODUCT_MODE, ListProductFragment.MODE_MY_PRODUCT);
+		    if (mode == ListProductFragment.MODE_MY_PRODUCT) {
+                setTitle(getString(R.string.my_items));
+            } else {
+                setTitle(getString(R.string.my_likes));
+            }
+			listProductFragment.setMode(mode);
 			getSupportFragmentManager().beginTransaction().add(R.id.container,listProductFragment).commit();
 		}
 	}

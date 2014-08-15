@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragment_activity_swipe"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:layout_marginTop="1dp" >
     
     <ListView 
         android:id="@+id/fragment_activity_lv"
@@ -10,4 +13,4 @@
         android:divider="@color/background_grey"
         android:dividerHeight="1dp"></ListView>
 
-</RelativeLayout>
+</android.support.v4.widget.SwipeRefreshLayout>
