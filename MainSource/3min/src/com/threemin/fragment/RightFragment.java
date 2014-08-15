@@ -17,11 +17,7 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.threemin.app.FollowerFollowingActivity;
-import com.threemin.app.HomeActivity;
-import com.threemin.app.ListMessageActivity;
-import com.threemin.app.ProfileActivity;
 import com.threemin.app.SettingActivity;
-import com.threemin.app.UserActivityActivity;
 import com.threemin.app.UserLikeProductActivity;
 import com.threemin.model.UserModel;
 import com.threemin.uti.CommonConstant;
@@ -52,14 +48,8 @@ public class RightFragment extends Fragment {
             TextView listing = (TextView) rootView.findViewById(R.id.tv_listing);
             listing.setText(R.string.profile_list);
             
-//            rootView.findViewById(R.id.inf_avt_setting).setVisibility(View.INVISIBLE);
             UserModel currentUser = PreferenceHelper.getInstance(getActivity()).getCurrentUser();
             if (currentUser != null && userModel != null && currentUser.getId() != userModel.getId()) {
-//            	rootView.findViewById(R.id.btn_msg).setVisibility(View.GONE);
-//            	rootView.findViewById(R.id.btn_msg_divider).setVisibility(View.GONE);
-//            	rootView.findViewById(R.id.btn_liked).setVisibility(View.GONE);
-//            	rootView.findViewById(R.id.img_follow).setVisibility(View.VISIBLE);
-//                rootView.findViewById(R.id.fm_right_btn_follow).setVisibility(View.VISIBLE);
                 rootView.findViewById(R.id.fm_right_group_control_divider).setVisibility(View.GONE);
                 rootView.findViewById(R.id.fm_right_group_control).setVisibility(View.GONE);
 			}
@@ -86,7 +76,6 @@ public class RightFragment extends Fragment {
         
         @Override
         protected void onPreExecute() {
-            // TODO Auto-generated method stub
             super.onPreExecute();
         }
         
@@ -101,19 +90,11 @@ public class RightFragment extends Fragment {
         @Override
         protected void onPostExecute(UserModel result) {
             if (result != null) {
-                // TextView tv_followers_number = (TextView)
-                // rootView.findViewById(R.id.btn_follower);
                 TextView tv_followers_number = (TextView) rootView.findViewById(R.id.fm_right_tv_follower_number);
                 tv_followers_number.setText("" + result.getCountFollowers());
 
-                // TextView tv_followings_number = (TextView)
-                // rootView.findViewById(R.id.btn_following);
                 TextView tv_followings_number = (TextView) rootView.findViewById(R.id.fm_right_tv_following_number);
                 tv_followings_number.setText("" + result.getCountFollowing());
-
-                // ImageView img_follow =
-                // (ImageView)rootView.findViewById(R.id.img_follow);
-                // img_follow.setSelected(result.isFollowed());
 
                 Button btn_follow = (Button) rootView.findViewById(R.id.fm_right_btn_follow);
                 btn_follow.setSelected(result.isFollowed());
@@ -136,7 +117,6 @@ public class RightFragment extends Fragment {
     }
 
     private void initListener(View rootView) {
-//        rootView.findViewById(R.id.btn_liked).setOnClickListener(new OnClickListener() {
         rootView.findViewById(R.id.fm_right_tv_my_likes).setOnClickListener(new OnClickListener() {
 
             @Override
@@ -155,21 +135,6 @@ public class RightFragment extends Fragment {
                 startActivity(intent);
             }
         });
-//        rootView.findViewById(R.id.btn_msg).setOnClickListener(new OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                startActivity(new Intent(getActivity(), ListMessageActivity.class));
-//            }
-//        });
-//        rootView.findViewById(R.id.nav_avatar).setOnClickListener(new OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                startActivity(new Intent(getActivity(), UserActivityActivity.class));
-//            }
-//        });
-//        rootView.findViewById(R.id.inf_avt_setting).setOnClickListener(new OnClickListener() {
         rootView.findViewById(R.id.fm_right_tv_edit).setOnClickListener(new OnClickListener() {
 
             @Override
@@ -177,14 +142,6 @@ public class RightFragment extends Fragment {
                 startActivity(new Intent(getActivity(), SettingActivity.class));
             }
         });
-//        ImageView img_follow = (ImageView) rootView.findViewById(R.id.img_follow);
-//        img_follow.setOnClickListener(new OnClickListener() {
-//			
-//			@Override
-//			public void onClick(View v) {
-//				doFollowFunction(v);
-//			}
-//		});
         Button btn_follow = (Button) rootView.findViewById(R.id.fm_right_btn_follow);
         btn_follow.setOnClickListener(new OnClickListener() {
             
@@ -197,7 +154,6 @@ public class RightFragment extends Fragment {
             
             @Override
             public void onClick(View v) {
-//                new GetFollowListTask(GET_FOLLOWERS).execute(1);
                 Intent intent = new Intent(getActivity(), FollowerFollowingActivity.class);
                 intent.putExtra(CommonConstant.INTENT_USER_DATA_VIA_ID, userModel.getId());
                 intent.putExtra(CommonConstant.INTENT_GET_FOLLOW_LIST, GET_FOLLOWERS);
@@ -210,7 +166,6 @@ public class RightFragment extends Fragment {
             
             @Override
             public void onClick(View v) {
-//                new GetFollowListTask(GET_FOLLOWINGS).execute(1);
                 Intent intent = new Intent(getActivity(), FollowerFollowingActivity.class);
                 intent.putExtra(CommonConstant.INTENT_USER_DATA_VIA_ID, userModel.getId());
                 intent.putExtra(CommonConstant.INTENT_GET_FOLLOW_LIST, GET_FOLLOWINGS);
@@ -225,20 +180,13 @@ public class RightFragment extends Fragment {
     private void userProduct(UserModel userModel) {
         ListProductFragment productFragmentGrid = null;
         if (mode == ListProductFragment.MODE_USER_PRODUCT) {
-//            productFragmentGrid = new ListProductFragment(getActivity(),
-//                    ((ProfileActivity) getActivity()).getLoginButton());
             productFragmentGrid = new ListProductFragment();
             productFragmentGrid.setMode(ListProductFragment.MODE_USER_PRODUCT);
             productFragmentGrid.setUserModel(userModel);
             getFragmentManager().beginTransaction().replace(R.id.content_list, productFragmentGrid).commit();
         } else {
-////            productFragmentGrid = new ListProductFragment(getActivity(),
-////                    ((HomeActivity) getActivity()).getLoginButton());
-//            productFragmentGrid = new ListProductFragment();
-//            productFragmentGrid.setMode(ListProductFragment.MODE_MY_PRODUCT);
             getFragmentManager().beginTransaction().add(R.id.content_list, new UserActivityFragment()).commit();
         }
-//        getFragmentManager().beginTransaction().replace(R.id.content_list, productFragmentGrid).commit();
     }
     
     //follow or unfollow a user

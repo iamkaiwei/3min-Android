@@ -3,6 +3,7 @@ package com.threemin.fragment;
 import java.util.List;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,11 +15,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.threemin.adapter.ActivityAdapter;
+import com.threemin.app.ChatToBuyActivity;
+import com.threemin.app.DetailActivity;
+import com.threemin.app.ProfileActivity;
 import com.threemin.model.ActivityModel;
+import com.threemin.uti.CommonConstant;
 import com.threemin.uti.PreferenceHelper;
 import com.threemin.webservice.ActivityWebService;
 import com.threemins.R;
@@ -63,6 +71,23 @@ public class UserActivityFragment extends Fragment {
                 if (loadMore && totalItemCount > 1 && mTheLastTotalCount != totalItemCount) {
                     mTheLastTotalCount = totalItemCount;
                     new GetFollowListTask().execute(STEP_LOADMORE);
+                }
+            }
+        });
+		
+		listview.setOnItemClickListener(new OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ActivityModel model = data.get(position);
+                if (CommonConstant.ACTIVITY_TYPE_RELATIONSHIP.equals(model.getSubjectType())) {
+                    startActivityForRelationship(model);
+                } else if (CommonConstant.ACTIVITY_TYPE_CONVERSATION.equals(model.getSubjectType())) {
+                    startActivityForConversation(model);
+                } else if (CommonConstant.ACTIVITY_TYPE_PRODUCT.equals(model.getSubjectType())) {
+                    startActivityForProduct(model);
+                } else {
+                    Toast.makeText(getActivity(), "Not implement", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -140,60 +165,28 @@ public class UserActivityFragment extends Fragment {
 
         }
     }
-	
-//	@Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-//            Bundle savedInstanceState) {
-//        rootView = inflater.inflate(R.layout.fragment_activity, null);
-//      initBody(rootView);?
-//        return rootView;
-//    }
+    
+    private void startActivityForProduct(ActivityModel model) {
+//        Toast.makeText(getActivity(), "Not implement", Toast.LENGTH_LONG).show();
+        Log.i(tag, "startActivityForProduct");
+        Intent intent = new Intent(getActivity(), DetailActivity.class);
+        intent.putExtra(CommonConstant.INTENT_PRODUCT_DATA_VIA_ID, "" + model.getSubjectID());
+        startActivity(intent);
+    }
 
-//	private void initBody(View convertView) {
-//		initData();
-//		listview = (ListView) convertView.findViewById(R.id.fragment_activity_lv);
-//	}
-//	
-//	private void initData() {
-//		mHandler.sendEmptyMessage(SHOW_DIALOG);
-//		Thread t = new Thread(new Runnable() {
-//
-//			@Override
-//			public void run() {
-//				String tokken = PreferenceHelper.getInstance(getActivity()).getTokken();
-//				data = new ActivityWebService().getActivities(tokken);
-//				Message msg = new Message();
-//				msg.what = INIT_DATA;
-//				mHandler.sendEmptyMessage(HIDE_DIALOG);
-//				mHandler.sendMessage(msg);
-//			}
-//		});
-//		t.start();
-//	}
-//
-//	Handler mHandler = new Handler() {
-//		public void handleMessage(android.os.Message msg) {
-//			switch (msg.what) {
-//			case SHOW_DIALOG:
-//				dialog = new ProgressDialog(getActivity());
-//				dialog.setMessage(getString(R.string.please_wait));
-//				dialog.show();
-//				break;
-//			case HIDE_DIALOG:
-//				if (dialog != null && dialog.isShowing()) {
-//					dialog.dismiss();
-//				}
-//				break;
-//			
-//			case INIT_DATA:
-//				if (data != null ) {
-//					adapter = new ActivityAdapter(getActivity(), data);
-//					listview.setAdapter(adapter);
-//				}
-//				break;
-//			default:
-//				break;
-//			}
-//		};
-//	};
+    private void startActivityForConversation(ActivityModel model) {
+//        Toast.makeText(getActivity(), "Not implement", Toast.LENGTH_LONG).show();
+        Log.i(tag, "startActivityForConversation");
+        Intent intent = new Intent(getActivity(), ChatToBuyActivity.class);
+        intent.putExtra(CommonConstant.INTENT_CONVERSATION_DATA_VIA_ID, "" + model.getSubjectID());
+        startActivity(intent);
+    }
+
+    private void startActivityForRelationship(ActivityModel model) {
+        Log.i(tag, "startActivityForRelationship");
+        Intent intent = new Intent(getActivity(), ProfileActivity.class);
+        intent.putExtra(CommonConstant.INTENT_USER_DATA_VIA_ID, "" + model.getUser().getId());
+        startActivity(intent);
+    }
+	
 }

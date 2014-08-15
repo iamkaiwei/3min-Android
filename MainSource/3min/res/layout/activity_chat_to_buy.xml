@@ -19,7 +19,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:scaleType="centerCrop"
-            android:src="@drawable/amatorka" />
+            android:src="@drawable/stuff_img" />
 
         <TextView
             android:id="@+id/activity_chat_tv_product_name"

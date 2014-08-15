@@ -127,7 +127,8 @@ public class ChatToBuyActivity extends Activity {
 		mProductID = intent.getStringExtra(CommonConstant.INTENT_PRODUCT_DATA_VIA_ID);
 		mConversationID = intent.getStringExtra(CommonConstant.INTENT_CONVERSATION_DATA_VIA_ID);
 		
-		if (mProductID != null && mConversationID != null) {
+//		if (mProductID != null && mConversationID != null) {
+		if (mConversationID != null) {
 			//get from webservice
 			new GetConversationViaIdTask().execute(mConversationID);
 		} else {
@@ -146,7 +147,7 @@ public class ChatToBuyActivity extends Activity {
 		mOfferedPrice = conversation.getOffer() + "";
 		int size = mProductModel.getImages().size();
 		if (size > 0) {
-			UrlImageViewHelper.setUrlDrawable(mImgProduct, mProductModel.getImages().get(0).getMedium());
+			UrlImageViewHelper.setUrlDrawable(mImgProduct, mProductModel.getImages().get(0).getMedium(), R.drawable.stuff_img);
 		} else {
 			mImgProduct.setImageResource(R.drawable.stuff_img);
 		}
