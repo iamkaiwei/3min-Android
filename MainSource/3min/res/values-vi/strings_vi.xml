@@ -60,10 +60,22 @@
     
     <string name="currency">k Vnd</string>
     <!-- <string name="followers">Followers</string> -->
-    <string name="followers">Được theo dõi bởi</string>
+    <string name="followers">Người theo dõi</string>
     
     <!-- <string name="following">Following</string> -->
     <string name="following">Đang theo dõi</string>
+    
+    <!-- <string name="edit">Edit</string> -->
+    <string name="edit">Chỉnh sửa/ncá nhân</string>
+    
+    <!-- <string name="my_likes">My Likes</string> -->
+    <string name="my_likes">Sản phẩm/nđã thích</string>
+    
+    <!-- <string name="my_items">My Items</string> -->
+    <string name="my_items">Sản phẩm/ncủa tôi</string>
+    
+    <!-- <string name="feedback">Positive</string> -->
+    <string name="feedback">Phản hồi</string>
 
     <!-- action bar -->
     <!-- <string name="action_bar_search_title">Search</string> -->

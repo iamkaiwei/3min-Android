@@ -124,5 +124,10 @@
     
     <!-- activity camera -->
     <dimen name="activity_camera_btn_down_size">50dp</dimen>
+    
+    <!-- fragment right -->
+    <dimen name="fm_right_group_profile_height">180dp</dimen>
+    <dimen name="fm_right_avatar_size">60dp</dimen>
+    
 
 </resources>

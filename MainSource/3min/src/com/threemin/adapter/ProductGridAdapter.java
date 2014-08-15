@@ -9,8 +9,10 @@ import android.graphics.Bitmap;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.BaseAdapter;
@@ -27,6 +29,8 @@ import com.threemin.app.ProfileActivity;
 import com.threemin.model.ProductModel;
 import com.threemin.uti.CommonConstant;
 import com.threemin.uti.CommonUti;
+import com.threemin.uti.PreferenceHelper;
+import com.threemin.webservice.UserWebService;
 import com.threemins.R;
 
 public class ProductGridAdapter extends BaseAdapter {
@@ -84,7 +88,6 @@ public class ProductGridAdapter extends BaseAdapter {
 		LinearLayout layout = null;
 
 		if (convertView == null) {
-			
 			layout = (LinearLayout) inflater.inflate(R.layout.inflater_body_product_grid, null);
 		} else {
 			layout = (LinearLayout) convertView;
@@ -147,29 +150,72 @@ public class ProductGridAdapter extends BaseAdapter {
 			TextView tv_price = (TextView) convertView.findViewById(R.id.inflater_body_product_grid_tv_price);
 			tv_price.setText(model.getPrice() + CommonConstant.CURRENCY);
 
-			TextView tv_like = (TextView) convertView.findViewById(R.id.inflater_body_product_grid_tv_like);
+			final TextView tv_like = (TextView) convertView.findViewById(R.id.inflater_body_product_grid_tv_like);
 			if (model.getLike() > 0) {
 				tv_like.setText("" + model.getLike());
 			} else {
 				tv_like.setText("");
 			}
 
-			ImageView img_like = (ImageView) convertView.findViewById(R.id.inflater_body_product_grid_img_like);
+			final ImageView img_like = (ImageView) convertView.findViewById(R.id.inflater_body_product_grid_img_like);
 			if (model.isLiked()) {
 				img_like.setSelected(true);
 			} else {
 				img_like.setSelected(false);
 			}
+			//allow user to like or unlike a product when tap on icon like
+			LinearLayout layout_like = (LinearLayout) convertView.findViewById(R.id.inflater_body_product_grid_group_like);
+			layout_like.setOnClickListener(new OnClickListener() {
+                
+                @Override
+                public void onClick(View v) {
+                    final String tokken = PreferenceHelper.getInstance(mContext).getTokken();
+
+                    model.setLiked(!model.isLiked());
+                    if (model.isLiked()) {
+                        model.setLike(model.getLike() + 1);
+                    } else {
+                        model.setLike(model.getLike() - 1);
+                    }
+
+                    if (model.getLike() > 0) {
+                        tv_like.setText("" + model.getLike());
+                    } else {
+                        tv_like.setText("");
+                    }
+
+                    if (model.isLiked()) {
+                        img_like.setSelected(true);
+                    } else {
+                        img_like.setSelected(false);
+                    }
+
+                    // mAdapter.notifyDataSetChanged();
+                    Thread t = new Thread(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            boolean result = new UserWebService().productLike(model.getId(), tokken, model.isLiked());
+                            Log.d("ProductGridAdapter", "Request Like result = " + result);
+                        }
+                    });
+                    t.start();
+                }
+            });
+			
 			if (model.getOwner() == null ) {
 				convertView.findViewById(R.id.owner_view).setVisibility(View.GONE);
 				convertView.findViewById(R.id.inflater_body_product_grid_divider).setVisibility(View.GONE);
 			} else {
+			    
 				ImageView imageAvatar = (ImageView) convertView.findViewById(R.id.inflater_header_product_grid_image);
 				UrlImageViewHelper.setUrlDrawable(imageAvatar, model.getOwner().getFacebook_avatar());
 
 				TextView tv_name_owner = (TextView) convertView.findViewById(R.id.inflater_header_product_grid_tv_name);
 				tv_name_owner.setText(model.getOwner().getFullName());
-				convertView.findViewById(R.id.owner_view).setOnClickListener(new OnClickListener() {
+				
+				View owner_view = convertView.findViewById(R.id.owner_view);
+				owner_view.setOnClickListener(new OnClickListener() {
                     
                     @Override
                     public void onClick(View v) {

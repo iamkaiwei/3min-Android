@@ -162,6 +162,7 @@ public class RightFragment extends Fragment {
                 intent.putExtra(CommonConstant.INTENT_GET_FOLLOW_LIST, GET_FOLLOWERS);
                 intent.putExtra(CommonConstant.INTENT_GET_FOLLOW_COUNT, userModel.getCountFollowers());
                 startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.anim_right_in, R.anim.anim_no_animation);
             }
         });
         rootView.findViewById(R.id.btn_following).setOnClickListener(new OnClickListener() {
@@ -174,6 +175,7 @@ public class RightFragment extends Fragment {
                 intent.putExtra(CommonConstant.INTENT_GET_FOLLOW_LIST, GET_FOLLOWINGS);
                 intent.putExtra(CommonConstant.INTENT_GET_FOLLOW_COUNT, userModel.getCountFollowing());
                 startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.anim_right_in, R.anim.anim_no_animation);
             }
         });
     }
