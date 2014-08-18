@@ -34,9 +34,6 @@ import com.threemins.R;
 public class UserActivityFragment extends Fragment {
     
     public static final String tag = "UserActivityFragment";
-	private final int SHOW_DIALOG = 1;
-	private final int HIDE_DIALOG = 2;
-	private final int INIT_DATA = 3;
 	
 	public final int STEP_INIT = 1;
     public final int STEP_REFRESH = 2;
@@ -161,8 +158,6 @@ public class UserActivityFragment extends Fragment {
                 }
             }
             Log.i(tag, "GetActivitiesListTask result: " + new Gson().toJson(result));
-            
-
         }
     }
     
