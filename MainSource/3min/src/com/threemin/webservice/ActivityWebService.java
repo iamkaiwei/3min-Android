@@ -30,5 +30,24 @@ public class ActivityWebService {
 		}
 		return null;
 	}
+	
+	public List<ActivityModel>  getActivities(String tokken, int page) {
+        String url = WebserviceConstant.GET_ACTIVITIES + "?access_token=" +  tokken + "&page=" + page;
+        Log.i("ActivityWebService", "Activity: " + url);
+        try {
+            String result = WebServiceUtil.getData(url);
+            Log.i("ActivityWebService", "Result: " + result);
+            
+            Type listType = new TypeToken<List<ActivityModel>>() {
+            }.getType();
+            List<ActivityModel> list = new Gson().fromJson(result, listType);
+            return list;
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.i("ActivityWebService", "Exception: " + e.toString());
+            Log.i("ActivityWebService", "Exception msg: " + e.getMessage());
+        }
+        return null;
+    }
 
 }

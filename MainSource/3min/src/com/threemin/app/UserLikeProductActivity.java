@@ -1,10 +1,11 @@
 package com.threemin.app;
 
+import me.imid.swipebacklayout.lib.SwipeBackLayout;
+import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 import android.app.ActionBar;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -15,10 +16,11 @@ import android.widget.TextView;
 import com.facebook.Session;
 import com.facebook.widget.LoginButton;
 import com.threemin.fragment.ListProductFragment;
+import com.threemin.uti.CommonConstant;
 import com.threemin.uti.CommonUti;
 import com.threemins.R;
 
-public class UserLikeProductActivity extends FragmentActivity {
+public class UserLikeProductActivity extends SwipeBackActivity {
 	
 	LoginButton mLoginButton;
 
@@ -28,6 +30,9 @@ public class UserLikeProductActivity extends FragmentActivity {
 		setContentView(R.layout.activity_detail);
 		mLoginButton = (LoginButton) findViewById(R.id.activity_detail_btn_login_facebook);
 		
+		//swipe back
+		getSwipeBackLayout().setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
+		
 		initActionBar();
 
 		if (savedInstanceState == null) {
@@ -35,7 +40,13 @@ public class UserLikeProductActivity extends FragmentActivity {
 //			ListProductFragment listProductFragment=new ListProductFragment(UserLikeProductActivity.this, mLoginButton);
 		    ListProductFragment listProductFragment=new ListProductFragment();
 		    
-			listProductFragment.setMode(ListProductFragment.MODE_USER_LIKED_PRODUCT);
+		    int mode = getIntent().getIntExtra(CommonConstant.INTENT_PRODUCT_MODE, ListProductFragment.MODE_MY_PRODUCT);
+		    if (mode == ListProductFragment.MODE_MY_PRODUCT) {
+                setTitle(getString(R.string.my_items));
+            } else {
+                setTitle(getString(R.string.my_likes));
+            }
+			listProductFragment.setMode(mode);
 			getSupportFragmentManager().beginTransaction().add(R.id.container,listProductFragment).commit();
 		}
 	}
@@ -50,6 +61,12 @@ public class UserLikeProductActivity extends FragmentActivity {
             Log.i("tructran", "UserLikeProductActivity session null");
         }
 	}
+	
+	@Override
+	public void onBackPressed() {
+	    // TODO Auto-generated method stub
+	    scrollToFinishActivity();
+	}
 
 	private void initActionBar() {
 		ActionBar bar = getActionBar();
@@ -61,7 +78,7 @@ public class UserLikeProductActivity extends FragmentActivity {
 			
 			@Override
 			public void onClick(View v) {
-				finish();
+			    onBackPressed();
 			}
 		});
 		

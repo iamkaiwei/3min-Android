@@ -6,8 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
+import me.imid.swipebacklayout.lib.SwipeBackLayout;
+import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 import android.app.ActionBar;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -48,7 +49,7 @@ import com.threemin.webservice.ConversationWebService;
 import com.threemin.webservice.ProductWebservice;
 import com.threemins.R;
 
-public class ChatToBuyActivity extends Activity {
+public class ChatToBuyActivity extends SwipeBackActivity {
 	private final int SHOW_DIALOG = 1;
 	private final int HIDE_DIALOG = 2;
 	private final int REQUEST_CHECK_OFFER_EXIST = 3;
@@ -87,10 +88,19 @@ public class ChatToBuyActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_chat_to_buy);
+		
+		//swipe back
+		getSwipeBackLayout().setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
 
 		initWidgets();
 		initData();
 
+	}
+	
+	@Override
+	public void onBackPressed() {
+	    // TODO Auto-generated method stub
+	    scrollToFinishActivity();
 	}
 
 	private void initWidgets() {
@@ -127,7 +137,8 @@ public class ChatToBuyActivity extends Activity {
 		mProductID = intent.getStringExtra(CommonConstant.INTENT_PRODUCT_DATA_VIA_ID);
 		mConversationID = intent.getStringExtra(CommonConstant.INTENT_CONVERSATION_DATA_VIA_ID);
 		
-		if (mProductID != null && mConversationID != null) {
+//		if (mProductID != null && mConversationID != null) {
+		if (mConversationID != null) {
 			//get from webservice
 			new GetConversationViaIdTask().execute(mConversationID);
 		} else {
@@ -146,7 +157,7 @@ public class ChatToBuyActivity extends Activity {
 		mOfferedPrice = conversation.getOffer() + "";
 		int size = mProductModel.getImages().size();
 		if (size > 0) {
-			UrlImageViewHelper.setUrlDrawable(mImgProduct, mProductModel.getImages().get(0).getMedium());
+			UrlImageViewHelper.setUrlDrawable(mImgProduct, mProductModel.getImages().get(0).getMedium(), R.drawable.stuff_img);
 		} else {
 			mImgProduct.setImageResource(R.drawable.stuff_img);
 		}
@@ -175,7 +186,7 @@ public class ChatToBuyActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				finish();
+			    onBackPressed();
 			}
 		});
 

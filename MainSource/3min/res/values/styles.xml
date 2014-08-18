@@ -181,6 +181,7 @@
     
     <style name="fm_right_textview_black" parent="@style/fm_right_textview_grey">
         <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">@dimen/textsize_medium</item>
     </style>
 
 </resources>

@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.threemin.model.ActivityModel;
+import com.threemin.model.UserModel;
 import com.threemins.R;
 
 public class ActivityAdapter extends BaseAdapter {
@@ -74,5 +75,10 @@ public class ActivityAdapter extends BaseAdapter {
 		imgProduct.setVisibility(View.INVISIBLE);
 		return convertView;
 	}
+	
+	public void setListUsers(List<ActivityModel> list) {
+        mData = list;
+        this.notifyDataSetChanged();
+    }
 
 }

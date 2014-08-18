@@ -7,15 +7,16 @@
     android:orientation="vertical" >
 
     <!-- new design -->
-    <!-- 
-    group profile
+
+
+    <!-- group profile -->
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/fm_right_group_profile_height"
+        android:layout_height="wrap_content"
         android:orientation="vertical" >
 
-        avatar and username
+        <!-- avatar and username -->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -41,20 +42,40 @@
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/textsize_avatar"
                 threemins:customTypeface="@string/font_semibold" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingRight="@dimen/common_spacing_double" >
+
+                <Button
+                    android:id="@+id/fm_right_btn_follow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/background_orange_stroke_round_corners"
+                    android:text="@string/follow"
+                    android:textColor="@color/red_background"
+                    android:paddingLeft="@dimen/common_spacing_triple"
+                    android:paddingRight="@dimen/common_spacing_triple"
+                    android:visibility="gone" />
+            </RelativeLayout>
         </LinearLayout>
 
-        <View style="@style/fm_right_divider_horizontal" />
+        <View
+            android:id="@+id/fm_right_group_control_divider" 
+            style="@style/fm_right_divider_horizontal" />
 
-        group control
+        <!-- group control -->
 
         <LinearLayout
             android:id="@+id/fm_right_group_control"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="@dimen/fm_right_row_height"
             android:orientation="horizontal"
-            android:paddingTop="@dimen/common_spacing"
-            android:paddingBottom="@dimen/common_spacing" >
+            android:paddingBottom="@dimen/common_spacing"
+            android:paddingTop="@dimen/common_spacing" >
 
             <com.lanna.droidlib.view.CustomTextView
                 android:id="@+id/fm_right_tv_edit"
@@ -81,15 +102,14 @@
 
         <View style="@style/fm_right_divider_horizontal" />
 
-        feedback, follower, following
+        <!-- feedback, follower, following -->
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="@dimen/fm_right_row_height"
             android:orientation="horizontal"
-            android:paddingTop="@dimen/common_spacing"
-            android:paddingBottom="@dimen/common_spacing" >
+            android:paddingBottom="@dimen/common_spacing"
+            android:paddingTop="@dimen/common_spacing" >
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -112,6 +132,7 @@
             <View style="@style/fm_right_divider_vertical" />
 
             <LinearLayout
+                android:id="@+id/fm_right_ln_follower"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -132,6 +153,7 @@
             <View style="@style/fm_right_divider_vertical" />
 
             <LinearLayout
+                android:id="@+id/fm_right_ln_following"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -149,10 +171,10 @@
                     threemins:customTypeface="@string/font_semibold" />
             </LinearLayout>
         </LinearLayout>
-    </LinearLayout> -->
+    </LinearLayout>
 
-    
     <!-- old design -->
+    <!--
     <include layout="@layout/inflater_avatar" />
 
     <FrameLayout
@@ -169,7 +191,7 @@
         android:paddingBottom="@dimen/common_spacing"
         android:paddingTop="@dimen/common_spacing" >
 
-        <!-- follow -->
+        follow
 
         <ImageView
             android:id="@+id/img_follow"
@@ -180,7 +202,7 @@
             android:src="@drawable/selector_follow"
             android:visibility="gone" />
 
-        <!-- liked -->
+        liked
 
         <com.lanna.droidlib.view.CustomTextView
             android:id="@+id/btn_liked"
@@ -202,7 +224,7 @@
             android:background="@color/common_grey" >
         </FrameLayout>
 
-        <!-- messages -->
+        messages
 
         <com.lanna.droidlib.view.CustomTextView
             android:id="@+id/btn_msg"
@@ -225,7 +247,7 @@
             android:background="@color/common_grey" >
         </FrameLayout>
 
-        <!-- follower -->
+        follower
 
         <com.lanna.droidlib.view.CustomTextView
             android:id="@+id/btn_follower"
@@ -247,7 +269,7 @@
             android:background="@color/common_grey" >
         </FrameLayout>
 
-        <!-- following -->
+        following
 
         <com.lanna.droidlib.view.CustomTextView
             android:id="@+id/btn_following"
@@ -263,9 +285,11 @@
             android:textSize="@dimen/textsize_medium"
             threemins:customTypeface="@string/font_semibold" />
     </LinearLayout>
+    -->
+
 
     <!-- user in both new and old design -->
-    
+
     <FrameLayout
         android:layout_width="fill_parent"
         android:layout_height="0.5dp"
@@ -285,7 +309,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_margin="@dimen/common_spacing"
             android:singleLine="true"
-            android:text="@string/profile_mylist"
+            android:text="@string/activity_title"
             android:textColor="@color/text_color_grouplayout"
             android:textSize="@dimen/textsize_large"
             threemins:customTypeface="@string/font_regular" />

@@ -1,6 +1,7 @@
 package com.threemin.app;
 
-import android.app.Activity;
+import me.imid.swipebacklayout.lib.SwipeBackLayout;
+import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,7 +21,7 @@ import com.threemin.uti.CommonUti;
 import com.threemin.uti.PreferenceHelper;
 import com.threemins.R;
 
-public class SettingActivity extends Activity implements OnClickListener {
+public class SettingActivity extends SwipeBackActivity implements OnClickListener {
 	
 	public static final int ACTIONS_LOG_OUT = 99;
 	
@@ -36,12 +37,19 @@ public class SettingActivity extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_setting);
 		
+		getSwipeBackLayout().setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
+		
 		mGoogleApiClient = new GoogleApiClient.Builder(this).addApi(Plus.API, null).addScope(Plus.SCOPE_PLUS_PROFILE).build();
 		mGoogleApiClient.connect();
 		mContext = this;
 		
 		initWidgets();
 		initListener();
+	}
+	
+	@Override
+	public void onBackPressed() {
+	    scrollToFinishActivity();
 	}
 	
 	private void initWidgets() {
@@ -131,5 +139,6 @@ public class SettingActivity extends Activity implements OnClickListener {
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK); 
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		startActivity(intent);
+		overridePendingTransition(R.anim.anim_left_in, R.anim.anim_right_out);
 	}
 }

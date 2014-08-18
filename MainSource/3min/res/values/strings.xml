@@ -41,6 +41,8 @@
     <string name="currency">k Vnd</string>
     <string name="followers">Followers</string>
     <string name="following">Following</string>
+    <string name="follow">Follow</string>
+    <string name="unfollow">Unfollow</string>
     <string name="edit">Edit</string>
     <string name="my_likes">My Likes</string>
     <string name="my_items">My Items</string>
