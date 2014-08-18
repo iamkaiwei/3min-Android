@@ -31,7 +31,7 @@
     <string name="login_chatapp">Mua sắm bằng trao đổi riêng</string>
     
     <!-- <string name="login_chatapp_sub">\nBuy securely with an in app chat \nthat protects your identity.</string> -->
-    <string name="login_chatapp_sub">\nMua sắm an toàn với chức năng chat của ứng dụng\ngiúp bảo vệ danh tính của bạn.</string>
+    <string name="login_chatapp_sub">\nMua sắm an toàn với chức năng chat của\nứng dụng giúp bảo vệ danh tính của bạn.</string>
     
     <string name="profile_list">Sản phẩm</string>
     
@@ -72,13 +72,13 @@
     <string name="unfollow">Bỏ theo dõi</string>
     
     <!-- <string name="edit">Edit</string> -->
-    <string name="edit">Chỉnh sửa/ncá nhân</string>
+    <string name="edit">Chỉnh sửa\ncá nhân</string>
     
     <!-- <string name="my_likes">My Likes</string> -->
-    <string name="my_likes">Sản phẩm/nđã thích</string>
+    <string name="my_likes">Sản phẩm\nđã thích</string>
     
     <!-- <string name="my_items">My Items</string> -->
-    <string name="my_items">Sản phẩm/ncủa tôi</string>
+    <string name="my_items">Sản phẩm\ncủa tôi</string>
     
     <!-- <string name="feedback">Positive</string> -->
     <string name="feedback">Phản hồi</string>

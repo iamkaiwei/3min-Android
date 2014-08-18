@@ -70,7 +70,7 @@ public class UserActivityFragment extends Fragment {
                 boolean loadMore = firstVisibleItem + visibleItemCount >= totalItemCount - 1;
                 if (loadMore && totalItemCount > 1 && mTheLastTotalCount != totalItemCount) {
                     mTheLastTotalCount = totalItemCount;
-                    new GetFollowListTask().execute(STEP_LOADMORE);
+                    new GetActivitiesListTask().execute(STEP_LOADMORE);
                 }
             }
         });
@@ -99,17 +99,17 @@ public class UserActivityFragment extends Fragment {
             
             @Override
             public void onRefresh() {
-                new GetFollowListTask().execute(STEP_REFRESH);
+                new GetActivitiesListTask().execute(STEP_REFRESH);
             }
         });
         
-        new GetFollowListTask().execute(STEP_INIT);
+        new GetActivitiesListTask().execute(STEP_INIT);
 		
 		return rootView;
 	}
 	
-	//call webservice to get list followers or followings
-    private class GetFollowListTask extends AsyncTask<Integer, Void, List<ActivityModel>> {
+	//call webservice to get list activities
+    private class GetActivitiesListTask extends AsyncTask<Integer, Void, List<ActivityModel>> {
         
         int currentStep;
         
@@ -160,26 +160,26 @@ public class UserActivityFragment extends Fragment {
                     adapter.setListUsers(result);
                 }
             }
-            Log.i(tag, "GetFollowListTask result: " + new Gson().toJson(result));
+            Log.i(tag, "GetActivitiesListTask result: " + new Gson().toJson(result));
             
 
         }
     }
     
     private void startActivityForProduct(ActivityModel model) {
-//        Toast.makeText(getActivity(), "Not implement", Toast.LENGTH_LONG).show();
         Log.i(tag, "startActivityForProduct");
         Intent intent = new Intent(getActivity(), DetailActivity.class);
         intent.putExtra(CommonConstant.INTENT_PRODUCT_DATA_VIA_ID, "" + model.getSubjectID());
         startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.anim_right_in, R.anim.anim_no_animation);
     }
 
     private void startActivityForConversation(ActivityModel model) {
-//        Toast.makeText(getActivity(), "Not implement", Toast.LENGTH_LONG).show();
         Log.i(tag, "startActivityForConversation");
         Intent intent = new Intent(getActivity(), ChatToBuyActivity.class);
         intent.putExtra(CommonConstant.INTENT_CONVERSATION_DATA_VIA_ID, "" + model.getSubjectID());
         startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.anim_right_in, R.anim.anim_no_animation);
     }
 
     private void startActivityForRelationship(ActivityModel model) {
@@ -187,6 +187,7 @@ public class UserActivityFragment extends Fragment {
         Intent intent = new Intent(getActivity(), ProfileActivity.class);
         intent.putExtra(CommonConstant.INTENT_USER_DATA_VIA_ID, "" + model.getUser().getId());
         startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.anim_right_in, R.anim.anim_no_animation);
     }
 	
 }

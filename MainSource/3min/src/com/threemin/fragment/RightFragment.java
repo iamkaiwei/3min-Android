@@ -123,7 +123,7 @@ public class RightFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), UserLikeProductActivity.class);
                 intent.putExtra(CommonConstant.INTENT_PRODUCT_MODE, ListProductFragment.MODE_USER_LIKED_PRODUCT);
-                startActivity(intent);
+                startActivityWithAnimation(intent);
             }
         });
         rootView.findViewById(R.id.fm_right_tv_my_items).setOnClickListener(new OnClickListener() {
@@ -132,14 +132,14 @@ public class RightFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), UserLikeProductActivity.class);
                 intent.putExtra(CommonConstant.INTENT_PRODUCT_MODE, ListProductFragment.MODE_MY_PRODUCT);
-                startActivity(intent);
+                startActivityWithAnimation(intent);
             }
         });
         rootView.findViewById(R.id.fm_right_tv_edit).setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), SettingActivity.class));
+                startActivityWithAnimation(new Intent(getActivity(), SettingActivity.class));
             }
         });
         Button btn_follow = (Button) rootView.findViewById(R.id.fm_right_btn_follow);
@@ -158,8 +158,7 @@ public class RightFragment extends Fragment {
                 intent.putExtra(CommonConstant.INTENT_USER_DATA_VIA_ID, userModel.getId());
                 intent.putExtra(CommonConstant.INTENT_GET_FOLLOW_LIST, GET_FOLLOWERS);
                 intent.putExtra(CommonConstant.INTENT_GET_FOLLOW_COUNT, userModel.getCountFollowers());
-                startActivity(intent);
-                getActivity().overridePendingTransition(R.anim.anim_right_in, R.anim.anim_no_animation);
+                startActivityWithAnimation(intent);
             }
         });
         rootView.findViewById(R.id.fm_right_ln_following).setOnClickListener(new OnClickListener() {
@@ -170,8 +169,7 @@ public class RightFragment extends Fragment {
                 intent.putExtra(CommonConstant.INTENT_USER_DATA_VIA_ID, userModel.getId());
                 intent.putExtra(CommonConstant.INTENT_GET_FOLLOW_LIST, GET_FOLLOWINGS);
                 intent.putExtra(CommonConstant.INTENT_GET_FOLLOW_COUNT, userModel.getCountFollowing());
-                startActivity(intent);
-                getActivity().overridePendingTransition(R.anim.anim_right_in, R.anim.anim_no_animation);
+                startActivityWithAnimation(intent);
             }
         });
     }
@@ -240,6 +238,11 @@ public class RightFragment extends Fragment {
 				dialog.dismiss();
 			}
 		}
+    }
+    
+    public void startActivityWithAnimation(Intent intent) {
+        startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.anim_right_in, R.anim.anim_no_animation);
     }
 
 }
