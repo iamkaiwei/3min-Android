@@ -17,6 +17,7 @@ import com.threemin.app.DetailActivity;
 import com.threemin.app.HomeActivity;
 import com.threemin.app.ProfileActivity;
 import com.threemin.uti.CommonConstant;
+import com.threemin.uti.PreferenceHelper;
 import com.threemins.R;
 import com.urbanairship.UAirship;
 import com.urbanairship.push.BasicPushNotificationBuilder;
@@ -26,6 +27,12 @@ public class ThreeMinsNotificationBuilder extends BasicPushNotificationBuilder {
 	@Override
 	public Notification buildNotification(String alert, Map<String, String> extras) {
 		Notification notification = buildBasicNotification(alert, extras);
+		
+		Context context = UAirship.shared().getApplicationContext();
+		int numActivities = PreferenceHelper.getInstance(context).getNumberActivities();
+		numActivities ++;
+		PreferenceHelper.getInstance(context).setNumberActivities(numActivities);
+		
 		if (notification == null) {
 			return super.buildNotification(alert, extras);
 		} else {
@@ -52,6 +59,7 @@ public class ThreeMinsNotificationBuilder extends BasicPushNotificationBuilder {
 			oriIcon.recycle();
 			NotificationCompat.Builder builder = new Builder(context);
 			Intent showAppIntent = new Intent();
+			showAppIntent.putExtra(CommonConstant.INTENT_IS_FROM_PUSH_NOTIFICATION, true);
 			
 			String productID = extras.get("product_id");
 			String conversationID = extras.get("conversation_id");

@@ -19,6 +19,7 @@ import com.facebook.widget.LoginButton;
 import com.threemin.fragment.DetailFragment;
 import com.threemin.uti.CommonConstant;
 import com.threemin.uti.CommonUti;
+import com.threemin.uti.PreferenceHelper;
 import com.threemins.R;
 
 public class DetailActivity extends SwipeBackActivity {
@@ -36,6 +37,16 @@ public class DetailActivity extends SwipeBackActivity {
 		mLoginButton = (LoginButton) findViewById(R.id.activity_detail_btn_login_facebook);
 		String productID = getIntent().getStringExtra(CommonConstant.INTENT_PRODUCT_DATA_VIA_ID);
 		Log.i("DetailActivity", "Product ID: " + productID);
+		
+		//check if intent is from push notification
+        boolean isFromPushNotification = getIntent().getBooleanExtra(CommonConstant.INTENT_IS_FROM_PUSH_NOTIFICATION, false);
+        if (isFromPushNotification) {
+            int numActivities = PreferenceHelper.getInstance(this).getNumberActivities();
+            if (numActivities > 0) {
+                numActivities--;
+            }
+            PreferenceHelper.getInstance(this).setNumberActivities(numActivities);
+        }
 		
 		// Init the swipe back mechanism
 		mSwipeBack = getSwipeBackLayout();

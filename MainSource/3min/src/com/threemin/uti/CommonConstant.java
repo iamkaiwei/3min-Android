@@ -26,6 +26,7 @@ public class CommonConstant {
     public static final String PREF_TOKEN = "PREF_TOKEN";
     public static final String PREF_USER = "PREF_USER";
     public static final String PREF_APID = "PREF_APID";
+    public static final String PREF_ACTIVITIES = "PREF_ACTIVITIES";
 
     public static final String CURRENCY = "k Vnd";
 
@@ -42,6 +43,7 @@ public class CommonConstant {
     public static final String INTENT_USER_DATA_VIA_ID="userDataViaID";
     public static final String INTENT_GET_FOLLOW_LIST="getFollowList";
     public static final String INTENT_GET_FOLLOW_COUNT="getFollowCount";
+    public static final String INTENT_IS_FROM_PUSH_NOTIFICATION = "isFromPushNotification";
 
     public static final String PUSHER_CHAT_EVENT_NAME = "client-chat";
     public static final String PUSHER_CHAT_EVENT_TYPING = "client-typing";

@@ -44,6 +44,16 @@ public class ProfileActivity extends SwipeBackActivity {
         String userID = getIntent().getStringExtra(CommonConstant.INTENT_USER_DATA_VIA_ID);
         Log.i(tag, "onCreate userID: " + userID);
         
+      //check if intent is from push notification
+        boolean isFromPushNotification = getIntent().getBooleanExtra(CommonConstant.INTENT_IS_FROM_PUSH_NOTIFICATION, false);
+        if (isFromPushNotification) {
+            int numActivities = PreferenceHelper.getInstance(this).getNumberActivities();
+            if (numActivities > 0) {
+                numActivities--;
+            }
+            PreferenceHelper.getInstance(this).setNumberActivities(numActivities);
+        }
+        
         if (userID != null && userID.length() != 0) {
 			new GetUserViaId().execute(userID);
 		} else {

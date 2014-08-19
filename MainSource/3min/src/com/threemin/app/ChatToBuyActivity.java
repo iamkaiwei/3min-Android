@@ -137,6 +137,16 @@ public class ChatToBuyActivity extends SwipeBackActivity {
 		mProductID = intent.getStringExtra(CommonConstant.INTENT_PRODUCT_DATA_VIA_ID);
 		mConversationID = intent.getStringExtra(CommonConstant.INTENT_CONVERSATION_DATA_VIA_ID);
 		
+		//check if intent is from push notification
+		boolean isFromPushNotification = intent.getBooleanExtra(CommonConstant.INTENT_IS_FROM_PUSH_NOTIFICATION, false);
+		if (isFromPushNotification) {
+            int numActivities = PreferenceHelper.getInstance(this).getNumberActivities();
+            if (numActivities > 0) {
+                numActivities--;
+            }
+            PreferenceHelper.getInstance(this).setNumberActivities(numActivities);
+        }
+		
 //		if (mProductID != null && mConversationID != null) {
 		if (mConversationID != null) {
 			//get from webservice

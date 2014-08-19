@@ -2,6 +2,7 @@ package com.threemin.fragment;
 
 import java.util.List;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -24,6 +25,7 @@ import com.google.gson.Gson;
 import com.threemin.adapter.ActivityAdapter;
 import com.threemin.app.ChatToBuyActivity;
 import com.threemin.app.DetailActivity;
+import com.threemin.app.HomeActivity;
 import com.threemin.app.ProfileActivity;
 import com.threemin.model.ActivityModel;
 import com.threemin.uti.CommonConstant;
@@ -76,6 +78,10 @@ public class UserActivityFragment extends Fragment {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Activity activity = getActivity();
+                if (activity instanceof HomeActivity) {
+                    ((HomeActivity)activity).clearNumberActivities();
+                }
                 ActivityModel model = data.get(position);
                 if (CommonConstant.ACTIVITY_TYPE_RELATIONSHIP.equals(model.getSubjectType())) {
                     startActivityForRelationship(model);

@@ -133,6 +133,7 @@ public class SettingActivity extends SwipeBackActivity implements OnClickListene
 		
 		PreferenceHelper.getInstance(mContext).setCurrentUser("");
 		PreferenceHelper.getInstance(mContext).setTokken("");
+		PreferenceHelper.getInstance(mContext).setNumberActivities(0);
 		
 		finish();
 		Intent intent = new Intent(this, LoginActivity.class);

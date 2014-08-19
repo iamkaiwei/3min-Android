@@ -33,14 +33,41 @@
         android:layout_marginTop="@dimen/common_spacing"
         android:background="@android:color/transparent"
         android:visibility="gone" />
-
-    <ImageView
-        android:id="@+id/home_activity_action_bar_center_img_profile"
+    
+    <RelativeLayout
+        android:id="@+id/home_activity_action_bar_center_rl_profile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/common_spacing_triple"
-        android:background="@drawable/selector_home_action_bar_profile" />
+        android:layout_toRightOf="@+id/home_activity_action_bar_center_title" >
+        
+	    <ImageView
+	        android:id="@+id/home_activity_action_bar_center_img_profile"
+	        android:layout_width="25dp"
+	        android:layout_height="25dp"
+	        android:layout_alignParentRight="true"
+	        android:layout_centerVertical="true"
+	        android:background="@drawable/selector_home_action_bar_profile" />
+
+	    <TextView
+	        android:id="@+id/home_activity_action_bar_tv_number_activities"
+	        android:layout_width="wrap_content"
+	        android:layout_height="12dp"
+	        android:layout_alignBottom="@+id/home_activity_action_bar_center_img_profile"
+	        android:layout_alignParentRight="true"
+	        android:layout_marginRight="18dp"
+	        android:background="@drawable/selector_home_action_bar_profile_tv"
+	        android:paddingLeft="@dimen/common_spacing"
+	        android:paddingRight="@dimen/common_spacing"
+	        android:text="115"
+	        android:gravity="center_vertical"
+	        android:textStyle="bold"
+	        android:textColor="@color/red_background"
+	        android:textSize="9sp" />
+
+    </RelativeLayout>
+
 
 </RelativeLayout>

@@ -1,7 +1,6 @@
 package com.threemin.app;
 
 import java.util.List;
-import java.util.Locale;
 
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 import android.app.ActionBar;
@@ -10,9 +9,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -20,22 +17,15 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.Session;
-import com.facebook.UiLifecycleHelper;
-import com.facebook.widget.FacebookDialog;
 import com.facebook.widget.LoginButton;
-import com.facebook.widget.FacebookDialog.PendingCall;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.plus.Plus;
 import com.threemin.adapter.CategoryAdapter;
 import com.threemin.fragment.HomeFragment;
 import com.threemin.fragment.LeftFragment;
@@ -50,6 +40,8 @@ import com.threemins.R;
 public class HomeActivity extends SwipeBackActivity {
 
 	// action bar widgets
+    RelativeLayout mRLActionbarProfile;
+    TextView mTvActionbarProfile;
 	ImageView mImgActionbarSearch, mImgActionbarProfile;
 	CustomSpinner mSpnActionbarCenterTitle;
 	Button mBtnActionbarCenterTitle;
@@ -169,6 +161,13 @@ public class HomeActivity extends SwipeBackActivity {
 	    // TODO Auto-generated method stub
         
         Log.i("LifeCycle", "onResume");
+        int numActivities = PreferenceHelper.getInstance(this).getNumberActivities();
+        mTvActionbarProfile.setText("" + numActivities);
+        if (numActivities > 0) {
+            mTvActionbarProfile.setVisibility(View.VISIBLE);
+        } else {
+            mTvActionbarProfile.setVisibility(View.GONE);
+        }
         
 	    super.onResume();
 	}
@@ -238,13 +237,13 @@ public class HomeActivity extends SwipeBackActivity {
 		case PAGE_LEFT:
 			mImgActionbarSearch.setSelected(true);
 			setSpinnerSelected(false);
-			mImgActionbarProfile.setSelected(false);
+			mRLActionbarProfile.setSelected(false);
 			break;
 
 		case PAGE_CENTER:
 			mImgActionbarSearch.setSelected(false);
 			setSpinnerSelected(true);
-			mImgActionbarProfile.setSelected(false);
+            mRLActionbarProfile.setSelected(false);
 			leftFragment.hideKeyboard();
 
 			if (prevPage == PAGE_LEFT) {
@@ -256,7 +255,7 @@ public class HomeActivity extends SwipeBackActivity {
 		case PAGE_RIGHT:
 			mImgActionbarSearch.setSelected(false);
 			setSpinnerSelected(false);
-			mImgActionbarProfile.setSelected(true);
+            mRLActionbarProfile.setSelected(true);
 			leftFragment.hideKeyboard();
 			break;
 
@@ -322,15 +321,18 @@ public class HomeActivity extends SwipeBackActivity {
 		bar.setDisplayShowHomeEnabled(false);
 		bar.setDisplayShowTitleEnabled(false);
 
-		// action bar center
+		// action bar profile
+		mRLActionbarProfile = (RelativeLayout) findViewById(R.id.home_activity_action_bar_center_rl_profile);
+		mTvActionbarProfile = (TextView) findViewById(R.id.home_activity_action_bar_tv_number_activities);
 		mImgActionbarProfile = (ImageView) findViewById(R.id.home_activity_action_bar_center_img_profile);
-		mImgActionbarProfile.setOnClickListener(new OnClickListener() {
+		mRLActionbarProfile.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				mViewPagerMainContent.setCurrentItem(PAGE_RIGHT, true);
 			}
 		});
+		mTvActionbarProfile.setText("" + PreferenceHelper.getInstance(this).getNumberActivities());
 
 		mImgActionbarSearch = (ImageView) findViewById(R.id.home_activity_action_bar_center_img_search);
 		mImgActionbarSearch.setOnClickListener(new OnClickListener() {
@@ -341,6 +343,7 @@ public class HomeActivity extends SwipeBackActivity {
 			}
 		});
 
+		//action bar center spinner
 		mSpnActionbarCenterTitle = (CustomSpinner) findViewById(R.id.home_activity_action_bar_center_title);
 		new InitCategory().execute();
 		mSpnActionbarCenterTitle
@@ -394,37 +397,17 @@ public class HomeActivity extends SwipeBackActivity {
 		// Pass any configuration change to the drawer toggls
 	}
 
-//	public OnClickListener doLogout() {
-//		return new OnClickListener() {
-//
-//			@Override
-//			public void onClick(View v) {
-//				Session session = Session.getActiveSession();
-//				if (session != null && session.isOpened()) {
-//					session.closeAndClearTokenInformation();
-//				}
-//
-//				if (mGoogleApiClient.isConnected()) {
-//					Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
-//					mGoogleApiClient.disconnect();
-//					mGoogleApiClient.connect();
-//				}
-//				finish();
-//				startActivity(new Intent(mContext, LoginActivity.class));
-//			}
-//		};
-//	}
+	@Override
+	public void onBackPressed() {
+	    if (mViewPagerMainContent.getCurrentItem() == PAGE_CENTER) {
+	        super.onBackPressed();
+	    } else {
+	        mViewPagerMainContent.setCurrentItem(PAGE_CENTER);
+	    }
+	}
 
 	// view pager implementation
 
-	@Override
-	public void onBackPressed() {
-		if (mViewPagerMainContent.getCurrentItem() == PAGE_CENTER) {
-			super.onBackPressed();
-		} else {
-			mViewPagerMainContent.setCurrentItem(PAGE_CENTER);
-		}
-	}
 	private class PagerAdapter extends FragmentStatePagerAdapter {
 
 		public PagerAdapter(FragmentManager fm) {
@@ -455,11 +438,6 @@ public class HomeActivity extends SwipeBackActivity {
             homeFragment = new HomeFragment();
         }
 		homeFragment.onSwichCategory(categoryModel);
-//		if (categoryModel == null) {
-//			getActionBar().setTitle(R.string.browse);
-//		} else {
-//			getActionBar().setTitle(categoryModel.getName());
-//		}
 	}
 
 	// create list category to add to spinner
@@ -526,5 +504,13 @@ public class HomeActivity extends SwipeBackActivity {
 	
 	public LoginButton getLoginButton() {
 		return mBtnLoginFacebook;
+	}
+	
+	public void clearNumberActivities() {
+	    int numActivities = PreferenceHelper.getInstance(this).getNumberActivities();
+	    if (numActivities != 0) {
+            PreferenceHelper.getInstance(this).setNumberActivities(0);
+        }
+	    mTvActionbarProfile.setVisibility(View.GONE);
 	}
 }
