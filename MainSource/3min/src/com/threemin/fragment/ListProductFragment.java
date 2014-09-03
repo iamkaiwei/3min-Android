@@ -86,6 +86,11 @@ public class ListProductFragment extends BaseProductFragment {
             // TODO
             mAdapter = new ProductGridAdapter(productModels, mContext, mLoginButton,CommonUti.calcWidthItem(mContext));
         }
+        
+        LayoutInflater layoutInflater = LayoutInflater.from(mContext);
+        View header = layoutInflater.inflate(R.layout.fragment_right_feedback_group, null);
+        
+        mGrid.addHeaderView(header);
         mGrid.setAdapter(mAdapter);
 
         initListner();

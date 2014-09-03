@@ -47,6 +47,7 @@ public class RightFragment extends Fragment {
                     UserModel.class);
             TextView listing = (TextView) rootView.findViewById(R.id.tv_listing);
             listing.setText(R.string.profile_list);
+            listing.setVisibility(View.GONE);
             
             UserModel currentUser = PreferenceHelper.getInstance(getActivity()).getCurrentUser();
             if (currentUser != null && userModel != null && currentUser.getId() != userModel.getId()) {

@@ -128,6 +128,8 @@
     <!-- fragment right -->
     <dimen name="fm_right_group_profile_height">180dp</dimen>
     <dimen name="fm_right_avatar_size">60dp</dimen>
+    <dimen name="fm_right_avatar_size_feedback">35dp</dimen>
     <dimen name="fm_right_row_height">50dp</dimen>
+    <dimen name="fm_right_feedback_group_margin_top">23dp</dimen>
 
 </resources>

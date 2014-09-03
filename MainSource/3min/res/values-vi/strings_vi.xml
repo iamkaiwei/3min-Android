@@ -307,4 +307,11 @@
     <string name="share_three_min_info">Chào các bạn, hãy dùng thử ứng dụng này https://play.google.com/store/apps/details?id=com.threemins</string>
     <string name="cannot_load_image_error">Không thể tải hình gốc của sản phẩm.\nSử dụng ảnh đại diện thể thay thế.</string>
     
+    <!-- fragment right -->
+    <!-- <string name="fm_right_view_1_feedback">View 1 feedback</string> -->
+    <string name="fm_right_view_1_feedback">Xem 1 phản hồi</string>
+    
+    <!-- <string name="fm_right_view_many_feedbacks">View %s feedbacks</string> -->
+    <string name="fm_right_view_many_feedbacks">Xem %s phản hồi</string>
+    
 </resources>

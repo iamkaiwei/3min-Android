@@ -159,5 +159,11 @@
     <string name="facebook_app_missed_error">Please install Facebook for Android to share easier!</string>
     <string name="share_three_min_info">Hi Guys, Try this app https://play.google.com/store/apps/details?id=com.threemins</string>
     <string name="cannot_load_image_error">Can not load the original images of this product to share.\nUse the medium image instead</string>
+    
+    <string name="text_test">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed dorem ipsum dolor sit amet, consectetur adipisicing elit, sed dorem ipsum dolor sit amet, consectetur adipisicing elit, sed dorem ipsum dolor sit amet, consectetur adipisicing elit, sed d</string>
 
+    <!-- fragment right -->
+    <string name="fm_right_view_1_feedback">View 1 feedback</string>
+    <string name="fm_right_view_many_feedbacks">View %s feedbacks</string>
+    
 </resources>
