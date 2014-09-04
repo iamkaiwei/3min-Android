@@ -17,9 +17,9 @@
         android:background="@android:color/white" >
 
         <View
-            android:id="@+id/fm_right_feedback_group_white_view"
+            android:id="@+id/fm_right_feedback_group_grey_view"
             android:layout_width="match_parent"
-            android:layout_height="17dp"
+            android:layout_height="@dimen/fm_right_feedback_group_height_owner_group_a_hafl"
             android:background="@color/background_grey" />
 
         <!-- feedback -->
@@ -50,7 +50,7 @@
 
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/fm_right_feedback_group_height_owner_group"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="@dimen/common_spacing_a_half"
                     android:orientation="vertical"
@@ -58,21 +58,21 @@
 
                     <com.lanna.droidlib.view.CustomTextView
                         android:id="@+id/fm_right_feedback_group_tv_username"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
-                        android:paddingBottom="@dimen/common_spacing"
+                        android:gravity="center_vertical"
                         android:text="Lan_huong"
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/textsize_small"
                         threemins:customTypeface="@string/font_semibold" />
-
+                    
                     <com.lanna.droidlib.view.CustomTextView
                         android:id="@+id/fm_right_feedback_group_tv_date"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
-                        android:paddingTop="@dimen/common_spacing"
+                        android:gravity="center_vertical"
                         android:text="2 Feb 2014"
                         android:textColor="@color/common_grey"
                         android:textSize="@dimen/textsize_very_small"
