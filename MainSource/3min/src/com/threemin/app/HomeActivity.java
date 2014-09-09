@@ -33,6 +33,7 @@ import com.threemin.fragment.RightFragment;
 import com.threemin.model.CategoryModel;
 import com.threemin.model.FilterModel;
 import com.threemin.uti.PreferenceHelper;
+import com.threemin.view.BaseViewPagerAdapter;
 import com.threemin.view.CustomSpinner;
 import com.threemin.webservice.CategoryWebservice;
 import com.threemins.R;
@@ -77,6 +78,7 @@ public class HomeActivity extends SwipeBackActivity {
 	public static final String TAG_HOME_FRAGMENT = "HomeFragment";
 	public static final String TAG_LEFT_FRAGMENT = "LeftFragment";
 	public static final String TAG_RIGHT_FRAGMENT = "RightFragment";
+	public static final String TAG_SAVED_FRAGMENT = "HomeActivitySavedFragment";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -103,13 +105,31 @@ public class HomeActivity extends SwipeBackActivity {
 		// view pager implementation
 		currentPage = PAGE_CENTER;
 		prevPage = -1;
-		if (savedInstanceState != null) {
-		    homeFragment = (HomeFragment) getSupportFragmentManager().getFragment(savedInstanceState, TAG_HOME_FRAGMENT);
-		    leftFragment = (LeftFragment) getSupportFragmentManager().getFragment(savedInstanceState, TAG_LEFT_FRAGMENT);
-		    rightFragment = (RightFragment) getSupportFragmentManager().getFragment(savedInstanceState, TAG_RIGHT_FRAGMENT);
-        } 
+		
+		//TODO: old implementation to save fragment===========================================================================
+//		if (savedInstanceState != null) {
+//		    homeFragment = (HomeFragment) getSupportFragmentManager().getFragment(savedInstanceState, TAG_HOME_FRAGMENT);
+//		    leftFragment = (LeftFragment) getSupportFragmentManager().getFragment(savedInstanceState, TAG_LEFT_FRAGMENT);
+//		    rightFragment = (RightFragment) getSupportFragmentManager().getFragment(savedInstanceState, TAG_RIGHT_FRAGMENT);
+//        } 
+        //old implementation============================================================================================
+		
+		//TODO: new implementation to save fragment===========================================================================
+		
+//      homeFragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag("BaseViewPagerAdapterFragmentTag1"); 
+//      leftFragment = (LeftFragment) getSupportFragmentManager().findFragmentByTag("BaseViewPagerAdapterFragmentTag0");
+//      rightFragment = (RightFragment) getSupportFragmentManager().findFragmentByTag("BaseViewPagerAdapterFragmentTag2");
+		
+//        homeFragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag(BaseViewPagerAdapter.TAG_FRAGMENT + 1); 
+//        leftFragment = (LeftFragment) getSupportFragmentManager().findFragmentByTag(BaseViewPagerAdapter.TAG_FRAGMENT + 0);
+//        rightFragment = (RightFragment) getSupportFragmentManager().findFragmentByTag(BaseViewPagerAdapter.TAG_FRAGMENT + 2);
+		
+		homeFragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag(TAG_SAVED_FRAGMENT + 1); 
+        leftFragment = (LeftFragment) getSupportFragmentManager().findFragmentByTag(TAG_SAVED_FRAGMENT + 0);
+        rightFragment = (RightFragment) getSupportFragmentManager().findFragmentByTag(TAG_SAVED_FRAGMENT + 2);
+        //new implementation to save fragment===========================================================================
+        
 		if (homeFragment == null) {
-            
 		    homeFragment = new HomeFragment();
         }
 		if (leftFragment == null) {
@@ -118,8 +138,9 @@ public class HomeActivity extends SwipeBackActivity {
 		if (rightFragment == null) {
 		    rightFragment = new RightFragment();
         }
+		
 		mViewPagerMainContent = (ViewPager) findViewById(R.id.activity_home_view_pager);
-		mViewPagerAdapter = new PagerAdapter(getSupportFragmentManager());
+		mViewPagerAdapter = new PagerAdapter(getSupportFragmentManager(), TAG_SAVED_FRAGMENT);
 		mViewPagerMainContent.setOffscreenPageLimit(3);
 		mViewPagerMainContent.setAdapter(mViewPagerAdapter);
 		mViewPagerMainContent.setCurrentItem(PAGE_CENTER);
@@ -148,18 +169,13 @@ public class HomeActivity extends SwipeBackActivity {
 	
 	@Override
 	protected void onStart() {
-	    // TODO Auto-generated method stub
-	    
 	    Log.i("LifeCycle", "onStart");
-	    
 	    super.onStart();
 //	    mGoogleApiClient.connect();
 	}
 	
 	@Override
 	protected void onResume() {
-	    // TODO Auto-generated method stub
-        
         Log.i("LifeCycle", "onResume");
         int numActivities = PreferenceHelper.getInstance(this).getNumberActivities();
         mTvActionbarProfile.setText("" + numActivities);
@@ -174,49 +190,39 @@ public class HomeActivity extends SwipeBackActivity {
 	
 	@Override
 	protected void onPause() {
-	    // TODO Auto-generated method stub
-        
         Log.i("LifeCycle", "onPause");
-        
 	    super.onPause();
 	}
 	
 	@Override
 	protected void onStop() {
-	    // TODO Auto-generated method stub
-        
         Log.i("LifeCycle", "onStop");
-        
 	    super.onStop();
 //	    mGoogleApiClient.disconnect();
 	}
 	
 	@Override
 	protected void onRestart() {
-	    // TODO Auto-generated method stub
-        
         Log.i("LifeCycle", "onRestart");
-        
 	    super.onRestart();
 	}
 	
 	@Override
 	protected void onDestroy() {
-	    // TODO Auto-generated method stub
-        
         Log.i("LifeCycle", "onDestroy");
-        
 	    super.onDestroy();
 	}
-	
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-	    // TODO Auto-generated method stub
-	    super.onSaveInstanceState(outState);
-	    getSupportFragmentManager().putFragment(outState, TAG_HOME_FRAGMENT, homeFragment);
-	    getSupportFragmentManager().putFragment(outState, TAG_LEFT_FRAGMENT, leftFragment);
-	    getSupportFragmentManager().putFragment(outState, TAG_RIGHT_FRAGMENT, rightFragment);
-	}
+
+    //old implementation to save fragment===============================================================================
+//	@Override
+//	protected void onSaveInstanceState(Bundle outState) {
+//	    // TODO Auto-generated method stub
+//	    super.onSaveInstanceState(outState);
+//	    getSupportFragmentManager().putFragment(outState, TAG_HOME_FRAGMENT, homeFragment);
+//	    getSupportFragmentManager().putFragment(outState, TAG_LEFT_FRAGMENT, leftFragment);
+//	    getSupportFragmentManager().putFragment(outState, TAG_RIGHT_FRAGMENT, rightFragment);
+//	}
+    //old implementation to save fragment===============================================================================
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -408,11 +414,15 @@ public class HomeActivity extends SwipeBackActivity {
 
 	// view pager implementation
 
-	private class PagerAdapter extends FragmentStatePagerAdapter {
+	private class PagerAdapter extends BaseViewPagerAdapter {
 
 		public PagerAdapter(FragmentManager fm) {
 			super(fm);
 		}
+		
+		public PagerAdapter(FragmentManager fm, String tag) {
+            super(fm, tag);
+        }
 
 		@Override
 		public Fragment getItem(int position) {

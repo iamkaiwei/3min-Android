@@ -34,6 +34,13 @@ public class RightFragment extends Fragment {
     public static boolean GET_FOLLOWERS = true;
     public static boolean GET_FOLLOWINGS = false;
     ViewGroup rootView;
+    
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        // TODO Auto-generated method stub
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

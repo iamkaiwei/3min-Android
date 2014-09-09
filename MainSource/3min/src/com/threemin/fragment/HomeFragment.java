@@ -52,7 +52,12 @@ public class HomeFragment extends Fragment {
 	static protected CategoryModel currentCate;
 	static protected List<ProductModel> productModels;
 
-	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+	    // TODO Auto-generated method stub
+	    super.onCreate(savedInstanceState);
+	    setRetainInstance(true);
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
