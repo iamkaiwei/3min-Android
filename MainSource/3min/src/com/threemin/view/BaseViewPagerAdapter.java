@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
+ * Truc Tran:
  * Use source code of "FragmentStatePagerAdapter" class and modify in method "instantiateItem : add fragment with a tag
  * 
  * 
@@ -115,14 +116,14 @@ public abstract class BaseViewPagerAdapter extends PagerAdapter {
         fragment.setUserVisibleHint(false);
         mFragments.set(position, fragment);
         
-        //TODO: modify
+        //TODO: modify: add fragment with a tag to restore
 //        mCurTransaction.add(container.getId(), fragment);
         if (mFragmentTag == null || mFragmentTag.length() == 0) {
             mCurTransaction.add(container.getId(), fragment, (TAG_FRAGMENT + position));
-            Log.i("pos", TAG_FRAGMENT + position);
+            Log.i("Saved", TAG_FRAGMENT + position);
         } else {
             mCurTransaction.add(container.getId(), fragment, (mFragmentTag + position));
-            Log.i("pos", mFragmentTag + position);
+            Log.i("Saved", mFragmentTag + position);
         }
 
         return fragment;

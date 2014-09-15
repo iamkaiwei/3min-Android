@@ -116,17 +116,12 @@ public class HomeActivity extends SwipeBackActivity {
 		
 		//TODO: new implementation to save fragment===========================================================================
 		
-//      homeFragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag("BaseViewPagerAdapterFragmentTag1"); 
-//      leftFragment = (LeftFragment) getSupportFragmentManager().findFragmentByTag("BaseViewPagerAdapterFragmentTag0");
-//      rightFragment = (RightFragment) getSupportFragmentManager().findFragmentByTag("BaseViewPagerAdapterFragmentTag2");
-		
-//        homeFragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag(BaseViewPagerAdapter.TAG_FRAGMENT + 1); 
-//        leftFragment = (LeftFragment) getSupportFragmentManager().findFragmentByTag(BaseViewPagerAdapter.TAG_FRAGMENT + 0);
-//        rightFragment = (RightFragment) getSupportFragmentManager().findFragmentByTag(BaseViewPagerAdapter.TAG_FRAGMENT + 2);
-		
-		homeFragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag(TAG_SAVED_FRAGMENT + 1); 
-        leftFragment = (LeftFragment) getSupportFragmentManager().findFragmentByTag(TAG_SAVED_FRAGMENT + 0);
-        rightFragment = (RightFragment) getSupportFragmentManager().findFragmentByTag(TAG_SAVED_FRAGMENT + 2);
+		homeFragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag(TAG_SAVED_FRAGMENT + PAGE_CENTER);
+		Log.i("Saved", "HomeAct: " + TAG_SAVED_FRAGMENT + PAGE_CENTER);
+        leftFragment = (LeftFragment) getSupportFragmentManager().findFragmentByTag(TAG_SAVED_FRAGMENT + PAGE_LEFT);
+        Log.i("Saved", "HomeAct: " + TAG_SAVED_FRAGMENT + PAGE_LEFT);
+        rightFragment = (RightFragment) getSupportFragmentManager().findFragmentByTag(TAG_SAVED_FRAGMENT + PAGE_RIGHT);
+        Log.i("Saved", "HomeAct: " + TAG_SAVED_FRAGMENT + PAGE_RIGHT);
         //new implementation to save fragment===========================================================================
         
 		if (homeFragment == null) {
@@ -213,10 +208,9 @@ public class HomeActivity extends SwipeBackActivity {
 	    super.onDestroy();
 	}
 
-    //old implementation to save fragment===============================================================================
+    //TODO: old implementation to save fragment=========================================================================
 //	@Override
 //	protected void onSaveInstanceState(Bundle outState) {
-//	    // TODO Auto-generated method stub
 //	    super.onSaveInstanceState(outState);
 //	    getSupportFragmentManager().putFragment(outState, TAG_HOME_FRAGMENT, homeFragment);
 //	    getSupportFragmentManager().putFragment(outState, TAG_LEFT_FRAGMENT, leftFragment);
