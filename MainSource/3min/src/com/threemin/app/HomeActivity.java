@@ -7,20 +7,32 @@ import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
+import android.view.ViewGroup.LayoutParams;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.PopupWindow;
+import android.widget.PopupWindow.OnDismissListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -44,8 +56,15 @@ public class HomeActivity extends SwipeBackActivity {
     RelativeLayout mRLActionbarProfile;
     TextView mTvActionbarProfile;
 	ImageView mImgActionbarSearch, mImgActionbarProfile;
-	CustomSpinner mSpnActionbarCenterTitle;
+//	CustomSpinner mSpnActionbarCenterTitle;
 	Button mBtnActionbarCenterTitle;
+	
+	//dimmed bacground, use when we replace spinner on action bar with textview and popup window
+	FrameLayout mFlDimmedBackground;
+	TextView mTvActionBarCenter;
+	PopupWindow mPopupWindowCategories;
+	ListView mLvListCategories;
+	Animation mAnimDimbackground;
 
 	// button to login facebook
 	LoginButton mBtnLoginFacebook;
@@ -68,8 +87,6 @@ public class HomeActivity extends SwipeBackActivity {
 	public static final int NEAREST_ID = R.id.fm_filter_rl_nearest;
 
 	Context mContext;
-	// right drawer
-	RelativeLayout layoutFilter;
 
 //	GoogleApiClient mGoogleApiClient;
 	HomeFragment homeFragment;
@@ -289,25 +306,29 @@ public class HomeActivity extends SwipeBackActivity {
 	}
 
 	public void setSpinnerSelected(boolean isSelected) {
-		RelativeLayout rl = (RelativeLayout)mSpnActionbarCenterTitle.getChildAt(0);
-		TextView tv = null;
-		if (rl != null) {
-			tv = (TextView)rl.getChildAt(0);
-		}
+//		RelativeLayout rl = (RelativeLayout)mSpnActionbarCenterTitle.getChildAt(0);
+//		TextView tv = null;
+//		if (rl != null) {
+//			tv = (TextView)rl.getChildAt(0);
+//		}
 		
 		if (isSelected) {
-			mSpnActionbarCenterTitle.setSelected(true);
-			if (tv != null) {
-				tv.setTextColor(getResources().getColor(R.color.home_action_bar_text_color_enable));
-			}
-			mSpnActionbarCenterTitle.setEnabled(true);
+//			mSpnActionbarCenterTitle.setSelected(true);
+			mTvActionBarCenter.setSelected(true);
+//			if (tv != null) {
+//				tv.setTextColor(getResources().getColor(R.color.home_action_bar_text_color_enable));
+//			}
+//			mSpnActionbarCenterTitle.setEnabled(true);
+			mTvActionBarCenter.setEnabled(true);
 			mBtnActionbarCenterTitle.setVisibility(View.GONE);
 		} else {
-			mSpnActionbarCenterTitle.setSelected(false);
-			if (tv != null) {
-				tv.setTextColor(getResources().getColor(R.color.home_action_bar_text_color_disable));
-			}
-			mSpnActionbarCenterTitle.setEnabled(false);
+//			mSpnActionbarCenterTitle.setSelected(false);
+            mTvActionBarCenter.setSelected(false);
+//			if (tv != null) {
+//				tv.setTextColor(getResources().getColor(R.color.home_action_bar_text_color_disable));
+//			}
+//			mSpnActionbarCenterTitle.setEnabled(false);
+            mTvActionBarCenter.setEnabled(false);
 			mBtnActionbarCenterTitle.setVisibility(View.VISIBLE);
 		}
 	}
@@ -344,30 +365,29 @@ public class HomeActivity extends SwipeBackActivity {
 		});
 
 		//action bar center spinner
-		mSpnActionbarCenterTitle = (CustomSpinner) findViewById(R.id.home_activity_action_bar_center_title);
-		new InitCategory().execute();
-		mSpnActionbarCenterTitle
-				.setOnItemSelectedListener(new OnItemSelectedListener() {
-
-					@Override
-					public void onItemSelected(AdapterView<?> parent,
-							View view, int position, long id) {
-
-						CategoryModel categoryModel = (CategoryModel) parent
-								.getItemAtPosition(position);
-						if (categoryModel.getId() == 0) {
-							onSwitchCate(null);
-						} else {
-							onSwitchCate(categoryModel);
-						}
-						categoryAdapter.swapView(position);
-					}
-
-					@Override
-					public void onNothingSelected(AdapterView<?> parent) {
-
-					}
-				});
+//		mSpnActionbarCenterTitle = (CustomSpinner) findViewById(R.id.home_activity_action_bar_center_title);
+//		mSpnActionbarCenterTitle
+//				.setOnItemSelectedListener(new OnItemSelectedListener() {
+//
+//					@Override
+//					public void onItemSelected(AdapterView<?> parent,
+//							View view, int position, long id) {
+//
+//						CategoryModel categoryModel = (CategoryModel) parent
+//								.getItemAtPosition(position);
+//						if (categoryModel.getId() == 0) {
+//							onSwitchCate(null);
+//						} else {
+//							onSwitchCate(categoryModel);
+//						}
+//						categoryAdapter.swapView(position);
+//					}
+//
+//					@Override
+//					public void onNothingSelected(AdapterView<?> parent) {
+//
+//					}
+//				});
 
 		mBtnActionbarCenterTitle = (Button) findViewById(R.id.home_activity_action_bar_center_btn_title);
 		mBtnActionbarCenterTitle.setOnClickListener(new OnClickListener() {
@@ -378,11 +398,111 @@ public class HomeActivity extends SwipeBackActivity {
 				setSpinnerSelected(true);
 			}
 		});
+		
+		//relpace spinner with textview and popup window
+		//textview
+		mTvActionBarCenter = (TextView) findViewById(R.id.home_activity_action_bar_center_tv_title);
+		mTvActionBarCenter.setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+                showOrHideDropdownList();
+            }
+        });
+		initPopupWindow();
+		
+		//dimmed background
+		mFlDimmedBackground = (FrameLayout) findViewById(R.id.activity_home_fm_dimmed_background);
+		mFlDimmedBackground.setOnTouchListener(new OnTouchListener() {
+            
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (mPopupWindowCategories.isShowing()) {
+                    mPopupWindowCategories.dismiss();
+                    mFlDimmedBackground.setVisibility(View.GONE);
+                }
+                return false;
+            }
+        });
+		
 
-		disableSpinnerBackground();
-        mSpnActionbarCenterTitle.setSelected(true);
+//		disableSpinnerBackground();
+//        mSpnActionbarCenterTitle.setSelected(true);
+        mTvActionBarCenter.setSelected(true);
         mImgActionbarProfile.setSelected(false);
         mImgActionbarSearch.setSelected(false);
+        
+
+        new InitCategory().execute();
+  	}
+	
+	public void initPopupWindow() {
+	    LayoutInflater inflater = LayoutInflater.from(this);
+	    View dropdownView = inflater.inflate(R.layout.layout_custom_action_bar_dropdown_list, null);
+	    mPopupWindowCategories = new PopupWindow(dropdownView, LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+	    mPopupWindowCategories.setBackgroundDrawable(new BitmapDrawable(getResources()));
+	    mPopupWindowCategories.setOutsideTouchable(true);
+	    mPopupWindowCategories.setTouchable(true);
+	    mPopupWindowCategories.setFocusable(true);
+	    mPopupWindowCategories.setAnimationStyle(R.style.activity_home_popup_animation);
+	    mPopupWindowCategories.setOnDismissListener(new OnDismissListener() {
+            
+            @Override
+            public void onDismiss() {
+                dimBackground(false);
+                mTvActionBarCenter.setBackgroundResource(R.drawable.selector_home_action_bar_spn_bg);
+            }
+        });
+	    
+	  //dimmed background
+        mFlDimmedBackground = (FrameLayout) findViewById(R.id.activity_home_fm_dimmed_background);
+        mFlDimmedBackground.setOnTouchListener(new OnTouchListener() {
+            
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (mPopupWindowCategories.isShowing()) {
+                    mPopupWindowCategories.dismiss();
+                }
+                return false;
+            }
+        });
+        
+        mAnimDimbackground = AnimationUtils.loadAnimation(this, R.anim.anim_popup_dim_background);
+        mAnimDimbackground.setDuration(getResources().getInteger(R.integer.activity_home_popup_animation_duration) * 2);
+        mAnimDimbackground.setAnimationListener(new AnimationListener() {
+            
+            @Override
+            public void onAnimationStart(Animation animation) {
+                mFlDimmedBackground.setVisibility(View.VISIBLE);
+            }
+            
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+                
+            }
+            
+            @Override
+            public void onAnimationEnd(Animation animation) {
+            }
+        });
+        
+	    mLvListCategories = (ListView) dropdownView.findViewById(R.id.home_activity_action_bar_dropdown_list);
+	    mLvListCategories.setOnItemClickListener(new OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                CategoryModel cateModel = (CategoryModel) parent.getItemAtPosition(position);
+                if (position == 0) {
+                    mTvActionBarCenter.setText(getResources().getString(R.string.browse));
+                    onSwitchCate(null);
+                } else {
+                    mTvActionBarCenter.setText(cateModel.getName());
+                    onSwitchCate(cateModel);
+                }
+                mPopupWindowCategories.dismiss();
+                categoryAdapter.swapView(position);
+            }
+        });
 	}
 
 	@Override
@@ -467,44 +587,71 @@ public class HomeActivity extends SwipeBackActivity {
 		protected void onPostExecute(List<CategoryModel> result) {
 			if (result != null) {
 
-				categoryAdapter = new CategoryAdapter(HomeActivity.this,
-						result, true, mSpnActionbarCenterTitle);
-				mSpnActionbarCenterTitle.setAdapter(categoryAdapter);
-				mSpnActionbarCenterTitle.setSelected(true);
-				mSpnActionbarCenterTitle
-						.setBackgroundResource(R.drawable.selector_home_action_bar_spn_bg);
+//				categoryAdapter = new CategoryAdapter(HomeActivity.this,
+//						result, true, mSpnActionbarCenterTitle);
+//				mSpnActionbarCenterTitle.setAdapter(categoryAdapter);
+//				mSpnActionbarCenterTitle.setSelected(true);
+//				mSpnActionbarCenterTitle
+//						.setBackgroundResource(R.drawable.selector_home_action_bar_spn_bg);
+				categoryAdapter = new CategoryAdapter(HomeActivity.this, result, false, null);
+				mLvListCategories.setAdapter(categoryAdapter);
+				onSwitchCate(null);
+				mTvActionBarCenter.setText(getResources().getString(R.string.browse));
+				categoryAdapter.swapView(0);
 			}
 			super.onPostExecute(result);
 		}
 	}
 
 	// use to hide the spinner border when the drop down list is closed
-	@Override
-	public void onWindowFocusChanged(boolean hasFocus) {
-		super.onWindowFocusChanged(hasFocus);
-		if (hasFocus && mSpnActionbarCenterTitle.isDropdownShowing()) {
-			mSpnActionbarCenterTitle.setDropdownShowing(false);
-			disableSpinnerBackground();
-		} else {
-			if (hasFocus) {
-				Log.i("tructran", "window has no focus");
-			} else {
-				Log.i("tructran", "window has focus");
-			}
-
-			if (mSpnActionbarCenterTitle.isDropdownShowing()) {
-				Log.i("tructran", "drop down is showing");
-			} else {
-				Log.i("tructran", "drop down is not showing");
-			}
-		}
+//	@Override
+//	public void onWindowFocusChanged(boolean hasFocus) {
+//		super.onWindowFocusChanged(hasFocus);
+//		if (hasFocus && mSpnActionbarCenterTitle.isDropdownShowing()) {
+//			mSpnActionbarCenterTitle.setDropdownShowing(false);
+//			disableSpinnerBackground();
+//		} else {
+//			if (hasFocus) {
+//				Log.i("tructran", "window has no focus");
+//			} else {
+//				Log.i("tructran", "window has focus");
+//			}
+//
+//			if (mSpnActionbarCenterTitle.isDropdownShowing()) {
+//				Log.i("tructran", "drop down is showing");
+//			} else {
+//				Log.i("tructran", "drop down is not showing");
+//			}
+//		}
+//	}
+	
+	public void dimBackground(boolean dimmed) {
+        if (dimmed) {
+//            mFlDimmedBackground.setVisibility(View.VISIBLE);
+            mFlDimmedBackground.startAnimation(mAnimDimbackground);
+        }
+        else {
+            mFlDimmedBackground.setVisibility(View.GONE);
+        }
+	}
+	
+	//show or hide dropdown list when user tap on textview categories
+	boolean test = true;
+	public void showOrHideDropdownList() {
+	    if (mPopupWindowCategories.isShowing()) {
+	        mPopupWindowCategories.dismiss();
+        } else {
+            mPopupWindowCategories.showAsDropDown(findViewById(R.id.home_activity_action_bar_root), 0, 0);
+            mTvActionBarCenter.setBackgroundResource(R.drawable.bg_spn_border_enable_arrow_enable);
+            dimBackground(true);
+        }
 	}
 
 	// functions to set the background of spinner
-	public void disableSpinnerBackground() {
-		mSpnActionbarCenterTitle
-				.setBackgroundResource(R.drawable.selector_home_action_bar_spn_bg);
-	}
+//	public void disableSpinnerBackground() {
+//		mSpnActionbarCenterTitle
+//				.setBackgroundResource(R.drawable.selector_home_action_bar_spn_bg);
+//	}
 	
 	public LoginButton getLoginButton() {
 		return mBtnLoginFacebook;

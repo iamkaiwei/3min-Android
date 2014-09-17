@@ -179,6 +179,7 @@ public class LeftFragment extends Fragment implements OnClickListener {
 			selectedFilterID = FILTER_ID_NULL;
 			etMaxPrice.setText("");
 			etMinPrice.setText("");
+			etSearch.setText("");
 			break;
 
 		default:

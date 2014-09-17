@@ -3,14 +3,12 @@
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
-    -->
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.    -->
     <style name="AppBaseTheme" parent="android:Theme.Holo.Light">
         <!--
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
-        -->
+            backward-compatibility can go here.        -->
     </style>
 
     <!-- Application theme. -->
@@ -182,6 +180,12 @@
     <style name="fm_right_textview_black" parent="@style/fm_right_textview_grey">
         <item name="android:textColor">@android:color/black</item>
         <item name="android:textSize">@dimen/textsize_medium</item>
+    </style>
+    
+    <!-- Home activity: animation when list categories popup window is showed or hidden -->
+    <style name="activity_home_popup_animation">
+        <item name="android:windowEnterAnimation">@anim/anim_popup_show</item>
+        <item name="android:windowExitAnimation">@anim/anim_popup_hide</item>
     </style>
 
 </resources>
