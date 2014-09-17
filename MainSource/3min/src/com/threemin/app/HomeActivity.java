@@ -56,7 +56,6 @@ public class HomeActivity extends SwipeBackActivity {
     RelativeLayout mRLActionbarProfile;
     TextView mTvActionbarProfile;
 	ImageView mImgActionbarSearch, mImgActionbarProfile;
-//	CustomSpinner mSpnActionbarCenterTitle;
 	Button mBtnActionbarCenterTitle;
 	
 	//dimmed bacground, use when we replace spinner on action bar with textview and popup window
@@ -306,28 +305,12 @@ public class HomeActivity extends SwipeBackActivity {
 	}
 
 	public void setSpinnerSelected(boolean isSelected) {
-//		RelativeLayout rl = (RelativeLayout)mSpnActionbarCenterTitle.getChildAt(0);
-//		TextView tv = null;
-//		if (rl != null) {
-//			tv = (TextView)rl.getChildAt(0);
-//		}
-		
 		if (isSelected) {
-//			mSpnActionbarCenterTitle.setSelected(true);
 			mTvActionBarCenter.setSelected(true);
-//			if (tv != null) {
-//				tv.setTextColor(getResources().getColor(R.color.home_action_bar_text_color_enable));
-//			}
-//			mSpnActionbarCenterTitle.setEnabled(true);
 			mTvActionBarCenter.setEnabled(true);
 			mBtnActionbarCenterTitle.setVisibility(View.GONE);
 		} else {
-//			mSpnActionbarCenterTitle.setSelected(false);
             mTvActionBarCenter.setSelected(false);
-//			if (tv != null) {
-//				tv.setTextColor(getResources().getColor(R.color.home_action_bar_text_color_disable));
-//			}
-//			mSpnActionbarCenterTitle.setEnabled(false);
             mTvActionBarCenter.setEnabled(false);
 			mBtnActionbarCenterTitle.setVisibility(View.VISIBLE);
 		}
@@ -363,31 +346,6 @@ public class HomeActivity extends SwipeBackActivity {
 				mViewPagerMainContent.setCurrentItem(PAGE_LEFT, true);
 			}
 		});
-
-		//action bar center spinner
-//		mSpnActionbarCenterTitle = (CustomSpinner) findViewById(R.id.home_activity_action_bar_center_title);
-//		mSpnActionbarCenterTitle
-//				.setOnItemSelectedListener(new OnItemSelectedListener() {
-//
-//					@Override
-//					public void onItemSelected(AdapterView<?> parent,
-//							View view, int position, long id) {
-//
-//						CategoryModel categoryModel = (CategoryModel) parent
-//								.getItemAtPosition(position);
-//						if (categoryModel.getId() == 0) {
-//							onSwitchCate(null);
-//						} else {
-//							onSwitchCate(categoryModel);
-//						}
-//						categoryAdapter.swapView(position);
-//					}
-//
-//					@Override
-//					public void onNothingSelected(AdapterView<?> parent) {
-//
-//					}
-//				});
 
 		mBtnActionbarCenterTitle = (Button) findViewById(R.id.home_activity_action_bar_center_btn_title);
 		mBtnActionbarCenterTitle.setOnClickListener(new OnClickListener() {
@@ -425,9 +383,6 @@ public class HomeActivity extends SwipeBackActivity {
             }
         });
 		
-
-//		disableSpinnerBackground();
-//        mSpnActionbarCenterTitle.setSelected(true);
         mTvActionBarCenter.setSelected(true);
         mImgActionbarProfile.setSelected(false);
         mImgActionbarSearch.setSelected(false);
@@ -586,13 +541,6 @@ public class HomeActivity extends SwipeBackActivity {
 		@Override
 		protected void onPostExecute(List<CategoryModel> result) {
 			if (result != null) {
-
-//				categoryAdapter = new CategoryAdapter(HomeActivity.this,
-//						result, true, mSpnActionbarCenterTitle);
-//				mSpnActionbarCenterTitle.setAdapter(categoryAdapter);
-//				mSpnActionbarCenterTitle.setSelected(true);
-//				mSpnActionbarCenterTitle
-//						.setBackgroundResource(R.drawable.selector_home_action_bar_spn_bg);
 				categoryAdapter = new CategoryAdapter(HomeActivity.this, result, false, null);
 				mLvListCategories.setAdapter(categoryAdapter);
 				onSwitchCate(null);
@@ -603,31 +551,8 @@ public class HomeActivity extends SwipeBackActivity {
 		}
 	}
 
-	// use to hide the spinner border when the drop down list is closed
-//	@Override
-//	public void onWindowFocusChanged(boolean hasFocus) {
-//		super.onWindowFocusChanged(hasFocus);
-//		if (hasFocus && mSpnActionbarCenterTitle.isDropdownShowing()) {
-//			mSpnActionbarCenterTitle.setDropdownShowing(false);
-//			disableSpinnerBackground();
-//		} else {
-//			if (hasFocus) {
-//				Log.i("tructran", "window has no focus");
-//			} else {
-//				Log.i("tructran", "window has focus");
-//			}
-//
-//			if (mSpnActionbarCenterTitle.isDropdownShowing()) {
-//				Log.i("tructran", "drop down is showing");
-//			} else {
-//				Log.i("tructran", "drop down is not showing");
-//			}
-//		}
-//	}
-	
 	public void dimBackground(boolean dimmed) {
         if (dimmed) {
-//            mFlDimmedBackground.setVisibility(View.VISIBLE);
             mFlDimmedBackground.startAnimation(mAnimDimbackground);
         }
         else {
@@ -647,12 +572,6 @@ public class HomeActivity extends SwipeBackActivity {
         }
 	}
 
-	// functions to set the background of spinner
-//	public void disableSpinnerBackground() {
-//		mSpnActionbarCenterTitle
-//				.setBackgroundResource(R.drawable.selector_home_action_bar_spn_bg);
-//	}
-	
 	public LoginButton getLoginButton() {
 		return mBtnLoginFacebook;
 	}
