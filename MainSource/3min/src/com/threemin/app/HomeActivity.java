@@ -595,9 +595,8 @@ public class HomeActivity extends SwipeBackActivity {
 //						.setBackgroundResource(R.drawable.selector_home_action_bar_spn_bg);
 				categoryAdapter = new CategoryAdapter(HomeActivity.this, result, false, null);
 				mLvListCategories.setAdapter(categoryAdapter);
-				onSwitchCate(null);
 				mTvActionBarCenter.setText(getResources().getString(R.string.browse));
-				categoryAdapter.swapView(0);
+				mLvListCategories.performItemClick(null, 0, 0);
 			}
 			super.onPostExecute(result);
 		}
