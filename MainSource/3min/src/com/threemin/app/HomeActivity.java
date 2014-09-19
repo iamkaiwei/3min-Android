@@ -410,21 +410,6 @@ public class HomeActivity extends SwipeBackActivity {
             }
         });
 		initPopupWindow();
-		
-		//dimmed background
-		mFlDimmedBackground = (FrameLayout) findViewById(R.id.activity_home_fm_dimmed_background);
-		mFlDimmedBackground.setOnTouchListener(new OnTouchListener() {
-            
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (mPopupWindowCategories.isShowing()) {
-                    mPopupWindowCategories.dismiss();
-                    mFlDimmedBackground.setVisibility(View.GONE);
-                }
-                return false;
-            }
-        });
-		
 
 //		disableSpinnerBackground();
 //        mSpnActionbarCenterTitle.setSelected(true);
@@ -596,7 +581,7 @@ public class HomeActivity extends SwipeBackActivity {
 				categoryAdapter = new CategoryAdapter(HomeActivity.this, result, false, null);
 				mLvListCategories.setAdapter(categoryAdapter);
 				mTvActionBarCenter.setText(getResources().getString(R.string.browse));
-				mLvListCategories.performItemClick(null, 0, 0);
+//				mLvListCategories.performItemClick(null, 0, 0);
 			}
 			super.onPostExecute(result);
 		}
