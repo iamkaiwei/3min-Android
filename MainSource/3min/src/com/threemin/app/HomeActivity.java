@@ -582,6 +582,7 @@ public class HomeActivity extends SwipeBackActivity {
 				mLvListCategories.setAdapter(categoryAdapter);
 				mTvActionBarCenter.setText(getResources().getString(R.string.browse));
 //				mLvListCategories.performItemClick(null, 0, 0);
+				onSwitchCate(result.get(2));
 			}
 			super.onPostExecute(result);
 		}

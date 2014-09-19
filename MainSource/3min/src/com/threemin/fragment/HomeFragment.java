@@ -1,6 +1,7 @@
 package com.threemin.fragment;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.List;
 
 import org.apache.http.HttpEntity;
@@ -15,6 +16,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,7 +70,15 @@ public class HomeFragment extends Fragment {
 		mModeView = MODE_GRID_VIEW;
 		productFragmentGrid = new ProductFragmentGrid();
 		productFragmentGrid.setHomeFragment(this);
-		getChildFragmentManager().beginTransaction().replace(R.id.content_fragment, productFragmentGrid).commit();
+		FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+		ft.replace(R.id.content_fragment, productFragmentGrid);
+		if (getActivity() == null) {
+            Log.e("HomeFragment", "Act null");
+        } else {
+            Log.e("HomeFragment", "Act not null");
+            ft.commit();
+        }
+		
 		currentFragment = productFragmentGrid;
 
 		// create the fragment to switch between grid view and list view
