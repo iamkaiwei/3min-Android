@@ -39,7 +39,7 @@ import android.widget.TextView;
 import com.facebook.Session;
 import com.facebook.widget.LoginButton;
 import com.threemin.adapter.CategoryAdapter;
-import com.threemin.fragment.HomeFragmentFixBug;
+import com.threemin.fragment.HomeFragment;
 import com.threemin.fragment.LeftFragment;
 import com.threemin.fragment.RightFragment;
 import com.threemin.model.CategoryModel;
@@ -87,10 +87,7 @@ public class HomeActivity extends SwipeBackActivity {
     public static final int NEAREST_ID = R.id.fm_filter_rl_nearest;
 
     Context mContext;
-
-    // GoogleApiClient mGoogleApiClient;
-    // HomeFragment homeFragment;
-    HomeFragmentFixBug homeFragment;
+    HomeFragment homeFragment;
 
     LeftFragment leftFragment;
     RightFragment rightFragment;
@@ -112,53 +109,22 @@ public class HomeActivity extends SwipeBackActivity {
         // disable swipe back
         getSwipeBackLayout().setEnableGesture(false);
 
-        // mGoogleApiClient = new GoogleApiClient.Builder(this)
-        // .addApi(Plus.API, null).addScope(Plus.SCOPE_PLUS_PROFILE)
-        // .build();
-        // mGoogleApiClient.connect();
-
-        // button login facebook
         mBtnLoginFacebook = (LoginButton) findViewById(R.id.activity_home_btn_login_facebook);
 
         // view pager implementation
         currentPage = PAGE_CENTER;
         prevPage = -1;
 
-        // TODO: old implementation to save
-        // fragment===========================================================================
-        // if (savedInstanceState != null) {
-        // homeFragment = (HomeFragment)
-        // getSupportFragmentManager().getFragment(savedInstanceState,
-        // TAG_HOME_FRAGMENT);
-        // leftFragment = (LeftFragment)
-        // getSupportFragmentManager().getFragment(savedInstanceState,
-        // TAG_LEFT_FRAGMENT);
-        // rightFragment = (RightFragment)
-        // getSupportFragmentManager().getFragment(savedInstanceState,
-        // TAG_RIGHT_FRAGMENT);
-        // }
-        // old
-        // implementation============================================================================================
-
-        // TODO: new implementation to save
-        // fragment===========================================================================
-
-        // homeFragment = (HomeFragment)
-        // getSupportFragmentManager().findFragmentByTag(TAG_SAVED_FRAGMENT +
-        // PAGE_CENTER);
-        homeFragment = (HomeFragmentFixBug) getSupportFragmentManager().findFragmentByTag(
+        homeFragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag(
                 TAG_SAVED_FRAGMENT + PAGE_CENTER);
         Log.i("Saved", "HomeAct: " + TAG_SAVED_FRAGMENT + PAGE_CENTER);
         leftFragment = (LeftFragment) getSupportFragmentManager().findFragmentByTag(TAG_SAVED_FRAGMENT + PAGE_LEFT);
         Log.i("Saved", "HomeAct: " + TAG_SAVED_FRAGMENT + PAGE_LEFT);
         rightFragment = (RightFragment) getSupportFragmentManager().findFragmentByTag(TAG_SAVED_FRAGMENT + PAGE_RIGHT);
         Log.i("Saved", "HomeAct: " + TAG_SAVED_FRAGMENT + PAGE_RIGHT);
-        // new implementation to save
-        // fragment===========================================================================
 
         if (homeFragment == null) {
-            // homeFragment = new HomeFragment();
-            homeFragment = new HomeFragmentFixBug();
+            homeFragment = new HomeFragment();
         }
         if (leftFragment == null) {
             leftFragment = new LeftFragment();
@@ -198,7 +164,6 @@ public class HomeActivity extends SwipeBackActivity {
     protected void onStart() {
         Log.i("LifeCycle", "onStart");
         super.onStart();
-        // mGoogleApiClient.connect();
     }
 
     @Override
@@ -225,7 +190,6 @@ public class HomeActivity extends SwipeBackActivity {
     protected void onStop() {
         Log.i("LifeCycle", "onStop");
         super.onStop();
-        // mGoogleApiClient.disconnect();
     }
 
     @Override
@@ -239,21 +203,6 @@ public class HomeActivity extends SwipeBackActivity {
         Log.i("LifeCycle", "onDestroy");
         super.onDestroy();
     }
-
-    // TODO: old implementation to save
-    // fragment=========================================================================
-    // @Override
-    // protected void onSaveInstanceState(Bundle outState) {
-    // super.onSaveInstanceState(outState);
-    // getSupportFragmentManager().putFragment(outState, TAG_HOME_FRAGMENT,
-    // homeFragment);
-    // getSupportFragmentManager().putFragment(outState, TAG_LEFT_FRAGMENT,
-    // leftFragment);
-    // getSupportFragmentManager().putFragment(outState, TAG_RIGHT_FRAGMENT,
-    // rightFragment);
-    // }
-    // old implementation to save
-    // fragment===============================================================================
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -531,7 +480,7 @@ public class HomeActivity extends SwipeBackActivity {
         mViewPagerMainContent.setCurrentItem(PAGE_CENTER);
         if (homeFragment == null) {
             // homeFragment = new HomeFragment();
-            homeFragment = new HomeFragmentFixBug();
+            homeFragment = new HomeFragment();
         }
         homeFragment.onSwichCategory(categoryModel);
     }

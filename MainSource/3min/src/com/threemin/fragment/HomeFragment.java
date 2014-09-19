@@ -22,16 +22,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.OvershootInterpolator;
 import android.view.ViewGroup;
+import android.view.animation.OvershootInterpolator;
 import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AbsListView.OnScrollListener;
 
 import com.androidanimator.animation.Animation;
 import com.androidanimator.animation.AnimationListener;
@@ -55,7 +55,7 @@ import com.threemin.webservice.UploaderImageUlti;
 import com.threemin.webservice.UserWebService;
 import com.threemins.R;
 
-public class HomeFragmentFixBug extends BaseProductFragment {
+public class HomeFragment extends BaseProductFragment {
     
     public static final int MODE_LIST_VIEW = 1;
     public static final int MODE_GRID_VIEW = 2;
@@ -66,13 +66,8 @@ public class HomeFragmentFixBug extends BaseProductFragment {
     public static int STEP_REFRESH = 2;
     static int page;
     View bottomView;
-    public int mModeView;
     static protected CategoryModel currentCate;
     static protected List<ProductModel> productModels;
-
-    
-    
-    //fragment product gridview==============================
     private Context mContext;
     private LoginButton mLoginButton;
 
@@ -85,7 +80,7 @@ public class HomeFragmentFixBug extends BaseProductFragment {
 
     private int bottomHeight;
     
-    public HomeFragmentFixBug() {
+    public HomeFragment() {
         super();
         this.isSwitched = false;
     }
@@ -96,18 +91,14 @@ public class HomeFragmentFixBug extends BaseProductFragment {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
     }
-
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        //===================home fragment implementation===============================
         View v = inflater.inflate(R.layout.fragment_home_fix_bug, null);        
         bottomView = v.findViewById(R.id.bottom);
         v.findViewById(R.id.home_camera).setOnClickListener(onSellClick());
-        //===================home fragment implementation===============================
         
-        //===================ProductFragmentGrid implementation===============================
         mLoginButton = getLoginButton();
         swipeLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_gridview);
         int color = R.color.red_background;
@@ -127,8 +118,6 @@ public class HomeFragmentFixBug extends BaseProductFragment {
             changeIfNoItem();
         }
         return v;
-        //===================ProductFragmentGrid implementation===============================
-
     }
 
 
@@ -161,7 +150,6 @@ public class HomeFragmentFixBug extends BaseProductFragment {
         }
     }
     
-    //===================home fragment implementation===============================
     public class GetProductTaks extends AsyncTask<Integer, Void, List<ProductModel>> {
         int currentStep;
 
@@ -311,12 +299,6 @@ public class HomeFragmentFixBug extends BaseProductFragment {
         return ((HomeActivity)getActivity()).getLoginButton();
     }
     
-    public View getBottomView() {
-        return bottomView;
-    }
-    //===================home fragment implementation===============================
-    
-    
     int mLastFirstVisibleItem;
     boolean mIsScrollingUp;
     private void initListner() {
@@ -324,7 +306,7 @@ public class HomeFragmentFixBug extends BaseProductFragment {
 
             @Override
             public void onRefresh() {
-                new GetProductTaks().execute(HomeFragmentFixBug.STEP_REFRESH);
+                new GetProductTaks().execute(HomeFragment.STEP_REFRESH);
             }
         });
 
@@ -343,7 +325,7 @@ public class HomeFragmentFixBug extends BaseProductFragment {
                 boolean loadMore = firstVisibleItem + visibleItemCount >= totalItemCount - 1;
                 if (loadMore && totalItemCount > 1 && thelasttotalCount != totalItemCount) {
                     thelasttotalCount = totalItemCount;
-                    new GetProductTaks().execute(HomeFragmentFixBug.STEP_ADDMORE);
+                    new GetProductTaks().execute(HomeFragment.STEP_ADDMORE);
                 }
 
                 if (view.getId() == mGrid.getId()) {
