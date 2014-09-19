@@ -94,7 +94,7 @@ public class ListProductFragment extends BaseProductFragment {
         mGrid.setAdapter(mAdapter);
 
         initListner();
-        new GetProductTaks(ListProductFragment.this).execute(HomeFragment.STEP_INIT);
+        new GetProductTaks(ListProductFragment.this).execute(HomeFragmentFixBug.STEP_INIT);
         return v;
     }
 
@@ -111,7 +111,7 @@ public class ListProductFragment extends BaseProductFragment {
 
             @Override
             public void onRefresh() {
-                new GetProductTaks(ListProductFragment.this).execute(HomeFragment.STEP_REFRESH);
+                new GetProductTaks(ListProductFragment.this).execute(HomeFragmentFixBug.STEP_REFRESH);
             }
         });
 
@@ -127,7 +127,7 @@ public class ListProductFragment extends BaseProductFragment {
                 boolean loadMore = firstVisibleItem + visibleItemCount >= totalItemCount - 1;
                 if (loadMore && totalItemCount > 1 && thelasttotalCount != totalItemCount) {
                     thelasttotalCount = totalItemCount;
-                    new GetProductTaks(ListProductFragment.this).execute(HomeFragment.STEP_ADDMORE);
+                    new GetProductTaks(ListProductFragment.this).execute(HomeFragmentFixBug.STEP_ADDMORE);
                 }
 
             }
@@ -163,10 +163,6 @@ public class ListProductFragment extends BaseProductFragment {
                 }
             }
         });
-    }
-
-    @Override
-    public void setBottomView(View bottomView) {
     }
 
     @Override

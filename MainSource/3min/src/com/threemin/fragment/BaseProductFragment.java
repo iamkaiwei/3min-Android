@@ -14,17 +14,11 @@ public abstract class BaseProductFragment extends Fragment {
 	protected List<ProductModel> productModels;
 	
 	public SwipeRefreshLayout swipeLayout;
-	protected HomeFragment homeFragment;
 	public int thelasttotalCount;
 
 	public BaseProductFragment() {
 		productModels = new ArrayList<ProductModel>();
 	}
-	
-	public void setHomeFragment(HomeFragment homeFragment){
-		this.homeFragment=homeFragment;
-	}
-	public abstract void setBottomView(View bottomView);
 	
 	public SwipeRefreshLayout getRefreshLayout(){
 		return swipeLayout;
