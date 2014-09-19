@@ -40,6 +40,7 @@ import com.facebook.Session;
 import com.facebook.widget.LoginButton;
 import com.threemin.adapter.CategoryAdapter;
 import com.threemin.fragment.HomeFragment;
+import com.threemin.fragment.HomeFragmentFixBug;
 import com.threemin.fragment.LeftFragment;
 import com.threemin.fragment.RightFragment;
 import com.threemin.model.CategoryModel;
@@ -89,7 +90,9 @@ public class HomeActivity extends SwipeBackActivity {
 	Context mContext;
 
 //	GoogleApiClient mGoogleApiClient;
-	HomeFragment homeFragment;
+//	HomeFragment homeFragment;
+	HomeFragmentFixBug homeFragment;
+
 	LeftFragment leftFragment;
 	RightFragment rightFragment;
 	public static final String TAG_HOME_FRAGMENT = "HomeFragment";
@@ -133,7 +136,8 @@ public class HomeActivity extends SwipeBackActivity {
 		
 		//TODO: new implementation to save fragment===========================================================================
 		
-		homeFragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag(TAG_SAVED_FRAGMENT + PAGE_CENTER);
+//		homeFragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag(TAG_SAVED_FRAGMENT + PAGE_CENTER);
+		homeFragment = (HomeFragmentFixBug) getSupportFragmentManager().findFragmentByTag(TAG_SAVED_FRAGMENT + PAGE_CENTER);
 		Log.i("Saved", "HomeAct: " + TAG_SAVED_FRAGMENT + PAGE_CENTER);
         leftFragment = (LeftFragment) getSupportFragmentManager().findFragmentByTag(TAG_SAVED_FRAGMENT + PAGE_LEFT);
         Log.i("Saved", "HomeAct: " + TAG_SAVED_FRAGMENT + PAGE_LEFT);
@@ -142,7 +146,8 @@ public class HomeActivity extends SwipeBackActivity {
         //new implementation to save fragment===========================================================================
         
 		if (homeFragment == null) {
-		    homeFragment = new HomeFragment();
+//		    homeFragment = new HomeFragment();
+            homeFragment = new HomeFragmentFixBug();
         }
 		if (leftFragment == null) {
 		    leftFragment = new LeftFragment();
@@ -400,28 +405,24 @@ public class HomeActivity extends SwipeBackActivity {
 		});
 		
 		//relpace spinner with textview and popup window
-		//textview
-		mTvActionBarCenter = (TextView) findViewById(R.id.home_activity_action_bar_center_tv_title);
-		mTvActionBarCenter.setOnClickListener(new OnClickListener() {
+		initPopupWindow();
+
+		initFirstData();
+  	}
+	
+	//create a textview and a popup window to replace the spinner in action bar
+	public void initPopupWindow() {
+	    
+	  //textview
+        mTvActionBarCenter = (TextView) findViewById(R.id.home_activity_action_bar_center_tv_title);
+        mTvActionBarCenter.setOnClickListener(new OnClickListener() {
             
             @Override
             public void onClick(View v) {
                 showOrHideDropdownList();
             }
         });
-		initPopupWindow();
-
-//		disableSpinnerBackground();
-//        mSpnActionbarCenterTitle.setSelected(true);
-        mTvActionBarCenter.setSelected(true);
-        mImgActionbarProfile.setSelected(false);
-        mImgActionbarSearch.setSelected(false);
-        
-
-        new InitCategory().execute();
-  	}
-	
-	public void initPopupWindow() {
+	    
 	    LayoutInflater inflater = LayoutInflater.from(this);
 	    View dropdownView = inflater.inflate(R.layout.layout_custom_action_bar_dropdown_list, null);
 	    mPopupWindowCategories = new PopupWindow(dropdownView, LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
@@ -439,7 +440,7 @@ public class HomeActivity extends SwipeBackActivity {
             }
         });
 	    
-	  //dimmed background
+	  //dimmed background, it will be showed when the dropdown list appear
         mFlDimmedBackground = (FrameLayout) findViewById(R.id.activity_home_fm_dimmed_background);
         mFlDimmedBackground.setOnTouchListener(new OnTouchListener() {
             
@@ -452,6 +453,7 @@ public class HomeActivity extends SwipeBackActivity {
             }
         });
         
+        //animation to add to DimmedBackground
         mAnimDimbackground = AnimationUtils.loadAnimation(this, R.anim.anim_popup_dim_background);
         mAnimDimbackground.setDuration(getResources().getInteger(R.integer.activity_home_popup_animation_duration) * 2);
         mAnimDimbackground.setAnimationListener(new AnimationListener() {
@@ -471,6 +473,7 @@ public class HomeActivity extends SwipeBackActivity {
             }
         });
         
+        //list categories inside popup window
 	    mLvListCategories = (ListView) dropdownView.findViewById(R.id.home_activity_action_bar_dropdown_list);
 	    mLvListCategories.setOnItemClickListener(new OnItemClickListener() {
 
@@ -488,6 +491,14 @@ public class HomeActivity extends SwipeBackActivity {
                 categoryAdapter.swapView(position);
             }
         });
+	}
+	
+	public void initFirstData() {
+	    mTvActionBarCenter.setSelected(true);
+        mImgActionbarProfile.setSelected(false);
+        mImgActionbarSearch.setSelected(false);
+
+        new InitCategory().execute();
 	}
 
 	@Override
@@ -544,7 +555,8 @@ public class HomeActivity extends SwipeBackActivity {
 	public void onSwitchCate(CategoryModel categoryModel) {
 		mViewPagerMainContent.setCurrentItem(PAGE_CENTER);
 		if (homeFragment == null) {
-            homeFragment = new HomeFragment();
+//            homeFragment = new HomeFragment();
+		    homeFragment = new HomeFragmentFixBug();
         }
 		homeFragment.onSwichCategory(categoryModel);
 	}
@@ -582,7 +594,7 @@ public class HomeActivity extends SwipeBackActivity {
 				mLvListCategories.setAdapter(categoryAdapter);
 				mTvActionBarCenter.setText(getResources().getString(R.string.browse));
 //				mLvListCategories.performItemClick(null, 0, 0);
-				onSwitchCate(result.get(2));
+				onSwitchCate(null);
 			}
 			super.onPostExecute(result);
 		}
