@@ -191,7 +191,7 @@ public class RightFragment extends Fragment {
             productFragmentGrid.setUserModel(userModel);
             getFragmentManager().beginTransaction().replace(R.id.content_list, productFragmentGrid).commit();
         } else {
-            getFragmentManager().beginTransaction().add(R.id.content_list, new UserActivityFragment()).commit();
+            getFragmentManager().beginTransaction().replace(R.id.content_list, new UserActivityFragment()).commit();
         }
     }
     

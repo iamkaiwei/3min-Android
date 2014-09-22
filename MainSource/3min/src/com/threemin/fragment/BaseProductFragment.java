@@ -5,7 +5,6 @@ import java.util.List;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.view.View;
 
 import com.threemin.model.ProductModel;
 

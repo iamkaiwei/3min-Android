@@ -26,7 +26,6 @@ import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -46,7 +45,6 @@ import com.threemin.model.CategoryModel;
 import com.threemin.model.FilterModel;
 import com.threemin.uti.PreferenceHelper;
 import com.threemin.view.BaseViewPagerAdapter;
-import com.threemin.view.CustomSpinner;
 import com.threemin.webservice.CategoryWebservice;
 import com.threemins.R;
 
@@ -505,11 +503,14 @@ public class HomeActivity extends SwipeBackActivity {
         @Override
         protected void onPostExecute(List<CategoryModel> result) {
             if (result != null) {
-                categoryAdapter = new CategoryAdapter(HomeActivity.this, result, false, null);
+//                categoryAdapter = new CategoryAdapter(HomeActivity.this, result, false, null);
+                boolean hideSelectedItem = true;
+                categoryAdapter = new CategoryAdapter(HomeActivity.this, result, hideSelectedItem);
                 mLvListCategories.setAdapter(categoryAdapter);
                 mTvActionBarCenter.setText(getResources().getString(R.string.browse));
                 // mLvListCategories.performItemClick(null, 0, 0);
                 onSwitchCate(null);
+                categoryAdapter.swapView(0);
             }
             super.onPostExecute(result);
         }
