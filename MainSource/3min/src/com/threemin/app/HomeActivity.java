@@ -529,8 +529,6 @@ public class HomeActivity extends SwipeBackActivity {
     }
 
     // show or hide dropdown list when user tap on textview categories
-    boolean test = true;
-
     public void showOrHideDropdownList() {
         if (mPopupWindowCategories.isShowing()) {
             mPopupWindowCategories.dismiss();

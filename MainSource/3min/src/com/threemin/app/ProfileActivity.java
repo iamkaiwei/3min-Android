@@ -76,8 +76,8 @@ public class ProfileActivity extends SwipeBackActivity {
     
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-//    	scrollToFinishActivity();
+//        super.onBackPressed();
+    	scrollToFinishActivity();
     }
     
     public void initActionBar() {
