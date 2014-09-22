@@ -382,7 +382,11 @@ public class HomeActivity extends SwipeBackActivity {
 
             @Override
             public void onAnimationStart(Animation animation) {
-                mFlDimmedBackground.setVisibility(View.VISIBLE);
+                if (mPopupWindowCategories.isShowing()) {
+                    mFlDimmedBackground.setVisibility(View.VISIBLE);
+                } else {
+                    mFlDimmedBackground.setVisibility(View.GONE);
+                }
             }
 
             @Override
@@ -532,8 +536,8 @@ public class HomeActivity extends SwipeBackActivity {
             mPopupWindowCategories.dismiss();
         } else {
             mPopupWindowCategories.showAsDropDown(findViewById(R.id.home_activity_action_bar_root), 0, 0);
-            mTvActionBarCenter.setBackgroundResource(R.drawable.bg_spn_border_enable_arrow_enable);
             dimBackground(true);
+            mTvActionBarCenter.setBackgroundResource(R.drawable.bg_spn_border_enable_arrow_enable);
         }
     }
 

@@ -141,7 +141,8 @@ public class HomeFragment extends BaseProductFragment {
         if (rlNoItems == null || mGrid == null) {
             return;
         }
-        if (mAdapter.getListProducts() == null || mAdapter.getListProducts().size() == 0) {
+//        if (mAdapter.getListProducts() == null || mAdapter.getListProducts().size() == 0) {
+        if (productModels == null || productModels.size() == 0) {
             rlNoItems.setVisibility(View.VISIBLE);
             mGrid.setVisibility(View.GONE);
         } else {
