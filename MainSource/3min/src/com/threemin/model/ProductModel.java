@@ -30,6 +30,7 @@ public class ProductModel {
 	private List<ImageModel> images;
 	private CategoryModel category;
 	private UserModel owner;
+	private List<CommentModel> comments;
 	public int getId() {
 		return id;
 	}
@@ -126,6 +127,13 @@ public class ProductModel {
 	public void setOwner(UserModel owner) {
 		this.owner = owner;
 	}
+    public List<CommentModel> getComments() {
+        return comments;
+    }
+    public void setComments(List<CommentModel> comments) {
+        this.comments = comments;
+    }
+	
 	
 	
 }

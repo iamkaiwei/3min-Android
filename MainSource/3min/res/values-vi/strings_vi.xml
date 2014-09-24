@@ -314,4 +314,7 @@
     <!-- <string name="fm_right_view_many_feedbacks">View %s feedbacks</string> -->
     <string name="fm_right_view_many_feedbacks">Xem %s phản hồi</string>
     
+    <!-- comment activity -->
+    <string name="act_comment_label">Bình luận</string>
+    
 </resources>

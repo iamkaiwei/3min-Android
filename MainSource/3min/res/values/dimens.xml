@@ -137,5 +137,8 @@
     <!-- fragment detail -->
     <dimen name="fm_detail_comments_margin">25dp</dimen>
     <dimen name="fm_detail_comments_avatar_size">25dp</dimen>
+    
+    <!-- comment -->
+    <dimen name="comment_avatar_size">35dp</dimen>
 
 </resources>

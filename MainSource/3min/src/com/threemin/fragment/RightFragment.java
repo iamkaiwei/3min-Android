@@ -21,6 +21,7 @@ import com.threemin.app.SettingActivity;
 import com.threemin.app.UserLikeProductActivity;
 import com.threemin.model.UserModel;
 import com.threemin.uti.CommonConstant;
+import com.threemin.uti.CommonUti;
 import com.threemin.uti.PreferenceHelper;
 import com.threemin.webservice.RelationshipWebService;
 import com.threemin.webservice.UserWebService;
@@ -250,7 +251,8 @@ public class RightFragment extends Fragment {
     
     public void startActivityWithAnimation(Intent intent) {
         startActivity(intent);
-        getActivity().overridePendingTransition(R.anim.anim_right_in, R.anim.anim_no_animation);
+//        getActivity().overridePendingTransition(R.anim.anim_right_in, R.anim.anim_no_animation);
+        CommonUti.addAnimationWhenStartActivity(getActivity());
     }
 
 }

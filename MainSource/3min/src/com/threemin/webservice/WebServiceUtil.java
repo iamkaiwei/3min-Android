@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
@@ -111,5 +112,30 @@ public class WebServiceUtil {
 	public static String getHttpUrl(String fileURL) {
 		fileURL = fileURL.replaceAll(" ", "%20");
 		return fileURL;
+	}
+	
+	protected static String postRequest(String link) throws Exception {
+	    URL url = new URL(link);
+        URLConnection conn = url.openConnection();
+        conn.setConnectTimeout(TIMEOUT_CONNECTION);
+        conn.setReadTimeout(TIMEOUT_CONNECTION);
+        ((HttpURLConnection) conn).setRequestMethod("POST");
+        conn.setDoOutput(true);
+        conn.setDoInput(true);
+        conn.setRequestProperty("Content-Type", "application/json");
+
+
+        // Get the response
+        BufferedReader in = new BufferedReader(new InputStreamReader(
+                conn.getInputStream(), Charset.forName("UTF-8")));
+        String inputLine;
+
+        String result = "";
+        while ((inputLine = in.readLine()) != null) {
+            result += inputLine;
+        }
+        in.close();
+        Log.d(tag, result);
+        return result;
 	}
 }

@@ -29,6 +29,7 @@ import com.threemin.app.HomeActivity;
 import com.threemin.app.ProfileActivity;
 import com.threemin.model.ActivityModel;
 import com.threemin.uti.CommonConstant;
+import com.threemin.uti.CommonUti;
 import com.threemin.uti.PreferenceHelper;
 import com.threemin.webservice.ActivityWebService;
 import com.threemins.R;
@@ -172,7 +173,8 @@ public class UserActivityFragment extends Fragment {
         Intent intent = new Intent(getActivity(), DetailActivity.class);
         intent.putExtra(CommonConstant.INTENT_PRODUCT_DATA_VIA_ID, "" + model.getSubjectID());
         startActivity(intent);
-        getActivity().overridePendingTransition(R.anim.anim_right_in, R.anim.anim_no_animation);
+//        getActivity().overridePendingTransition(R.anim.anim_right_in, R.anim.anim_no_animation);
+        CommonUti.addAnimationWhenStartActivity(getActivity());
     }
 
     private void startActivityForConversation(ActivityModel model) {
@@ -180,7 +182,8 @@ public class UserActivityFragment extends Fragment {
         Intent intent = new Intent(getActivity(), ChatToBuyActivity.class);
         intent.putExtra(CommonConstant.INTENT_CONVERSATION_DATA_VIA_ID, "" + model.getSubjectID());
         startActivity(intent);
-        getActivity().overridePendingTransition(R.anim.anim_right_in, R.anim.anim_no_animation);
+//        getActivity().overridePendingTransition(R.anim.anim_right_in, R.anim.anim_no_animation);
+        CommonUti.addAnimationWhenStartActivity(getActivity());
     }
 
     private void startActivityForRelationship(ActivityModel model) {
@@ -188,7 +191,8 @@ public class UserActivityFragment extends Fragment {
         Intent intent = new Intent(getActivity(), ProfileActivity.class);
         intent.putExtra(CommonConstant.INTENT_USER_DATA_VIA_ID, "" + model.getUser().getId());
         startActivity(intent);
-        getActivity().overridePendingTransition(R.anim.anim_right_in, R.anim.anim_no_animation);
+//        getActivity().overridePendingTransition(R.anim.anim_right_in, R.anim.anim_no_animation);
+        CommonUti.addAnimationWhenStartActivity(getActivity());
     }
 	
 }

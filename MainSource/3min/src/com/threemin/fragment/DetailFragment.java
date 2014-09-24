@@ -31,9 +31,11 @@ import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.threemin.app.ChatToBuyActivity;
+import com.threemin.app.CommentActivity;
 import com.threemin.app.DetailActivity;
 import com.threemin.app.ListOfferActivty;
 import com.threemin.app.PostOfferActivity;
+import com.threemin.model.CommentModel;
 import com.threemin.model.Conversation;
 import com.threemin.model.ImageModel;
 import com.threemin.model.ProductModel;
@@ -41,16 +43,22 @@ import com.threemin.model.UserModel;
 import com.threemin.uti.CommonConstant;
 import com.threemin.uti.CommonUti;
 import com.threemin.uti.PreferenceHelper;
+import com.threemin.webservice.CommentWebService;
 import com.threemin.webservice.ConversationWebService;
 import com.threemin.webservice.ProductWebservice;
 import com.threemin.webservice.UserWebService;
 import com.threemins.R;
+import com.threemins.R.id;
 
 public class DetailFragment extends Fragment {
+    
 	private final int SHOW_DIALOG = 1;
 	private final int HIDE_DIALOG = 2;
 	private final int REQUEST_CHECK_OFFER_EXIST = 3;
 	private final int REQUEST_GET_LIST_OFFER = 4;
+	
+	public static String INTENT_PRODUCT_ID_FOR_COMMENT = "productIDForComment";
+	
 	View rootView;
 	ProductModel productModel;
 	ViewPager pager;
@@ -59,6 +67,14 @@ public class DetailFragment extends Fragment {
 	ProgressDialog dialog, dialogPushReceived;
 	String conversationData;
 	List<Conversation> conversations;
+	
+	//data is from prev activity or from webservice
+	public final boolean IS_FROM_PREV_ACTIVITY = true;
+	public final boolean IS_FROM_WEB_SERVICE = false;
+	boolean mProductDataType;
+	
+	//test
+	LinearLayout lnTopComments;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -71,9 +87,11 @@ public class DetailFragment extends Fragment {
 		rootView = inflater.inflate(R.layout.fragment_detail, null);
 		
 		if (productID == null) {
+		    mProductDataType = IS_FROM_PREV_ACTIVITY;
 			productModel = new Gson().fromJson(getActivity().getIntent().getStringExtra(CommonConstant.INTENT_PRODUCT_DATA), ProductModel.class);
 			initBody(rootView);
 		} else {
+		    mProductDataType = IS_FROM_WEB_SERVICE;
 			rootView.setVisibility(View.INVISIBLE);
 			dialogPushReceived = new ProgressDialog(getActivity());
 			dialogPushReceived.setMessage(getString(R.string.please_wait));
@@ -199,6 +217,14 @@ public class DetailFragment extends Fragment {
 			});
 			
 			//button comment (bottom)
+			LinearLayout lnComment = (LinearLayout) convertView.findViewById(R.id.fm_detail_ln_comment);
+			lnComment.setOnClickListener(new OnClickListener() {
+                
+                @Override
+                public void onClick(View v) {
+                    doPostComment();
+                }
+            });
 			
 			//3 first comments:
 			TextView tvComment = (TextView) convertView.findViewById(R.id.inflater_body_product_tv_comment);
@@ -206,15 +232,21 @@ public class DetailFragment extends Fragment {
                 
                 @Override
                 public void onClick(View v) {
-                    
+                    doViewAllComments();
                 }
             });
-			LinearLayout lnTopComments = (LinearLayout) convertView.findViewById(R.id.inflater_body_product_lnl_top_comments);
-			for (int i = 0; i < 4; i++) {
-                LayoutInflater inflater = LayoutInflater.from(getActivity());
-                View view = inflater.inflate(R.layout.fragment_detail_layout_comment, null);
-                lnTopComments.addView(view);
+			lnTopComments = (LinearLayout) convertView.findViewById(R.id.inflater_body_product_lnl_top_comments);
+			if (mProductDataType == IS_FROM_PREV_ACTIVITY || productModel.getComments() == null) {
+                new GetTopCommentsTask().execute();
+            } else {
+                initListTopComments(productModel.getComments());
             }
+//			LinearLayout lnTopComments = (LinearLayout) convertView.findViewById(R.id.inflater_body_product_lnl_top_comments);
+//			for (int i = 0; i < 4; i++) {
+//                LayoutInflater inflater = LayoutInflater.from(getActivity());
+//                View view = inflater.inflate(R.layout.fragment_detail_layout_comment, null);
+//                lnTopComments.addView(view);
+//            }
 		}
 		
 
@@ -403,5 +435,92 @@ public class DetailFragment extends Fragment {
 			}
 		}
 		
+	}
+	
+	public void doViewAllComments() {
+	    Intent intent = new Intent(getActivity(), CommentActivity.class);
+	    intent.putExtra(INTENT_PRODUCT_ID_FOR_COMMENT, productModel.getId());
+	    startActivity(intent);
+	    CommonUti.addAnimationWhenStartActivity(getActivity());
+	}
+	
+//	private class GetCommentsTask extends AsyncTask<Integer, Void, List<CommentModel>> {
+//
+//        @Override
+//        protected List<CommentModel> doInBackground(Integer... params) {
+//            String token = PreferenceHelper.getInstance(getActivity()).getTokken();
+//            return new CommentWebService().getComments(token, productModel.getId() , params[0]);
+//        }
+//        
+//        @Override
+//        protected void onPostExecute(List<CommentModel> result) {
+//            if (result != null && result.size() != 0) {
+//                
+//                for (int i = 0; i < result.size(); i++) {
+//                    LayoutInflater inflater = LayoutInflater.from(getActivity());
+//                    View view = inflater.inflate(R.layout.fragment_detail_layout_comment, null);
+//                    addDataToView(view, result.get(i));
+//                    lnTopComments.addView(view);
+//                }
+//            }
+//            super.onPostExecute(result);
+//        }
+//	    
+//	}
+	
+	private class GetTopCommentsTask extends AsyncTask<Void, Void, List<CommentModel>> {
+
+        @Override
+        protected List<CommentModel> doInBackground(Void... params) {
+            String token = PreferenceHelper.getInstance(getActivity()).getTokken();
+            return new CommentWebService().getTopComments(token, productModel.getId());
+        }
+        
+        @Override
+        protected void onPostExecute(List<CommentModel> result) {
+            if (result != null && result.size() != 0) {
+                initListTopComments(result);
+            }
+            super.onPostExecute(result);
+        }
+        
+    }
+	
+	public void initListTopComments(List<CommentModel> list) {
+	    for (int i = 0; i < list.size(); i++) {
+            LayoutInflater inflater = LayoutInflater.from(getActivity());
+            View view = inflater.inflate(R.layout.fragment_detail_layout_comment, null);
+            addDataToView(view, list.get(i));
+            lnTopComments.addView(view);
+        }
+	}
+	
+	public void addDataToView (View view, CommentModel model) {
+	    ImageView imgAvatar = (ImageView) view.findViewById(R.id.fm_detail_layout_comment_avatar);
+	    TextView tvName = (TextView) view.findViewById(R.id.fm_detail_layout_comment_tv_name);
+	    TextView tvConent = (TextView) view.findViewById(R.id.fm_detail_layout_comment_tv_comment);
+	    TextView tvTime = (TextView) view.findViewById(R.id.fm_detail_layout_comment_tv_time);
+	    
+	    UrlImageViewHelper.setUrlDrawable(imgAvatar, model.getUser().getFacebook_avatar(), R.drawable.stuff_img);
+	    tvName.setText(model.getUser().getFullName());
+	    tvConent.setText(model.getContent());
+	    CharSequence time = DateUtils.getRelativeTimeSpanString(model.getUpdated_at() * 1000,
+                System.currentTimeMillis(), 0L, DateUtils.FORMAT_ABBREV_RELATIVE);
+	    tvTime.setText(time);
+	}
+	
+	public void doPostComment() {
+	    new PostCommentTask().execute("");
+	}
+	
+	private class PostCommentTask extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            String token = PreferenceHelper.getInstance(getActivity()).getTokken();
+            new CommentWebService().postComments(token, productModel.getId(), "Send at " + System.currentTimeMillis());
+            return null;
+        }
+	    
 	}
 }

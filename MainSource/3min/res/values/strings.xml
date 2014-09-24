@@ -166,4 +166,7 @@
     <string name="fm_right_view_1_feedback">View 1 feedback</string>
     <string name="fm_right_view_many_feedbacks">View %s feedbacks</string>
     
+    <!-- comment activity -->
+    <string name="act_comment_label">Comments</string>
+    
 </resources>

@@ -30,4 +30,6 @@ public class WebserviceConstant {
 	public static final String UNFOLLOW_USER = URL_HOST + API + "/relationships/unfollow";
 	public static final String GET_FOLLOWERS = URL_HOST + API + "/users/%s/followers.json";
 	public static final String GET_FOLLOWINGS = URL_HOST + API + "/users/%s/followings.json";
+	public static final String GET_COMMENTS_OF_PRODUCT = URL_HOST + API +  "/products/%s/comments.json";
+	public static final String POST_COMMENT = URL_HOST + API +  "/products/%s/comments.json?access_token=%s&comment[content]=%s";
 }
