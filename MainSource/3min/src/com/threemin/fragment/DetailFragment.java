@@ -93,13 +93,16 @@ public class DetailFragment extends Fragment {
 			// model.getImages().get(0).getMedium());
 			// }
 
+		    //product 's name
 			TextView tv_name = (TextView) convertView.findViewById(R.id.inflater_body_product_tv_name);
 			tv_name.setText(productModel.getName());
 			getActivity().setTitle(productModel.getName());
 
+			//product 's price
 			TextView tv_price = (TextView) convertView.findViewById(R.id.inflater_body_product_tv_price);
 			tv_price.setText(productModel.getPrice() + CommonConstant.CURRENCY);
 
+			//product 's like number
 			TextView tv_like = (TextView) convertView.findViewById(R.id.inflater_body_product_tv_like);
 			int numLike = productModel.getLike();
 			if (numLike > 0) {
@@ -111,6 +114,8 @@ public class DetailFragment extends Fragment {
 			} else {
 				tv_like.setVisibility(View.GONE);
 			}
+			
+			//location
 			TextView tv_locaion = (TextView) convertView.findViewById(R.id.inflater_body_product_tv_location);
 			if (!TextUtils.isEmpty(productModel.getVenueName())) {
 				tv_locaion.setText(productModel.getVenueName());
@@ -118,6 +123,7 @@ public class DetailFragment extends Fragment {
 				tv_locaion.setVisibility(View.GONE);
 			}
 
+			//description
 			TextView tv_description = (TextView) convertView.findViewById(R.id.inflater_body_product_tv_description);
 			if (!TextUtils.isEmpty(productModel.getDescription())) {
 				tv_description.setText(productModel.getDescription());
@@ -125,6 +131,7 @@ public class DetailFragment extends Fragment {
 				tv_description.setVisibility(View.GONE);
 			}
 
+			//owner 's info
 			ImageView imageAvatar = (ImageView) convertView.findViewById(R.id.inflater_header_product_image);
 			UrlImageViewHelper.setUrlDrawable(imageAvatar, productModel.getOwner().getFacebook_avatar());
 
@@ -135,8 +142,11 @@ public class DetailFragment extends Fragment {
 			tv_time.setText(DateUtils.getRelativeTimeSpanString(productModel.getUpdateTime() * 1000,
 					System.currentTimeMillis(), 0L, DateUtils.FORMAT_ABBREV_RELATIVE));
 
+			//product images
 			lnImgs = (LinearLayout) convertView.findViewById(R.id.ln_img);
 			initImage();
+			
+			//button chat to buy
 			btnChatToBuy = (Button) convertView.findViewById(R.id.fragment_detail_btn_chat_to_buy);
 			UserModel currentUser = PreferenceHelper.getInstance(getActivity()).getCurrentUser();
 
@@ -166,6 +176,8 @@ public class DetailFragment extends Fragment {
 					}
 				});
 			}
+			
+			//buton like (bottom)
 			btnLike = (LinearLayout) convertView.findViewById(R.id.btn_like);
 			btnLike.setSelected(productModel.isLiked());
 			btnLike.setOnClickListener(new OnClickListener() {
@@ -175,16 +187,36 @@ public class DetailFragment extends Fragment {
 					requestLike();
 				}
 			});
+			
+			//button share (botton)
+			LinearLayout lnShare = (LinearLayout) convertView.findViewById(R.id.fm_detail_ln_share);
+			lnShare.setOnClickListener(new OnClickListener() {
+			    
+			    @Override
+			    public void onClick(View v) {
+			        new CommonUti().doShareProductOnFacebook(getActivity(), ( (DetailActivity)getActivity() ).getLoginButton(), productModel);
+			    }
+			});
+			
+			//button comment (bottom)
+			
+			//3 first comments:
+			TextView tvComment = (TextView) convertView.findViewById(R.id.inflater_body_product_tv_comment);
+			tvComment.setOnClickListener(new OnClickListener() {
+                
+                @Override
+                public void onClick(View v) {
+                    
+                }
+            });
+			LinearLayout lnTopComments = (LinearLayout) convertView.findViewById(R.id.inflater_body_product_lnl_top_comments);
+			for (int i = 0; i < 4; i++) {
+                LayoutInflater inflater = LayoutInflater.from(getActivity());
+                View view = inflater.inflate(R.layout.fragment_detail_layout_comment, null);
+                lnTopComments.addView(view);
+            }
 		}
 		
-		LinearLayout lnShare = (LinearLayout) convertView.findViewById(R.id.fm_detail_ln_share);
-		lnShare.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				new CommonUti().doShareProductOnFacebook(getActivity(), ( (DetailActivity)getActivity() ).getLoginButton(), productModel);
-			}
-		});
 
 	}
 

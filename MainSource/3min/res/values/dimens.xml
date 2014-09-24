@@ -133,5 +133,9 @@
     <dimen name="fm_right_feedback_group_margin_top">23dp</dimen>
     <dimen name="fm_right_feedback_group_height_owner_group">37dp</dimen>
     <dimen name="fm_right_feedback_group_height_owner_group_a_hafl">18.5dp</dimen>
+    
+    <!-- fragment detail -->
+    <dimen name="fm_detail_comments_margin">25dp</dimen>
+    <dimen name="fm_detail_comments_avatar_size">25dp</dimen>
 
 </resources>

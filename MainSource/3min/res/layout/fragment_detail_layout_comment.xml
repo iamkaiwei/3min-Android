@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:threemins="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginTop="@dimen/common_spacing" >
+
+    <com.meg7.widget.SvgImageView
+        android:id="@+id/fm_detail_layout_comment_avatar"
+        android:layout_width="@dimen/fm_detail_comments_avatar_size"
+        android:layout_height="@dimen/fm_detail_comments_avatar_size"
+        android:layout_marginRight="@dimen/common_spacing"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_launcher"
+        threemins:svg_raw_resource="@raw/shape_avatar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <com.lanna.droidlib.view.CustomTextView
+                android:id="@+id/fm_detail_layout_comment_tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Chanhhung"
+                android:textColor="@color/common_black"
+                android:textSize="@dimen/textsize_small"
+                threemins:customTypeface="@string/font_semibold" />
+            
+            <com.lanna.droidlib.view.CustomTextView
+                android:id="@+id/fm_detail_layout_comment_tv_comment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/common_spacing"
+                android:singleLine="true"
+                android:text="How much??? Please call me"
+                android:textColor="@color/common_grey"
+                android:textSize="@dimen/textsize_small"
+                threemins:customTypeface="@string/font_semibold" />
+        </LinearLayout>
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+            
+			<ImageView 
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:background="@drawable/clock"/>
+            
+            <com.lanna.droidlib.view.CustomTextView
+                android:id="@+id/fm_detail_layout_comment_tv_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/common_spacing"
+                android:text="2 weeks"
+                android:textColor="@color/common_grey"
+                android:textSize="@dimen/textsize_small"
+                threemins:customTypeface="@string/font_semibold" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

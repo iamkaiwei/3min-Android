@@ -94,6 +94,7 @@
                     android:text="Medium Text"
                     android:textColor="@color/common_black"
                     android:textSize="@dimen/textsize_large"
+                    android:singleLine="true"
                     threemins:customTypeface="@string/font_semibold" />
 
                 <com.lanna.droidlib.view.CustomTextView
@@ -102,9 +103,10 @@
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_price"
                     android:gravity="center_vertical"
-                    android:text="50 000 VND"
+                    android:text="300 000 VND"
                     android:textColor="@color/common_orange"
                     android:textSize="@dimen/textsize_medium"
+                    android:singleLine="true"
                     threemins:customTypeface="@string/font_regular" />
 
                 <com.lanna.droidlib.view.CustomTextView
@@ -113,9 +115,10 @@
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_info"
                     android:gravity="center_vertical"
-                    android:text="50 000 VND"
+                    android:text="Hang Thai Lan, bao dep"
                     android:textColor="@color/common_black"
                     android:textSize="@dimen/textsize_medium"
+                    android:singleLine="true"
                     threemins:customTypeface="@string/font_regular" />
 
                 <com.lanna.droidlib.view.CustomTextView
@@ -124,9 +127,10 @@
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_location"
                     android:gravity="center_vertical"
-                    android:text="50 000 VND"
+                    android:text="Shop Halo, 20 Nguyen Van Cu"
                     android:textColor="@color/common_black"
                     android:textSize="@dimen/textsize_medium"
+                    android:singleLine="true"
                     threemins:customTypeface="@string/font_regular" />
 
                 <com.lanna.droidlib.view.CustomTextView
@@ -135,10 +139,32 @@
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_like"
                     android:gravity="center_vertical"
-                    android:text="50 000 VND"
+                    android:text="12 people like this"
                     android:textColor="@color/common_orange"
                     android:textSize="@dimen/textsize_medium"
+                    android:singleLine="true"
                     threemins:customTypeface="@string/font_regular" />
+                
+                <com.lanna.droidlib.view.CustomTextView
+                    android:id="@+id/inflater_body_product_tv_comment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_comment"
+                    android:gravity="center_vertical"
+                    android:text="View all 123 comments"
+                    android:textColor="@color/common_orange"
+                    android:textSize="@dimen/textsize_medium"
+                    android:singleLine="true"
+                    threemins:customTypeface="@string/font_regular" />
+                
+                <!-- 3 first comments -->
+                <LinearLayout 
+                    android:id="@+id/inflater_body_product_lnl_top_comments"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/fm_detail_comments_margin">
+                </LinearLayout>
             </LinearLayout>
 
             <!-- line -->
@@ -247,9 +273,10 @@
                 android:layout_width="fill_parent"
                 android:layout_height="100dp" />
         </LinearLayout>
-    </ScrollView> <!-- Button chat to buy -->
-
-    <com.lanna.droidlib.view.CustomButton
+    </ScrollView> 
+    
+    <!-- Button chat to buy -->
+          <com.lanna.droidlib.view.CustomButton
         android:id="@+id/fragment_detail_btn_chat_to_buy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
