@@ -316,5 +316,6 @@
     
     <!-- comment activity -->
     <string name="act_comment_label">Bình luận</string>
+    <string name="fm_comment_input_hint">Thêm một bình luận...</string>
     
 </resources>

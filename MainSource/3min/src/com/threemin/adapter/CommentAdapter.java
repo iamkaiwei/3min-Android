@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.google.android.gms.internal.in;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
+import com.threemin.model.ActivityModel;
 import com.threemin.model.CommentModel;
 import com.threemins.R;
 
@@ -65,6 +66,11 @@ public class CommentAdapter extends BaseAdapter {
         tvTime.setText(DateUtils.getRelativeTimeSpanString(model.getUpdated_at() * 1000,
                 System.currentTimeMillis(), 0L, DateUtils.FORMAT_ABBREV_RELATIVE));
         return convertView;
+    }
+    
+    public void setListComments(List<CommentModel> list) {
+        mData = list;
+        this.notifyDataSetChanged();
     }
 
 }

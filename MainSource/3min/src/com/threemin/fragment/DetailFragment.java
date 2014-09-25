@@ -244,12 +244,6 @@ public class DetailFragment extends Fragment {
             } else {
                 initListTopComments(productModel.getComments());
             }
-//			LinearLayout lnTopComments = (LinearLayout) convertView.findViewById(R.id.inflater_body_product_lnl_top_comments);
-//			for (int i = 0; i < 4; i++) {
-//                LayoutInflater inflater = LayoutInflater.from(getActivity());
-//                View view = inflater.inflate(R.layout.fragment_detail_layout_comment, null);
-//                lnTopComments.addView(view);
-//            }
 		}
 		
 
@@ -452,30 +446,6 @@ public class DetailFragment extends Fragment {
 	    CommonUti.addAnimationWhenStartActivity(getActivity());
 	}
 	
-//	private class GetCommentsTask extends AsyncTask<Integer, Void, List<CommentModel>> {
-//
-//        @Override
-//        protected List<CommentModel> doInBackground(Integer... params) {
-//            String token = PreferenceHelper.getInstance(getActivity()).getTokken();
-//            return new CommentWebService().getComments(token, productModel.getId() , params[0]);
-//        }
-//        
-//        @Override
-//        protected void onPostExecute(List<CommentModel> result) {
-//            if (result != null && result.size() != 0) {
-//                
-//                for (int i = 0; i < result.size(); i++) {
-//                    LayoutInflater inflater = LayoutInflater.from(getActivity());
-//                    View view = inflater.inflate(R.layout.fragment_detail_layout_comment, null);
-//                    addDataToView(view, result.get(i));
-//                    lnTopComments.addView(view);
-//                }
-//            }
-//            super.onPostExecute(result);
-//        }
-//	    
-//	}
-	
 	private class GetTopCommentsTask extends AsyncTask<Void, Void, List<CommentModel>> {
 
         @Override
@@ -495,6 +465,8 @@ public class DetailFragment extends Fragment {
     }
 	
 	public void initListTopComments(List<CommentModel> list) {
+	    //we have to remove all views bc when onResume of the activity is called, we will add 3 newest comments
+	    lnTopComments.removeAllViews();
 	    for (int i = 0; i < list.size(); i++) {
             LayoutInflater inflater = LayoutInflater.from(getActivity());
             View view = inflater.inflate(R.layout.fragment_detail_layout_comment, null);
@@ -517,14 +489,8 @@ public class DetailFragment extends Fragment {
 	    tvTime.setText(time);
 	}
 	
-	private class PostCommentTask extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected String doInBackground(String... params) {
-            String token = PreferenceHelper.getInstance(getActivity()).getTokken();
-            new CommentWebService().postComments(token, productModel.getId(), "Send at " + System.currentTimeMillis());
-            return null;
-        }
-	    
+	public void refreshTopComment() {
+	    new GetTopCommentsTask().execute();
 	}
+	
 }

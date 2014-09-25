@@ -28,6 +28,7 @@ public class DetailActivity extends SwipeBackActivity {
 	TextView mTvTitle;
 	LoginButton mLoginButton;
 	SwipeBackLayout mSwipeBack;
+	DetailFragment mDetailFragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +57,8 @@ public class DetailActivity extends SwipeBackActivity {
 
 		if (savedInstanceState == null || (productID != null && productID.length() > 0)) {
 			Log.i("DetailActivity", "Create Fragment");
-			getSupportFragmentManager().beginTransaction().add(R.id.container, new DetailFragment()).commit();
+			mDetailFragment = new DetailFragment();
+			getSupportFragmentManager().beginTransaction().add(R.id.container, mDetailFragment).commit();
 		}
 	}
 	
@@ -68,6 +70,14 @@ public class DetailActivity extends SwipeBackActivity {
             session.onActivityResult(DetailActivity.this, requestCode, resultCode, data);
         } else {
             Log.i("tructran", "DetailActivity session null");
+        }
+	}
+	
+	@Override
+	protected void onResume() {
+	    super.onResume();
+	    if (mDetailFragment != null) {
+            mDetailFragment.refreshTopComment();
         }
 	}
 	

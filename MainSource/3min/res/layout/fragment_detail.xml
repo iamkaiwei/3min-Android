@@ -101,6 +101,8 @@
                     android:id="@+id/inflater_body_product_tv_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/common_spacing_double"
+                    android:layout_marginBottom="@dimen/common_spacing_double"
                     android:drawableLeft="@drawable/ic_price"
                     android:gravity="center_vertical"
                     android:text="300 000 VND"
@@ -113,6 +115,7 @@
                     android:id="@+id/inflater_body_product_tv_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/common_spacing_double"
                     android:drawableLeft="@drawable/ic_info"
                     android:gravity="center_vertical"
                     android:text="Hang Thai Lan, bao dep"
@@ -125,6 +128,7 @@
                     android:id="@+id/inflater_body_product_tv_location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/common_spacing_double"
                     android:drawableLeft="@drawable/ic_location"
                     android:gravity="center_vertical"
                     android:text="Shop Halo, 20 Nguyen Van Cu"
@@ -137,6 +141,7 @@
                     android:id="@+id/inflater_body_product_tv_like"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/common_spacing_double"
                     android:drawableLeft="@drawable/ic_like"
                     android:gravity="center_vertical"
                     android:text="12 people like this"
@@ -209,7 +214,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Liked"
-                            android:textColor="@color/common_grey" />
+                            android:textColor="@color/selector_text_share_on_facebook" />
                     </LinearLayout>
 
                     <View

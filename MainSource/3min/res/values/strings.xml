@@ -168,5 +168,6 @@
     
     <!-- comment activity -->
     <string name="act_comment_label">Comments</string>
+    <string name="fm_comment_input_hint">Add a comment...</string>
     
 </resources>
