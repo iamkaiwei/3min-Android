@@ -1,7 +1,8 @@
 package com.threemin.uti;
 
 public class WebserviceConstant {
-
+    public static final int RESPONSE_CODE_SUCCESS = 200;
+    public static final int RESPONSE_CODE_EXCEPTION = -1;
 	private static final String URL_HOST = "http://threemins-server-staging.herokuapp.com";// for
 																							// staging
 	private static final String API = "/api/v1";

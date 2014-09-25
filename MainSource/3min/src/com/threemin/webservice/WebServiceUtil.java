@@ -16,7 +16,7 @@ import android.util.Log;
 
 
 public class WebServiceUtil {
-	public static final String tag = WebServiceUtil.class.getSimpleName();
+	public static final String tag = "WebServiceUtil";
 
 	protected static final int TIMEOUT_CONNECTION = 10000;
 	
@@ -114,7 +114,9 @@ public class WebServiceUtil {
 		return fileURL;
 	}
 	
-	protected static String postRequest(String link) throws Exception {
+	//return the response code
+//	protected static String postRequest(String link) throws Exception {
+	protected static int postRequest(String link) throws Exception {
 	    URL url = new URL(link);
         URLConnection conn = url.openConnection();
         conn.setConnectTimeout(TIMEOUT_CONNECTION);
@@ -135,7 +137,9 @@ public class WebServiceUtil {
             result += inputLine;
         }
         in.close();
-        Log.d(tag, result);
-        return result;
+        Log.d(tag, "postRequest result: " + result);
+        int code = ((HttpURLConnection) conn).getResponseCode();
+        Log.i(tag, "postRequest Response code: " + code);
+        return code;
 	}
 }

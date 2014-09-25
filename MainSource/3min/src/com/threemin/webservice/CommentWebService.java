@@ -8,7 +8,6 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.threemin.model.CommentModel;
-import com.threemin.model.ProductModel;
 import com.threemin.uti.WebserviceConstant;
 
 public class CommentWebService {
@@ -57,21 +56,25 @@ public class CommentWebService {
     
     /**
      * http://threemins-server-staging.herokuapp.com/api/v1/products/268/comments.json?access_token=8bb0c68bcf791a49d2f2475c5f87d0eb61d90c6af22b0a764e2d0406cdbaa21b&comment[content]=1
+     * @return: response code
+     * 200: success
+     * -1: exception
      * */
-    public void postComments(String accessToken, int productID, String content) {
+    public int postComments(String accessToken, int productID, String content) {
         String url = String.format(WebserviceConstant.POST_COMMENT, "" + productID, accessToken, content);
         String validURL = WebServiceUtil.getHttpUrl(url);
         Log.i(tag, "postComments url: " + url);
         Log.i(tag, "postComments validURL: " + validURL);
         
         try {
-            String result = WebServiceUtil.postRequest(validURL);
-            Log.i(tag, "postComments result: " + result);
+            int responseCode = WebServiceUtil.postRequest(validURL);
+            Log.i(tag, "postComments response code: " + responseCode);
+            return responseCode;
         } catch (Exception e) {
             Log.i(tag, "postComments ex: " + e.toString());
             e.printStackTrace();
         }
-        
+        return WebserviceConstant.RESPONSE_CODE_EXCEPTION;
     }
     
 }

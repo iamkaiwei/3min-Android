@@ -57,7 +57,10 @@ public class DetailFragment extends Fragment {
 	private final int REQUEST_CHECK_OFFER_EXIST = 3;
 	private final int REQUEST_GET_LIST_OFFER = 4;
 	
-	public static String INTENT_PRODUCT_ID_FOR_COMMENT = "productIDForComment";
+	public static final String INTENT_PRODUCT_ID_FOR_COMMENT = "productIDForComment";
+	public static final String INTENT_COMMENT_ACTION = "CommentAction";
+	public static final boolean ACTION_POST_COMMENT = true;
+	public static final boolean ACTION_VIEW_COMMENTS = false;
 	
 	View rootView;
 	ProductModel productModel;
@@ -222,7 +225,7 @@ public class DetailFragment extends Fragment {
                 
                 @Override
                 public void onClick(View v) {
-                    doPostComment();
+                    doCommentAction(ACTION_POST_COMMENT);
                 }
             });
 			
@@ -232,7 +235,7 @@ public class DetailFragment extends Fragment {
                 
                 @Override
                 public void onClick(View v) {
-                    doViewAllComments();
+                    doCommentAction(ACTION_VIEW_COMMENTS);
                 }
             });
 			lnTopComments = (LinearLayout) convertView.findViewById(R.id.inflater_body_product_lnl_top_comments);
@@ -437,9 +440,14 @@ public class DetailFragment extends Fragment {
 		
 	}
 	
-	public void doViewAllComments() {
+	/**
+	 * View all comments or post comment
+	 * @param commentAction = ACTION_VIEW_COMMENTS(false) or ACTION_POST_COMMENT(true)
+	 * */
+	public void doCommentAction(boolean commentAction) {
 	    Intent intent = new Intent(getActivity(), CommentActivity.class);
 	    intent.putExtra(INTENT_PRODUCT_ID_FOR_COMMENT, productModel.getId());
+	    intent.putExtra(INTENT_COMMENT_ACTION, commentAction);
 	    startActivity(intent);
 	    CommonUti.addAnimationWhenStartActivity(getActivity());
 	}
@@ -507,10 +515,6 @@ public class DetailFragment extends Fragment {
 	    CharSequence time = DateUtils.getRelativeTimeSpanString(model.getUpdated_at() * 1000,
                 System.currentTimeMillis(), 0L, DateUtils.FORMAT_ABBREV_RELATIVE);
 	    tvTime.setText(time);
-	}
-	
-	public void doPostComment() {
-	    new PostCommentTask().execute("");
 	}
 	
 	private class PostCommentTask extends AsyncTask<String, Void, String> {
