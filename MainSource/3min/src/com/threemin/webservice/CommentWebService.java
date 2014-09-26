@@ -18,7 +18,7 @@ public class CommentWebService {
      * http://threemins-server-staging.herokuapp.com/api/v1/products/268/comments.json?access_token=8bb0c68bcf791a49d2f2475c5f87d0eb61d90c6af22b0a764e2d0406cdbaa21b&page=1
      * */
     public List<CommentModel> getComments(String accessToken, int productID, int page) {
-        String url = String.format(WebserviceConstant.GET_COMMENTS_OF_PRODUCT, "" + productID) + "?access_token=" + accessToken + "&page=" + page;
+        String url = String.format(WebserviceConstant.GET_COMMENTS_OF_PRODUCT, "" + productID) + "?access_token=" + accessToken + "&page=" + page + "&per_page=20";
         Log.i(tag, "getComments url: " + url);
         try {
             String result = WebServiceUtil.getData(url);
@@ -75,6 +75,20 @@ public class CommentWebService {
             e.printStackTrace();
         }
         return WebserviceConstant.RESPONSE_CODE_EXCEPTION;
+    }
+    
+    public String getJSONComments(String accessToken, int productID) {
+        String url = String.format(WebserviceConstant.GET_COMMENTS_OF_PRODUCT, "" + productID) + "?access_token=" + accessToken + "&page=1&per_page=20";
+        Log.i(tag, "getJSONComments url: " + url);
+        try {
+            String result = WebServiceUtil.getData(url);
+            Log.i(tag, "getJSONComments result: " + result);
+            return result;
+        } catch (Exception e) {
+            Log.i(tag, "getJSONComments ex: " + e.toString());
+            e.printStackTrace();
+        }
+        return null;
     }
     
 }

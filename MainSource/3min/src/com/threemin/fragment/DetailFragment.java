@@ -43,10 +43,12 @@ import com.threemin.model.UserModel;
 import com.threemin.uti.CommonConstant;
 import com.threemin.uti.CommonUti;
 import com.threemin.uti.PreferenceHelper;
+import com.threemin.uti.WebserviceConstant;
 import com.threemin.webservice.CommentWebService;
 import com.threemin.webservice.ConversationWebService;
 import com.threemin.webservice.ProductWebservice;
 import com.threemin.webservice.UserWebService;
+import com.threemin.webservice.WebServiceUtil;
 import com.threemins.R;
 import com.threemins.R.id;
 
@@ -59,6 +61,7 @@ public class DetailFragment extends Fragment {
 	
 	public static final String INTENT_PRODUCT_ID_FOR_COMMENT = "productIDForComment";
 	public static final String INTENT_COMMENT_ACTION = "CommentAction";
+	public static final String INTENT_JSON_INIT_DATA = "JsonInitData";
 	public static final boolean ACTION_POST_COMMENT = true;
 	public static final boolean ACTION_VIEW_COMMENTS = false;
 	
@@ -225,7 +228,9 @@ public class DetailFragment extends Fragment {
                 
                 @Override
                 public void onClick(View v) {
-                    doCommentAction(ACTION_POST_COMMENT);
+                    //TODO
+//                    doCommentAction(ACTION_POST_COMMENT);
+                    new GetInitCommentData(ACTION_POST_COMMENT).execute();
                 }
             });
 			
@@ -235,7 +240,9 @@ public class DetailFragment extends Fragment {
                 
                 @Override
                 public void onClick(View v) {
-                    doCommentAction(ACTION_VIEW_COMMENTS);
+                    //TODO
+//                    doCommentAction(ACTION_VIEW_COMMENTS);
+                    new GetInitCommentData(ACTION_VIEW_COMMENTS).execute();
                 }
             });
 			lnTopComments = (LinearLayout) convertView.findViewById(R.id.inflater_body_product_lnl_top_comments);
@@ -491,6 +498,53 @@ public class DetailFragment extends Fragment {
 	
 	public void refreshTopComment() {
 	    new GetTopCommentsTask().execute();
+	}
+	
+	private class GetInitCommentData extends AsyncTask<Void, Void, String> {
+	    
+	    private boolean commentAction;
+	    private ProgressDialog dialog;
+	    
+	    public GetInitCommentData(boolean action) {
+	        commentAction = action;
+        }
+	    
+	    @Override
+	    protected void onPreExecute() {
+	        // TODO Auto-generated method stub
+	        super.onPreExecute();
+	        dialog = new ProgressDialog(getActivity());
+	        dialog.setMessage(getResources().getString(R.string.please_wait));
+	        dialog.show();
+	    }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            String token = PreferenceHelper.getInstance(getActivity()).getTokken();
+            return new CommentWebService().getJSONComments(token, productModel.getId());
+        }
+        
+        @Override
+        protected void onPostExecute(String result) {
+            // TODO Auto-generated method stub
+            super.onPostExecute(result);
+            if (dialog != null && dialog.isShowing()) {
+                dialog.dismiss();
+            }
+            if (result != null && result.length() > 0) {
+                doStartCommentActivity(commentAction, result);
+            }
+        }
+        
+	}
+	
+	public void doStartCommentActivity(boolean commentAction, String result) {
+	    Intent intent = new Intent(getActivity(), CommentActivity.class);
+        intent.putExtra(INTENT_PRODUCT_ID_FOR_COMMENT, productModel.getId());
+        intent.putExtra(INTENT_COMMENT_ACTION, commentAction);
+        intent.putExtra(INTENT_JSON_INIT_DATA, result);
+        startActivity(intent);
+        CommonUti.addAnimationWhenStartActivity(getActivity());
 	}
 	
 }

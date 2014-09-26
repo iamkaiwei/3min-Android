@@ -1,5 +1,7 @@
 package com.threemin.fragment;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 import android.os.AsyncTask;
@@ -19,8 +21,11 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.threemin.adapter.CommentAdapter;
 import com.threemin.model.CommentModel;
+import com.threemin.model.UserModel;
 import com.threemin.uti.CommonUti;
 import com.threemin.uti.PreferenceHelper;
 import com.threemin.uti.WebserviceConstant;
@@ -47,6 +52,7 @@ public class CommentFragment extends Fragment {
     private SwipeRefreshLayout mSwipe;
     private int mTheLastTotalCount;
     private boolean mCommentAction;
+    private String mInitData;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -54,15 +60,16 @@ public class CommentFragment extends Fragment {
         mRootView = inflater.inflate(R.layout.fragment_comment, null);
         mProductID = getActivity().getIntent().getIntExtra(DetailFragment.INTENT_PRODUCT_ID_FOR_COMMENT, -1);
         mCommentAction = getActivity().getIntent().getBooleanExtra(DetailFragment.INTENT_COMMENT_ACTION, DetailFragment.ACTION_VIEW_COMMENTS);
+        mInitData = getActivity().getIntent().getStringExtra(DetailFragment.INTENT_JSON_INIT_DATA);
         mPage = 1;
 
         initWidgets();
         initListener();
         
-        if (mProductID != -1) {
-            new GetCommentsTask().execute(STEP_INIT);
-        }
-        
+//        if (mProductID != -1) {
+//            new GetCommentsTask().execute(STEP_INIT);
+//        }
+        initData();
         return mRootView;
     }
     
@@ -78,6 +85,8 @@ public class CommentFragment extends Fragment {
         } else {
             mRlCommentInput.setVisibility(View.VISIBLE);
         }
+        
+//        createTestData();
     }
     
     public void initListener() {
@@ -100,21 +109,30 @@ public class CommentFragment extends Fragment {
             }
         });
         
-        mLvComment.setOnScrollListener(new OnScrollListener() {
-            
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-            }
-            
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                boolean loadMore = firstVisibleItem + visibleItemCount >= totalItemCount - 1;
-                if (loadMore && totalItemCount > 1 && mTheLastTotalCount != totalItemCount) {
-                    mTheLastTotalCount = totalItemCount;
-                    new GetCommentsTask().execute(STEP_LOADMORE);
-                }
-            }
-        });
+//        mLvComment.setOnScrollListener(new OnScrollListener() {
+//            
+//            @Override
+//            public void onScrollStateChanged(AbsListView view, int scrollState) {
+//            }
+//            
+//            @Override
+//            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+//                boolean loadMore = firstVisibleItem + visibleItemCount >= totalItemCount - 1;
+//                if (loadMore && totalItemCount > 1 && mTheLastTotalCount != totalItemCount) {
+//                    mTheLastTotalCount = totalItemCount;
+//                    new GetCommentsTask().execute(STEP_LOADMORE);
+//                }
+//            }
+//        });
+    }
+    
+    public void initData() {
+        Type listType = new TypeToken<List<CommentModel>>() {
+        }.getType();
+        mListComment = new Gson().fromJson(mInitData, listType);
+        mAdapter = new CommentAdapter(getActivity(), mListComment);
+        mLvComment.setAdapter(mAdapter);
+        mPage = 1;
     }
     
     public void doPostComment() {
@@ -205,5 +223,27 @@ public class CommentFragment extends Fragment {
         }
         
     }
+    
+//    public void createTestData() {
+//        String avatarUrl = "https://graph.facebook.com/896011980424511/picture?type=large";
+//        String comment = "Comment: ";
+//        String username = "User: ";
+//        mListComment = new ArrayList<CommentModel>();
+//        for (int i = 0; i < 20; i++) {
+//            CommentModel m = new CommentModel();
+//            m.setContent(comment + i);
+//            m.setCreated_at(System.currentTimeMillis() / 1000);
+//            m.setUpdated_at(System.currentTimeMillis() / 1000);
+//            m.setId(i);
+//            UserModel user = new UserModel();
+//            user.setFullName(username + i);
+//            user.setFacebook_avatar(avatarUrl);
+//            m.setUser(user);
+//            mListComment.add(m);
+//        }
+//        
+//        mAdapter = new CommentAdapter(getActivity(), mListComment);
+//        mLvComment.setAdapter(mAdapter);
+//    }
 
 }

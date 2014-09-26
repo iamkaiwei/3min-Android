@@ -1,32 +1,18 @@
 package com.threemin.app;
 
-import java.util.List;
-
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 import android.app.ActionBar;
-import android.app.ProgressDialog;
 import android.content.res.Resources;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.threemin.adapter.CommentAdapter;
 import com.threemin.fragment.CommentFragment;
-import com.threemin.fragment.DetailFragment;
-import com.threemin.model.CommentModel;
 import com.threemin.uti.CommonUti;
-import com.threemin.uti.PreferenceHelper;
-import com.threemin.uti.WebserviceConstant;
-import com.threemin.webservice.CommentWebService;
 import com.threemins.R;
 
 public class CommentActivity extends SwipeBackActivity{
