@@ -1,5 +1,6 @@
 package com.threemin.app;
 
+import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 import android.app.ActionBar;
 import android.content.res.Resources;
@@ -24,6 +25,9 @@ public class CommentActivity extends SwipeBackActivity{
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comment);
+        
+        getSwipeBackLayout().setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
+        
         initActionBar();
         
         if (savedInstanceState == null) {
@@ -36,7 +40,6 @@ public class CommentActivity extends SwipeBackActivity{
     @Override
     public void onBackPressed() {
         // TODO Auto-generated method stub
-        super.onBackPressed();
         scrollToFinishActivity();
     }
     

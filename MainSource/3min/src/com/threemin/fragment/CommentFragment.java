@@ -109,21 +109,21 @@ public class CommentFragment extends Fragment {
             }
         });
         
-//        mLvComment.setOnScrollListener(new OnScrollListener() {
-//            
-//            @Override
-//            public void onScrollStateChanged(AbsListView view, int scrollState) {
-//            }
-//            
-//            @Override
-//            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-//                boolean loadMore = firstVisibleItem + visibleItemCount >= totalItemCount - 1;
-//                if (loadMore && totalItemCount > 1 && mTheLastTotalCount != totalItemCount) {
-//                    mTheLastTotalCount = totalItemCount;
-//                    new GetCommentsTask().execute(STEP_LOADMORE);
-//                }
-//            }
-//        });
+        mLvComment.setOnScrollListener(new OnScrollListener() {
+            
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+            }
+            
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                boolean loadMore = firstVisibleItem + visibleItemCount >= totalItemCount - 1;
+                if (loadMore && totalItemCount > 1 && mTheLastTotalCount != totalItemCount) {
+                    mTheLastTotalCount = totalItemCount;
+                    new GetCommentsTask().execute(STEP_LOADMORE);
+                }
+            }
+        });
     }
     
     public void initData() {
