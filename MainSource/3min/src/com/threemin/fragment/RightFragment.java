@@ -12,8 +12,10 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.android.gms.internal.di;
 import com.google.gson.Gson;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.threemin.app.FollowerFollowingActivity;
@@ -35,6 +37,8 @@ public class RightFragment extends Fragment {
     public static boolean GET_FOLLOWERS = true;
     public static boolean GET_FOLLOWINGS = false;
     ViewGroup rootView;
+    
+    ProgressBar mPBarFollower, mPBarFollowing;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -74,6 +78,9 @@ public class RightFragment extends Fragment {
         
         Log.i("RightFragment: ", userModel.getFirstName() + "isFollowed: " + (userModel.isFollowed()?"true":"false"));
         
+        mPBarFollower = (ProgressBar) rootView.findViewById(R.id.fm_right_progress_bar_follower);
+        mPBarFollowing = (ProgressBar) rootView.findViewById(R.id.fm_right_progress_bar_following);
+        
         new GetFollowInfoTask().execute(userModel.getId());
 //        userProduct(userModel);
 //        initListener(rootView);
@@ -86,19 +93,21 @@ public class RightFragment extends Fragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            showLoadingIcon(true);
         }
         
         @Override
         protected UserModel doInBackground(Integer... params) {
             String token = PreferenceHelper.getInstance(getActivity()).getTokken();
             UserModel model = new UserWebService().getUserViaId(token, "" + userModel.getId());
-            Log.i("RightFragment", model.getFullName() + " followers: " + model.getCountFollowers() + " following: " + model.getCountFollowing());
             return model;
         }
         
         @Override
         protected void onPostExecute(UserModel result) {
+            showLoadingIcon(false);
             if (result != null) {
+                Log.i("RightFragment", result.getFullName() + " followers: " + result.getCountFollowers() + " following: " + result.getCountFollowing());
                 TextView tv_followers_number = (TextView) rootView.findViewById(R.id.fm_right_tv_follower_number);
                 tv_followers_number.setText("" + result.getCountFollowers());
 
@@ -253,6 +262,16 @@ public class RightFragment extends Fragment {
         startActivity(intent);
 //        getActivity().overridePendingTransition(R.anim.anim_right_in, R.anim.anim_no_animation);
         CommonUti.addAnimationWhenStartActivity(getActivity());
+    }
+    
+    public void showLoadingIcon(boolean show) {
+        if (show) {
+            mPBarFollower.setVisibility(View.VISIBLE);
+            mPBarFollowing.setVisibility(View.VISIBLE);
+        } else {
+            mPBarFollower.setVisibility(View.GONE);
+            mPBarFollowing.setVisibility(View.GONE);
+        }
     }
 
 }

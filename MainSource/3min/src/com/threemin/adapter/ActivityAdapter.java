@@ -72,7 +72,8 @@ public class ActivityAdapter extends BaseAdapter {
 				System.currentTimeMillis(), 0L, DateUtils.FORMAT_ABBREV_RELATIVE));
 		
 		tvMessage.setVisibility(View.GONE);
-		imgProduct.setVisibility(View.INVISIBLE);
+		
+		UrlImageViewHelper.setUrlDrawable(imgProduct, mData.get(position).getDisplayImageUrl(), R.drawable.stuff_img);
 		return convertView;
 	}
 	

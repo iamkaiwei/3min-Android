@@ -40,4 +40,6 @@
     <!-- dimmed background in home activity -->
     <color name="activity_home_dimmed_background">#99000000</color> <!-- black with transparent -->
     
+    <!-- fm right -->
+    <color name="fm_right_bg_loading">#ccffffff</color> <!-- white with 80% of transparentcy -->
 </resources>

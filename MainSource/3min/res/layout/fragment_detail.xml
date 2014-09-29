@@ -156,7 +156,7 @@
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_comment"
                     android:gravity="center_vertical"
-                    android:text="View all 123 comments"
+                    android:text="@string/fm_detail_view_all_comment"
                     android:textColor="@color/common_orange"
                     android:textSize="@dimen/textsize_medium"
                     android:singleLine="true"

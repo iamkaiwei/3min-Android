@@ -13,6 +13,9 @@ public class ActivityModel {
 	@SerializedName("subject_type")
 	private String subjectType;
 	
+    @SerializedName("display_image_url")
+    private String displayImageUrl;
+	
 	@SerializedName("update_time")
 	private long updateTime;
 	
@@ -49,8 +52,18 @@ public class ActivityModel {
 	public void setSubjectType(String subjectType) {
 		this.subjectType = subjectType;
 	}
+	
+	
 
-	public long getUpdateTime() {
+	public String getDisplayImageUrl() {
+        return displayImageUrl;
+    }
+
+    public void setDisplayImageUrl(String displayImage) {
+        this.displayImageUrl = displayImage;
+    }
+
+    public long getUpdateTime() {
 		return updateTime;
 	}
 

@@ -54,6 +54,8 @@ import com.threemins.R.id;
 
 public class DetailFragment extends Fragment {
     
+    public static final String tag = "DetailFragment";
+    
 	private final int SHOW_DIALOG = 1;
 	private final int HIDE_DIALOG = 2;
 	private final int REQUEST_CHECK_OFFER_EXIST = 3;
@@ -81,6 +83,7 @@ public class DetailFragment extends Fragment {
 	
 	//test
 	LinearLayout lnTopComments;
+	TextView tvComment;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -235,7 +238,7 @@ public class DetailFragment extends Fragment {
             });
 			
 			//3 first comments:
-			TextView tvComment = (TextView) convertView.findViewById(R.id.inflater_body_product_tv_comment);
+			tvComment = (TextView) convertView.findViewById(R.id.inflater_body_product_tv_comment);
 			tvComment.setOnClickListener(new OnClickListener() {
                 
                 @Override
@@ -458,7 +461,12 @@ public class DetailFragment extends Fragment {
         @Override
         protected List<CommentModel> doInBackground(Void... params) {
             String token = PreferenceHelper.getInstance(getActivity()).getTokken();
-            return new CommentWebService().getTopComments(token, productModel.getId());
+            if (productModel != null) {
+                return new CommentWebService().getTopComments(token, productModel.getId());
+            } else {
+                Log.i(tag, "GetTopCommentsTask product null");
+                return null;
+            }
         }
         
         @Override
@@ -473,12 +481,19 @@ public class DetailFragment extends Fragment {
 	
 	public void initListTopComments(List<CommentModel> list) {
 	    //we have to remove all views bc when onResume of the activity is called, we will add 3 newest comments
-	    lnTopComments.removeAllViews();
-	    for (int i = 0; i < list.size(); i++) {
-            LayoutInflater inflater = LayoutInflater.from(getActivity());
-            View view = inflater.inflate(R.layout.fragment_detail_layout_comment, null);
-            addDataToView(view, list.get(i));
-            lnTopComments.addView(view);
+	    
+	    //first check if have comment or not
+	    if (list != null && list.size() > 0) {
+	        lnTopComments.removeAllViews();
+	        for (int i = 0; i < list.size(); i++) {
+	            LayoutInflater inflater = LayoutInflater.from(getActivity());
+	            View view = inflater.inflate(R.layout.fragment_detail_layout_comment, null);
+	            addDataToView(view, list.get(i));
+	            lnTopComments.addView(view);
+	        }
+        } else {
+            lnTopComments.setVisibility(View.GONE);
+            tvComment.setVisibility(View.GONE);
         }
 	}
 	
