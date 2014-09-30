@@ -61,12 +61,13 @@ public class RoundedImageView extends ImageView {
 
         mBitmap.eraseColor(Color.TRANSPARENT);
 
-        float radius = getResources().getDimension(R.dimen.common_radius_pixel);
+//        float radius = getResources().getDimension(R.dimen.common_radius_pixel);
+        float radius = getResources().getDimension(R.dimen.common_radius_pixel) * 2;
 
-        Rect bottomRect = new Rect(0, (int) (h / 2), (int) (w), (int) h);
+//        Rect bottomRect = new Rect(0, (int) (h / 2), (int) (w), (int) h);
 		RectF mRect = new RectF(0, 0, w, h);
 		mCanvas.drawRoundRect(mRect, radius, radius, mPaint);
-        mCanvas.drawRect(bottomRect, mPaint);
+//        mCanvas.drawRect(bottomRect, mPaint);
         mCanvas.saveLayer(0, 0, w, h, mPaint2, Canvas.ALL_SAVE_FLAG);
         super.onDraw(mCanvas);
         mCanvas.restore();

@@ -110,24 +110,40 @@
             android:orientation="horizontal"
             android:paddingBottom="@dimen/common_spacing"
             android:paddingTop="@dimen/common_spacing" >
+            
+            <!-- feedback -->
 
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical" >
+                android:layout_weight="1" >
 
-                <com.lanna.droidlib.view.CustomTextView
-                    android:id="@+id/fm_right_tv_feedback_number"
-                    style="@style/fm_right_textview_black"
-                    android:text="..."
-                    threemins:customTypeface="@string/font_semibold" />
+                <LinearLayout
+                    android:id="@+id/fm_right_ln_feedback"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical" >
 
-                <com.lanna.droidlib.view.CustomTextView
-                    style="@style/fm_right_textview_grey"
-                    android:text="@string/feedback"
-                    threemins:customTypeface="@string/font_semibold" />
-            </LinearLayout>
+                    <com.lanna.droidlib.view.CustomTextView
+                        android:id="@+id/fm_right_tv_feedback_number"
+                        style="@style/fm_right_textview_black"
+                        android:text="..."
+                        threemins:customTypeface="@string/font_semibold" />
+
+                    <com.lanna.droidlib.view.CustomTextView
+                        style="@style/fm_right_textview_grey"
+                        android:text="@string/feedback"
+                        threemins:customTypeface="@string/font_semibold" />
+                </LinearLayout>
+
+                <!-- loading icon -->
+
+                <ProgressBar
+                    android:id="@+id/fm_right_progress_bar_feedback"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/fm_right_bg_loading" />
+            </FrameLayout>
 
             <View style="@style/fm_right_divider_vertical" />
 

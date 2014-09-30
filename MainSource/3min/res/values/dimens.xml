@@ -140,5 +140,11 @@
     
     <!-- comment -->
     <dimen name="comment_avatar_size">35dp</dimen>
+    
+    <!-- feedback activity -->
+    <dimen name="act_feedback_img_product_size">145dp</dimen>
+    <dimen name="act_feedback_option_height">50dp</dimen>
+    <dimen name="act_feedback_option_emo_size">25dp</dimen>
+    <dimen name="act_feedback_option_tv_margin_left">17.5dp</dimen>
 
 </resources>

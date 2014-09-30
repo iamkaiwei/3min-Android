@@ -202,6 +202,13 @@
             android:theme="@style/CustomActionBarTheme" >
         </activity>
         
+        <activity
+            android:name="com.threemin.app.FeedbackActivity"
+            android:label="@string/act_feedback_label"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomActionBarTheme" >
+        </activity>
+        
         <!-- **********************************Urban Airship*********************************************** -->
         <!-- Required for the library -->
         <provider

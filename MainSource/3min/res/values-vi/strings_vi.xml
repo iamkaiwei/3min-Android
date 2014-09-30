@@ -197,6 +197,9 @@
     <!-- <string name="activity_chat_chat_content_label">Chat privately with</string> -->
     <string name="activity_chat_chat_content_label">Chat riêng tư với</string>
     
+    <!-- <string name="activity_chat_empty_message">Message is empty!</string> -->
+    <string name="activity_chat_empty_message">Tin nhắn rỗng!</string>
+    
     <!-- <string name="profile_liked">Liked</string> -->
     <string name="profile_liked">Thích</string>
     
@@ -318,5 +321,13 @@
     <!-- comment activity -->
     <string name="act_comment_label">Bình luận</string>
     <string name="fm_comment_input_hint">Thêm một bình luận...</string>
+    
+    <!-- feedback activity -->
+    <string name="act_feedback_label">Phản hồi</string>
+    <string name="act_feedback_question">Bạn có hài lòng với sản phẩm này không?</string>
+    <string name="act_feedback_option_not_satisfied">Không hài lòng</string>
+    <string name="act_feedback_option_no_comment">Không ý kiến</string>
+    <string name="act_feedback_option_i_am_satisfied">Tôi hài lòng</string>
+    <string name="act_feedback_hint">Nếu không hài lòng, bạn có thể để bình luận tại đây.</string>
     
 </resources>

@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.google.android.gms.internal.di;
 import com.google.gson.Gson;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
+import com.threemin.app.FeedbackActivity;
 import com.threemin.app.FollowerFollowingActivity;
 import com.threemin.app.SettingActivity;
 import com.threemin.app.UserLikeProductActivity;
@@ -38,7 +39,7 @@ public class RightFragment extends Fragment {
     public static boolean GET_FOLLOWINGS = false;
     ViewGroup rootView;
     
-    ProgressBar mPBarFollower, mPBarFollowing;
+    ProgressBar mPBarFollower, mPBarFollowing, mPBarFeedback;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -80,6 +81,7 @@ public class RightFragment extends Fragment {
         
         mPBarFollower = (ProgressBar) rootView.findViewById(R.id.fm_right_progress_bar_follower);
         mPBarFollowing = (ProgressBar) rootView.findViewById(R.id.fm_right_progress_bar_following);
+        mPBarFeedback = (ProgressBar) rootView.findViewById(R.id.fm_right_progress_bar_feedback);
         
         new GetFollowInfoTask().execute(userModel.getId());
 //        userProduct(userModel);
@@ -190,6 +192,14 @@ public class RightFragment extends Fragment {
                 startActivityWithAnimation(intent);
             }
         });
+        rootView.findViewById(R.id.fm_right_ln_feedback).setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), FeedbackActivity.class);
+                startActivityWithAnimation(intent);
+            }
+        });
     }
 
     //init list product of user
@@ -268,9 +278,11 @@ public class RightFragment extends Fragment {
         if (show) {
             mPBarFollower.setVisibility(View.VISIBLE);
             mPBarFollowing.setVisibility(View.VISIBLE);
+            mPBarFeedback.setVisibility(View.VISIBLE);
         } else {
             mPBarFollower.setVisibility(View.GONE);
             mPBarFollowing.setVisibility(View.GONE);
+            mPBarFeedback.setVisibility(View.GONE);
         }
     }
 

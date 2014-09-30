@@ -269,7 +269,7 @@ public class ChatToBuyActivity extends SwipeBackActivity {
 		data.addProperty("name", currentUser.getFullName());
 		data.addProperty("message", msg);
 		data.addProperty("timestamp", System.currentTimeMillis() / 1000);
-		// Log.d("size",""+ presenceChannel.getUsers().size());
+		Log.d("size",""+ presenceChannel.getUsers().size());
 		MessageModel messageModel = new MessageModel(data.toString(), currentUser, IS_MY_MESSAGE);
 		if (presenceChannel.getUsers().size() > 1) {
 			if(pusher.getConnection().getState()==ConnectionState.DISCONNECTED){
@@ -311,6 +311,7 @@ public class ChatToBuyActivity extends SwipeBackActivity {
 			public void run() {
 				String tokken = PreferenceHelper.getInstance(ChatToBuyActivity.this).getTokken();
 				String message = messageModel.getMsg();
+                Log.i("offline", message);
 				boolean result = new ConversationWebService().postMessageOffline(conversation.getId(), tokken, message);
 				Log.d("resultPostMessage", "" + result);
 			}

@@ -99,6 +99,7 @@
     <string name="activity_chat_price_offered_label">Price Offered</string>
     <string name="activity_chat_chat_input_hint">Type message here to chat</string>
     <string name="activity_chat_chat_content_label">Chat privately with</string>
+    <string name="activity_chat_empty_message">Message is empty!</string>
     <string name="profile_liked">Liked</string>
     <string name="profile_message">Messages</string>
     <string name="profile_mylist">My Listings</string>
@@ -171,4 +172,11 @@
     <string name="act_comment_label">Comments</string>
     <string name="fm_comment_input_hint">Add a comment...</string>
     
+    <!-- feedback activity -->
+    <string name="act_feedback_label">Feedback</string>
+    <string name="act_feedback_question">Are you satisfied with this item purchased?</string>
+    <string name="act_feedback_option_not_satisfied">Not satisfied</string>
+    <string name="act_feedback_option_no_comment">No comment</string>
+    <string name="act_feedback_option_i_am_satisfied">I am satisfied</string>
+    <string name="act_feedback_hint">If not satisfied, you can leave your comment.</string>
 </resources>
