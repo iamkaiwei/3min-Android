@@ -48,7 +48,8 @@ public class CommonConstant {
     public static final String PUSHER_CHAT_EVENT_NAME = "client-chat";
     public static final String PUSHER_CHAT_EVENT_TYPING = "client-typing";
     public static final String PUSHER_CHAT_EVENT_UNTYPING = "client-untyping";
-    public static final String PUSHER_KEY = "ce3898cbc04d99f952cd";
+//    public static final String PUSHER_KEY = "ce3898cbc04d99f952cd";
+    public static final String PUSHER_KEY = "bcf0d42e1320df788db4";
     
     //Activity Types
     public static final String ACTIVITY_TYPE_CONVERSATION = "Conversation";
