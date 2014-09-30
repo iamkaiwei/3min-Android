@@ -24,6 +24,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -265,23 +266,28 @@ public class ChatToBuyActivity extends SwipeBackActivity {
 
 	public void onSendChat(View v) {
 		String msg = mEtChatInput.getText().toString();
-		JsonObject data = new JsonObject();
-		data.addProperty("name", currentUser.getFullName());
-		data.addProperty("message", msg);
-		data.addProperty("timestamp", System.currentTimeMillis() / 1000);
-		Log.d("size",""+ presenceChannel.getUsers().size());
-		MessageModel messageModel = new MessageModel(data.toString(), currentUser, IS_MY_MESSAGE);
-		if (presenceChannel.getUsers().size() > 1) {
-			if(pusher.getConnection().getState()==ConnectionState.DISCONNECTED){
-				pusher.connect();
-			}
-			presenceChannel.trigger(CommonConstant.PUSHER_CHAT_EVENT_NAME, data.toString());
-			handleLocalData(messageModel);
-		} else {
-			sendOfflineMessage(messageModel);
-		}
-		mMessageAdapter.addData(messageModel);
-		mEtChatInput.setText("");
+		if (msg != null && msg.length() > 0) {
+		    JsonObject data = new JsonObject();
+		    data.addProperty("name", currentUser.getFullName());
+		    data.addProperty("message", msg);
+		    data.addProperty("timestamp", System.currentTimeMillis() / 1000);
+		    Log.d("size",""+ presenceChannel.getUsers().size());
+		    MessageModel messageModel = new MessageModel(data.toString(), currentUser, IS_MY_MESSAGE);
+		    if (presenceChannel.getUsers().size() > 1) {
+		        if(pusher.getConnection().getState()==ConnectionState.DISCONNECTED){
+		            pusher.connect();
+		        }
+		        presenceChannel.trigger(CommonConstant.PUSHER_CHAT_EVENT_NAME, data.toString());
+		        handleLocalData(messageModel);
+		    } else {
+		        sendOfflineMessage(messageModel);
+		    }
+		    mMessageAdapter.addData(messageModel);
+		    mEtChatInput.setText("");
+        } else {
+            String emptyWarning = getString(R.string.activity_chat_empty_message);
+            Toast.makeText(this, emptyWarning, Toast.LENGTH_LONG).show();
+        }
 
 	}
 
