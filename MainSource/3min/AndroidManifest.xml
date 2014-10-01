@@ -209,6 +209,8 @@
             android:theme="@style/CustomActionBarTheme" >
         </activity>
         
+        <receiver android:name="com.threemin.receiver.IntentReceiver" />
+        
         <!-- **********************************Urban Airship*********************************************** -->
         <!-- Required for the library -->
         <provider
