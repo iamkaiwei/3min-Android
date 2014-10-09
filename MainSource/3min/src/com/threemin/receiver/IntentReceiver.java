@@ -57,19 +57,19 @@ public class IntentReceiver extends BroadcastReceiver {
 
             // Only launch the main activity if the payload does not contain any
             // actions that might have already opened an activity
-            if (!ActionUtils.containsRegisteredActions(intent.getExtras(), ACTIVITY_ACTIONS)) {
-                Intent launch = new Intent(Intent.ACTION_MAIN);
-                launch.setClass(context, HomeActivity.class);
-                launch.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(launch);
-            }
-
-
-            Intent launch = new Intent(Intent.ACTION_MAIN);
-            launch.setClass(UAirship.shared().getApplicationContext(), HomeActivity.class);
-            launch.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-            UAirship.shared().getApplicationContext().startActivity(launch);
+//            if (!ActionUtils.containsRegisteredActions(intent.getExtras(), ACTIVITY_ACTIONS)) {
+//                Intent launch = new Intent(Intent.ACTION_MAIN);
+//                launch.setClass(context, HomeActivity.class);
+//                launch.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                context.startActivity(launch);
+//            }
+//
+//
+//            Intent launch = new Intent(Intent.ACTION_MAIN);
+//            launch.setClass(UAirship.shared().getApplicationContext(), HomeActivity.class);
+//            launch.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//
+//            UAirship.shared().getApplicationContext().startActivity(launch);
 
         } else if (action.equals(PushManager.ACTION_REGISTRATION_FINISHED)) {
             Log.i(logTag, "Registration complete. APID:" + intent.getStringExtra(PushManager.EXTRA_APID)

@@ -185,6 +185,7 @@ public class ChatToBuyActivity extends SwipeBackActivity {
 		initPusher();
 		initListview();
 		initHistory();
+		initListeners();
 	}
 
 	private void initActionBar() {
@@ -262,6 +263,20 @@ public class ChatToBuyActivity extends SwipeBackActivity {
 				Log.d("onUsersInformationReceived", arg0);
 			}
 		});
+	}
+	
+	public void initListeners() {
+	    mImgSelling.setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+                doSellProduct();
+            }
+        });
+	}
+	
+	public void doSellProduct() {
+	    
 	}
 
 	public void onSendChat(View v) {

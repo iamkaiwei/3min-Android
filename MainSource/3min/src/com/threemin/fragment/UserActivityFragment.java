@@ -21,12 +21,14 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.android.gms.internal.db;
 import com.google.gson.Gson;
 import com.threemin.adapter.ActivityAdapter;
 import com.threemin.app.ChatToBuyActivity;
 import com.threemin.app.DetailActivity;
 import com.threemin.app.HomeActivity;
 import com.threemin.app.ProfileActivity;
+import com.threemin.database.DatabaseAccessHelper;
 import com.threemin.model.ActivityModel;
 import com.threemin.uti.CommonConstant;
 import com.threemin.uti.CommonUti;
@@ -107,15 +109,33 @@ public class UserActivityFragment extends Fragment {
             }
         });
         
+        //get cache data
+        getCachedData();
+        
         new GetActivitiesListTask().execute(STEP_INIT);
 		
 		return rootView;
+	}
+	
+	public void getCachedData() {
+	    DatabaseAccessHelper dbHeler = new DatabaseAccessHelper(getActivity());
+	    dbHeler.openDatabase();
+	    List<ActivityModel> cached = dbHeler.getListActivities();
+	    adapter = new ActivityAdapter(getActivity(), cached);
+	    listview.setAdapter(adapter);
+	    dbHeler.closeDatabase();
 	}
 	
 	//call webservice to get list activities
     private class GetActivitiesListTask extends AsyncTask<Integer, Void, List<ActivityModel>> {
         
         int currentStep;
+        DatabaseAccessHelper mDBHelper;
+        
+        public GetActivitiesListTask() {
+            mDBHelper = new DatabaseAccessHelper(getActivity());
+            mDBHelper.openDatabase();
+        }
         
         @Override
         protected void onPreExecute() {
@@ -153,11 +173,15 @@ public class UserActivityFragment extends Fragment {
                     data = result;
                     adapter = new ActivityAdapter(getActivity(), result);
                     listview.setAdapter(adapter);
+                    
+                    mDBHelper.deleteAllActivities();
                 } else if (currentStep == STEP_LOADMORE) { 
                     data.addAll(result);
                     adapter.setListUsers(data);
                 }
+                mDBHelper.insertListActivities(result);
             } else if (currentStep == STEP_INIT) {
+                mDBHelper.deleteAllActivities();
                 if (adapter == null) {
                     adapter = new ActivityAdapter(getActivity(), result);
                 } else {
@@ -165,6 +189,7 @@ public class UserActivityFragment extends Fragment {
                 }
             }
             Log.i(tag, "GetActivitiesListTask result: " + new Gson().toJson(result));
+            mDBHelper.closeDatabase();
         }
     }
     

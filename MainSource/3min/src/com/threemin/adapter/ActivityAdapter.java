@@ -73,7 +73,13 @@ public class ActivityAdapter extends BaseAdapter {
 		
 		tvMessage.setVisibility(View.GONE);
 		
-		UrlImageViewHelper.setUrlDrawable(imgProduct, mData.get(position).getDisplayImageUrl(), R.drawable.stuff_img);
+		String imgURL = mData.get(position).getDisplayImageUrl();
+		if (imgURL != null && imgURL.length() > 0) {
+            imgProduct.setVisibility(View.VISIBLE);
+		    UrlImageViewHelper.setUrlDrawable(imgProduct, mData.get(position).getDisplayImageUrl(), R.drawable.stuff_img);
+        } else {
+            imgProduct.setVisibility(View.GONE);
+        }
 		return convertView;
 	}
 	
