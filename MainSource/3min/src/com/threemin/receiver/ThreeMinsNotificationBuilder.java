@@ -23,6 +23,8 @@ import com.urbanairship.UAirship;
 import com.urbanairship.push.BasicPushNotificationBuilder;
 
 public class ThreeMinsNotificationBuilder extends BasicPushNotificationBuilder {
+    
+    public static final String tag = "ThreeMinsNotificationBuilder";
 
 	@Override
 	public Notification buildNotification(String alert, Map<String, String> extras) {
@@ -61,30 +63,85 @@ public class ThreeMinsNotificationBuilder extends BasicPushNotificationBuilder {
 			Intent showAppIntent = new Intent();
 			showAppIntent.putExtra(CommonConstant.INTENT_IS_FROM_PUSH_NOTIFICATION, true);
 			
-			String productID = extras.get("product_id");
-			String conversationID = extras.get("conversation_id");
-			String userID = extras.get("user_id");
+//			String productID = extras.get("product_id");
+//			String conversationID = extras.get("conversation_id");
+//			String userID = extras.get("user_id");
+//			Log.i("ThreeMinsNotificationBuilder", "Key: " + "product_id: " + productID + " conversation_id: " + conversationID + " user_id: " + userID);
 			
-			Log.i("ThreeMinsNotificationBuilder", "Key: " + "product_id: " + productID + " conversation_id: " + conversationID + " user_id: " + userID);
+			//new field: type:
+			int type = Integer.parseInt(extras.get("notification_type"));
+			Log.i(tag, "Notification type: " + type);
 			
-			if (productID != null && productID.length() > 0) {
-				if (conversationID != null && conversationID.length() > 0) {
-					//push notification of chat
-					showAppIntent.putExtra(CommonConstant.INTENT_PRODUCT_DATA_VIA_ID, productID);
-					showAppIntent.putExtra(CommonConstant.INTENT_CONVERSATION_DATA_VIA_ID, conversationID);
-					showAppIntent.setClass(context, ChatToBuyActivity.class);
-				} else {
-					//push notification of like
-					showAppIntent.putExtra(CommonConstant.INTENT_PRODUCT_DATA_VIA_ID, productID);
-					showAppIntent.setClass(context, DetailActivity.class);
-				}
-			} 
-			else if(userID != null && userID.length() > 0) {
-				//push notification of follow
-				showAppIntent.putExtra(CommonConstant.INTENT_USER_DATA_VIA_ID, userID);
-				showAppIntent.setClass(context, ProfileActivity.class);
-			} 
-//			showAppIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			switch (type) {
+            case CommonConstant.TYPE_REMIND_BUYER_FEEDBACK:
+                String productIDFeedback = extras.get("product_id");
+                String scheduleID = extras.get("schedule_id");
+                showAppIntent.putExtra(CommonConstant.INTENT_IS_FROM_PUSH_NOTIFICATION, true);
+                showAppIntent.putExtra(CommonConstant.INTENT_SCHEDULE_ID, scheduleID);
+                showAppIntent.putExtra(CommonConstant.INTENT_PRODUCT_DATA_VIA_ID, productIDFeedback);
+                break;
+
+            case CommonConstant.TYPE_CHAT:
+                String productIDChat = extras.get("product_id");
+                String conversationID = extras.get("conversation_id");
+                showAppIntent.putExtra(CommonConstant.INTENT_IS_FROM_PUSH_NOTIFICATION, true);
+                showAppIntent.putExtra(CommonConstant.INTENT_PRODUCT_DATA_VIA_ID, productIDChat);
+                showAppIntent.putExtra(CommonConstant.INTENT_CONVERSATION_DATA_VIA_ID, conversationID);
+                showAppIntent.setClass(context, ChatToBuyActivity.class);
+                break;
+
+            case CommonConstant.TYPE_OFFER:
+                //not available yet
+                break;
+
+            case CommonConstant.TYPE_LIKE:
+                String productIDLiked = extras.get("product_id");
+                showAppIntent.putExtra(CommonConstant.INTENT_IS_FROM_PUSH_NOTIFICATION, true);
+                showAppIntent.putExtra(CommonConstant.INTENT_PRODUCT_DATA_VIA_ID, productIDLiked);
+                showAppIntent.setClass(context, DetailActivity.class);
+                break;
+
+            case CommonConstant.TYPE_FOLLOW:
+                String userIDFollow = extras.get("user_id");
+                showAppIntent.putExtra(CommonConstant.INTENT_IS_FROM_PUSH_NOTIFICATION, true);
+                showAppIntent.putExtra(CommonConstant.INTENT_USER_DATA_VIA_ID, userIDFollow);
+                showAppIntent.setClass(context, ProfileActivity.class);
+                break;
+
+            case CommonConstant.TYPE_COMMENT:
+                String productIDComment = extras.get("product_id");
+                showAppIntent.putExtra(CommonConstant.INTENT_IS_FROM_PUSH_NOTIFICATION, true);
+                showAppIntent.putExtra(CommonConstant.INTENT_PRODUCT_DATA_VIA_ID, productIDComment);
+                showAppIntent.setClass(context, DetailActivity.class);
+                break;
+
+            case CommonConstant.TYPE_FEEDBACK:
+                //not available yet
+                break;
+
+            default:
+                break;
+            }
+			
+			
+//			if (productID != null && productID.length() > 0) {
+//				if (conversationID != null && conversationID.length() > 0) {
+//					//push notification of chat
+//					showAppIntent.putExtra(CommonConstant.INTENT_PRODUCT_DATA_VIA_ID, productID);
+//					showAppIntent.putExtra(CommonConstant.INTENT_CONVERSATION_DATA_VIA_ID, conversationID);
+//					showAppIntent.setClass(context, ChatToBuyActivity.class);
+//				} else {
+//					//push notification of like
+//					showAppIntent.putExtra(CommonConstant.INTENT_PRODUCT_DATA_VIA_ID, productID);
+//					showAppIntent.setClass(context, DetailActivity.class);
+//				}
+//			} 
+//			else if(userID != null && userID.length() > 0) {
+//				//push notification of follow
+//				showAppIntent.putExtra(CommonConstant.INTENT_USER_DATA_VIA_ID, userID);
+//				showAppIntent.setClass(context, ProfileActivity.class);
+//			} 
+////			showAppIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
 			builder.setContentTitle(context.getString(R.string.app_name))
 					.setContentText(alert).setSmallIcon(iconId)
