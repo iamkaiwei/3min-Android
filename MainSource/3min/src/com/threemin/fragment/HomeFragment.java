@@ -57,6 +57,8 @@ import com.threemins.R;
 
 public class HomeFragment extends BaseProductFragment {
     
+    public static final String tag = "HomeFragment";
+    
     public static final int MODE_LIST_VIEW = 1;
     public static final int MODE_GRID_VIEW = 2;
     private static final int REQUEST_UPLOAD = 3;
@@ -176,6 +178,7 @@ public class HomeFragment extends BaseProductFragment {
             try {
                 return new ProductWebservice().getProduct(tokken, currentCate, page);
             } catch (Exception e) {
+                Log.i(tag, "get product ex: " + e.toString());
                 e.printStackTrace();
                 return null;
             }
