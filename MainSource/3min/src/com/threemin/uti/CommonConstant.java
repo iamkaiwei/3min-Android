@@ -55,4 +55,13 @@ public class CommonConstant {
     public static final String ACTIVITY_TYPE_CONVERSATION = "Conversation";
     public static final String ACTIVITY_TYPE_RELATIONSHIP = "Relationship";
     public static final String ACTIVITY_TYPE_PRODUCT = "Product";
+    
+    //type of notification and user 's activity
+    public static final int TYPE_REMIND_BUYER_FEEDBACK = 0;
+    public static final int TYPE_CHAT = 1;
+    public static final int TYPE_OFFER = 2;
+    public static final int TYPE_LIKE = 3;
+    public static final int TYPE_FOLLOW = 4;
+    public static final int TYPE_COMMENT = 5;
+    public static final int TYPE_FEEDBACK = 6;
 }
