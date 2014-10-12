@@ -14,6 +14,8 @@ import com.threemin.model.ProductModel;
 import com.threemin.uti.WebserviceConstant;
 
 public class ProductWebservice {
+    
+    public static final String tag = "ProductWebservice";
 
 	public List<ProductModel> getProduct(String accessToken, CategoryModel categoryModel, int page) throws Exception {
 		String requestLink = WebserviceConstant.GET_PRODUCT + "?access_token=" + accessToken;
@@ -63,5 +65,21 @@ public class ProductWebservice {
 			Log.i("ProductWebservice", "getProductViaID exception: " + e.toString());
 		}
 		return null;
+	}
+	
+	/*http://threemins-server-staging.herokuapp.com/api/v1/products/<productID>/sold?access_token=<token>8&user_id=<userID>*/
+	public String notifySellProduct(String accessToken, int productID, int buyerID) {
+	    String url = String.format(WebserviceConstant.NOTIFY_SELL_PRODUCT, "" + productID, accessToken, "" + buyerID);
+	    Log.i(tag, "notifySellProduct url:" + url );
+	    
+	    try {
+            String result = WebServiceUtil.getData(url);
+            Log.i(tag, "notifySellProduct result: " + result);
+            return result;
+        } catch (Exception e) {
+            Log.i(tag, "notifySellProduct ex: " + e.toString());
+            e.printStackTrace();
+        }
+	    return null;
 	}
 }

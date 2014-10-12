@@ -14,6 +14,7 @@ import android.util.Log;
 
 import com.threemin.app.ChatToBuyActivity;
 import com.threemin.app.DetailActivity;
+import com.threemin.app.FeedbackActivity;
 import com.threemin.app.HomeActivity;
 import com.threemin.app.ProfileActivity;
 import com.threemin.uti.CommonConstant;
@@ -79,6 +80,7 @@ public class ThreeMinsNotificationBuilder extends BasicPushNotificationBuilder {
                 showAppIntent.putExtra(CommonConstant.INTENT_IS_FROM_PUSH_NOTIFICATION, true);
                 showAppIntent.putExtra(CommonConstant.INTENT_SCHEDULE_ID, scheduleID);
                 showAppIntent.putExtra(CommonConstant.INTENT_PRODUCT_DATA_VIA_ID, productIDFeedback);
+                showAppIntent.setClass(context, FeedbackActivity.class);
                 break;
 
             case CommonConstant.TYPE_CHAT:
@@ -91,7 +93,12 @@ public class ThreeMinsNotificationBuilder extends BasicPushNotificationBuilder {
                 break;
 
             case CommonConstant.TYPE_OFFER:
-                //not available yet
+                String productIDOffer = extras.get("product_id");
+                String conversationIDOffer = extras.get("conversation_id");
+                showAppIntent.putExtra(CommonConstant.INTENT_IS_FROM_PUSH_NOTIFICATION, true);
+                showAppIntent.putExtra(CommonConstant.INTENT_PRODUCT_DATA_VIA_ID, productIDOffer);
+                showAppIntent.putExtra(CommonConstant.INTENT_CONVERSATION_DATA_VIA_ID, conversationIDOffer);
+                showAppIntent.setClass(context, ChatToBuyActivity.class);
                 break;
 
             case CommonConstant.TYPE_LIKE:

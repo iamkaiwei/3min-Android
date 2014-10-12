@@ -41,6 +41,8 @@ public class WebServiceUtil {
 		BufferedReader in = new BufferedReader(new InputStreamReader(
 				conn.getInputStream(), Charset.forName("UTF-8")));
 		String inputLine;
+		
+		int code = ((HttpURLConnection) conn).getResponseCode();
 
 		String result = "";
 		while ((inputLine = in.readLine()) != null) {
@@ -48,6 +50,7 @@ public class WebServiceUtil {
 		}
 		in.close();
 		Log.d(tag, result);
+		Log.i("responseCode", "" + code);
 		return result;
 	}
 	

@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 import android.app.ActionBar;
@@ -51,6 +54,9 @@ import com.threemin.webservice.ProductWebservice;
 import com.threemins.R;
 
 public class ChatToBuyActivity extends SwipeBackActivity {
+    
+    public static final String tag = "ChatToBuyActivity";
+    
 	private final int SHOW_DIALOG = 1;
 	private final int HIDE_DIALOG = 2;
 	private final int REQUEST_CHECK_OFFER_EXIST = 3;
@@ -180,6 +186,9 @@ public class ChatToBuyActivity extends SwipeBackActivity {
 				+ conversation.getUser().getFullName());
 		getActionBar().setTitle(conversation.getUser().getFullName());
 		currentUser = PreferenceHelper.getInstance(this).getCurrentUser();
+		if (currentUser.getId() != mProductModel.getOwner().getId()) {
+            mImgSelling.setEnabled(false);
+        }
 		
 		initActionBar();
 		initPusher();
@@ -276,7 +285,7 @@ public class ChatToBuyActivity extends SwipeBackActivity {
 	}
 	
 	public void doSellProduct() {
-	    
+	    new NotifySellProductTask().execute();
 	}
 
 	public void onSendChat(View v) {
@@ -433,6 +442,60 @@ public class ChatToBuyActivity extends SwipeBackActivity {
 			}
 		}
 		
+	}
+	
+	
+	private class NotifySellProductTask extends AsyncTask<Void, Void, String> {
+	    
+	    ProgressDialog dialog;
+	    
+	    @Override
+	    protected void onPreExecute() {
+	        super.onPreExecute();
+	        if (dialog == null) {
+                dialog = new ProgressDialog(ChatToBuyActivity.this);
+            }
+	        dialog.setMessage(getString(R.string.please_wait));
+	        dialog.show();
+	    }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            String token = PreferenceHelper.getInstance(ChatToBuyActivity.this).getTokken();
+            int productID = conversation.getProductId();
+            int buyerID = conversation.getUser().getId();
+            String result = new ProductWebservice().notifySellProduct(token, productID, buyerID);
+            Log.i(tag, "NotifySellProductTask result: " + result);
+            return result;
+        }
+        
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            
+            if (dialog != null && dialog.isShowing()) {
+                dialog.dismiss();
+            }
+            if (result != null && result.length() > 0) {
+                try {
+                    JSONObject jo = new JSONObject(result);
+                    String status = jo.getString("status");
+                    if ("success".equalsIgnoreCase(status)) {
+                        doMarkProductSold();
+                    } else {
+                        Log.i(tag, "NotifySellProductTask status: " + status);
+                    }
+                } catch (JSONException e) {
+                    Log.i(tag, "NotifySellProductTask JSONException: " + e.toString());
+                    e.printStackTrace();
+                }
+            } 
+        }
+	    
+	}
+	
+	public void doMarkProductSold() {
+	    Toast.makeText(this, "Sold", Toast.LENGTH_LONG).show();
 	}
 
 }

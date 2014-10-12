@@ -3,12 +3,14 @@ package com.threemin.app;
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 import android.app.ActionBar;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.threemin.uti.CommonConstant;
 import com.threemins.R;
 
 public class FeedbackActivity extends SwipeBackActivity {
@@ -22,6 +24,9 @@ public class FeedbackActivity extends SwipeBackActivity {
     public static final int CHECK_NO_COMMENT = 2;
     public static final int CHECK_SATISFIED = 3;
     
+    private boolean mIsFromPushNotification;
+    private String mProductID;
+    private String mScheduleID;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,8 +130,14 @@ public class FeedbackActivity extends SwipeBackActivity {
     }
     
     public void initFirstStart() {
-//        unselectAll();
-//        mImgCheckNotSatisfied.setVisibility(View.VISIBLE);
+        Intent intent = getIntent();
+        mIsFromPushNotification = intent.getBooleanExtra(CommonConstant.INTENT_IS_FROM_PUSH_NOTIFICATION, false);
+        
+        if (mIsFromPushNotification) {
+            mProductID = intent.getStringExtra(CommonConstant.INTENT_PRODUCT_DATA_VIA_ID);
+            mScheduleID = intent.getStringExtra(CommonConstant.INTENT_SCHEDULE_ID);
+        }
+        
     }
     
     public void submitFeedback() {

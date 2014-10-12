@@ -65,4 +65,8 @@ public class CommonConstant {
     public static final int TYPE_FOLLOW = 4;
     public static final int TYPE_COMMENT = 5;
     public static final int TYPE_FEEDBACK = 6;
+    
+    public static final String FEEDBACK_POSITIVE = "positive";
+    public static final String FEEDBACK_NEGATIVE = "negative";
+    public static final String FEEDBACK_NORMAL = "normal";
 }
