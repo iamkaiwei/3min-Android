@@ -131,6 +131,15 @@ public class RightFragment extends Fragment {
 
                 userProduct(result);
                 userModel = result;
+                int countPositive = userModel.getCountPositive();
+                int countNegative = userModel.getCountNegative();
+                TextView tvFeedbackRatio = (TextView) rootView.findViewById(R.id.fm_right_tv_feedback_number);
+                if (countPositive == 0) {
+                    tvFeedbackRatio.setText("" + 0 + "%");
+                } else {
+                    int ratio = (int)((float)countPositive / ((float)countPositive + (float)countNegative) * 100);
+                    tvFeedbackRatio.setText("" + ratio + "%");
+                }
                 initListener(rootView);
             }
         }
