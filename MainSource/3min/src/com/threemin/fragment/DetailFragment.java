@@ -28,8 +28,6 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewCallback;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
 import com.threemin.app.ChatToBuyActivity;
 import com.threemin.app.CommentActivity;
 import com.threemin.app.DetailActivity;
@@ -44,14 +42,11 @@ import com.threemin.model.UserModel;
 import com.threemin.uti.CommonConstant;
 import com.threemin.uti.CommonUti;
 import com.threemin.uti.PreferenceHelper;
-import com.threemin.uti.WebserviceConstant;
 import com.threemin.webservice.CommentWebService;
 import com.threemin.webservice.ConversationWebService;
 import com.threemin.webservice.ProductWebservice;
 import com.threemin.webservice.UserWebService;
-import com.threemin.webservice.WebServiceUtil;
 import com.threemins.R;
-import com.threemins.R.id;
 
 public class DetailFragment extends Fragment {
     
