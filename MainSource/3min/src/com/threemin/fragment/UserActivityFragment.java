@@ -86,15 +86,25 @@ public class UserActivityFragment extends Fragment {
                     ((HomeActivity)activity).clearNumberActivities();
                 }
                 ActivityModel model = data.get(position);
-                if (CommonConstant.ACTIVITY_TYPE_RELATIONSHIP.equals(model.getSubjectType())) {
-                    startActivityForRelationship(model);
-                } else if (CommonConstant.ACTIVITY_TYPE_CONVERSATION.equals(model.getSubjectType())) {
+                int type = model.getCategory();
+                
+                if (type == CommonConstant.TYPE_CHAT || type == CommonConstant.TYPE_OFFER) {
                     startActivityForConversation(model);
-                } else if (CommonConstant.ACTIVITY_TYPE_PRODUCT.equals(model.getSubjectType())) {
+                } else if (type == CommonConstant.TYPE_COMMENT || type == CommonConstant.TYPE_LIKE) {
                     startActivityForProduct(model);
-                } else {
-                    Toast.makeText(getActivity(), "Not implement", Toast.LENGTH_LONG).show();
+                } else if (type == CommonConstant.TYPE_FOLLOW || type == CommonConstant.TYPE_FEEDBACK) {
+                    startActivityForRelationship(model);
                 }
+                
+//                if (CommonConstant.ACTIVITY_TYPE_RELATIONSHIP.equals(model.getSubjectType())) {
+//                    startActivityForRelationship(model);
+//                } else if (CommonConstant.ACTIVITY_TYPE_CONVERSATION.equals(model.getSubjectType())) {
+//                    startActivityForConversation(model);
+//                } else if (CommonConstant.ACTIVITY_TYPE_PRODUCT.equals(model.getSubjectType())) {
+//                    startActivityForProduct(model);
+//                } else {
+//                    Toast.makeText(getActivity(), "Not implement", Toast.LENGTH_LONG).show();
+//                }
             }
         });
 		
@@ -198,7 +208,6 @@ public class UserActivityFragment extends Fragment {
         Intent intent = new Intent(getActivity(), DetailActivity.class);
         intent.putExtra(CommonConstant.INTENT_PRODUCT_DATA_VIA_ID, "" + model.getSubjectID());
         startActivity(intent);
-//        getActivity().overridePendingTransition(R.anim.anim_right_in, R.anim.anim_no_animation);
         CommonUti.addAnimationWhenStartActivity(getActivity());
     }
 
@@ -207,7 +216,6 @@ public class UserActivityFragment extends Fragment {
         Intent intent = new Intent(getActivity(), ChatToBuyActivity.class);
         intent.putExtra(CommonConstant.INTENT_CONVERSATION_DATA_VIA_ID, "" + model.getSubjectID());
         startActivity(intent);
-//        getActivity().overridePendingTransition(R.anim.anim_right_in, R.anim.anim_no_animation);
         CommonUti.addAnimationWhenStartActivity(getActivity());
     }
 
@@ -216,7 +224,6 @@ public class UserActivityFragment extends Fragment {
         Intent intent = new Intent(getActivity(), ProfileActivity.class);
         intent.putExtra(CommonConstant.INTENT_USER_DATA_VIA_ID, "" + model.getUser().getId());
         startActivity(intent);
-//        getActivity().overridePendingTransition(R.anim.anim_right_in, R.anim.anim_no_animation);
         CommonUti.addAnimationWhenStartActivity(getActivity());
     }
 	

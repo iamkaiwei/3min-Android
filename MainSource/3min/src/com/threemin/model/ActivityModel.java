@@ -20,6 +20,8 @@ public class ActivityModel {
 	private long updateTime;
 	
 	private UserModel user;
+	
+	private int category;
 
 	public int getId() {
 		return id;
@@ -78,6 +80,14 @@ public class ActivityModel {
 	public void setUser(UserModel user) {
 		this.user = user;
 	}
+
+    public int getCategory() {
+        return category;
+    }
+
+    public void setCategory(int category) {
+        this.category = category;
+    }
 	
 	
 }
