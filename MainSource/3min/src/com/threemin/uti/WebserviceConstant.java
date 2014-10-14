@@ -34,4 +34,5 @@ public class WebserviceConstant {
 	public static final String GET_COMMENTS_OF_PRODUCT = URL_HOST + API +  "/products/%s/comments.json";
 	public static final String POST_COMMENT = URL_HOST + API +  "/products/%s/comments.json?access_token=%s&comment[content]=%s";
 	public static final String NOTIFY_SELL_PRODUCT = URL_HOST + API +  "/products/%s/sold?access_token=%s&user_id=%s";
+	public static final String GET_USERS_WHO_LIKED_PRODUCT = URL_HOST + API + "/products/%s/likes.json?access_token=%s&page=%s";
 }

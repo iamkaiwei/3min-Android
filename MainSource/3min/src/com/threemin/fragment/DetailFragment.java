@@ -34,6 +34,7 @@ import com.threemin.app.ChatToBuyActivity;
 import com.threemin.app.CommentActivity;
 import com.threemin.app.DetailActivity;
 import com.threemin.app.ListOfferActivty;
+import com.threemin.app.ListUsersLikedActivity;
 import com.threemin.app.PostOfferActivity;
 import com.threemin.model.CommentModel;
 import com.threemin.model.Conversation;
@@ -141,6 +142,13 @@ public class DetailFragment extends Fragment {
 			} else {
 				tv_like.setVisibility(View.GONE);
 			}
+			tv_like.setOnClickListener(new OnClickListener() {
+                
+                @Override
+                public void onClick(View v) {
+                    doGetListUsersLikedProduct();
+                }
+            });
 			
 			//location
 			TextView tv_locaion = (TextView) convertView.findViewById(R.id.inflater_body_product_tv_location);
@@ -560,6 +568,13 @@ public class DetailFragment extends Fragment {
         intent.putExtra(INTENT_JSON_INIT_DATA, result);
         startActivity(intent);
         CommonUti.addAnimationWhenStartActivity(getActivity());
+	}
+	
+	public void doGetListUsersLikedProduct() {
+	    Intent intent = new Intent(getActivity(), ListUsersLikedActivity.class);
+	    intent.putExtra(CommonConstant.INTENT_PRODUCT_DATA_VIA_ID, productModel.getId());
+	    startActivity(intent);
+	    CommonUti.addAnimationWhenStartActivity(getActivity());
 	}
 	
 }

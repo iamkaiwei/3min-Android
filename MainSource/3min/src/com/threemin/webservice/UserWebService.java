@@ -140,4 +140,34 @@ public class UserWebService {
         }
         return null;
     }
+    
+
+    /**
+     * http://threemins-server-staging.herokuapp.com/api/v1/products/<productID>/likes?
+     * access_token=<token>
+     * &page=<page>
+     * 
+     * Get list users who liked a product
+     * 
+     * This user model only has infomation of user ID, user avatar, user full name
+     * 
+     * */
+    
+    public List<UserModel> getListUserWhoLikedAProduct(int productID, String token, int page) {
+        try {
+            String link = String.format(WebserviceConstant.GET_USERS_WHO_LIKED_PRODUCT, "" + productID, token, "" + page);
+            Log.i(tag, "getListUserWhoLikedAProduct url: " + link);
+            String result = WebServiceUtil.getData(link);
+            Log.i(tag, "getListUserWhoLikedAProduct result: " + result);
+            Gson gson = new Gson();
+            Type listType = new TypeToken<List<UserModel>>() {}.getType();
+            List<UserModel> list = gson.fromJson(result, listType);
+            Log.i(tag, "getListUserWhoLikedAProduct list size: " + list.size());
+            return list;
+        } catch (Exception e) {
+            Log.i(tag, "getListUserWhoLikedAProduct ex: " + e.toString());
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

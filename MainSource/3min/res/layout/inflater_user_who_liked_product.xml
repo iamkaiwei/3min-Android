@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:threemins="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/common_spacing_double"
+    android:paddingLeft="@dimen/common_spacing_triple"
+    android:paddingRight="@dimen/common_spacing_triple"
+    android:paddingTop="@dimen/common_spacing_double"
+    android:background="@android:color/white" >
+
+    <LinearLayout
+        android:id="@+id/inflater_user_who_liked_product_ln_user_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentLeft="true" >
+
+        <com.meg7.widget.SvgImageView
+            android:id="@+id/inflater_user_who_liked_product_avatar"
+            android:layout_width="@dimen/inflater_follow_avatar_size"
+            android:layout_height="@dimen/inflater_follow_avatar_size"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_launcher"
+            threemins:svg_raw_resource="@raw/shape_avatar" />
+        
+        <com.lanna.droidlib.view.CustomTextView
+            android:id="@+id/inflater_user_who_liked_product_tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="user name"
+            android:singleLine="true"
+            android:layout_marginLeft="@dimen/common_spacing_double"
+            android:textSize="@dimen/textsize_medium"
+            threemins:customTypeface="@string/font_semibold" />
+    </LinearLayout>
+    
+</RelativeLayout>
