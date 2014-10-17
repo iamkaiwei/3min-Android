@@ -146,5 +146,9 @@
     <dimen name="act_feedback_option_height">50dp</dimen>
     <dimen name="act_feedback_option_emo_size">25dp</dimen>
     <dimen name="act_feedback_option_tv_margin_left">17.5dp</dimen>
+    
+    <!-- dialog feedback -->
+    <dimen name="dialog_feedback_title_height">70dp</dimen>
+    
 
 </resources>

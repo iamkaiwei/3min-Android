@@ -36,4 +36,5 @@ public class WebserviceConstant {
 	public static final String NOTIFY_SELL_PRODUCT = URL_HOST + API +  "/products/%s/sold?access_token=%s&user_id=%s";
 	public static final String GET_USERS_WHO_LIKED_PRODUCT = URL_HOST + API + "/products/%s/likes.json?access_token=%s&page=%s";
 	public static final String SEND_FEEDBACK = URL_HOST + API + "/feedbacks?access_token=%s&product_id=%s&schedule_id=%s&feedback[content]=%s&feedback[status]=%s&feedback[user_id]=%s";
+	public static final String GET_FEEDBACK_OF_USER = URL_HOST + API + "/feedbacks?access_token=%s&user_id=%s&page=%s";
 }

@@ -15,6 +15,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="@dimen/common_spacing_double"
         android:layout_marginTop="@dimen/common_spacing_triple"
+        android:scaleType="centerCrop"
         android:src="@drawable/stuff_img" />
 
     <!-- question -->

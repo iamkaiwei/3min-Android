@@ -90,6 +90,7 @@ public class ListProductFragment extends BaseProductFragment {
         if (mode == MODE_USER_PRODUCT) {
             LayoutInflater layoutInflater = LayoutInflater.from(mContext);
             View header = layoutInflater.inflate(R.layout.fragment_right_feedback_group, null);
+            setDataForHeader();
             mGrid.addHeaderView(header);
         }
         
@@ -99,6 +100,10 @@ public class ListProductFragment extends BaseProductFragment {
         initListner();
         new GetProductTaks(ListProductFragment.this).execute(HomeFragment.STEP_INIT);
         return v;
+    }
+    
+    public void setDataForHeader() {
+        
     }
 
     public void setMode(int mode) {

@@ -1,8 +1,15 @@
 package com.threemin.webservice;
 
+import java.lang.reflect.Type;
+import java.util.List;
+
 import android.util.Log;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.threemin.app.FeedbackActivity;
+import com.threemin.model.CommentModel;
+import com.threemin.model.FeedbackModel;
 import com.threemin.uti.WebserviceConstant;
 
 public class FeedbackWebservice {
@@ -47,10 +54,13 @@ public class FeedbackWebservice {
                 strStatus,
                 "" + userID);
         
+        String validLink = WebServiceUtil.getHttpUrl(link);
+        
         Log.i(tag, "sendFeedback link: " + link);
+        Log.i(tag, "sendFeedback valid link: " + validLink);
         int responseCode;
         try {
-            responseCode = WebServiceUtil.postRequest(link);
+            responseCode = WebServiceUtil.postRequest(validLink);
             Log.i(tag, "sendFeedback responseCode: " + responseCode);
             return responseCode;
         } catch (Exception e) {
@@ -58,5 +68,23 @@ public class FeedbackWebservice {
             e.printStackTrace();
             return WebserviceConstant.RESPONSE_CODE_EXCEPTION;
         }
+    }
+    
+    public List<FeedbackModel> getFeedbackOfUser(String token, int userID, int page) {
+        String link = String.format(WebserviceConstant.GET_FEEDBACK_OF_USER, token, "" + userID, "" + page);
+        Log.i(tag, "getFeedbackOfUser link: " + link);
+        
+        try {
+            String result = WebServiceUtil.getData(link);
+            Log.i(tag, "getFeedbackOfUser result: " + result);
+            Type listType = new TypeToken<List<FeedbackModel>>() {
+            }.getType();
+            List<FeedbackModel> list = new Gson().fromJson(result, listType);
+            return list;
+        } catch (Exception e) {
+            Log.i(tag, "getFeedbackOfUser Exception: " + e.toString());
+            e.printStackTrace();
+        }
+        return null;
     }
 }
