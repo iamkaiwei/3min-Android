@@ -150,5 +150,8 @@
     <!-- dialog feedback -->
     <dimen name="dialog_feedback_title_height">70dp</dimen>
     
+    <!-- inflater_feedback_content -->
+    <dimen name="inf_feedback_margin">20dp</dimen>
+    <dimen name="inf_feedback_avatar_size">35dp</dimen>
 
 </resources>

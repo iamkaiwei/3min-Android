@@ -87,4 +87,22 @@ public class FeedbackWebservice {
         }
         return null;
     }
+    
+    public List<FeedbackModel> getFirstFeedbackOfUser(String token, int userID, int page) {
+        String link = String.format(WebserviceConstant.GET_FEEDBACK_OF_USER, token, "" + userID, "" + page) + "&per_page=1";
+        Log.i(tag, "getFirstFeedbackOfUser link: " + link);
+        
+        try {
+            String result = WebServiceUtil.getData(link);
+            Log.i(tag, "getFirstFeedbackOfUser result: " + result);
+            Type listType = new TypeToken<List<FeedbackModel>>() {
+            }.getType();
+            List<FeedbackModel> list = new Gson().fromJson(result, listType);
+            return list;
+        } catch (Exception e) {
+            Log.i(tag, "getFirstFeedbackOfUser Exception: " + e.toString());
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

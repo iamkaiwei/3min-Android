@@ -16,6 +16,7 @@ public class FeedbackModel {
     private String status;
     private ProductModel product;
     private UserModel user;
+    private long update_time;
 
     public int getId() {
         return id;
@@ -56,5 +57,15 @@ public class FeedbackModel {
     public void setUser(UserModel user) {
         this.user = user;
     }
+
+    public long getUpdate_time() {
+        return update_time;
+    }
+
+    public void setUpdate_time(long update_time) {
+        this.update_time = update_time;
+    }
+    
+    
 
 }

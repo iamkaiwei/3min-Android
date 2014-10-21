@@ -8,20 +8,28 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
+import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.facebook.widget.LoginButton;
 import com.google.gson.Gson;
+import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.threemin.adapter.ProductGridAdapter;
 import com.threemin.app.DetailActivity;
 import com.threemin.app.HomeActivity;
 import com.threemin.app.ProfileActivity;
 import com.threemin.app.UserLikeProductActivity;
+import com.threemin.model.FeedbackModel;
 import com.threemin.model.ProductModel;
 import com.threemin.model.UserModel;
 import com.threemin.uti.CommonConstant;
@@ -29,12 +37,14 @@ import com.threemin.uti.CommonUti;
 import com.threemin.uti.PreferenceHelper;
 import com.threemin.view.QuickReturnGridView;
 import com.threemin.view.QuickReturnGridView.OnItemDoubleTapLister;
+import com.threemin.webservice.FeedbackWebservice;
 import com.threemin.webservice.RelationshipWebService;
 import com.threemin.webservice.UserWebService;
 import com.threemins.R;
 
 public class ListProductFragment extends BaseProductFragment {
 
+    public static final String tag = "ListProductFragment";
     private Context mContext;
     private LoginButton mLoginButton;
 
@@ -49,7 +59,7 @@ public class ListProductFragment extends BaseProductFragment {
     private QuickReturnGridView mGrid;
     private ProductGridAdapter mAdapter;
 
-    private boolean isRequestLike;
+//    private boolean isRequestLike;
     private int page;
     private int mode;
     private UserModel userModel;
@@ -82,30 +92,10 @@ public class ListProductFragment extends BaseProductFragment {
             mLoginButton = ((ProfileActivity)mContext).getLoginButton();
         }
 
-        if (mAdapter == null) {
-            // TODO
-            mAdapter = new ProductGridAdapter(productModels, mContext, mLoginButton,CommonUti.calcWidthItem(mContext));
-        }
-        
-        if (mode == MODE_USER_PRODUCT) {
-            LayoutInflater layoutInflater = LayoutInflater.from(mContext);
-            View header = layoutInflater.inflate(R.layout.fragment_right_feedback_group, null);
-            setDataForHeader();
-            mGrid.addHeaderView(header);
-        }
-        
-        
-        mGrid.setAdapter(mAdapter);
-
-        initListner();
-        new GetProductTaks(ListProductFragment.this).execute(HomeFragment.STEP_INIT);
+        new GetFirstFeedbackTask().execute();
         return v;
     }
     
-    public void setDataForHeader() {
-        
-    }
-
     public void setMode(int mode) {
         this.mode = mode;
     }
@@ -158,7 +148,6 @@ public class ListProductFragment extends BaseProductFragment {
                     Intent intent = new Intent(getActivity(), DetailActivity.class);
                     intent.putExtra(CommonConstant.INTENT_PRODUCT_DATA, data);
                     getActivity().startActivity(intent);
-//                    getActivity().overridePendingTransition(R.anim.anim_right_in, R.anim.anim_no_animation);
                     CommonUti.addAnimationWhenStartActivity(getActivity());
                 }
             }
@@ -192,8 +181,6 @@ public class ListProductFragment extends BaseProductFragment {
         int currentStep;
 
         BaseProductFragment baseProductFragment;
-
-        // flag check if asynctask is proccessing or not
 
         // constructor
         public GetProductTaks(BaseProductFragment baseProductFragment) {
@@ -260,5 +247,77 @@ public class ListProductFragment extends BaseProductFragment {
 
         }
     }
+    
+    //feedback feature==================================================================================================
+    private View mHeader;
+    
+    public class GetFirstFeedbackTask extends AsyncTask<Void, Void, List<FeedbackModel>> {
+        
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+        
+        @Override
+        protected List<FeedbackModel> doInBackground(Void... params) {
+            if (mode == MODE_USER_PRODUCT) {
+                String token = PreferenceHelper.getInstance(getActivity()).getTokken();
+                int userID = userModel.getId();
+                List<FeedbackModel> list = new FeedbackWebservice().getFirstFeedbackOfUser(token, userID, 1);
+                Log.i(tag, "List feedback size: " + (list == null ? -1 : list.size()));
+                return list;
+            } else {
+                return null;
+            }
+        }
+        
+        @Override
+        protected void onPostExecute(List<FeedbackModel> result) {
+            super.onPostExecute(result);
+            
+            if (result != null && result.size() != 0) {
+                createHeader(result.get(0));
+            }
+            
+            if (mAdapter == null) {
+                mAdapter = new ProductGridAdapter(productModels, mContext, mLoginButton,CommonUti.calcWidthItem(mContext));
+            }
+            
+            mGrid.setAdapter(mAdapter);
 
+            initListner();
+            new GetProductTaks(ListProductFragment.this).execute(HomeFragment.STEP_INIT);
+        }
+    }
+    
+    public void createHeader(FeedbackModel m) {
+            LayoutInflater layoutInflater = LayoutInflater.from(mContext);
+            mHeader = layoutInflater.inflate(R.layout.fragment_right_feedback_group, null);
+            mGrid.addHeaderView(mHeader);
+            TextView tvName = (TextView) mHeader.findViewById(R.id.fm_right_feedback_group_tv_username);
+            TextView tvTime = (TextView) mHeader.findViewById(R.id.fm_right_feedback_group_tv_date);
+            TextView tvContent = (TextView) mHeader.findViewById(R.id.fm_right_feedback_group_tv_content);
+            ImageView imgAvatar = (ImageView) mHeader.findViewById(R.id.fm_right_feedback_group_img_avatar);
+            Button btnViewFeedback = (Button) mHeader.findViewById(R.id.fm_right_feedback_group_btn_view_feedback);
+            
+            tvName.setText(m.getUser().getFullName());
+            tvTime.setText(
+                    DateUtils.getRelativeTimeSpanString(
+                            m.getUpdate_time() * 1000, 
+                            System.currentTimeMillis(),
+                            0L, 
+                            DateUtils.FORMAT_ABBREV_RELATIVE)
+                    );
+            
+            tvContent.setText(m.getContent());
+            UrlImageViewHelper.setUrlDrawable(imgAvatar, m.getUser().getFacebook_avatar(), R.drawable.stuff_img);
+            btnViewFeedback.setOnClickListener(new OnClickListener() {
+                
+                @Override
+                public void onClick(View v) {
+                    //TODO: show feedback dialog
+                }
+            });
+    }
+    
 }
