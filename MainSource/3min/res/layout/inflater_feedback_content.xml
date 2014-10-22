@@ -34,7 +34,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
-                android:text="user name"
                 android:textSize="@dimen/textsize_small"
                 threemins:customTypeface="@string/font_semibold" />
 
@@ -44,7 +43,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/common_spacing_double"
                 android:singleLine="true"
-                android:text="Time"
                 android:textColor="@color/common_grey"
                 android:textSize="@dimen/textsize_very_small"
                 threemins:customTypeface="@string/font_regular" />
@@ -59,7 +57,6 @@
         android:layout_height="wrap_content"
         android:singleLine="true"
         android:layout_marginTop="@dimen/common_spacing_double"
-        android:text="Feedback content"
         android:textSize="@dimen/textsize_small"
         threemins:customTypeface="@string/font_semibold" />
 
