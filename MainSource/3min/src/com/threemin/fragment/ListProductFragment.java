@@ -26,6 +26,7 @@ import com.google.gson.Gson;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.threemin.adapter.ProductGridAdapter;
 import com.threemin.app.DetailActivity;
+import com.threemin.app.FeedbackDialogActivity;
 import com.threemin.app.HomeActivity;
 import com.threemin.app.ProfileActivity;
 import com.threemin.app.UserLikeProductActivity;
@@ -256,6 +257,9 @@ public class ListProductFragment extends BaseProductFragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            if (ListProductFragment.this.swipeLayout != null) {
+                ListProductFragment.this.swipeLayout.setRefreshing(true);
+            }
         }
         
         @Override
@@ -316,6 +320,9 @@ public class ListProductFragment extends BaseProductFragment {
                 @Override
                 public void onClick(View v) {
                     //TODO: show feedback dialog
+                    Intent intent = new Intent(getActivity(), FeedbackDialogActivity.class);
+                    intent.putExtra(CommonConstant.INTENT_USER_DATA_VIA_ID, userModel.getId());
+                    startActivity(intent);
                 }
             });
     }

@@ -3,7 +3,7 @@
     xmlns:threemins="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/inf_feedback_margin"
+    android:padding="@dimen/common_spacing_triple"
     android:orientation="vertical" >
 
     <!-- user infomation -->
@@ -58,7 +58,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:singleLine="true"
-        android:layout_marginTop="@dimen/inf_feedback_margin"
+        android:layout_marginTop="@dimen/common_spacing_double"
         android:text="Feedback content"
         android:textSize="@dimen/textsize_small"
         threemins:customTypeface="@string/font_semibold" />

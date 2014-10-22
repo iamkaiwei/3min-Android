@@ -215,6 +215,12 @@
             android:theme="@style/CustomActionBarTheme" >
         </activity>
         
+        <activity
+            android:name="com.threemin.app.FeedbackDialogActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/FeedbackDialog" >
+        </activity>
+        
         
         <receiver android:name="com.threemin.receiver.IntentReceiver" />
         
