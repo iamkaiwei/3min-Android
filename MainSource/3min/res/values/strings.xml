@@ -182,4 +182,7 @@
     <string name="act_feedback_empty_feedback_warning">If you are not satisfied, please leave your feedback.</string>
     <string name="act_feedback_sent_successfully">Your feedback is sent.</string>
     <string name="act_feedback_sent_fail">Something is wrong. Please try again.</string>
+    
+    <!-- header feedback -->
+    <string name="header_feedback_view_all_feedbacks">View all feedbacks</string>
 </resources>

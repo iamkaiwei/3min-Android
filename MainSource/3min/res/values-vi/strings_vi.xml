@@ -333,4 +333,7 @@
     <string name="act_feedback_sent_successfully">Phản hồi của bạn đã được gửi.</string>
     <string name="act_feedback_sent_fail">Lỗi xảy ra. Vui lòng thử lại.</string>
     
+    <!-- header feedback -->
+    <string name="header_feedback_view_all_feedbacks">Xem tất cả phản hồi</string>
+    
 </resources>

@@ -13,13 +13,13 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/common_spacing_triple"
         android:layout_marginRight="@dimen/common_spacing_triple"
-        android:layout_marginTop="@dimen/fm_right_feedback_group_margin_top"
+        android:layout_marginTop="@dimen/header_feedback_margin_top"
         android:background="@android:color/white" >
 
         <View
-            android:id="@+id/fm_right_feedback_group_grey_view"
+            android:id="@+id/header_feedback_grey_view"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/fm_right_feedback_group_height_owner_group_a_hafl"
+            android:layout_height="@dimen/header_feedback_height_owner_group_a_hafl"
             android:background="@color/background_grey" />
 
         <!-- feedback -->
@@ -34,13 +34,13 @@
             <!-- feedback owner info -->
 
             <LinearLayout
-                android:id="@+id/fm_right_feedback_group_ln_info"
+                android:id="@+id/header_feedback_ln_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal" >
 
                 <com.meg7.widget.SvgImageView
-                    android:id="@+id/fm_right_feedback_group_img_avatar"
+                    android:id="@+id/header_feedback_img_avatar"
                     android:layout_width="@dimen/fm_right_avatar_size_feedback"
                     android:layout_height="@dimen/fm_right_avatar_size_feedback"
                     android:layout_gravity="center_vertical"
@@ -50,30 +50,28 @@
 
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="@dimen/fm_right_feedback_group_height_owner_group"
+                    android:layout_height="@dimen/header_feedback_height_owner_group"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="@dimen/common_spacing_a_half"
                     android:orientation="vertical"
                     android:weightSum="2" >
 
                     <com.lanna.droidlib.view.CustomTextView
-                        android:id="@+id/fm_right_feedback_group_tv_username"
+                        android:id="@+id/header_feedback_tv_username"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
                         android:gravity="center_vertical"
-                        android:text="Lan_huong"
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/textsize_small"
                         threemins:customTypeface="@string/font_semibold" />
                     
                     <com.lanna.droidlib.view.CustomTextView
-                        android:id="@+id/fm_right_feedback_group_tv_date"
+                        android:id="@+id/header_feedback_tv_date"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
                         android:gravity="center_vertical"
-                        android:text="2 Feb 2014"
                         android:textColor="@color/common_grey"
                         android:textSize="@dimen/textsize_very_small"
                         threemins:customTypeface="@string/font_regular" />
@@ -83,7 +81,7 @@
             <!-- feedback content -->
 
             <TextView
-                android:id="@+id/fm_right_feedback_group_tv_content"
+                android:id="@+id/header_feedback_tv_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/common_spacing_double"
@@ -93,18 +91,18 @@
     </FrameLayout>
 
     <Button
-        android:id="@+id/fm_right_feedback_group_btn_view_feedback"
+        android:id="@+id/header_feedback_btn_view_feedback"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="@dimen/common_spacing_double"
         android:layout_marginTop="@dimen/common_spacing_double"
-        android:background="@drawable/background_orange_stroke_round_corners"
+        android:background="@drawable/selector_header_feedback_btn_view_all"
         android:paddingLeft="@dimen/common_spacing_double"
         android:paddingRight="@dimen/common_spacing_double"
-        android:text="View 12 feedbacks"
+        android:text="@string/header_feedback_view_all_feedbacks"
         android:textSize="@dimen/textsize_medium"
-        android:textColor="@color/red_background" />
+        android:textColor="@color/selector_header_feedback_btn_view_all" />
 
     <!-- line -->
 
@@ -116,7 +114,7 @@
     <!-- Listings label -->
 
     <com.lanna.droidlib.view.CustomTextView
-        android:id="@+id/fm_right_feedback_group_tv_listing"
+        android:id="@+id/header_feedback_tv_listing"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"

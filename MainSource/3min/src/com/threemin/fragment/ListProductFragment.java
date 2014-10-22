@@ -296,13 +296,13 @@ public class ListProductFragment extends BaseProductFragment {
     
     public void createHeader(FeedbackModel m) {
             LayoutInflater layoutInflater = LayoutInflater.from(mContext);
-            mHeader = layoutInflater.inflate(R.layout.fragment_right_feedback_group, null);
+            mHeader = layoutInflater.inflate(R.layout.header_feedback, null);
             mGrid.addHeaderView(mHeader);
-            TextView tvName = (TextView) mHeader.findViewById(R.id.fm_right_feedback_group_tv_username);
-            TextView tvTime = (TextView) mHeader.findViewById(R.id.fm_right_feedback_group_tv_date);
-            TextView tvContent = (TextView) mHeader.findViewById(R.id.fm_right_feedback_group_tv_content);
-            ImageView imgAvatar = (ImageView) mHeader.findViewById(R.id.fm_right_feedback_group_img_avatar);
-            Button btnViewFeedback = (Button) mHeader.findViewById(R.id.fm_right_feedback_group_btn_view_feedback);
+            TextView tvName = (TextView) mHeader.findViewById(R.id.header_feedback_tv_username);
+            TextView tvTime = (TextView) mHeader.findViewById(R.id.header_feedback_tv_date);
+            TextView tvContent = (TextView) mHeader.findViewById(R.id.header_feedback_tv_content);
+            ImageView imgAvatar = (ImageView) mHeader.findViewById(R.id.header_feedback_img_avatar);
+            Button btnViewFeedback = (Button) mHeader.findViewById(R.id.header_feedback_btn_view_feedback);
             
             tvName.setText(m.getUser().getFullName());
             tvTime.setText(

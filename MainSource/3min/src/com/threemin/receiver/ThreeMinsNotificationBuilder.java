@@ -15,6 +15,7 @@ import android.util.Log;
 import com.threemin.app.ChatToBuyActivity;
 import com.threemin.app.DetailActivity;
 import com.threemin.app.FeedbackActivity;
+import com.threemin.app.FeedbackDialogActivity;
 import com.threemin.app.HomeActivity;
 import com.threemin.app.ProfileActivity;
 import com.threemin.uti.CommonConstant;
@@ -123,32 +124,13 @@ public class ThreeMinsNotificationBuilder extends BasicPushNotificationBuilder {
                 break;
 
             case CommonConstant.TYPE_FEEDBACK:
-                //not available yet
+                showAppIntent.putExtra(CommonConstant.INTENT_IS_FROM_PUSH_NOTIFICATION, true);
+                showAppIntent.setClass(context, FeedbackDialogActivity.class);
                 break;
 
             default:
                 break;
             }
-			
-			
-//			if (productID != null && productID.length() > 0) {
-//				if (conversationID != null && conversationID.length() > 0) {
-//					//push notification of chat
-//					showAppIntent.putExtra(CommonConstant.INTENT_PRODUCT_DATA_VIA_ID, productID);
-//					showAppIntent.putExtra(CommonConstant.INTENT_CONVERSATION_DATA_VIA_ID, conversationID);
-//					showAppIntent.setClass(context, ChatToBuyActivity.class);
-//				} else {
-//					//push notification of like
-//					showAppIntent.putExtra(CommonConstant.INTENT_PRODUCT_DATA_VIA_ID, productID);
-//					showAppIntent.setClass(context, DetailActivity.class);
-//				}
-//			} 
-//			else if(userID != null && userID.length() > 0) {
-//				//push notification of follow
-//				showAppIntent.putExtra(CommonConstant.INTENT_USER_DATA_VIA_ID, userID);
-//				showAppIntent.setClass(context, ProfileActivity.class);
-//			} 
-////			showAppIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
 			builder.setContentTitle(context.getString(R.string.app_name))
 					.setContentText(alert).setSmallIcon(iconId)

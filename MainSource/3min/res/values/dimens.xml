@@ -130,9 +130,12 @@
     <dimen name="fm_right_avatar_size">60dp</dimen>
     <dimen name="fm_right_avatar_size_feedback">35dp</dimen>
     <dimen name="fm_right_row_height">50dp</dimen>
-    <dimen name="fm_right_feedback_group_margin_top">23dp</dimen>
-    <dimen name="fm_right_feedback_group_height_owner_group">37dp</dimen>
-    <dimen name="fm_right_feedback_group_height_owner_group_a_hafl">18.5dp</dimen>
+    
+    <!-- header feedback -->
+    
+    <dimen name="header_feedback_margin_top">23dp</dimen>
+    <dimen name="header_feedback_height_owner_group">37dp</dimen>
+    <dimen name="header_feedback_height_owner_group_a_hafl">18.5dp</dimen>
     
     <!-- fragment detail -->
     <dimen name="fm_detail_comments_margin">25dp</dimen>
