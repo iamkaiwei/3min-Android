@@ -14,7 +14,7 @@ import com.threemin.fragment.ListOfferFragment;
 import com.threemin.uti.CommonUti;
 import com.threemins.R;
 
-public class ListOfferActivty extends FragmentActivity {
+public class ListOfferActivty extends ThreeMinsBaseActivity {
 
 	@Override
 	protected void onCreate(Bundle arg0) {

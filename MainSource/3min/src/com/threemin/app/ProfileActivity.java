@@ -22,7 +22,7 @@ import com.threemin.uti.PreferenceHelper;
 import com.threemin.webservice.UserWebService;
 import com.threemins.R;
 
-public class ProfileActivity extends SwipeBackActivity {
+public class ProfileActivity extends ThreeMinsBaseActivity {
 	public final String tag = "ProfileActivity";
     LoginButton mLoginButton;
     UserModel userModel;
@@ -34,10 +34,6 @@ public class ProfileActivity extends SwipeBackActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         this.savedInstanceState = savedInstanceState;
-        
-        // Init the swipe back mechanism
-        mSwipeBack = getSwipeBackLayout();
-        mSwipeBack.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
         
         mLoginButton = (LoginButton) findViewById(R.id.activity_detail_btn_login_facebook);
         
@@ -72,12 +68,6 @@ public class ProfileActivity extends SwipeBackActivity {
             fragment.setArguments(bundle);
             getSupportFragmentManager().beginTransaction().add(R.id.container, fragment).commit();
         }
-    }
-    
-    @Override
-    public void onBackPressed() {
-//        super.onBackPressed();
-    	scrollToFinishActivity();
     }
     
     public void initActionBar() {

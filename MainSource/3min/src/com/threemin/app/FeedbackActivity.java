@@ -28,7 +28,7 @@ import com.threemin.webservice.FeedbackWebservice;
 import com.threemin.webservice.ProductWebservice;
 import com.threemins.R;
 
-public class FeedbackActivity extends SwipeBackActivity {
+public class FeedbackActivity extends ThreeMinsBaseActivity {
     
     public static final String tag = "FeedbackActivity";
     
@@ -55,7 +55,6 @@ public class FeedbackActivity extends SwipeBackActivity {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feedback);
-        getSwipeBackLayout().setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
         
         initActionBar();
         initWidgets();

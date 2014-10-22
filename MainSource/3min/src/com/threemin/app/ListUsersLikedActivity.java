@@ -24,7 +24,7 @@ import com.threemins.R;
  * when user tap on textview which show number of user who liked this product
  * */
 
-public class ListUsersLikedActivity extends SwipeBackActivity {
+public class ListUsersLikedActivity extends ThreeMinsBaseActivity {
     
     public static final String tag = "ListUsersLikedActivity";
     public static final int STEP_INIT = 0;
@@ -45,7 +45,6 @@ public class ListUsersLikedActivity extends SwipeBackActivity {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_users_liked);
-        getSwipeBackLayout().setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
         
         initWidgets();
         initListeners();

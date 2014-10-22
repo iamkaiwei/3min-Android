@@ -14,7 +14,7 @@ import com.threemin.fragment.ListMessageFragment;
 import com.threemin.uti.CommonUti;
 import com.threemins.R;
 
-public class ListMessageActivity extends FragmentActivity {
+public class ListMessageActivity extends ThreeMinsBaseActivity {
 
 	@Override
 	protected void onCreate(Bundle arg0) {

@@ -53,7 +53,7 @@ import com.threemin.webservice.ConversationWebService;
 import com.threemin.webservice.ProductWebservice;
 import com.threemins.R;
 
-public class ChatToBuyActivity extends SwipeBackActivity {
+public class ChatToBuyActivity extends ThreeMinsBaseActivity {
     
     public static final String tag = "ChatToBuyActivity";
     
@@ -96,18 +96,9 @@ public class ChatToBuyActivity extends SwipeBackActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_chat_to_buy);
 		
-		//swipe back
-		getSwipeBackLayout().setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
-
 		initWidgets();
 		initData();
 
-	}
-	
-	@Override
-	public void onBackPressed() {
-	    // TODO Auto-generated method stub
-	    scrollToFinishActivity();
 	}
 
 	private void initWidgets() {

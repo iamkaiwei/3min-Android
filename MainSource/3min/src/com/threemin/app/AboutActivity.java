@@ -14,7 +14,7 @@ import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class AboutActivity extends Activity {
+public class AboutActivity extends ThreeMinsBaseActivity {
 	
 	WebView mWvContent;
 	

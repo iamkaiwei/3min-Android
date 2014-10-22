@@ -22,7 +22,7 @@ import com.threemin.uti.CommonUti;
 import com.threemin.uti.PreferenceHelper;
 import com.threemins.R;
 
-public class DetailActivity extends SwipeBackActivity {
+public class DetailActivity extends ThreeMinsBaseActivity {
 	
 	ImageView mImgBack;
 	TextView mTvTitle;
@@ -48,10 +48,6 @@ public class DetailActivity extends SwipeBackActivity {
             }
             PreferenceHelper.getInstance(this).setNumberActivities(numActivities);
         }
-		
-		// Init the swipe back mechanism
-		mSwipeBack = getSwipeBackLayout();
-		mSwipeBack.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
 		
 		initActionBar();
 
@@ -81,14 +77,6 @@ public class DetailActivity extends SwipeBackActivity {
         }
 	}
 	
-	@Override
-	public void onBackPressed(){
-		scrollToFinishActivity();
-//		super.onBackPressed();
-//		overridePendingTransition(R.anim.swipeback_stack_to_front,
-//				R.anim.swipeback_stack_right_out);
-	}
-
 	private void initActionBar() {
 		ActionBar bar = getActionBar();
 		bar.setDisplayShowHomeEnabled(true);

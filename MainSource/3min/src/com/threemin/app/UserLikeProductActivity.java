@@ -20,7 +20,7 @@ import com.threemin.uti.CommonConstant;
 import com.threemin.uti.CommonUti;
 import com.threemins.R;
 
-public class UserLikeProductActivity extends SwipeBackActivity {
+public class UserLikeProductActivity extends ThreeMinsBaseActivity {
 	
 	LoginButton mLoginButton;
 
@@ -29,9 +29,6 @@ public class UserLikeProductActivity extends SwipeBackActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_detail);
 		mLoginButton = (LoginButton) findViewById(R.id.activity_detail_btn_login_facebook);
-		
-		//swipe back
-		getSwipeBackLayout().setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
 		
 		initActionBar();
 
@@ -60,12 +57,6 @@ public class UserLikeProductActivity extends SwipeBackActivity {
         } else {
             Log.i("tructran", "UserLikeProductActivity session null");
         }
-	}
-	
-	@Override
-	public void onBackPressed() {
-	    // TODO Auto-generated method stub
-	    scrollToFinishActivity();
 	}
 
 	private void initActionBar() {

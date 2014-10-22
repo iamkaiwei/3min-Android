@@ -14,7 +14,7 @@ import com.threemin.fragment.UserActivityFragment;
 import com.threemin.uti.CommonUti;
 import com.threemins.R;
 
-public class UserActivityActivity extends FragmentActivity {
+public class UserActivityActivity extends ThreeMinsBaseActivity {
 	
 	@Override
 	protected void onCreate(Bundle arg0) {

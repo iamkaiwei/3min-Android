@@ -21,7 +21,7 @@ import com.threemin.uti.CommonUti;
 import com.threemin.uti.PreferenceHelper;
 import com.threemins.R;
 
-public class SettingActivity extends SwipeBackActivity implements OnClickListener {
+public class SettingActivity extends ThreeMinsBaseActivity implements OnClickListener {
 	
 	public static final int ACTIONS_LOG_OUT = 99;
 	
@@ -37,19 +37,12 @@ public class SettingActivity extends SwipeBackActivity implements OnClickListene
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_setting);
 		
-		getSwipeBackLayout().setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
-		
 		mGoogleApiClient = new GoogleApiClient.Builder(this).addApi(Plus.API, null).addScope(Plus.SCOPE_PLUS_PROFILE).build();
 		mGoogleApiClient.connect();
 		mContext = this;
 		
 		initWidgets();
 		initListener();
-	}
-	
-	@Override
-	public void onBackPressed() {
-	    scrollToFinishActivity();
 	}
 	
 	private void initWidgets() {

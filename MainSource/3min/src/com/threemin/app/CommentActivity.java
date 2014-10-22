@@ -16,7 +16,7 @@ import com.threemin.fragment.CommentFragment;
 import com.threemin.uti.CommonUti;
 import com.threemins.R;
 
-public class CommentActivity extends SwipeBackActivity{
+public class CommentActivity extends ThreeMinsBaseActivity{
     
     public final String tag = "CommentActivity";
     
@@ -26,8 +26,6 @@ public class CommentActivity extends SwipeBackActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comment);
         
-        getSwipeBackLayout().setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
-        
         initActionBar();
         
         if (savedInstanceState == null) {
@@ -35,12 +33,6 @@ public class CommentActivity extends SwipeBackActivity{
             getSupportFragmentManager().beginTransaction().replace(R.id.activity_comment_container, new CommentFragment()).commit();
         }
         
-    }
-    
-    @Override
-    public void onBackPressed() {
-        // TODO Auto-generated method stub
-        scrollToFinishActivity();
     }
     
     private void initActionBar() {

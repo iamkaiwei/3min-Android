@@ -48,7 +48,7 @@ import com.threemin.view.BaseViewPagerAdapter;
 import com.threemin.webservice.CategoryWebservice;
 import com.threemins.R;
 
-public class HomeActivity extends SwipeBackActivity {
+public class HomeActivity extends ThreeMinsBaseActivity {
 
     // action bar widgets
     RelativeLayout mRLActionbarProfile;
@@ -104,8 +104,7 @@ public class HomeActivity extends SwipeBackActivity {
         mContext = this;
         setContentView(R.layout.activity_home);
 
-        // disable swipe back
-        getSwipeBackLayout().setEnableGesture(false);
+        disableSwipeBack();
 
         mBtnLoginFacebook = (LoginButton) findViewById(R.id.activity_home_btn_login_facebook);
 

@@ -17,7 +17,7 @@ import com.threemin.fragment.PostOfferFragment;
 import com.threemin.uti.CommonUti;
 import com.threemins.R;
 
-public class PostOfferActivity extends FragmentActivity {
+public class PostOfferActivity extends ThreeMinsBaseActivity {
     public static final String TAG_POST_OFFER_FRAGMENT = "PostOfferFragment";
 	PostOfferFragment postOfferFragment;
 	@Override
