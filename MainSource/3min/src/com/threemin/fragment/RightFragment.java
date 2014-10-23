@@ -30,6 +30,7 @@ import com.threemin.webservice.UserWebService;
 import com.threemins.R;
 
 public class RightFragment extends Fragment {
+    public static String tag = "RightFragment";
     int mode;
     UserModel userModel;
     public static boolean FOLLOW = true;
@@ -134,7 +135,7 @@ public class RightFragment extends Fragment {
                 int countNegative = userModel.getCountNegative();
                 TextView tvFeedbackRatio = (TextView) rootView.findViewById(R.id.fm_right_tv_feedback_number);
                 if (countPositive == 0) {
-                    tvFeedbackRatio.setText("" + 0 + "%");
+                    tvFeedbackRatio.setText("0%");
                 } else {
                     int ratio = (int)((float)countPositive / ((float)countPositive + (float)countNegative) * 100);
                     tvFeedbackRatio.setText("" + ratio + "%");
