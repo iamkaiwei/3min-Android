@@ -2,8 +2,6 @@ package com.threemin.app;
 
 import java.util.List;
 
-import me.imid.swipebacklayout.lib.SwipeBackLayout;
-import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;

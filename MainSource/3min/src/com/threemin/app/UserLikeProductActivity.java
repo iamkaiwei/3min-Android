@@ -1,7 +1,5 @@
 package com.threemin.app;
 
-import me.imid.swipebacklayout.lib.SwipeBackLayout;
-import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 import android.app.ActionBar;
 import android.content.Intent;
 import android.content.res.Resources;

@@ -1,24 +1,19 @@
 package com.threemin.app;
 
-import me.imid.swipebacklayout.lib.SwipeBackLayout;
-import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
+import android.app.ActionBar;
+import android.content.res.Resources;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.threemin.fragment.FolowersFollowingFragment;
 import com.threemin.uti.CommonConstant;
 import com.threemin.uti.CommonUti;
 import com.threemins.R;
-
-import android.app.ActionBar;
-import android.content.res.Resources;
-import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 public class FollowerFollowingActivity extends ThreeMinsBaseActivity {
 	
