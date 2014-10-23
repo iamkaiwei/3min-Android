@@ -283,15 +283,15 @@ public class RightFragment extends Fragment {
     }
     
     public void showLoadingIcon(boolean show) {
-//        if (show) {
-//            mPBarFollower.setVisibility(View.VISIBLE);
-//            mPBarFollowing.setVisibility(View.VISIBLE);
-//            mPBarFeedback.setVisibility(View.VISIBLE);
-//        } else {
+        if (show) {
+            mPBarFollower.setVisibility(View.VISIBLE);
+            mPBarFollowing.setVisibility(View.VISIBLE);
+            mPBarFeedback.setVisibility(View.VISIBLE);
+        } else {
             mPBarFollower.setVisibility(View.GONE);
             mPBarFollowing.setVisibility(View.GONE);
             mPBarFeedback.setVisibility(View.GONE);
-//        }
+        }
     }
 
 }
