@@ -64,7 +64,7 @@ public class ProfileActivity extends ThreeMinsBaseActivity {
             bundle.putInt(CommonConstant.INTENT_PRODUCT_MODE, ListProductFragment.MODE_USER_PRODUCT);
             bundle.putString(CommonConstant.INTENT_USER_DATA, new Gson().toJson(userModel));
             fragment.setArguments(bundle);
-            getSupportFragmentManager().beginTransaction().add(R.id.container, fragment).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
         }
     }
     

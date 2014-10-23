@@ -84,8 +84,7 @@ public class RightFragment extends Fragment {
         mPBarFeedback = (ProgressBar) rootView.findViewById(R.id.fm_right_progress_bar_feedback);
         
         new GetFollowInfoTask().execute(userModel.getId());
-//        userProduct(userModel);
-//        initListener(rootView);
+
         return rootView;
     }
     
@@ -218,9 +217,9 @@ public class RightFragment extends Fragment {
             productFragmentGrid = new ListProductFragment();
             productFragmentGrid.setMode(ListProductFragment.MODE_USER_PRODUCT);
             productFragmentGrid.setUserModel(userModel);
-            getFragmentManager().beginTransaction().replace(R.id.content_list, productFragmentGrid).commit();
+            getChildFragmentManager().beginTransaction().replace(R.id.content_list, productFragmentGrid).commit();
         } else {
-            getFragmentManager().beginTransaction().replace(R.id.content_list, new UserActivityFragment()).commit();
+            getChildFragmentManager().beginTransaction().replace(R.id.content_list, new UserActivityFragment()).commit();
         }
     }
     
@@ -284,15 +283,15 @@ public class RightFragment extends Fragment {
     }
     
     public void showLoadingIcon(boolean show) {
-        if (show) {
-            mPBarFollower.setVisibility(View.VISIBLE);
-            mPBarFollowing.setVisibility(View.VISIBLE);
-            mPBarFeedback.setVisibility(View.VISIBLE);
-        } else {
+//        if (show) {
+//            mPBarFollower.setVisibility(View.VISIBLE);
+//            mPBarFollowing.setVisibility(View.VISIBLE);
+//            mPBarFeedback.setVisibility(View.VISIBLE);
+//        } else {
             mPBarFollower.setVisibility(View.GONE);
             mPBarFollowing.setVisibility(View.GONE);
             mPBarFeedback.setVisibility(View.GONE);
-        }
+//        }
     }
 
 }
