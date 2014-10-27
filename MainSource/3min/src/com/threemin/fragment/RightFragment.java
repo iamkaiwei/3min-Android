@@ -43,7 +43,6 @@ public class RightFragment extends Fragment {
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
     }
@@ -204,8 +203,9 @@ public class RightFragment extends Fragment {
             
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), FeedbackActivity.class);
-                startActivityWithAnimation(intent);
+                //TODO: in future, use to allow user to send a feedback
+//                Intent intent = new Intent(getActivity(), FeedbackActivity.class);
+//                startActivityWithAnimation(intent);
             }
         });
     }
@@ -248,7 +248,6 @@ public class RightFragment extends Fragment {
     	
     	@Override
     	protected void onPreExecute() {
-    		// TODO Auto-generated method stub
     		super.onPreExecute();
     		dialog = new ProgressDialog(getActivity());
     		dialog.setMessage(getActivity().getString(R.string.please_wait));

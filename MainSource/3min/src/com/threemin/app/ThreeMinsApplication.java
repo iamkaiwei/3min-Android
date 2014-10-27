@@ -18,7 +18,7 @@ public class ThreeMinsApplication extends Application {
 		PushManager.enablePush();
 		
 		PushManager.shared().setNotificationBuilder(new ThreeMinsNotificationBuilder());
-//		PushManager.shared().setIntentReceiver(IntentReceiver.class);
+		PushManager.shared().setIntentReceiver(IntentReceiver.class);
 	};
 
 }

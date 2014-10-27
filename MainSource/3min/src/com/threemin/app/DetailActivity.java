@@ -39,13 +39,15 @@ public class DetailActivity extends ThreeMinsBaseActivity {
 		
 		//check if intent is from push notification
         boolean isFromPushNotification = getIntent().getBooleanExtra(CommonConstant.INTENT_IS_FROM_PUSH_NOTIFICATION, false);
-        if (isFromPushNotification) {
-            int numActivities = PreferenceHelper.getInstance(this).getNumberActivities();
-            if (numActivities > 0) {
-                numActivities--;
-            }
-            PreferenceHelper.getInstance(this).setNumberActivities(numActivities);
-        }
+        
+        //do this step in IntentReceiver.java
+//        if (isFromPushNotification) {
+//            int numActivities = PreferenceHelper.getInstance(this).getNumberActivities();
+//            if (numActivities > 0) {
+//                numActivities--;
+//            }
+//            PreferenceHelper.getInstance(this).setNumberActivities(numActivities);
+//        }
 		
 		initActionBar();
 
