@@ -487,6 +487,7 @@ public class ChatToBuyActivity extends ThreeMinsBaseActivity {
 	
 	public void doMarkProductSold() {
 	    Toast.makeText(this, "Sold", Toast.LENGTH_LONG).show();
+	    mImgSelling.setImageResource(R.drawable.bt_sold_2_nm);
 	}
 
 }
