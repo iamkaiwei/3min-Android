@@ -50,7 +50,7 @@ public class ListOfferAdapter extends BaseAdapter {
 		//
 		if (conversation.getUser() != null) {
 			ImageView avatar = (ImageView) convertView.findViewById(R.id.inflater_heeader_product_image);
-			UrlImageViewHelper.setUrlDrawable(avatar, conversation.getUser().getFacebook_avatar());
+			UrlImageViewHelper.setUrlDrawable(avatar, conversation.getUser().getFacebook_avatar(), R.drawable.avatar_loading);
 
 			TextView name = (TextView) convertView.findViewById(R.id.inflater_heeader_product_tv_name);
 			name.setText(conversation.getUser().getFullName());

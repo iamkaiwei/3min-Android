@@ -71,7 +71,7 @@ public class RightFragment extends Fragment {
             Log.i("RightFragment", userModel.getFirstName());
         }
         ImageView img = (ImageView) rootView.findViewById(R.id.fm_right_avatar);
-        UrlImageViewHelper.setUrlDrawable(img, userModel.getFacebook_avatar());
+        UrlImageViewHelper.setUrlDrawable(img, userModel.getFacebook_avatar(), R.drawable.avatar_loading);
 
         TextView tv_name = (TextView) rootView.findViewById(R.id.fm_right_tv_username);
         tv_name.setText(userModel.getFullName());

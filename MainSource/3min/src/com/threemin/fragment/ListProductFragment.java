@@ -314,7 +314,7 @@ public class ListProductFragment extends BaseProductFragment {
                     );
             
             tvContent.setText(m.getContent());
-            UrlImageViewHelper.setUrlDrawable(imgAvatar, m.getUser().getFacebook_avatar(), R.drawable.stuff_img);
+            UrlImageViewHelper.setUrlDrawable(imgAvatar, m.getUser().getFacebook_avatar(), R.drawable.avatar_loading);
             btnViewFeedback.setOnClickListener(new OnClickListener() {
                 
                 @Override

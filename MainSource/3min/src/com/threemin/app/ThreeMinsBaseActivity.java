@@ -14,6 +14,20 @@ public class ThreeMinsBaseActivity extends SwipeBackActivity {
     }
     
     @Override
+    protected void onResume() {
+        // TODO Auto-generated method stub
+        super.onResume();
+        ThreeMinsApplication.isActive = true;
+    }
+    
+    @Override
+    protected void onPause() {
+        // TODO Auto-generated method stub
+        super.onPause();
+        ThreeMinsApplication.isActive = false;
+    }
+    
+    @Override
     public void onBackPressed() {
         super.onBackPressed();
         scrollToFinishActivity();

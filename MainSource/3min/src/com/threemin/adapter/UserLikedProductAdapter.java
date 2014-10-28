@@ -52,7 +52,7 @@ public class UserLikedProductAdapter extends BaseAdapter {
         
         UserModel model = mData.get(position);
         name.setText(model.getFullName());
-        UrlImageViewHelper.setUrlDrawable(avatar, model.getFacebook_avatar(), R.drawable.stuff_img);
+        UrlImageViewHelper.setUrlDrawable(avatar, model.getFacebook_avatar(), R.drawable.avatar_loading);
         
         return convertView;
     }

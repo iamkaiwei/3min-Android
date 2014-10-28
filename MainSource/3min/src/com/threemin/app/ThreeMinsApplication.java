@@ -9,6 +9,8 @@ import com.urbanairship.UAirship;
 import com.urbanairship.push.PushManager;
 
 public class ThreeMinsApplication extends Application {
+    
+    public static boolean isActive;
 	
 	public void onCreate() {
 		

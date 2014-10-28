@@ -160,6 +160,13 @@ public class ProductGridAdapter extends BaseAdapter {
 			} else {
 				tv_like.setText("");
 			}
+			
+			final TextView tv_comment = (TextView) convertView.findViewById(R.id.inflater_body_product_grid_tv_comment);
+			if (model.getCommentsCount() > 0) {
+                tv_comment.setText("" + model.getCommentsCount());
+            } else {
+                tv_comment.setText("");
+            }
 
 			final ImageView img_like = (ImageView) convertView.findViewById(R.id.inflater_body_product_grid_img_like);
 			if (model.isLiked()) {
@@ -213,7 +220,7 @@ public class ProductGridAdapter extends BaseAdapter {
 			} else {
 			    
 				ImageView imageAvatar = (ImageView) convertView.findViewById(R.id.inflater_header_product_grid_image);
-				UrlImageViewHelper.setUrlDrawable(imageAvatar, model.getOwner().getFacebook_avatar());
+				UrlImageViewHelper.setUrlDrawable(imageAvatar, model.getOwner().getFacebook_avatar(), R.drawable.avatar_loading);
 
 				TextView tv_name_owner = (TextView) convertView.findViewById(R.id.inflater_header_product_grid_tv_name);
 				tv_name_owner.setText(model.getOwner().getFullName());

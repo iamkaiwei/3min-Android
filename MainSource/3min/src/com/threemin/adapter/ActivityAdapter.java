@@ -58,7 +58,7 @@ public class ActivityAdapter extends BaseAdapter {
 		TextView tvTime = (TextView) convertView.findViewById(R.id.inflater_activity_tv_time);
 		ImageView imgProduct = (ImageView) convertView.findViewById(R.id.inflater_activity_product);
 		
-		UrlImageViewHelper.setUrlDrawable(imgAvatar, mData.get(position).getUser().getFacebook_avatar());
+		UrlImageViewHelper.setUrlDrawable(imgAvatar, mData.get(position).getUser().getFacebook_avatar(), R.drawable.avatar_loading);
 		
 		String content = mData.get(position).getContent();
 		String fullName = mData.get(position).getUser().getFullName();

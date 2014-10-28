@@ -163,7 +163,7 @@ public class DetailFragment extends Fragment {
 
 			//owner 's info
 			ImageView imageAvatar = (ImageView) convertView.findViewById(R.id.inflater_header_product_image);
-			UrlImageViewHelper.setUrlDrawable(imageAvatar, productModel.getOwner().getFacebook_avatar());
+			UrlImageViewHelper.setUrlDrawable(imageAvatar, productModel.getOwner().getFacebook_avatar(), R.drawable.avatar_loading);
 
 			TextView tv_name_owner = (TextView) convertView.findViewById(R.id.inflater_header_product_tv_name);
 			tv_name_owner.setText(productModel.getOwner().getFullName());
@@ -506,7 +506,7 @@ public class DetailFragment extends Fragment {
 	    TextView tvConent = (TextView) view.findViewById(R.id.fm_detail_layout_comment_tv_comment);
 	    TextView tvTime = (TextView) view.findViewById(R.id.fm_detail_layout_comment_tv_time);
 	    
-	    UrlImageViewHelper.setUrlDrawable(imgAvatar, model.getUser().getFacebook_avatar(), R.drawable.stuff_img);
+	    UrlImageViewHelper.setUrlDrawable(imgAvatar, model.getUser().getFacebook_avatar(), R.drawable.avatar_loading);
 	    tvName.setText(model.getUser().getFullName());
 	    tvConent.setText(model.getContent());
 	    CharSequence time = DateUtils.getRelativeTimeSpanString(model.getUpdated_at() * 1000,

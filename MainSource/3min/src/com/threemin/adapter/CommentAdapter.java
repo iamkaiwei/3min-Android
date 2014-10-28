@@ -59,7 +59,7 @@ public class CommentAdapter extends BaseAdapter {
         
         CommentModel model = mData.get(position);
         
-        UrlImageViewHelper.setUrlDrawable(imgAvatar, model.getUser().getFacebook_avatar(), R.drawable.stuff_img);
+        UrlImageViewHelper.setUrlDrawable(imgAvatar, model.getUser().getFacebook_avatar(), R.drawable.avatar_loading);
         tvContent.setText(Html.fromHtml("<font color=\"#ff401a\">" + model.getUser().getFullName() + "</font>" 
                                         + "<font color=\"#a9a9a9\">" + " " + model.getContent() + "</font>"));
         

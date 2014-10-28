@@ -70,7 +70,7 @@ public class FollowAdapter extends BaseAdapter {
         });
         
         ImageView imgAvatar = (ImageView) convertView.findViewById(R.id.inflater_follow_avatar);
-        UrlImageViewHelper.setUrlDrawable(imgAvatar, model.getFacebook_avatar());
+        UrlImageViewHelper.setUrlDrawable(imgAvatar, model.getFacebook_avatar(), R.drawable.avatar_loading);
         
         TextView tvName = (TextView) convertView.findViewById(R.id.inflater_follow_tv_name);
         tvName.setText(model.getFullName());

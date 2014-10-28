@@ -63,7 +63,7 @@ public class FeedbackAdapter extends BaseAdapter {
                 0L, 
                 DateUtils.FORMAT_ABBREV_RELATIVE);
         
-        UrlImageViewHelper.setUrlDrawable(imgAvatar, avatarUrl, R.drawable.stuff_img);
+        UrlImageViewHelper.setUrlDrawable(imgAvatar, avatarUrl, R.drawable.avatar_loading);
         tvName.setText(fullName);
         tvTime.setText(time);
         tvContent.setText(content);
