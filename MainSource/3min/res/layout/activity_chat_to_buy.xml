@@ -147,7 +147,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="@dimen/common_spacing"
         android:layout_marginTop="@dimen/common_spacing"
-        android:src="@drawable/bt_selling" />
+        android:src="@drawable/selector_act_chat_btn_selling" />
 
     <!-- divider -->
 
