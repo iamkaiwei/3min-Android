@@ -41,6 +41,7 @@ public class ProductModel {
     private UserModel owner;
     private List<CommentModel> comments;
     
+    @SerializedName("comments_count")
     private int commentsCount;
     
     //getters and setters

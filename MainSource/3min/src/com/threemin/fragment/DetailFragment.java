@@ -179,9 +179,13 @@ public class DetailFragment extends Fragment {
 			//button chat to buy
 			btnChatToBuy = (Button) convertView.findViewById(R.id.fragment_detail_btn_chat_to_buy);
 			UserModel currentUser = PreferenceHelper.getInstance(getActivity()).getCurrentUser();
+			
+			//button to edit product
+			ImageView imgEditProduct = (ImageView) convertView.findViewById(R.id.inflater_header_product_img_edit);
 
 			// if current user is not the owner of this product
 			if (currentUser.getId() != productModel.getOwner().getId()) {
+			    imgEditProduct.setVisibility(View.GONE);
 				btnChatToBuy.setBackgroundResource(R.drawable.selector_btn_chat_to_buy);
 				btnChatToBuy.setOnClickListener(new OnClickListener() {
 					
