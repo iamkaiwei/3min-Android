@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender.SendIntentException;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -25,6 +26,8 @@ import com.urbanairship.push.PushManager;
 public class IntentReceiver extends BroadcastReceiver {
     
     private static final String tag = "IntentReceiver";
+    
+    public static final String ACTION_NOTIFY_UPDATE_NUMBER_ACTIVITIES = "com.threemin.receiver.IntentReceiver.NotifyUpdateNumberActivities";
 
     // A set of actions that launch activities when a push is opened.  Update
     // with any custom actions that also start activities when a push is opened.
@@ -52,6 +55,7 @@ public class IntentReceiver extends BroadcastReceiver {
             Log.i(tag, "ACTION_PUSH_RECEIVED numActivities: " + numActivities);
             numActivities ++;
             PreferenceHelper.getInstance(context).setNumberActivities(numActivities);
+            notifyUpdateNumberActivities(context);
             
             //TODO: testing - check if the app is in forceground.
             //if true: cancel the notification chat
@@ -76,6 +80,7 @@ public class IntentReceiver extends BroadcastReceiver {
                 Log.i(tag, "ACTION_NOTIFICATION_OPENED numActivities: " + numActivities);
                 numActivities --;
                 PreferenceHelper.getInstance(context).setNumberActivities(numActivities);
+                notifyUpdateNumberActivities(context);
                 
                 Intent launch = createIntent(context, intent);
                 launch.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -163,6 +168,11 @@ public class IntentReceiver extends BroadcastReceiver {
         }
         
         return showAppIntent;
+    }
+    
+    private void notifyUpdateNumberActivities(Context context) {
+        Intent intent = new Intent(ACTION_NOTIFY_UPDATE_NUMBER_ACTIVITIES);
+        context.sendBroadcast(intent);
     }
 
 }

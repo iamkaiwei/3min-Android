@@ -3,8 +3,10 @@ package com.threemin.app;
 import java.util.List;
 
 import android.app.ActionBar;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
@@ -42,6 +44,7 @@ import com.threemin.fragment.LeftFragment;
 import com.threemin.fragment.RightFragment;
 import com.threemin.model.CategoryModel;
 import com.threemin.model.FilterModel;
+import com.threemin.receiver.IntentReceiver;
 import com.threemin.uti.PreferenceHelper;
 import com.threemin.view.BaseViewPagerAdapter;
 import com.threemin.webservice.CategoryWebservice;
@@ -92,6 +95,15 @@ public class HomeActivity extends ThreeMinsBaseActivity {
     public static final String TAG_LEFT_FRAGMENT = "LeftFragment";
     public static final String TAG_RIGHT_FRAGMENT = "RightFragment";
     public static final String TAG_SAVED_FRAGMENT = "HomeActivitySavedFragment";
+    
+    //broadcast receiver to update number of activites when it changes
+    private BroadcastReceiver mBRUpdateActivitiesCount = new BroadcastReceiver() {
+        
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            setUpNumberActivities();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,21 +177,22 @@ public class HomeActivity extends ThreeMinsBaseActivity {
     @Override
     protected void onResume() {
         Log.i("LifeCycle", "onResume");
-        int numActivities = PreferenceHelper.getInstance(this).getNumberActivities();
-        mTvActionbarProfile.setText("" + numActivities);
-        if (numActivities > 0) {
-            mTvActionbarProfile.setVisibility(View.VISIBLE);
-        } else {
-            mTvActionbarProfile.setVisibility(View.GONE);
-        }
-
         super.onResume();
+        
+        //register broadcast receiver to update number activities if it changes
+        registerReceiver(
+                mBRUpdateActivitiesCount, 
+                new IntentFilter(IntentReceiver.ACTION_NOTIFY_UPDATE_NUMBER_ACTIVITIES));
+        
+        setUpNumberActivities();
     }
 
     @Override
     protected void onPause() {
         Log.i("LifeCycle", "onPause");
         super.onPause();
+        
+        unregisterReceiver(mBRUpdateActivitiesCount);
     }
 
     @Override
@@ -210,6 +223,16 @@ public class HomeActivity extends ThreeMinsBaseActivity {
             Log.i("HomeActivity", "session null");
         }
 
+    }
+    
+    public void setUpNumberActivities() {
+        int numActivities = PreferenceHelper.getInstance(this).getNumberActivities();
+        mTvActionbarProfile.setText("" + numActivities);
+        if (numActivities > 0) {
+            mTvActionbarProfile.setVisibility(View.VISIBLE);
+        } else {
+            mTvActionbarProfile.setVisibility(View.GONE);
+        }
     }
 
     public void doPageChange(int position) {
