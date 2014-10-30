@@ -16,6 +16,8 @@ import com.threemin.uti.CommonConstant;
 import com.threemin.uti.WebserviceConstant;
 
 public class ConversationWebService {
+    
+    public static final String tag = "ConversationWebService";
 
 	public Conversation getConversation(String tokken, int product_id, int to) {
 		String url = WebserviceConstant.CONVERSATION_EXIST + "?" + CommonConstant.KEY_ACCESS_TOKEN + "=" + tokken + "&"
@@ -52,6 +54,7 @@ public class ConversationWebService {
 	public String getDetailConversation(String tokken, int conversationId) {
 		String url = WebserviceConstant.CONVERSATION_GET_DETAIL + conversationId + ".json?"
 				+ CommonConstant.KEY_ACCESS_TOKEN + "=" + tokken;
+		Log.i(tag, "getDetailConversation link: " + url);
 		try {
 			String result = WebServiceUtil.getData(url);
 			return result;

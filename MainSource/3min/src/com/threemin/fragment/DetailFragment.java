@@ -185,6 +185,7 @@ public class DetailFragment extends Fragment {
 
 			// if current user is not the owner of this product
 			if (currentUser.getId() != productModel.getOwner().getId()) {
+			    //dont allow to edit product
 			    imgEditProduct.setVisibility(View.GONE);
 				btnChatToBuy.setBackgroundResource(R.drawable.selector_btn_chat_to_buy);
 				btnChatToBuy.setOnClickListener(new OnClickListener() {
