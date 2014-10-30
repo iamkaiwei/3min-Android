@@ -267,13 +267,13 @@
         </LinearLayout>
 
         <!-- delete listing -->
-        <ImageView 
+        <ImageButton 
             android:id="@+id/activity_imageview_img_delete_listing"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/activity_imageview_spacing"
             android:scaleType="fitXY"
-            android:src="@drawable/selector_act_imageview_img_delete_listing"/>
+            android:background="@drawable/selector_act_imageview_img_delete_listing"/>
 
         <com.facebook.widget.LoginButton
             android:id="@+id/activity_imageview_btn_login_facebook"

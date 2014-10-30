@@ -45,6 +45,7 @@ public class CommonConstant {
     public static final String INTENT_GET_FOLLOW_COUNT="getFollowCount";
     public static final String INTENT_IS_FROM_PUSH_NOTIFICATION = "isFromPushNotification";
     public static final String INTENT_SCHEDULE_ID = "scheduleID";
+    public static final String INTENT_EDIT_PRODUCT = "editProduct";
 
     public static final String PUSHER_CHAT_EVENT_NAME = "client-chat";
     public static final String PUSHER_CHAT_EVENT_TYPING = "client-typing";

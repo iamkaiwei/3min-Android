@@ -31,6 +31,7 @@ import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.threemin.app.ChatToBuyActivity;
 import com.threemin.app.CommentActivity;
 import com.threemin.app.DetailActivity;
+import com.threemin.app.ImageViewActivity;
 import com.threemin.app.ListOfferActivty;
 import com.threemin.app.ListUsersLikedActivity;
 import com.threemin.app.PostOfferActivity;
@@ -182,6 +183,18 @@ public class DetailFragment extends Fragment {
 			
 			//button to edit product
 			ImageView imgEditProduct = (ImageView) convertView.findViewById(R.id.inflater_header_product_img_edit);
+			imgEditProduct.setOnClickListener(new OnClickListener() {
+                
+                @Override
+                public void onClick(View v) {
+                    String strProductData = new Gson().toJson(productModel);
+                    Intent intent = new Intent(getActivity(), ImageViewActivity.class);
+                    intent.putExtra(CommonConstant.INTENT_EDIT_PRODUCT, true);
+                    intent.putExtra(CommonConstant.INTENT_PRODUCT_DATA, strProductData);
+                    startActivity(intent);
+                    CommonUti.addAnimationWhenStartActivity(getActivity());
+                }
+            });
 
 			// if current user is not the owner of this product
 			if (currentUser.getId() != productModel.getOwner().getId()) {

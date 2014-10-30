@@ -29,7 +29,6 @@ public class ThreeMinsBaseActivity extends SwipeBackActivity {
     
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         scrollToFinishActivity();
     }
     
