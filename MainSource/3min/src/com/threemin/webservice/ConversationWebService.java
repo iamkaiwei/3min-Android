@@ -51,9 +51,9 @@ public class ConversationWebService {
 		}
 	}
 
-	public String getDetailConversation(String tokken, int conversationId) {
+	public String getDetailConversation(String tokken, int conversationId, int page) {
 		String url = WebserviceConstant.CONVERSATION_GET_DETAIL + conversationId + ".json?"
-				+ CommonConstant.KEY_ACCESS_TOKEN + "=" + tokken;
+				+ CommonConstant.KEY_ACCESS_TOKEN + "=" + tokken + "&page=" + page;
 		Log.i(tag, "getDetailConversation link: " + url);
 		try {
 			String result = WebServiceUtil.getData(url);

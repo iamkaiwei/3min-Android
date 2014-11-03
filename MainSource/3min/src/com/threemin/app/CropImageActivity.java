@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -33,7 +32,7 @@ import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.threemin.uti.CommonUti;
 import com.threemins.R;
 
-public class CropImageActivity extends Activity {
+public class CropImageActivity extends ThreeMinsBaseActivity {
 	
 	ImageView img;
 	CropImageView cropImg;

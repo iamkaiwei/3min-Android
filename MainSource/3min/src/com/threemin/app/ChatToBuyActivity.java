@@ -9,8 +9,6 @@ import java.util.Set;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import me.imid.swipebacklayout.lib.SwipeBackLayout;
-import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -19,8 +17,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
@@ -60,7 +61,11 @@ public class ChatToBuyActivity extends ThreeMinsBaseActivity {
 	private final int SHOW_DIALOG = 1;
 	private final int HIDE_DIALOG = 2;
 	private final int REQUEST_CHECK_OFFER_EXIST = 3;
+	private final int REQUEST_GET_OLDER_MESSAGE = 4;
 	private final int MESSAGE_TOTAL = 20;
+	
+	private final boolean IS_INIT = true;
+	private final boolean IS_ADD_OLD = false;
 	
 	public static final boolean IS_THEIR_MESSAGE = true;
 	public static final boolean IS_MY_MESSAGE = false;
@@ -90,6 +95,12 @@ public class ChatToBuyActivity extends ThreeMinsBaseActivity {
 	Pusher pusher;
 	List<MessageModel> userChats;
 	ProgressDialog dialog;
+	
+	View mHeader;
+	
+	//pagination
+	private int mPage;
+	private SwipeRefreshLayout mSwipe;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -102,16 +113,22 @@ public class ChatToBuyActivity extends ThreeMinsBaseActivity {
 	}
 
 	private void initWidgets() {
-		mImgProduct = (ImageView) findViewById(R.id.activity_chat_img_product);
-		mTvProductName = (TextView) findViewById(R.id.activity_chat_tv_product_name);
-		mTvProductPrice = (TextView) findViewById(R.id.activity_chat_tv_product_price);
+	    mHeader = LayoutInflater.from(this).inflate(R.layout.activity_chat_to_buy_header, null);
+	    
+		mImgProduct = (ImageView) mHeader.findViewById(R.id.activity_chat_img_product);
+		mTvProductName = (TextView) mHeader.findViewById(R.id.activity_chat_tv_product_name);
+		mTvProductPrice = (TextView) mHeader.findViewById(R.id.activity_chat_tv_product_price);
+		mTvOfferedPrice = (TextView) mHeader.findViewById(R.id.activity_chat_tv_offered_price);
+		mTvLocation = (TextView) mHeader.findViewById(R.id.activity_chat_tv_location);
+		mImgSelling = (ImageView) mHeader.findViewById(R.id.activity_chat_selling);
+		mTvChatContentLabel = (TextView) mHeader.findViewById(R.id.activity_chat_tv_chat_content_label);
+		
 		mEtChatInput = (EditText) findViewById(R.id.activity_chat_et_chat_input);
-		mTvOfferedPrice = (TextView) findViewById(R.id.activity_chat_tv_offered_price);
-		mTvLocation = (TextView) findViewById(R.id.activity_chat_tv_location);
-		mImgSelling = (ImageView) findViewById(R.id.activity_chat_selling);
-		mTvChatContentLabel = (TextView) findViewById(R.id.activity_chat_tv_chat_content_label);
 		mLvChatContent = (ListView) findViewById(R.id.activity_chat_lv_chat_content);
-
+		mSwipe = (SwipeRefreshLayout) findViewById(R.id.activity_chat_swipe);
+		int color1 = R.color.red_background;
+		int color2 = R.color.common_grey;
+		mSwipe.setColorScheme(color1, color2, color1, color2);
 	}
 
 	// demo data
@@ -124,6 +141,7 @@ public class ChatToBuyActivity extends ThreeMinsBaseActivity {
 		// mListMessage.add(temp1);
 		// mListMessage.add(temp2);
 		mMessageAdapter = new MessageAdapter(this, mListMessage);
+		mLvChatContent.addHeaderView(mHeader, null, false);
 		mLvChatContent.setAdapter(mMessageAdapter);
 	}
 
@@ -273,6 +291,15 @@ public class ChatToBuyActivity extends ThreeMinsBaseActivity {
                 doSellProduct();
             }
         });
+	    
+	    mSwipe.setOnRefreshListener(new OnRefreshListener() {
+            
+            @Override
+            public void onRefresh() {
+                // TODO Auto-generated method stub
+                getOlderMessage();
+            }
+        });
 	}
 	
 	public void doSellProduct() {
@@ -299,6 +326,7 @@ public class ChatToBuyActivity extends ThreeMinsBaseActivity {
 		    }
 		    mMessageAdapter.addData(messageModel);
 		    mEtChatInput.setText("");
+		    mLvChatContent.smoothScrollToPositionFromTop(mMessageAdapter.getCount()-1, 0, 350);
         } else {
             String emptyWarning = getString(R.string.activity_chat_empty_message);
             Toast.makeText(this, emptyWarning, Toast.LENGTH_LONG).show();
@@ -360,9 +388,10 @@ public class ChatToBuyActivity extends ThreeMinsBaseActivity {
 
 			@Override
 			public void run() {
+			    mPage = 1;
 				String tokken = PreferenceHelper.getInstance(ChatToBuyActivity.this).getTokken();
 				String conversationData = new ConversationWebService().getDetailConversation(tokken,
-						conversation.getId());
+						conversation.getId(), mPage);
 				Message msg = new Message();
 				msg.what = REQUEST_CHECK_OFFER_EXIST;
 				msg.obj = conversationData;
@@ -380,23 +409,36 @@ public class ChatToBuyActivity extends ThreeMinsBaseActivity {
 				dialog = new ProgressDialog(ChatToBuyActivity.this);
 				dialog.setMessage(getString(R.string.please_wait));
 				dialog.show();
+				if (mSwipe != null) {
+				    mSwipe.setRefreshing(true);
+                }
 				break;
 			case HIDE_DIALOG:
 				if (dialog != null && dialog.isShowing()) {
 					dialog.dismiss();
 				}
+				if (mSwipe != null && mSwipe.isRefreshing()) {
+                    mSwipe.setRefreshing(false);
+                }
 				break;
 			case REQUEST_CHECK_OFFER_EXIST:
 				String conversationData = (String) msg.obj;
 				conversation = new Gson().fromJson(conversationData, Conversation.class);
-				initLogChat();
+				initLogChat(IS_INIT);
 				break;
+				
+			case REQUEST_GET_OLDER_MESSAGE:
+			    String data = (String) msg.obj;
+			    conversation = new Gson().fromJson(data, Conversation.class);
+			    initLogChat(IS_ADD_OLD);
+			    break;
 			default:
 				break;
 			}
 		}
+		
 
-		private void initLogChat() {
+		private void initLogChat(boolean isInit) {
 			ArrayList<MessageModel> historyChat=new ArrayList<MessageModel>();
 			for (ReplyModel replyModel : conversation.getReplies()) {
 				if (replyModel.getUser_id() == currentUser.getId()) {
@@ -408,16 +450,33 @@ public class ChatToBuyActivity extends ThreeMinsBaseActivity {
 				}
 			}
 			Collections.reverse(historyChat); 
-			mMessageAdapter.addListData(historyChat);
+			if (isInit == IS_INIT) {
+			    mMessageAdapter.addListData(historyChat);
+			    if (mMessageAdapter.getCount() > 1) {
+			        mLvChatContent.smoothScrollToPositionFromTop(mMessageAdapter.getCount()-1, 0, 350);
+			    }
+            } else {
+                if (historyChat.size() == 0) {
+                    mPage--;
+                    Toast.makeText(
+                            ChatToBuyActivity.this, 
+                            getString(R.string.activity_chat_no_more_older_messages), 
+                            Toast.LENGTH_LONG)
+                            .show();
+                } else {
+                    mMessageAdapter.addOldMessages(historyChat);
+                    mLvChatContent.smoothScrollToPosition(historyChat.size()+1);
+                }
+            }
 		};
+		
 	};
 	
 	private class GetConversationViaIdTask extends AsyncTask<String, Void, String> {
 
 		@Override
 		protected String doInBackground(String... params) {
-			// TODO Auto-generated method stub
-			String data = new ConversationWebService().getDetailConversation(mTokken, Integer.parseInt(mConversationID));
+			String data = new ConversationWebService().getDetailConversation(mTokken, Integer.parseInt(mConversationID), 1);
 			Log.i("ChatToBuyActivity", data);
 			conversation = new Gson().fromJson(data, Conversation.class);
 			mProductModel=new ProductWebservice().getProductViaID(mTokken, "" + conversation.getProductId());
@@ -426,7 +485,6 @@ public class ChatToBuyActivity extends ThreeMinsBaseActivity {
 		
 		@Override
 		protected void onPostExecute(String result) {
-			// TODO Auto-generated method stub
 			super.onPostExecute(result);
 			if (result != null) {
 				setData();
@@ -489,5 +547,26 @@ public class ChatToBuyActivity extends ThreeMinsBaseActivity {
 	    Toast.makeText(this, "Sold", Toast.LENGTH_LONG).show();
 	    mImgSelling.setImageResource(R.drawable.bt_sold_2_nm);
 	}
+	
+	public void getOlderMessage() {
+	    //TODO
+	    mHandler.sendEmptyMessage(SHOW_DIALOG);
+        Thread t = new Thread(new Runnable() {
 
+            @Override
+            public void run() {
+                mPage++;
+                String tokken = PreferenceHelper.getInstance(ChatToBuyActivity.this).getTokken();
+                String conversationData = new ConversationWebService().getDetailConversation(tokken,
+                        conversation.getId(), mPage);
+                Message msg = new Message();
+                msg.what = REQUEST_GET_OLDER_MESSAGE;
+                msg.obj = conversationData;
+                mHandler.sendEmptyMessage(HIDE_DIALOG);
+                mHandler.sendMessage(msg);
+            }
+        });
+        t.start();
+	}
+	
 }

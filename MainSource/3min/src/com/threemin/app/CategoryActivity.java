@@ -43,6 +43,20 @@ public class CategoryActivity extends ListActivity {
 		});
 	};
 	
+	@Override
+    protected void onResume() {
+        // TODO Auto-generated method stub
+        super.onResume();
+        ThreeMinsApplication.isActive = true;
+    }
+    
+    @Override
+    protected void onPause() {
+        // TODO Auto-generated method stub
+        super.onPause();
+        ThreeMinsApplication.isActive = false;
+    }
+	
 	public void initActionBar() {
 		getActionBar().setIcon(R.drawable.btn_cancel);
 		getActionBar().setHomeButtonEnabled(true);

@@ -195,6 +195,18 @@ public class ImageViewActivity extends Activity {
             startActivityForResult(new Intent(ImageViewActivity.this, ActivityCamera.class), REQUEST_CAMERA_ON_CREATE);
         }
 	}
+	
+	@Override
+    protected void onResume() {
+        super.onResume();
+        ThreeMinsApplication.isActive = true;
+    }
+    
+    @Override
+    protected void onPause() {
+        super.onPause();
+        ThreeMinsApplication.isActive = false;
+    }
 
 	public void initWidgets() {
 		mImg1 = (SquareImageView) findViewById(R.id.activity_imageview_img_1);

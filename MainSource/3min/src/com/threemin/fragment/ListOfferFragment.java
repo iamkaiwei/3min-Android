@@ -98,7 +98,7 @@ public class ListOfferFragment extends Fragment {
 			@Override
 			public void run() {
 				String tokken = PreferenceHelper.getInstance(getActivity()).getTokken();
-				String conversationData = new ConversationWebService().getDetailConversation(tokken, conversationId);
+				String conversationData = new ConversationWebService().getDetailConversation(tokken, conversationId, 1);
 				Message msg = new Message();
 				msg.what = REQUEST_CHECK_OFFER_EXIST;
 				msg.obj = conversationData;

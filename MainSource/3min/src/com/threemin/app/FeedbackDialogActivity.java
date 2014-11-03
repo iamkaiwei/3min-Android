@@ -60,6 +60,20 @@ public class FeedbackDialogActivity extends Activity {
         initFirstStart();
     }
     
+    @Override
+    protected void onResume() {
+        // TODO Auto-generated method stub
+        super.onResume();
+        ThreeMinsApplication.isActive = true;
+    }
+    
+    @Override
+    protected void onPause() {
+        // TODO Auto-generated method stub
+        super.onPause();
+        ThreeMinsApplication.isActive = false;
+    }
+    
     public void initWidgets() {
         mLvFeedback = (ListView) findViewById(R.id.dialog_feedback_lv);
         mImgFeedbackClose = (ImageView) findViewById(R.id.dialog_feedback_img_close);

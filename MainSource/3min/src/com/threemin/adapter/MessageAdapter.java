@@ -91,4 +91,9 @@ public class MessageAdapter extends BaseAdapter {
 		mData.addAll(messageModels);
 		notifyDataSetChanged();
 	}
+	
+	public void addOldMessages(ArrayList<MessageModel> oldMessages) {
+	    mData.addAll(0, oldMessages);
+	    notifyDataSetChanged();
+	}
 }
