@@ -6,15 +6,16 @@ import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentSender.SendIntentException;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.threemin.app.ChatToBuyActivity;
 import com.threemin.app.DetailActivity;
 import com.threemin.app.FeedbackActivity;
 import com.threemin.app.FeedbackDialogActivity;
 import com.threemin.app.ProfileActivity;
+import com.threemin.app.ThreeMinsApplication;
 import com.threemin.uti.CommonConstant;
 import com.threemin.uti.PreferenceHelper;
 import com.urbanairship.actions.ActionUtils;
@@ -58,10 +59,14 @@ public class IntentReceiver extends BroadcastReceiver {
             notifyUpdateNumberActivities(context);
             
             //TODO: testing - check if the app is in forceground.
-            //if true: cancel the notification chat
+            //if app is active: cancel the notification
             //else: do nothing
-//            NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-//            notificationManager.cancel(id);
+            if (ThreeMinsApplication.isActive) {
+                NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                notificationManager.cancel(id);
+                String msg = intent.getStringExtra(PushManager.EXTRA_ALERT);
+                Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
+            }
 
             logPushExtras(intent);
 
