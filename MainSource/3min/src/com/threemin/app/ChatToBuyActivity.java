@@ -134,12 +134,6 @@ public class ChatToBuyActivity extends ThreeMinsBaseActivity {
 	// demo data
 	private void initListview() {
 		mListMessage = new ArrayList<MessageModel>();
-		// MessageModel temp1 = new MessageModel("Hello,  how are you?",
-		// true,conversation.getUser());
-		// MessageModel temp2 = new MessageModel("I'm fine, thanks",
-		// false,currentUser);
-		// mListMessage.add(temp1);
-		// mListMessage.add(temp2);
 		mMessageAdapter = new MessageAdapter(this, mListMessage);
 		mLvChatContent.addHeaderView(mHeader, null, false);
 		mLvChatContent.setAdapter(mMessageAdapter);
@@ -155,15 +149,7 @@ public class ChatToBuyActivity extends ThreeMinsBaseActivity {
 		
 		//check if intent is from push notification
 		boolean isFromPushNotification = intent.getBooleanExtra(CommonConstant.INTENT_IS_FROM_PUSH_NOTIFICATION, false);
-		if (isFromPushNotification) {
-            int numActivities = PreferenceHelper.getInstance(this).getNumberActivities();
-            if (numActivities > 0) {
-                numActivities--;
-            }
-            PreferenceHelper.getInstance(this).setNumberActivities(numActivities);
-        }
 		
-//		if (mProductID != null && mConversationID != null) {
 		if (mConversationID != null) {
 			//get from webservice
 			new GetConversationViaIdTask().execute(mConversationID);
