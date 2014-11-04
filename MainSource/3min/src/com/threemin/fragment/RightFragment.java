@@ -277,7 +277,6 @@ public class RightFragment extends Fragment {
     
     public void startActivityWithAnimation(Intent intent) {
         startActivity(intent);
-//        getActivity().overridePendingTransition(R.anim.anim_right_in, R.anim.anim_no_animation);
         CommonUti.addAnimationWhenStartActivity(getActivity());
     }
     
@@ -290,6 +289,12 @@ public class RightFragment extends Fragment {
             mPBarFollower.setVisibility(View.GONE);
             mPBarFollowing.setVisibility(View.GONE);
             mPBarFeedback.setVisibility(View.GONE);
+        }
+    }
+    
+    public void updateInfomation() {
+        if (userModel != null) {
+            new GetFollowInfoTask().execute(userModel.getId());
         }
     }
 

@@ -185,6 +185,7 @@ public class HomeActivity extends ThreeMinsBaseActivity {
                 new IntentFilter(IntentReceiver.ACTION_NOTIFY_UPDATE_NUMBER_ACTIVITIES));
         
         setUpNumberActivities();
+        rightFragment.updateInfomation();
     }
 
     @Override

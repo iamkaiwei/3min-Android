@@ -614,7 +614,7 @@ public class ImageViewActivity extends Activity {
 	}
 	
 	void doDeleteProduct() {
-	    
+	    //TODO: haven't implemented
 	}
 	
 }
