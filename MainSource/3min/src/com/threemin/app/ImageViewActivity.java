@@ -550,16 +550,24 @@ public class ImageViewActivity extends Activity {
 			return true;
 		case R.id.action_submit:
           ProductModel result=validateInput();
-          if(result!=null){
-              String data=new Gson().toJson(result);
-              Intent intent=new Intent();
-              intent.putExtra(CommonConstant.INTENT_PRODUCT_DATA, data);
-              setResult(RESULT_OK, intent);
-              if (mSwShareOnFacebook.isChecked()) {
-                  doShareOnFacebook();
+          
+          if (mIsUpdateProduct) {
+            //TODO: haven't implemented
+              Toast.makeText(mContext, "Update product", Toast.LENGTH_LONG).show();
+              moveTaskToBack(true);
+          } else {
+              if(result!=null){
+                  String data=new Gson().toJson(result);
+                  Intent intent=new Intent();
+                  intent.putExtra(CommonConstant.INTENT_PRODUCT_DATA, data);
+                  setResult(RESULT_OK, intent);
+                  if (mSwShareOnFacebook.isChecked()) {
+                      doShareOnFacebook();
+                  }
+                  finish();
               }
-              finish();
           }
+          
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);

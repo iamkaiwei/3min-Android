@@ -224,6 +224,7 @@
     <!-- <string formatted="false" name="postoffer_title">%s is selling it for %s kVND</string> -->
     <string formatted="false" name="postoffer_title">%s đang bán sản phẩm này\nvới giá %sk Vnd</string>
     <string name="activity_chat_no_more_older_messages">Không còn tin nhắn cũ hơn</string>
+    <string name="activity_chat_sold">Đã bán</string>
     
     <!-- fragment filter -->
     <!-- <string name="fm_filter_search_hint">Search for products</string> -->

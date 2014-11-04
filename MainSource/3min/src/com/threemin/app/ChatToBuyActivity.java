@@ -282,7 +282,6 @@ public class ChatToBuyActivity extends ThreeMinsBaseActivity {
             
             @Override
             public void onRefresh() {
-                // TODO Auto-generated method stub
                 getOlderMessage();
             }
         });
@@ -294,6 +293,8 @@ public class ChatToBuyActivity extends ThreeMinsBaseActivity {
 
 	public void onSendChat(View v) {
 		String msg = mEtChatInput.getText().toString();
+		msg = standardizeString(msg);
+		
 		if (msg != null && msg.length() > 0) {
 		    JsonObject data = new JsonObject();
 		    data.addProperty("name", currentUser.getFullName());
@@ -530,12 +531,11 @@ public class ChatToBuyActivity extends ThreeMinsBaseActivity {
 	}
 	
 	public void doMarkProductSold() {
-	    Toast.makeText(this, "Sold", Toast.LENGTH_LONG).show();
+	    Toast.makeText(this, getString(R.string.activity_chat_sold), Toast.LENGTH_LONG).show();
 	    mImgSelling.setImageResource(R.drawable.bt_sold_2_nm);
 	}
 	
 	public void getOlderMessage() {
-	    //TODO
 	    mHandler.sendEmptyMessage(SHOW_DIALOG);
         Thread t = new Thread(new Runnable() {
 
@@ -553,6 +553,13 @@ public class ChatToBuyActivity extends ThreeMinsBaseActivity {
             }
         });
         t.start();
+	}
+	
+	public String standardizeString(String input) {
+	    String output = input.trim();
+    	output = output.replaceAll("[\r\n]+", "\n");
+    	output = output.replaceAll("[ ]+", " ");
+	    return output;
 	}
 	
 }
