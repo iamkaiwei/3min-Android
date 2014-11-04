@@ -303,6 +303,9 @@
     <!-- <string name="fm_detail_view_many_offers">View %s offers</string> -->
     <string name="fm_detail_view_many_offers">Xem %s đề nghị</string>
     <string name="fm_detail_view_all_comment">Xem tất cả bình luận</string>
+    <string name="liked">Thích</string>
+    <string name="comment">Bình luận</string>
+    <string name="share">Chia sẻ</string>
     
     <!-- common util -->
     <!-- <string name="facebook_app_missed_error">Please install Facebook for Android to share easier!</string> -->

@@ -2,11 +2,11 @@
 <resources>
     
     <!-- urban airship -->
-    <string name="gcmSender">400375101132</string>
+    <!-- <string name="gcmSender">400375101132</string>
     <string name="developmentAppKey">YmOWEA0lR7aW77MI2u-SAQ</string>
     <string name="developmentAppSecret">gL0ScP2vSAGohDRfZjHDeA</string>
     <string name="productionAppKey">YmOWEA0lR7aW77MI2u-SAQ</string>
-    <string name="productionAppSecret">gL0ScP2vSAGohDRfZjHDeA</string>
+    <string name="productionAppSecret">gL0ScP2vSAGohDRfZjHDeA</string> -->
 
     <string name="font_semibold">OpenSans-Semibold.ttf</string>
     <string name="font_bold">OpenSans-Bold.ttf</string>
@@ -33,7 +33,7 @@
     <string name="app_name">3 mins</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="app_id">580806171975545</string>
+    <!-- <string name="app_id">580806171975545</string> -->
     <string name="activity_login_btn_login_gg"></string>
     <string name="please_wait">Please wait</string>
     <string name="loading_image">Loading image...</string>
@@ -87,7 +87,7 @@
     <string name="error_upload">Fail to upload product</string>
     
     <!-- <string name="google_map_API">AIzaSyA7LzP742pWpP0Vfmkf0GVwT22-gUzL7Nc</string> -->
-    <string name="google_map_API">AIzaSyDR-68JhnBJIhH9jh3ErQbW_6Vbsj93ObA</string>
+    <!-- <string name="google_map_API">AIzaSyDR-68JhnBJIhH9jh3ErQbW_6Vbsj93ObA</string> -->
     
     <string name="title_activity_detail">DetailActivity</string>
     <string name="camera_filter">Filters</string>
@@ -160,6 +160,9 @@
     <string name="fm_detail_view_1_offer">View 1 offer</string>
     <string name="fm_detail_view_many_offers">View %s offers</string>
     <string name="fm_detail_view_all_comment">View all comments</string>
+    <string name="liked">Liked</string>
+    <string name="comment">Comment</string>
+    <string name="share">Share</string>
     
     <!-- common util -->
     <string name="facebook_app_missed_error">Please install Facebook for Android to share easier!</string>

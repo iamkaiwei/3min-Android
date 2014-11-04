@@ -28,7 +28,6 @@
                 android:layout_width="@dimen/fm_right_avatar_size"
                 android:layout_height="@dimen/fm_right_avatar_size"
                 android:layout_margin="@dimen/common_spacing_double"
-                android:scaleType="centerCrop"
                 android:src="@drawable/ic_launcher"
                 threemins:svg_raw_resource="@raw/shape_avatar" />
 

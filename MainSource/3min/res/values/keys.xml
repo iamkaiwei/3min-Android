@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- urban airship -->
+    <string name="gcmSender">400375101132</string>
+    <string name="developmentAppKey">YmOWEA0lR7aW77MI2u-SAQ</string>
+    <string name="developmentAppSecret">gL0ScP2vSAGohDRfZjHDeA</string>
+    <string name="productionAppKey">YmOWEA0lR7aW77MI2u-SAQ</string>
+    <string name="productionAppSecret">gL0ScP2vSAGohDRfZjHDeA</string>
+    
+    <!-- facebook -->
+    <string name="app_id">580806171975545</string>
+    
+    <!-- google map -->
+    <!-- <string name="google_map_API">AIzaSyA7LzP742pWpP0Vfmkf0GVwT22-gUzL7Nc</string> -->
+    <string name="google_map_API">AIzaSyDR-68JhnBJIhH9jh3ErQbW_6Vbsj93ObA</string>
+</resources>

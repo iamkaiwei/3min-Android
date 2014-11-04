@@ -79,8 +79,8 @@
                                     android:id="@+id/inflater_header_product_tv_time"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginLeft="@dimen/common_spacing"
                                     android:layout_gravity="center_vertical"
+                                    android:layout_marginLeft="@dimen/common_spacing"
                                     android:textColor="@color/common_grey"
                                     android:textSize="@dimen/textsize_small"
                                     threemins:customTypeface="@string/font_regular" />
@@ -219,20 +219,28 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
-                        android:gravity="center_vertical|left"
+                        android:gravity="center"
                         android:orientation="horizontal" >
 
-                        <ImageView
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="@dimen/common_spacing"
-                            android:src="@drawable/selector_like" />
+                            android:orientation="horizontal" >
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Liked"
-                            android:textColor="@color/selector_text_share_on_facebook" />
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginRight="@dimen/common_spacing"
+                                android:src="@drawable/selector_like" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:text="@string/liked"
+                                android:textColor="@color/selector_text_share_on_facebook" />
+                        </LinearLayout>
                     </LinearLayout>
 
                     <View
@@ -250,17 +258,25 @@
                         android:gravity="center"
                         android:orientation="horizontal" >
 
-                        <ImageView
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="@dimen/common_spacing"
-                            android:src="@drawable/ic_comment" />
+                            android:orientation="horizontal" >
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Comment"
-                            android:textColor="@color/common_grey" />
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginRight="@dimen/common_spacing"
+                                android:src="@drawable/ic_comment" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:text="@string/comment"
+                                android:textColor="@color/common_grey" />
+                        </LinearLayout>
                     </LinearLayout>
 
                     <View
@@ -275,20 +291,28 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
-                        android:gravity="center_vertical|right"
+                        android:gravity="center"
                         android:orientation="horizontal" >
 
-                        <ImageView
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="@dimen/common_spacing"
-                            android:src="@drawable/selector_share_on_facebook" />
+                            android:orientation="horizontal" >
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Share"
-                            android:textColor="@color/selector_text_share_on_facebook" />
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginRight="@dimen/common_spacing"
+                                android:src="@drawable/selector_share_on_facebook" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:text="@string/share"
+                                android:textColor="@color/selector_text_share_on_facebook" />
+                        </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
             </RelativeLayout>
