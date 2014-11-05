@@ -104,6 +104,8 @@ public class HomeActivity extends ThreeMinsBaseActivity {
             setUpNumberActivities();
         }
     };
+    
+    private boolean isFromOnCreate = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,7 +167,8 @@ public class HomeActivity extends ThreeMinsBaseActivity {
             }
         });
         initActionBar();
-
+        
+        isFromOnCreate = true;
     }
 
     @Override
@@ -185,7 +188,11 @@ public class HomeActivity extends ThreeMinsBaseActivity {
                 new IntentFilter(IntentReceiver.ACTION_NOTIFY_UPDATE_NUMBER_ACTIVITIES));
         
         setUpNumberActivities();
-        rightFragment.updateInfomation();
+        if (isFromOnCreate) {
+            isFromOnCreate = false;
+        } else {
+            rightFragment.updateInfomation();
+        }
     }
 
     @Override

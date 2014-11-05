@@ -293,6 +293,7 @@ public class RightFragment extends Fragment {
     }
     
     public void updateInfomation() {
+        Log.i(tag, "Update infomation");
         if (userModel != null) {
             new GetFollowInfoTask().execute(userModel.getId());
         }
