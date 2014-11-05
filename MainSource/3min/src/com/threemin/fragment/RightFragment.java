@@ -12,21 +12,25 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
+import com.threemin.app.FeedbackActivity;
 import com.threemin.app.FollowerFollowingActivity;
 import com.threemin.app.SettingActivity;
 import com.threemin.app.UserLikeProductActivity;
 import com.threemin.model.UserModel;
 import com.threemin.uti.CommonConstant;
+import com.threemin.uti.CommonUti;
 import com.threemin.uti.PreferenceHelper;
 import com.threemin.webservice.RelationshipWebService;
 import com.threemin.webservice.UserWebService;
 import com.threemins.R;
 
 public class RightFragment extends Fragment {
+    public static String tag = "RightFragment";
     int mode;
     UserModel userModel;
     public static boolean FOLLOW = true;
@@ -34,6 +38,14 @@ public class RightFragment extends Fragment {
     public static boolean GET_FOLLOWERS = true;
     public static boolean GET_FOLLOWINGS = false;
     ViewGroup rootView;
+    
+    ProgressBar mPBarFollower, mPBarFollowing, mPBarFeedback;
+    
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -47,6 +59,7 @@ public class RightFragment extends Fragment {
                     UserModel.class);
             TextView listing = (TextView) rootView.findViewById(R.id.tv_listing);
             listing.setText(R.string.profile_list);
+            listing.setVisibility(View.GONE);
             
             UserModel currentUser = PreferenceHelper.getInstance(getActivity()).getCurrentUser();
             if (currentUser != null && userModel != null && currentUser.getId() != userModel.getId()) {
@@ -58,16 +71,19 @@ public class RightFragment extends Fragment {
             Log.i("RightFragment", userModel.getFirstName());
         }
         ImageView img = (ImageView) rootView.findViewById(R.id.fm_right_avatar);
-        UrlImageViewHelper.setUrlDrawable(img, userModel.getFacebook_avatar());
+        UrlImageViewHelper.setUrlDrawable(img, userModel.getFacebook_avatar(), R.drawable.avatar_loading);
 
         TextView tv_name = (TextView) rootView.findViewById(R.id.fm_right_tv_username);
         tv_name.setText(userModel.getFullName());
         
         Log.i("RightFragment: ", userModel.getFirstName() + "isFollowed: " + (userModel.isFollowed()?"true":"false"));
         
+        mPBarFollower = (ProgressBar) rootView.findViewById(R.id.fm_right_progress_bar_follower);
+        mPBarFollowing = (ProgressBar) rootView.findViewById(R.id.fm_right_progress_bar_following);
+        mPBarFeedback = (ProgressBar) rootView.findViewById(R.id.fm_right_progress_bar_feedback);
+        
         new GetFollowInfoTask().execute(userModel.getId());
-//        userProduct(userModel);
-//        initListener(rootView);
+
         return rootView;
     }
     
@@ -77,19 +93,21 @@ public class RightFragment extends Fragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            showLoadingIcon(true);
         }
         
         @Override
         protected UserModel doInBackground(Integer... params) {
             String token = PreferenceHelper.getInstance(getActivity()).getTokken();
             UserModel model = new UserWebService().getUserViaId(token, "" + userModel.getId());
-            Log.i("RightFragment", model.getFullName() + " followers: " + model.getCountFollowers() + " following: " + model.getCountFollowing());
             return model;
         }
         
         @Override
         protected void onPostExecute(UserModel result) {
+            showLoadingIcon(false);
             if (result != null) {
+                Log.i("RightFragment", result.getFullName() + " followers: " + result.getCountFollowers() + " following: " + result.getCountFollowing());
                 TextView tv_followers_number = (TextView) rootView.findViewById(R.id.fm_right_tv_follower_number);
                 tv_followers_number.setText("" + result.getCountFollowers());
 
@@ -111,6 +129,15 @@ public class RightFragment extends Fragment {
 
                 userProduct(result);
                 userModel = result;
+                int countPositive = userModel.getCountPositive();
+                int countNegative = userModel.getCountNegative();
+                TextView tvFeedbackRatio = (TextView) rootView.findViewById(R.id.fm_right_tv_feedback_number);
+                if (countPositive == 0) {
+                    tvFeedbackRatio.setText("0%");
+                } else {
+                    int ratio = (int)((float)countPositive / ((float)countPositive + (float)countNegative) * 100);
+                    tvFeedbackRatio.setText("" + ratio + "%");
+                }
                 initListener(rootView);
             }
         }
@@ -172,6 +199,15 @@ public class RightFragment extends Fragment {
                 startActivityWithAnimation(intent);
             }
         });
+        rootView.findViewById(R.id.fm_right_ln_feedback).setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+                //TODO: in future, use to allow user to send a feedback
+//                Intent intent = new Intent(getActivity(), FeedbackActivity.class);
+//                startActivityWithAnimation(intent);
+            }
+        });
     }
 
     //init list product of user
@@ -181,9 +217,9 @@ public class RightFragment extends Fragment {
             productFragmentGrid = new ListProductFragment();
             productFragmentGrid.setMode(ListProductFragment.MODE_USER_PRODUCT);
             productFragmentGrid.setUserModel(userModel);
-            getFragmentManager().beginTransaction().replace(R.id.content_list, productFragmentGrid).commit();
+            getChildFragmentManager().beginTransaction().replace(R.id.content_list, productFragmentGrid).commit();
         } else {
-            getFragmentManager().beginTransaction().add(R.id.content_list, new UserActivityFragment()).commit();
+            getChildFragmentManager().beginTransaction().replace(R.id.content_list, new UserActivityFragment()).commit();
         }
     }
     
@@ -212,7 +248,6 @@ public class RightFragment extends Fragment {
     	
     	@Override
     	protected void onPreExecute() {
-    		// TODO Auto-generated method stub
     		super.onPreExecute();
     		dialog = new ProgressDialog(getActivity());
     		dialog.setMessage(getActivity().getString(R.string.please_wait));
@@ -242,7 +277,25 @@ public class RightFragment extends Fragment {
     
     public void startActivityWithAnimation(Intent intent) {
         startActivity(intent);
-        getActivity().overridePendingTransition(R.anim.anim_right_in, R.anim.anim_no_animation);
+        CommonUti.addAnimationWhenStartActivity(getActivity());
+    }
+    
+    public void showLoadingIcon(boolean show) {
+        if (show) {
+            mPBarFollower.setVisibility(View.VISIBLE);
+            mPBarFollowing.setVisibility(View.VISIBLE);
+            mPBarFeedback.setVisibility(View.VISIBLE);
+        } else {
+            mPBarFollower.setVisibility(View.GONE);
+            mPBarFollowing.setVisibility(View.GONE);
+            mPBarFeedback.setVisibility(View.GONE);
+        }
+    }
+    
+    public void updateInfomation() {
+        if (userModel != null) {
+            new GetFollowInfoTask().execute(userModel.getId());
+        }
     }
 
 }

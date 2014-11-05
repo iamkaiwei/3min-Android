@@ -3,7 +3,6 @@ package com.threemin.app;
 import android.app.ActionBar;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -14,7 +13,7 @@ import com.threemin.fragment.ListMessageFragment;
 import com.threemin.uti.CommonUti;
 import com.threemins.R;
 
-public class ListMessageActivity extends FragmentActivity {
+public class ListMessageActivity extends ThreeMinsBaseActivity {
 
 	@Override
 	protected void onCreate(Bundle arg0) {

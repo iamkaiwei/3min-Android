@@ -336,4 +336,9 @@ public class CommonUti {
 	        Log.d("width", "width=" + width);
 	        return width;
 	}
+	
+	//animation: the new activity will slide from right to left to enter the screen
+	public static void addAnimationWhenStartActivity(Activity act) {
+	    act.overridePendingTransition(R.anim.anim_right_in,R.anim.anim_no_animation);
+	}
 }

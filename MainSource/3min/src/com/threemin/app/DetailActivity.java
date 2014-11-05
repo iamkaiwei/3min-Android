@@ -1,12 +1,10 @@
 package com.threemin.app;
 
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
-import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 import android.app.ActionBar;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -19,14 +17,16 @@ import com.facebook.widget.LoginButton;
 import com.threemin.fragment.DetailFragment;
 import com.threemin.uti.CommonConstant;
 import com.threemin.uti.CommonUti;
+import com.threemin.uti.PreferenceHelper;
 import com.threemins.R;
 
-public class DetailActivity extends SwipeBackActivity {
+public class DetailActivity extends ThreeMinsBaseActivity {
 	
 	ImageView mImgBack;
 	TextView mTvTitle;
 	LoginButton mLoginButton;
 	SwipeBackLayout mSwipeBack;
+	DetailFragment mDetailFragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,15 +37,15 @@ public class DetailActivity extends SwipeBackActivity {
 		String productID = getIntent().getStringExtra(CommonConstant.INTENT_PRODUCT_DATA_VIA_ID);
 		Log.i("DetailActivity", "Product ID: " + productID);
 		
-		// Init the swipe back mechanism
-		mSwipeBack = getSwipeBackLayout();
-		mSwipeBack.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
-		
+		//check if intent is from push notification
+        boolean isFromPushNotification = getIntent().getBooleanExtra(CommonConstant.INTENT_IS_FROM_PUSH_NOTIFICATION, false);
+        
 		initActionBar();
 
 		if (savedInstanceState == null || (productID != null && productID.length() > 0)) {
 			Log.i("DetailActivity", "Create Fragment");
-			getSupportFragmentManager().beginTransaction().add(R.id.container, new DetailFragment()).commit();
+			mDetailFragment = new DetailFragment();
+			getSupportFragmentManager().beginTransaction().add(R.id.container, mDetailFragment).commit();
 		}
 	}
 	
@@ -61,13 +61,13 @@ public class DetailActivity extends SwipeBackActivity {
 	}
 	
 	@Override
-	public void onBackPressed(){
-		scrollToFinishActivity();
-//		super.onBackPressed();
-//		overridePendingTransition(R.anim.swipeback_stack_to_front,
-//				R.anim.swipeback_stack_right_out);
+	protected void onResume() {
+	    super.onResume();
+	    if (mDetailFragment != null) {
+            mDetailFragment.refreshTopComment();
+        }
 	}
-
+	
 	private void initActionBar() {
 		ActionBar bar = getActionBar();
 		bar.setDisplayShowHomeEnabled(true);

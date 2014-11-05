@@ -2,6 +2,7 @@ package com.threemin.fragment;
 
 import java.util.List;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -20,13 +21,17 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.android.gms.internal.db;
 import com.google.gson.Gson;
 import com.threemin.adapter.ActivityAdapter;
 import com.threemin.app.ChatToBuyActivity;
 import com.threemin.app.DetailActivity;
+import com.threemin.app.HomeActivity;
 import com.threemin.app.ProfileActivity;
+import com.threemin.database.DatabaseAccessHelper;
 import com.threemin.model.ActivityModel;
 import com.threemin.uti.CommonConstant;
+import com.threemin.uti.CommonUti;
 import com.threemin.uti.PreferenceHelper;
 import com.threemin.webservice.ActivityWebService;
 import com.threemins.R;
@@ -76,16 +81,30 @@ public class UserActivityFragment extends Fragment {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ActivityModel model = data.get(position);
-                if (CommonConstant.ACTIVITY_TYPE_RELATIONSHIP.equals(model.getSubjectType())) {
-                    startActivityForRelationship(model);
-                } else if (CommonConstant.ACTIVITY_TYPE_CONVERSATION.equals(model.getSubjectType())) {
-                    startActivityForConversation(model);
-                } else if (CommonConstant.ACTIVITY_TYPE_PRODUCT.equals(model.getSubjectType())) {
-                    startActivityForProduct(model);
-                } else {
-                    Toast.makeText(getActivity(), "Not implement", Toast.LENGTH_LONG).show();
+                Activity activity = getActivity();
+                if (activity instanceof HomeActivity) {
+                    ((HomeActivity)activity).clearNumberActivities();
                 }
+                ActivityModel model = data.get(position);
+                int type = model.getCategory();
+                
+                if (type == CommonConstant.TYPE_CHAT || type == CommonConstant.TYPE_OFFER) {
+                    startActivityForConversation(model);
+                } else if (type == CommonConstant.TYPE_COMMENT || type == CommonConstant.TYPE_LIKE) {
+                    startActivityForProduct(model);
+                } else if (type == CommonConstant.TYPE_FOLLOW || type == CommonConstant.TYPE_FEEDBACK) {
+                    startActivityForRelationship(model);
+                }
+                
+//                if (CommonConstant.ACTIVITY_TYPE_RELATIONSHIP.equals(model.getSubjectType())) {
+//                    startActivityForRelationship(model);
+//                } else if (CommonConstant.ACTIVITY_TYPE_CONVERSATION.equals(model.getSubjectType())) {
+//                    startActivityForConversation(model);
+//                } else if (CommonConstant.ACTIVITY_TYPE_PRODUCT.equals(model.getSubjectType())) {
+//                    startActivityForProduct(model);
+//                } else {
+//                    Toast.makeText(getActivity(), "Not implement", Toast.LENGTH_LONG).show();
+//                }
             }
         });
 		
@@ -100,15 +119,33 @@ public class UserActivityFragment extends Fragment {
             }
         });
         
+        //get cache data
+        getCachedData();
+        
         new GetActivitiesListTask().execute(STEP_INIT);
 		
 		return rootView;
+	}
+	
+	public void getCachedData() {
+	    DatabaseAccessHelper dbHeler = new DatabaseAccessHelper(getActivity());
+	    dbHeler.openDatabase();
+	    List<ActivityModel> cached = dbHeler.getListActivities();
+	    adapter = new ActivityAdapter(getActivity(), cached);
+	    listview.setAdapter(adapter);
+	    dbHeler.closeDatabase();
 	}
 	
 	//call webservice to get list activities
     private class GetActivitiesListTask extends AsyncTask<Integer, Void, List<ActivityModel>> {
         
         int currentStep;
+        DatabaseAccessHelper mDBHelper;
+        
+        public GetActivitiesListTask() {
+            mDBHelper = new DatabaseAccessHelper(getActivity());
+            mDBHelper.openDatabase();
+        }
         
         @Override
         protected void onPreExecute() {
@@ -146,11 +183,15 @@ public class UserActivityFragment extends Fragment {
                     data = result;
                     adapter = new ActivityAdapter(getActivity(), result);
                     listview.setAdapter(adapter);
+                    
+                    mDBHelper.deleteAllActivities();
                 } else if (currentStep == STEP_LOADMORE) { 
                     data.addAll(result);
                     adapter.setListUsers(data);
                 }
+                mDBHelper.insertListActivities(result);
             } else if (currentStep == STEP_INIT) {
+                mDBHelper.deleteAllActivities();
                 if (adapter == null) {
                     adapter = new ActivityAdapter(getActivity(), result);
                 } else {
@@ -158,6 +199,7 @@ public class UserActivityFragment extends Fragment {
                 }
             }
             Log.i(tag, "GetActivitiesListTask result: " + new Gson().toJson(result));
+            mDBHelper.closeDatabase();
         }
     }
     
@@ -166,7 +208,7 @@ public class UserActivityFragment extends Fragment {
         Intent intent = new Intent(getActivity(), DetailActivity.class);
         intent.putExtra(CommonConstant.INTENT_PRODUCT_DATA_VIA_ID, "" + model.getSubjectID());
         startActivity(intent);
-        getActivity().overridePendingTransition(R.anim.anim_right_in, R.anim.anim_no_animation);
+        CommonUti.addAnimationWhenStartActivity(getActivity());
     }
 
     private void startActivityForConversation(ActivityModel model) {
@@ -174,7 +216,7 @@ public class UserActivityFragment extends Fragment {
         Intent intent = new Intent(getActivity(), ChatToBuyActivity.class);
         intent.putExtra(CommonConstant.INTENT_CONVERSATION_DATA_VIA_ID, "" + model.getSubjectID());
         startActivity(intent);
-        getActivity().overridePendingTransition(R.anim.anim_right_in, R.anim.anim_no_animation);
+        CommonUti.addAnimationWhenStartActivity(getActivity());
     }
 
     private void startActivityForRelationship(ActivityModel model) {
@@ -182,7 +224,7 @@ public class UserActivityFragment extends Fragment {
         Intent intent = new Intent(getActivity(), ProfileActivity.class);
         intent.putExtra(CommonConstant.INTENT_USER_DATA_VIA_ID, "" + model.getUser().getId());
         startActivity(intent);
-        getActivity().overridePendingTransition(R.anim.anim_right_in, R.anim.anim_no_animation);
+        CommonUti.addAnimationWhenStartActivity(getActivity());
     }
 	
 }

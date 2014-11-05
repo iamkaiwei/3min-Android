@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:threemins="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <!-- group product info -->
+    group product info
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -56,17 +57,17 @@
             threemins:customTypeface="@string/font_regular" />
     </RelativeLayout>
 
-    <!-- line divider -->
+    line divider
 
     <View
         android:layout_width="fill_parent"
         android:layout_height="@dimen/common_spacing_double"
         android:background="@color/background_grey" />
 
-    <!-- price offerd, location, chat content, chat input -->
+    price offerd, location, chat content, chat input
 
 
-    <!-- price offerd -->
+    price offerd
 
     <RelativeLayout
         android:layout_width="fill_parent"
@@ -96,14 +97,14 @@
             android:textStyle="bold" />
     </RelativeLayout>
 
-    <!-- divider -->
+    divider
 
     <View
         android:layout_width="fill_parent"
         android:layout_height="1dp"
         android:background="@color/background_grey" />
 
-    <!-- location -->
+    location
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -131,14 +132,14 @@
             threemins:customTypeface="@string/font_regular" />
     </LinearLayout>
 
-    <!-- divider -->
+    divider
 
     <View
         android:layout_width="fill_parent"
         android:layout_height="1dp"
         android:background="@color/background_grey" />
 
-    <!-- selling -->
+    selling
 
     <ImageView
         android:id="@+id/activity_chat_selling"
@@ -147,9 +148,9 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="@dimen/common_spacing"
         android:layout_marginTop="@dimen/common_spacing"
-        android:src="@drawable/bt_selling" />
+        android:src="@drawable/selector_act_chat_btn_selling" />
 
-    <!-- divider -->
+    divider
 
     <View
         android:layout_width="fill_parent"
@@ -160,7 +161,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" >
 
-        <!-- chat input -->
+        chat input
 
         <RelativeLayout
             android:id="@+id/activity_chat_rl_chat_input"
@@ -199,7 +200,7 @@
                 android:onClick="onSendChat" />
         </RelativeLayout>
 
-        <!-- others -->
+        others
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -207,7 +208,7 @@
             android:layout_above="@id/activity_chat_rl_chat_input"
             android:orientation="vertical" >
 
-            <!-- chat content -->
+            chat content
 
             <com.lanna.droidlib.view.CustomTextView
                 android:id="@+id/activity_chat_tv_chat_content_label"
@@ -221,7 +222,7 @@
                 android:textSize="@dimen/textsize_small"
                 threemins:customTypeface="@string/font_regular" />
 
-            <!-- list chat -->
+            list chat
 
             <ListView
                 android:id="@+id/activity_chat_lv_chat_content"
@@ -235,3 +236,65 @@
     </RelativeLayout>
 
 </LinearLayout>
+-->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:threemins="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/activity_chat_swipe"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+            android:layout_above="@+id/activity_chat_rl_chat_input"
+        android:layout_marginTop="1dp" >
+
+        <ListView
+            android:id="@+id/activity_chat_lv_chat_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            
+            android:divider="@android:color/transparent" >
+        </ListView>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <RelativeLayout
+        android:id="@+id/activity_chat_rl_chat_input"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/background_grey"
+        android:padding="@dimen/common_spacing_double" >
+
+        <com.lanna.droidlib.view.CustomEditText
+            android:id="@+id/activity_chat_et_chat_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/common_spacing_double"
+            android:layout_toLeftOf="@+id/button1"
+            android:background="@drawable/background_chat_input"
+            android:hint="@string/activity_chat_chat_input_hint"
+            android:paddingBottom="@dimen/common_spacing"
+            android:paddingLeft="@dimen/activity_chat_tv_radius"
+            android:paddingRight="@dimen/activity_chat_tv_radius"
+            android:paddingTop="@dimen/common_spacing"
+            android:textColor="@color/common_black"
+            android:textColorHint="@color/activity_chat_text_color_grey"
+            android:textSize="@dimen/textsize_medium"
+            threemins:customTypeface="@string/font_regular" />
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/activity_chat_btn_send_height"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/selector_btn_send"
+            android:onClick="onSendChat" />
+    </RelativeLayout>
+
+</RelativeLayout>

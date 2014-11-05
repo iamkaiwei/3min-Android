@@ -26,6 +26,7 @@ public class CommonConstant {
     public static final String PREF_TOKEN = "PREF_TOKEN";
     public static final String PREF_USER = "PREF_USER";
     public static final String PREF_APID = "PREF_APID";
+    public static final String PREF_ACTIVITIES = "PREF_ACTIVITIES";
 
     public static final String CURRENCY = "k Vnd";
 
@@ -42,14 +43,31 @@ public class CommonConstant {
     public static final String INTENT_USER_DATA_VIA_ID="userDataViaID";
     public static final String INTENT_GET_FOLLOW_LIST="getFollowList";
     public static final String INTENT_GET_FOLLOW_COUNT="getFollowCount";
+    public static final String INTENT_IS_FROM_PUSH_NOTIFICATION = "isFromPushNotification";
+    public static final String INTENT_SCHEDULE_ID = "scheduleID";
+    public static final String INTENT_EDIT_PRODUCT = "editProduct";
 
     public static final String PUSHER_CHAT_EVENT_NAME = "client-chat";
     public static final String PUSHER_CHAT_EVENT_TYPING = "client-typing";
     public static final String PUSHER_CHAT_EVENT_UNTYPING = "client-untyping";
-    public static final String PUSHER_KEY = "ce3898cbc04d99f952cd";
+//    public static final String PUSHER_KEY = "ce3898cbc04d99f952cd";
+    public static final String PUSHER_KEY = "bcf0d42e1320df788db4";
     
     //Activity Types
     public static final String ACTIVITY_TYPE_CONVERSATION = "Conversation";
     public static final String ACTIVITY_TYPE_RELATIONSHIP = "Relationship";
     public static final String ACTIVITY_TYPE_PRODUCT = "Product";
+    
+    //type of notification and user 's activity
+    public static final int TYPE_REMIND_BUYER_FEEDBACK = 0;
+    public static final int TYPE_CHAT = 1;
+    public static final int TYPE_OFFER = 2;
+    public static final int TYPE_LIKE = 3;
+    public static final int TYPE_FOLLOW = 4;
+    public static final int TYPE_COMMENT = 5;
+    public static final int TYPE_FEEDBACK = 6;
+    
+    public static final String FEEDBACK_POSITIVE = "positive";
+    public static final String FEEDBACK_NEGATIVE = "negative";
+    public static final String FEEDBACK_NORMAL = "normal";
 }

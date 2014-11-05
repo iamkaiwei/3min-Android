@@ -58,7 +58,7 @@ public class ActivityAdapter extends BaseAdapter {
 		TextView tvTime = (TextView) convertView.findViewById(R.id.inflater_activity_tv_time);
 		ImageView imgProduct = (ImageView) convertView.findViewById(R.id.inflater_activity_product);
 		
-		UrlImageViewHelper.setUrlDrawable(imgAvatar, mData.get(position).getUser().getFacebook_avatar());
+		UrlImageViewHelper.setUrlDrawable(imgAvatar, mData.get(position).getUser().getFacebook_avatar(), R.drawable.avatar_loading);
 		
 		String content = mData.get(position).getContent();
 		String fullName = mData.get(position).getUser().getFullName();
@@ -72,7 +72,14 @@ public class ActivityAdapter extends BaseAdapter {
 				System.currentTimeMillis(), 0L, DateUtils.FORMAT_ABBREV_RELATIVE));
 		
 		tvMessage.setVisibility(View.GONE);
-		imgProduct.setVisibility(View.INVISIBLE);
+		
+		String imgURL = mData.get(position).getDisplayImageUrl();
+		if (imgURL != null && imgURL.length() > 0) {
+            imgProduct.setVisibility(View.VISIBLE);
+		    UrlImageViewHelper.setUrlDrawable(imgProduct, mData.get(position).getDisplayImageUrl(), R.drawable.stuff_img);
+        } else {
+            imgProduct.setVisibility(View.GONE);
+        }
 		return convertView;
 	}
 	

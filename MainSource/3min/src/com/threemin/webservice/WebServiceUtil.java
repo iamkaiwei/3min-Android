@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
@@ -15,7 +16,7 @@ import android.util.Log;
 
 
 public class WebServiceUtil {
-	public static final String tag = WebServiceUtil.class.getSimpleName();
+	public static final String tag = "WebServiceUtil";
 
 	protected static final int TIMEOUT_CONNECTION = 10000;
 	
@@ -40,6 +41,8 @@ public class WebServiceUtil {
 		BufferedReader in = new BufferedReader(new InputStreamReader(
 				conn.getInputStream(), Charset.forName("UTF-8")));
 		String inputLine;
+		
+		int code = ((HttpURLConnection) conn).getResponseCode();
 
 		String result = "";
 		while ((inputLine = in.readLine()) != null) {
@@ -47,6 +50,7 @@ public class WebServiceUtil {
 		}
 		in.close();
 		Log.d(tag, result);
+		Log.i("responseCode", "" + code);
 		return result;
 	}
 	
@@ -111,5 +115,34 @@ public class WebServiceUtil {
 	public static String getHttpUrl(String fileURL) {
 		fileURL = fileURL.replaceAll(" ", "%20");
 		return fileURL;
+	}
+	
+	//return the response code
+//	protected static String postRequest(String link) throws Exception {
+	protected static int postRequest(String link) throws Exception {
+	    URL url = new URL(link);
+        URLConnection conn = url.openConnection();
+        conn.setConnectTimeout(TIMEOUT_CONNECTION);
+        conn.setReadTimeout(TIMEOUT_CONNECTION);
+        ((HttpURLConnection) conn).setRequestMethod("POST");
+        conn.setDoOutput(true);
+        conn.setDoInput(true);
+        conn.setRequestProperty("Content-Type", "application/json");
+
+
+        // Get the response
+        BufferedReader in = new BufferedReader(new InputStreamReader(
+                conn.getInputStream(), Charset.forName("UTF-8")));
+        String inputLine;
+
+        String result = "";
+        while ((inputLine = in.readLine()) != null) {
+            result += inputLine;
+        }
+        in.close();
+        Log.d(tag, "postRequest result: " + result);
+        int code = ((HttpURLConnection) conn).getResponseCode();
+        Log.i(tag, "postRequest Response code: " + code);
+        return code;
 	}
 }

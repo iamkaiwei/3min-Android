@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:threemins="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_grey"
+    android:orientation="vertical" >
+
+    <!-- product image -->
+
+    <com.threemin.view.RoundedImageView
+        android:id="@+id/act_feedback_img_product"
+        android:layout_width="@dimen/act_feedback_img_product_size"
+        android:layout_height="@dimen/act_feedback_img_product_size"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/common_spacing_double"
+        android:layout_marginTop="@dimen/common_spacing_triple"
+        android:scaleType="centerCrop"
+        android:src="@drawable/stuff_img" />
+
+    <!-- question -->
+
+    <com.lanna.droidlib.view.CustomTextView
+        android:id="@+id/inflater_header_product_tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/common_spacing_triple"
+        android:text="@string/act_feedback_question"
+        android:textColor="@color/common_black"
+        android:textSize="@dimen/textsize_small"
+        threemins:customTypeface="@string/font_regular" />
+
+    <!-- 3 options -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/common_spacing_triple"
+        android:paddingRight="@dimen/common_spacing_triple" >
+
+        <!-- not satisfied -->
+        <RelativeLayout
+            android:id="@+id/act_feedback_option_rl_not_satisfied"
+            style="@style/act_feedback_option_rl" >
+
+            <ImageView
+                android:id="@+id/act_feedback_option_img_not_satisfied"
+                style="@style/act_feedback_option_img"
+                android:src="@drawable/ic_feedback_bad" />
+
+            <com.lanna.droidlib.view.CustomTextView
+                android:id="@+id/act_feedback_option_tv_not_satisfied"
+                style="@style/act_feedback_option_tv"
+                android:layout_toRightOf="@+id/act_feedback_option_img_not_satisfied"
+                android:text="@string/act_feedback_option_not_satisfied"
+                threemins:customTypeface="@string/font_regular" />
+            
+            <ImageView 
+                android:id="@+id/act_feedback_option_check_not_satisfied"
+				style="@style/act_feedback_option_check"/>
+        </RelativeLayout>
+        
+        <View 
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/background_grey"/>
+
+        <!-- no comment -->
+        <RelativeLayout
+            android:id="@+id/act_feedback_option_rl_no_comment"
+            style="@style/act_feedback_option_rl" >
+
+            <ImageView
+                android:id="@+id/act_feedback_option_img_no_comment"
+                style="@style/act_feedback_option_img"
+                android:src="@drawable/ic_feedback_no_comment" />
+
+            <com.lanna.droidlib.view.CustomTextView
+                android:id="@+id/act_feedback_option_tv_no_comment"
+                style="@style/act_feedback_option_tv"
+                android:layout_toRightOf="@+id/act_feedback_option_img_no_comment"
+                android:text="@string/act_feedback_option_no_comment"
+                threemins:customTypeface="@string/font_regular" />
+            
+            <ImageView 
+                android:id="@+id/act_feedback_option_check_no_comment"
+                android:visibility="gone"
+				style="@style/act_feedback_option_check"/>
+        </RelativeLayout>
+        
+        <View 
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/background_grey"/>
+
+        <!-- I am satisfied -->
+        <RelativeLayout
+            android:id="@+id/act_feedback_option_rl_satisfied"
+            style="@style/act_feedback_option_rl" >
+
+            <ImageView
+                android:id="@+id/act_feedback_option_img_satisfied"
+                style="@style/act_feedback_option_img"
+                android:src="@drawable/ic_feedback_good" />
+
+            <com.lanna.droidlib.view.CustomTextView
+                android:id="@+id/act_feedback_option_tv_satisfied"
+                style="@style/act_feedback_option_tv"
+                android:layout_toRightOf="@+id/act_feedback_option_img_satisfied"
+                android:text="@string/act_feedback_option_i_am_satisfied"
+                threemins:customTypeface="@string/font_regular" />
+            
+            <ImageView 
+                android:id="@+id/act_feedback_option_check_satisfied"
+                android:visibility="gone"
+				style="@style/act_feedback_option_check"/>
+        </RelativeLayout>
+        
+    </LinearLayout>
+    
+    <!-- text box feedback -->
+    <com.lanna.droidlib.view.CustomEditText
+        android:id="@+id/act_feedback_et_input"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:hint="@string/act_feedback_hint"
+        android:textColor="@color/common_grey"
+        android:textSize="@dimen/textsize_small"
+        android:background="@android:color/white"
+        android:gravity="top|left"
+        android:layout_margin="@dimen/common_spacing_triple"
+        android:padding="@dimen/common_spacing"
+        threemins:customTypeface="@string/font_regular" />
+
+</LinearLayout>

@@ -99,7 +99,7 @@ public class ProductAdapter extends BaseAdapter {
 		//old header info
 
 		ImageView imageOwner = (ImageView) convertView.findViewById(R.id.inflater_heeader_product_image);
-		UrlImageViewHelper.setUrlDrawable(imageOwner, model.getOwner().getFacebook_avatar());
+		UrlImageViewHelper.setUrlDrawable(imageOwner, model.getOwner().getFacebook_avatar(), R.drawable.avatar_loading);
 
 		TextView tv_nameOwner = (TextView) convertView.findViewById(R.id.inflater_heeader_product_tv_name);
 		tv_nameOwner.setText(model.getOwner().getFullName());

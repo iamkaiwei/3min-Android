@@ -1,10 +1,6 @@
 package com.threemin.app;
 
-import com.threemin.uti.CommonUti;
-import com.threemins.R;
-
 import android.app.ActionBar;
-import android.app.Activity;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -14,7 +10,10 @@ import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class AboutActivity extends Activity {
+import com.threemin.uti.CommonUti;
+import com.threemins.R;
+
+public class AboutActivity extends ThreeMinsBaseActivity {
 	
 	WebView mWvContent;
 	

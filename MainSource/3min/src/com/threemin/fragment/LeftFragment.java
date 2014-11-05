@@ -37,6 +37,13 @@ public class LeftFragment extends Fragment implements OnClickListener {
 	ImageView imgResetFilter;
 	
 	int selectedFilterID;
+	
+	@Override
+    public void onCreate(Bundle savedInstanceState) {
+        // TODO Auto-generated method stub
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -172,6 +179,7 @@ public class LeftFragment extends Fragment implements OnClickListener {
 			selectedFilterID = FILTER_ID_NULL;
 			etMaxPrice.setText("");
 			etMinPrice.setText("");
+			etSearch.setText("");
 			break;
 
 		default:

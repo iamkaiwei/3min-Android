@@ -6,20 +6,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.Bitmap.Config;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -31,18 +23,16 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.edmodo.cropper.CropImageView;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewCallback;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
-import com.threemin.model.ImageModel;
 import com.threemin.uti.CommonUti;
 import com.threemins.R;
 
-public class CropImageActivity extends Activity {
+public class CropImageActivity extends ThreeMinsBaseActivity {
 	
 	ImageView img;
 	CropImageView cropImg;

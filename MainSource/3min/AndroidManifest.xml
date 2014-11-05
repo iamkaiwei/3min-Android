@@ -195,6 +195,35 @@
             android:theme="@style/CustomActionBarTheme" >
         </activity>
         
+        <activity
+            android:name="com.threemin.app.CommentActivity"
+            android:label="@string/act_comment_label"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomActionBarTheme" >
+        </activity>
+        
+        <activity
+            android:name="com.threemin.app.FeedbackActivity"
+            android:label="@string/act_feedback_label"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomActionBarTheme" >
+        </activity>
+        
+        <activity
+            android:name="com.threemin.app.ListUsersLikedActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomActionBarTheme" >
+        </activity>
+        
+        <activity
+            android:name="com.threemin.app.FeedbackDialogActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/FeedbackDialog" >
+        </activity>
+        
+        
+        <receiver android:name="com.threemin.receiver.IntentReceiver" />
+        
         <!-- **********************************Urban Airship*********************************************** -->
         <!-- Required for the library -->
         <provider

@@ -69,7 +69,7 @@ import com.threemin.uti.GPUImageFilterTools.FilterAdjuster;
 import com.threemin.view.HorizontalListView;
 import com.threemins.R;
 
-public class ActivityCamera extends Activity implements OnSeekBarChangeListener, OnClickListener {
+public class ActivityCamera extends ThreeMinsBaseActivity implements OnSeekBarChangeListener, OnClickListener {
 	
 	public static final int REQUEST_CROP = 33;
 

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+    
+    <RelativeLayout 
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dialog_feedback_title_height"
+        android:background="@color/background_grey">
+        
+        <ImageView 
+            android:id="@+id/dialog_feedback_img_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_cancel"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="@dimen/common_spacing_double"/>
+        
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/act_feedback_label"
+            android:textSize="@dimen/textsize_large"
+            android:layout_centerInParent="true"/>
+        
+    </RelativeLayout>
+    
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/dialog_feedback_swipe"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="1dp"
+        android:background="@android:color/white" >
+
+        <ListView
+            android:id="@+id/dialog_feedback_lv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@color/background_grey"
+            android:dividerHeight="1dp" >
+        </ListView>
+    </android.support.v4.widget.SwipeRefreshLayout>
+    
+
+</LinearLayout>

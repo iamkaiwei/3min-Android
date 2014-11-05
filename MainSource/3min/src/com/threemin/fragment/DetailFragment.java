@@ -28,12 +28,14 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewCallback;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
 import com.threemin.app.ChatToBuyActivity;
+import com.threemin.app.CommentActivity;
 import com.threemin.app.DetailActivity;
+import com.threemin.app.ImageViewActivity;
 import com.threemin.app.ListOfferActivty;
+import com.threemin.app.ListUsersLikedActivity;
 import com.threemin.app.PostOfferActivity;
+import com.threemin.model.CommentModel;
 import com.threemin.model.Conversation;
 import com.threemin.model.ImageModel;
 import com.threemin.model.ProductModel;
@@ -41,16 +43,27 @@ import com.threemin.model.UserModel;
 import com.threemin.uti.CommonConstant;
 import com.threemin.uti.CommonUti;
 import com.threemin.uti.PreferenceHelper;
+import com.threemin.webservice.CommentWebService;
 import com.threemin.webservice.ConversationWebService;
 import com.threemin.webservice.ProductWebservice;
 import com.threemin.webservice.UserWebService;
 import com.threemins.R;
 
 public class DetailFragment extends Fragment {
+    
+    public static final String tag = "DetailFragment";
+    
 	private final int SHOW_DIALOG = 1;
 	private final int HIDE_DIALOG = 2;
 	private final int REQUEST_CHECK_OFFER_EXIST = 3;
 	private final int REQUEST_GET_LIST_OFFER = 4;
+	
+	public static final String INTENT_PRODUCT_ID_FOR_COMMENT = "productIDForComment";
+	public static final String INTENT_COMMENT_ACTION = "CommentAction";
+	public static final String INTENT_JSON_INIT_DATA = "JsonInitData";
+	public static final boolean ACTION_POST_COMMENT = true;
+	public static final boolean ACTION_VIEW_COMMENTS = false;
+	
 	View rootView;
 	ProductModel productModel;
 	ViewPager pager;
@@ -59,6 +72,15 @@ public class DetailFragment extends Fragment {
 	ProgressDialog dialog, dialogPushReceived;
 	String conversationData;
 	List<Conversation> conversations;
+	
+	//data is from prev activity or from webservice
+	public final boolean IS_FROM_PREV_ACTIVITY = true;
+	public final boolean IS_FROM_WEB_SERVICE = false;
+	boolean mProductDataType;
+	
+	//test
+	LinearLayout lnTopComments;
+	TextView tvComment;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -71,9 +93,11 @@ public class DetailFragment extends Fragment {
 		rootView = inflater.inflate(R.layout.fragment_detail, null);
 		
 		if (productID == null) {
+		    mProductDataType = IS_FROM_PREV_ACTIVITY;
 			productModel = new Gson().fromJson(getActivity().getIntent().getStringExtra(CommonConstant.INTENT_PRODUCT_DATA), ProductModel.class);
 			initBody(rootView);
 		} else {
+		    mProductDataType = IS_FROM_WEB_SERVICE;
 			rootView.setVisibility(View.INVISIBLE);
 			dialogPushReceived = new ProgressDialog(getActivity());
 			dialogPushReceived.setMessage(getString(R.string.please_wait));
@@ -93,13 +117,16 @@ public class DetailFragment extends Fragment {
 			// model.getImages().get(0).getMedium());
 			// }
 
+		    //product 's name
 			TextView tv_name = (TextView) convertView.findViewById(R.id.inflater_body_product_tv_name);
 			tv_name.setText(productModel.getName());
 			getActivity().setTitle(productModel.getName());
 
+			//product 's price
 			TextView tv_price = (TextView) convertView.findViewById(R.id.inflater_body_product_tv_price);
 			tv_price.setText(productModel.getPrice() + CommonConstant.CURRENCY);
 
+			//product 's like number
 			TextView tv_like = (TextView) convertView.findViewById(R.id.inflater_body_product_tv_like);
 			int numLike = productModel.getLike();
 			if (numLike > 0) {
@@ -111,6 +138,15 @@ public class DetailFragment extends Fragment {
 			} else {
 				tv_like.setVisibility(View.GONE);
 			}
+			tv_like.setOnClickListener(new OnClickListener() {
+                
+                @Override
+                public void onClick(View v) {
+                    doGetListUsersLikedProduct();
+                }
+            });
+			
+			//location
 			TextView tv_locaion = (TextView) convertView.findViewById(R.id.inflater_body_product_tv_location);
 			if (!TextUtils.isEmpty(productModel.getVenueName())) {
 				tv_locaion.setText(productModel.getVenueName());
@@ -118,6 +154,7 @@ public class DetailFragment extends Fragment {
 				tv_locaion.setVisibility(View.GONE);
 			}
 
+			//description
 			TextView tv_description = (TextView) convertView.findViewById(R.id.inflater_body_product_tv_description);
 			if (!TextUtils.isEmpty(productModel.getDescription())) {
 				tv_description.setText(productModel.getDescription());
@@ -125,8 +162,9 @@ public class DetailFragment extends Fragment {
 				tv_description.setVisibility(View.GONE);
 			}
 
+			//owner 's info
 			ImageView imageAvatar = (ImageView) convertView.findViewById(R.id.inflater_header_product_image);
-			UrlImageViewHelper.setUrlDrawable(imageAvatar, productModel.getOwner().getFacebook_avatar());
+			UrlImageViewHelper.setUrlDrawable(imageAvatar, productModel.getOwner().getFacebook_avatar(), R.drawable.avatar_loading);
 
 			TextView tv_name_owner = (TextView) convertView.findViewById(R.id.inflater_header_product_tv_name);
 			tv_name_owner.setText(productModel.getOwner().getFullName());
@@ -135,13 +173,33 @@ public class DetailFragment extends Fragment {
 			tv_time.setText(DateUtils.getRelativeTimeSpanString(productModel.getUpdateTime() * 1000,
 					System.currentTimeMillis(), 0L, DateUtils.FORMAT_ABBREV_RELATIVE));
 
+			//product images
 			lnImgs = (LinearLayout) convertView.findViewById(R.id.ln_img);
 			initImage();
+			
+			//button chat to buy
 			btnChatToBuy = (Button) convertView.findViewById(R.id.fragment_detail_btn_chat_to_buy);
 			UserModel currentUser = PreferenceHelper.getInstance(getActivity()).getCurrentUser();
+			
+			//button to edit product
+			ImageView imgEditProduct = (ImageView) convertView.findViewById(R.id.inflater_header_product_img_edit);
+			imgEditProduct.setOnClickListener(new OnClickListener() {
+                
+                @Override
+                public void onClick(View v) {
+                    String strProductData = new Gson().toJson(productModel);
+                    Intent intent = new Intent(getActivity(), ImageViewActivity.class);
+                    intent.putExtra(CommonConstant.INTENT_EDIT_PRODUCT, true);
+                    intent.putExtra(CommonConstant.INTENT_PRODUCT_DATA, strProductData);
+                    startActivity(intent);
+                    CommonUti.addAnimationWhenStartActivity(getActivity());
+                }
+            });
 
 			// if current user is not the owner of this product
 			if (currentUser.getId() != productModel.getOwner().getId()) {
+			    //dont allow to edit product
+			    imgEditProduct.setVisibility(View.GONE);
 				btnChatToBuy.setBackgroundResource(R.drawable.selector_btn_chat_to_buy);
 				btnChatToBuy.setOnClickListener(new OnClickListener() {
 					
@@ -166,6 +224,8 @@ public class DetailFragment extends Fragment {
 					}
 				});
 			}
+			
+			//buton like (bottom)
 			btnLike = (LinearLayout) convertView.findViewById(R.id.btn_like);
 			btnLike.setSelected(productModel.isLiked());
 			btnLike.setOnClickListener(new OnClickListener() {
@@ -175,16 +235,48 @@ public class DetailFragment extends Fragment {
 					requestLike();
 				}
 			});
+			
+			//button share (botton)
+			LinearLayout lnShare = (LinearLayout) convertView.findViewById(R.id.fm_detail_ln_share);
+			lnShare.setOnClickListener(new OnClickListener() {
+			    
+			    @Override
+			    public void onClick(View v) {
+			        new CommonUti().doShareProductOnFacebook(getActivity(), ( (DetailActivity)getActivity() ).getLoginButton(), productModel);
+			    }
+			});
+			
+			//button comment (bottom)
+			LinearLayout lnComment = (LinearLayout) convertView.findViewById(R.id.fm_detail_ln_comment);
+			lnComment.setOnClickListener(new OnClickListener() {
+                
+                @Override
+                public void onClick(View v) {
+                    //TODO
+//                    doCommentAction(ACTION_POST_COMMENT);
+                    new GetInitCommentData(ACTION_POST_COMMENT).execute();
+                }
+            });
+			
+			//3 first comments:
+			tvComment = (TextView) convertView.findViewById(R.id.inflater_body_product_tv_comment);
+			tvComment.setOnClickListener(new OnClickListener() {
+                
+                @Override
+                public void onClick(View v) {
+                    //TODO
+//                    doCommentAction(ACTION_VIEW_COMMENTS);
+                    new GetInitCommentData(ACTION_VIEW_COMMENTS).execute();
+                }
+            });
+			lnTopComments = (LinearLayout) convertView.findViewById(R.id.inflater_body_product_lnl_top_comments);
+			if (mProductDataType == IS_FROM_PREV_ACTIVITY || productModel.getComments() == null) {
+                new GetTopCommentsTask().execute();
+            } else {
+                initListTopComments(productModel.getComments());
+            }
 		}
 		
-		LinearLayout lnShare = (LinearLayout) convertView.findViewById(R.id.fm_detail_ln_share);
-		lnShare.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				new CommonUti().doShareProductOnFacebook(getActivity(), ( (DetailActivity)getActivity() ).getLoginButton(), productModel);
-			}
-		});
 
 	}
 
@@ -372,4 +464,130 @@ public class DetailFragment extends Fragment {
 		}
 		
 	}
+	
+	/**
+	 * View all comments or post comment
+	 * @param commentAction = ACTION_VIEW_COMMENTS(false) or ACTION_POST_COMMENT(true)
+	 * */
+	public void doCommentAction(boolean commentAction) {
+	    Intent intent = new Intent(getActivity(), CommentActivity.class);
+	    intent.putExtra(INTENT_PRODUCT_ID_FOR_COMMENT, productModel.getId());
+	    intent.putExtra(INTENT_COMMENT_ACTION, commentAction);
+	    startActivity(intent);
+	    CommonUti.addAnimationWhenStartActivity(getActivity());
+	}
+	
+	private class GetTopCommentsTask extends AsyncTask<Void, Void, List<CommentModel>> {
+
+        @Override
+        protected List<CommentModel> doInBackground(Void... params) {
+            String token = PreferenceHelper.getInstance(getActivity()).getTokken();
+            if (productModel != null) {
+                return new CommentWebService().getTopComments(token, productModel.getId());
+            } else {
+                Log.i(tag, "GetTopCommentsTask product null");
+                return null;
+            }
+        }
+        
+        @Override
+        protected void onPostExecute(List<CommentModel> result) {
+            if (result != null && result.size() != 0) {
+                initListTopComments(result);
+            }
+            super.onPostExecute(result);
+        }
+        
+    }
+	
+	public void initListTopComments(List<CommentModel> list) {
+	    //we have to remove all views bc when onResume of the activity is called, we will add 3 newest comments
+	    
+	    //first check if have comment or not
+	    if (list != null && list.size() > 0) {
+	        lnTopComments.removeAllViews();
+	        for (int i = 0; i < list.size(); i++) {
+	            LayoutInflater inflater = LayoutInflater.from(getActivity());
+	            View view = inflater.inflate(R.layout.fragment_detail_layout_comment, null);
+	            addDataToView(view, list.get(i));
+	            lnTopComments.addView(view);
+	        }
+        } else {
+            lnTopComments.setVisibility(View.GONE);
+            tvComment.setVisibility(View.GONE);
+        }
+	}
+	
+	public void addDataToView (View view, CommentModel model) {
+	    ImageView imgAvatar = (ImageView) view.findViewById(R.id.fm_detail_layout_comment_avatar);
+	    TextView tvName = (TextView) view.findViewById(R.id.fm_detail_layout_comment_tv_name);
+	    TextView tvConent = (TextView) view.findViewById(R.id.fm_detail_layout_comment_tv_comment);
+	    TextView tvTime = (TextView) view.findViewById(R.id.fm_detail_layout_comment_tv_time);
+	    
+	    UrlImageViewHelper.setUrlDrawable(imgAvatar, model.getUser().getFacebook_avatar(), R.drawable.avatar_loading);
+	    tvName.setText(model.getUser().getFullName());
+	    tvConent.setText(model.getContent());
+	    CharSequence time = DateUtils.getRelativeTimeSpanString(model.getUpdated_at() * 1000,
+                System.currentTimeMillis(), 0L, DateUtils.FORMAT_ABBREV_RELATIVE);
+	    tvTime.setText(time);
+	}
+	
+	public void refreshTopComment() {
+	    new GetTopCommentsTask().execute();
+	}
+	
+	private class GetInitCommentData extends AsyncTask<Void, Void, String> {
+	    
+	    private boolean commentAction;
+	    private ProgressDialog dialog;
+	    
+	    public GetInitCommentData(boolean action) {
+	        commentAction = action;
+        }
+	    
+	    @Override
+	    protected void onPreExecute() {
+	        // TODO Auto-generated method stub
+	        super.onPreExecute();
+	        dialog = new ProgressDialog(getActivity());
+	        dialog.setMessage(getResources().getString(R.string.please_wait));
+	        dialog.show();
+	    }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            String token = PreferenceHelper.getInstance(getActivity()).getTokken();
+            return new CommentWebService().getJSONComments(token, productModel.getId());
+        }
+        
+        @Override
+        protected void onPostExecute(String result) {
+            // TODO Auto-generated method stub
+            super.onPostExecute(result);
+            if (dialog != null && dialog.isShowing()) {
+                dialog.dismiss();
+            }
+            if (result != null && result.length() > 0) {
+                doStartCommentActivity(commentAction, result);
+            }
+        }
+        
+	}
+	
+	public void doStartCommentActivity(boolean commentAction, String result) {
+	    Intent intent = new Intent(getActivity(), CommentActivity.class);
+        intent.putExtra(INTENT_PRODUCT_ID_FOR_COMMENT, productModel.getId());
+        intent.putExtra(INTENT_COMMENT_ACTION, commentAction);
+        intent.putExtra(INTENT_JSON_INIT_DATA, result);
+        startActivity(intent);
+        CommonUti.addAnimationWhenStartActivity(getActivity());
+	}
+	
+	public void doGetListUsersLikedProduct() {
+	    Intent intent = new Intent(getActivity(), ListUsersLikedActivity.class);
+	    intent.putExtra(CommonConstant.INTENT_PRODUCT_DATA_VIA_ID, productModel.getId());
+	    startActivity(intent);
+	    CommonUti.addAnimationWhenStartActivity(getActivity());
+	}
+	
 }

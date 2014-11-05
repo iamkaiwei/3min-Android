@@ -128,4 +128,12 @@ public class PreferenceHelper {
 	public String getAPID() {
 		return getString(CommonConstant.PREF_APID, null);
 	}
+	
+	public void setNumberActivities(int num) {
+	    putInteger(CommonConstant.PREF_ACTIVITIES, num);
+	}
+	
+	public int getNumberActivities() {
+	    return getInteger(CommonConstant.PREF_ACTIVITIES, 0);
+	}
 }

@@ -2,11 +2,8 @@ package com.threemin.app;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import android.app.Activity;
@@ -18,12 +15,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
@@ -47,13 +40,11 @@ import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.widget.LoginButton;
 import com.google.gson.Gson;
-import com.koushikdutta.urlimageviewhelper.UrlImageViewCallback;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.threemin.model.CategoryModel;
 import com.threemin.model.ImageModel;
 import com.threemin.model.ProductModel;
 import com.threemin.uti.CommonConstant;
-import com.threemin.uti.CommonUti;
 import com.threemin.uti.PreferenceHelper;
 import com.threemin.view.SquareImageView;
 import com.threemins.R;
@@ -176,7 +167,14 @@ public class ImageViewActivity extends Activity {
 		}
 	}
 	
-	
+	//TODO: check edit product or create new one
+	private boolean mIsUpdateProduct;
+	private ProductModel mProductModel;
+	private String mVenueID;
+	private String mVenueName;
+	private double mVenueLat;
+	private double mVenueLong;
+	private ImageView mImgDeleteListing;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -189,8 +187,26 @@ public class ImageViewActivity extends Activity {
 		initWidgets();
 		setEvents();
 		
-		startActivityForResult(new Intent(ImageViewActivity.this, ActivityCamera.class), REQUEST_CAMERA_ON_CREATE);
+		mIsUpdateProduct = getIntent().getBooleanExtra(CommonConstant.INTENT_EDIT_PRODUCT, false);
+		if (mIsUpdateProduct) {
+            doEditProduct();
+        } else {
+            mImgDeleteListing.setVisibility(View.GONE);
+            startActivityForResult(new Intent(ImageViewActivity.this, ActivityCamera.class), REQUEST_CAMERA_ON_CREATE);
+        }
 	}
+	
+	@Override
+    protected void onResume() {
+        super.onResume();
+        ThreeMinsApplication.isActive = true;
+    }
+    
+    @Override
+    protected void onPause() {
+        super.onPause();
+        ThreeMinsApplication.isActive = false;
+    }
 
 	public void initWidgets() {
 		mImg1 = (SquareImageView) findViewById(R.id.activity_imageview_img_1);
@@ -220,6 +236,8 @@ public class ImageViewActivity extends Activity {
 		});
 		tvName=(TextView) findViewById(id.activity_imageview_tv_item);
 		viewContentProduct=findViewById(R.id.view_product_content);
+		
+		mImgDeleteListing = (ImageView) findViewById(R.id.activity_imageview_img_delete_listing);
 	}
 
 	private ProductModel validateInput() {
@@ -262,6 +280,13 @@ public class ImageViewActivity extends Activity {
 			result.setVenueName(venue.getName());
 		} else {
 			Log.i("ImageViewActivity", "location empty");
+			//check if it is edit product
+			if (mVenueID != null && mVenueID.length() > 0) {
+			    result.setVenueId(mVenueID);
+	            result.setVenueLat(mVenueLat);
+	            result.setVenueLong(mVenueLong);
+	            result.setVenueName(mVenueName);
+            }
 		}
 		
 		if (mSelectedCategory == null) {
@@ -338,6 +363,14 @@ public class ImageViewActivity extends Activity {
 			    startActivityForResult(intent, REQUEST_PRODUCT_INPUT_ITEM);
 			}
 		});
+        
+        mImgDeleteListing.setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+                doDeleteProduct();
+            }
+        });
 	}
 
 
@@ -517,16 +550,24 @@ public class ImageViewActivity extends Activity {
 			return true;
 		case R.id.action_submit:
           ProductModel result=validateInput();
-          if(result!=null){
-              String data=new Gson().toJson(result);
-              Intent intent=new Intent();
-              intent.putExtra(CommonConstant.INTENT_PRODUCT_DATA, data);
-              setResult(RESULT_OK, intent);
-              if (mSwShareOnFacebook.isChecked()) {
-                  doShareOnFacebook();
+          
+          if (mIsUpdateProduct) {
+            //TODO: haven't implemented
+              Toast.makeText(mContext, "Update product", Toast.LENGTH_LONG).show();
+              moveTaskToBack(true);
+          } else {
+              if(result!=null){
+                  String data=new Gson().toJson(result);
+                  Intent intent=new Intent();
+                  intent.putExtra(CommonConstant.INTENT_PRODUCT_DATA, data);
+                  setResult(RESULT_OK, intent);
+                  if (mSwShareOnFacebook.isChecked()) {
+                      doShareOnFacebook();
+                  }
+                  finish();
               }
-              finish();
           }
+          
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -538,6 +579,50 @@ public class ImageViewActivity extends Activity {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.menu_post_product, menu);
 		return super.onCreateOptionsMenu(menu);
+	}
+	
+	//TODO============== EDIT PRODUCT ================================
+	public void doEditProduct() {
+	    String strData = getIntent().getStringExtra(CommonConstant.INTENT_PRODUCT_DATA);
+	    if (strData != null && strData.length() > 0) {
+            mProductModel = new Gson().fromJson(strData, ProductModel.class);
+            
+            //4 imgs
+            ArrayList<SquareImageView> listImgV = new ArrayList<SquareImageView>();
+            listImgV.add(mImg1);
+            listImgV.add(mImg2);
+            listImgV.add(mImg3);
+            listImgV.add(mImg4);
+            List<ImageModel> listImgModel = mProductModel.getImages();
+            if (listImgModel.size() > 0) {
+                for (int i = 0; i < listImgModel.size(); i++) {
+                    UrlImageViewHelper.setUrlDrawable(
+                            listImgV.get(i), 
+                            listImgModel.get(i).getOrigin(), 
+                            R.drawable.stuff_img);
+                }
+            }
+            
+            //category:
+            mSelectedCategory = mProductModel.getCategory();
+            tv_Category.setText(mSelectedCategory.getName());
+            
+            //name:
+            tvName.setText(mProductModel.getName());
+            
+            //price:
+            etPrice.setText(mProductModel.getPrice());
+            
+            //location:
+            mVenueName = mProductModel.getVenueName();
+            mVenueID = mProductModel.getVenueId();
+            mVenueLong = mProductModel.getVenueLong();
+            mVenueLat = mProductModel.getVenueLat();
+        }
+	}
+	
+	void doDeleteProduct() {
+	    //TODO: haven't implemented
 	}
 	
 }

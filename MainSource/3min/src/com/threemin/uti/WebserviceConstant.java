@@ -1,7 +1,8 @@
 package com.threemin.uti;
 
 public class WebserviceConstant {
-
+    public static final int RESPONSE_CODE_SUCCESS = 200;
+    public static final int RESPONSE_CODE_EXCEPTION = -1;
 	private static final String URL_HOST = "http://threemins-server-staging.herokuapp.com";// for
 																							// staging
 	private static final String API = "/api/v1";
@@ -30,4 +31,10 @@ public class WebserviceConstant {
 	public static final String UNFOLLOW_USER = URL_HOST + API + "/relationships/unfollow";
 	public static final String GET_FOLLOWERS = URL_HOST + API + "/users/%s/followers.json";
 	public static final String GET_FOLLOWINGS = URL_HOST + API + "/users/%s/followings.json";
+	public static final String GET_COMMENTS_OF_PRODUCT = URL_HOST + API +  "/products/%s/comments.json";
+	public static final String POST_COMMENT = URL_HOST + API +  "/products/%s/comments.json?access_token=%s&comment[content]=%s";
+	public static final String NOTIFY_SELL_PRODUCT = URL_HOST + API +  "/products/%s/sold?access_token=%s&user_id=%s";
+	public static final String GET_USERS_WHO_LIKED_PRODUCT = URL_HOST + API + "/products/%s/likes.json?access_token=%s&page=%s";
+	public static final String SEND_FEEDBACK = URL_HOST + API + "/feedbacks?access_token=%s&product_id=%s&schedule_id=%s&feedback[content]=%s&feedback[status]=%s&feedback[user_id]=%s";
+	public static final String GET_FEEDBACK_OF_USER = URL_HOST + API + "/feedbacks.json?access_token=%s&user_id=%s&page=%s";
 }

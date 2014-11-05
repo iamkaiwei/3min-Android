@@ -120,7 +120,7 @@ public class ListMessageFragment extends Fragment {
 			@Override
 			public void run() {
 				String tokken = PreferenceHelper.getInstance(getActivity()).getTokken();
-				String conversationData = new ConversationWebService().getDetailConversation(tokken, conversation.getId());
+				String conversationData = new ConversationWebService().getDetailConversation(tokken, conversation.getId(), 1);
 				Message msg = new Message();
 				msg.what = REQUEST_CHECK_OFFER_EXIST;
 				msg.obj = conversationData;

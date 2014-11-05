@@ -3,14 +3,12 @@
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
-    -->
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.    -->
     <style name="AppBaseTheme" parent="android:Theme.Holo.Light">
         <!--
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
-        -->
+            backward-compatibility can go here.        -->
     </style>
 
     <!-- Application theme. -->
@@ -42,14 +40,9 @@
         <item name="android:textSize">@dimen/textsize_large</item>
     </style>
 
-    <!-- activity_imageview.xml -->
-    <!-- <style name="activity_imageview_img_style">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:scaleType">centerCrop</item>
-        <item name="android:background">@drawable/ic_add_photo</item>
-    </style> -->
+    <style name="FeedbackDialog" parent="@android:style/Theme.Holo.Light.Dialog">
+        <item name="android:windowNoTitle">true</item>
+    </style>
     
     <style name="activity_imageview_img_style">
         <item name="android:layout_width">0dp</item>
@@ -182,6 +175,42 @@
     <style name="fm_right_textview_black" parent="@style/fm_right_textview_grey">
         <item name="android:textColor">@android:color/black</item>
         <item name="android:textSize">@dimen/textsize_medium</item>
+    </style>
+    
+    <!-- Home activity: animation when list categories popup window is showed or hidden -->
+    <style name="activity_home_popup_animation">
+        <item name="android:windowEnterAnimation">@anim/anim_popup_show</item>
+        <item name="android:windowExitAnimation">@anim/anim_popup_hide</item>
+    </style>
+    
+    <!-- feedback activity -->
+    <style name="act_feedback_option_rl">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/act_feedback_option_height</item>
+    </style>
+    
+    <style name="act_feedback_option_img">
+        <item name="android:layout_width">@dimen/act_feedback_option_emo_size</item>
+        <item name="android:layout_height">@dimen/act_feedback_option_emo_size</item>
+        <item name="android:layout_alignParentLeft">true</item>
+        <item name="android:layout_centerVertical">true</item>
+    </style>
+    
+    <style name="act_feedback_option_tv">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_marginLeft">@dimen/act_feedback_option_tv_margin_left</item>
+        <item name="android:textColor">@color/common_black</item>
+        <item name="android:textSize">@dimen/textsize_medium</item>
+    </style>
+    
+    <style name="act_feedback_option_check">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:src">@drawable/ic_ticked</item>
     </style>
 
 </resources>

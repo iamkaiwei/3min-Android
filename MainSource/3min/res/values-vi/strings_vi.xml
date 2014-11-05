@@ -197,6 +197,9 @@
     <!-- <string name="activity_chat_chat_content_label">Chat privately with</string> -->
     <string name="activity_chat_chat_content_label">Chat riêng tư với</string>
     
+    <!-- <string name="activity_chat_empty_message">Message is empty!</string> -->
+    <string name="activity_chat_empty_message">Tin nhắn rỗng!</string>
+    
     <!-- <string name="profile_liked">Liked</string> -->
     <string name="profile_liked">Thích</string>
     
@@ -220,6 +223,8 @@
     
     <!-- <string formatted="false" name="postoffer_title">%s is selling it for %s kVND</string> -->
     <string formatted="false" name="postoffer_title">%s đang bán sản phẩm này\nvới giá %sk Vnd</string>
+    <string name="activity_chat_no_more_older_messages">Không còn tin nhắn cũ hơn</string>
+    <string name="activity_chat_sold">Đã bán</string>
     
     <!-- fragment filter -->
     <!-- <string name="fm_filter_search_hint">Search for products</string> -->
@@ -298,6 +303,10 @@
     
     <!-- <string name="fm_detail_view_many_offers">View %s offers</string> -->
     <string name="fm_detail_view_many_offers">Xem %s đề nghị</string>
+    <string name="fm_detail_view_all_comment">Xem tất cả bình luận</string>
+    <string name="liked">Thích</string>
+    <string name="comment">Bình luận</string>
+    <string name="share">Chia sẻ</string>
     
     <!-- common util -->
     <!-- <string name="facebook_app_missed_error">Please install Facebook for Android to share easier!</string> -->
@@ -306,5 +315,30 @@
     <!-- <string name="share_three_min_info">Hi Guys, Try this app https://play.google.com/store/apps/details?id=com.threemins</string> -->
     <string name="share_three_min_info">Chào các bạn, hãy dùng thử ứng dụng này https://play.google.com/store/apps/details?id=com.threemins</string>
     <string name="cannot_load_image_error">Không thể tải hình gốc của sản phẩm.\nSử dụng ảnh đại diện thể thay thế.</string>
+    
+    <!-- fragment right -->
+    <!-- <string name="fm_right_view_1_feedback">View 1 feedback</string> -->
+    <string name="fm_right_view_1_feedback">Xem 1 phản hồi</string>
+    
+    <!-- <string name="fm_right_view_many_feedbacks">View %s feedbacks</string> -->
+    <string name="fm_right_view_many_feedbacks">Xem %s phản hồi</string>
+    
+    <!-- comment activity -->
+    <string name="act_comment_label">Bình luận</string>
+    <string name="fm_comment_input_hint">Thêm một bình luận...</string>
+    
+    <!-- feedback activity -->
+    <string name="act_feedback_label">Phản hồi</string>
+    <string name="act_feedback_question">Bạn có hài lòng với sản phẩm này không?</string>
+    <string name="act_feedback_option_not_satisfied">Không hài lòng</string>
+    <string name="act_feedback_option_no_comment">Không ý kiến</string>
+    <string name="act_feedback_option_i_am_satisfied">Tôi hài lòng</string>
+    <string name="act_feedback_hint">Nếu không hài lòng, bạn có thể để bình luận tại đây.</string>
+    <string name="act_feedback_empty_feedback_warning">Nếu bạn không hài lòng, vui lòng để lại phản hồi.</string>
+    <string name="act_feedback_sent_successfully">Phản hồi của bạn đã được gửi.</string>
+    <string name="act_feedback_sent_fail">Lỗi xảy ra. Vui lòng thử lại.</string>
+    
+    <!-- header feedback -->
+    <string name="header_feedback_view_all_feedbacks">Xem tất cả phản hồi</string>
     
 </resources>

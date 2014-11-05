@@ -1,11 +1,9 @@
 package com.threemin.app;
 
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
-import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -22,7 +20,7 @@ import com.threemin.uti.PreferenceHelper;
 import com.threemin.webservice.UserWebService;
 import com.threemins.R;
 
-public class ProfileActivity extends SwipeBackActivity {
+public class ProfileActivity extends ThreeMinsBaseActivity {
 	public final String tag = "ProfileActivity";
     LoginButton mLoginButton;
     UserModel userModel;
@@ -35,14 +33,13 @@ public class ProfileActivity extends SwipeBackActivity {
         setContentView(R.layout.activity_detail);
         this.savedInstanceState = savedInstanceState;
         
-        // Init the swipe back mechanism
-        mSwipeBack = getSwipeBackLayout();
-        mSwipeBack.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
-        
         mLoginButton = (LoginButton) findViewById(R.id.activity_detail_btn_login_facebook);
         
         String userID = getIntent().getStringExtra(CommonConstant.INTENT_USER_DATA_VIA_ID);
         Log.i(tag, "onCreate userID: " + userID);
+        
+      //check if intent is from push notification
+        boolean isFromPushNotification = getIntent().getBooleanExtra(CommonConstant.INTENT_IS_FROM_PUSH_NOTIFICATION, false);
         
         if (userID != null && userID.length() != 0) {
 			new GetUserViaId().execute(userID);
@@ -60,14 +57,8 @@ public class ProfileActivity extends SwipeBackActivity {
             bundle.putInt(CommonConstant.INTENT_PRODUCT_MODE, ListProductFragment.MODE_USER_PRODUCT);
             bundle.putString(CommonConstant.INTENT_USER_DATA, new Gson().toJson(userModel));
             fragment.setArguments(bundle);
-            getSupportFragmentManager().beginTransaction().add(R.id.container, fragment).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
         }
-    }
-    
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-//    	scrollToFinishActivity();
     }
     
     public void initActionBar() {

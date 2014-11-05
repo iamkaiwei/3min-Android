@@ -3,9 +3,13 @@ package com.threemin.adapter;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -156,6 +160,13 @@ public class ProductGridAdapter extends BaseAdapter {
 			} else {
 				tv_like.setText("");
 			}
+			
+			final TextView tv_comment = (TextView) convertView.findViewById(R.id.inflater_body_product_grid_tv_comment);
+			if (model.getCommentsCount() > 0) {
+                tv_comment.setText("" + model.getCommentsCount());
+            } else {
+                tv_comment.setText("");
+            }
 
 			final ImageView img_like = (ImageView) convertView.findViewById(R.id.inflater_body_product_grid_img_like);
 			if (model.isLiked()) {
@@ -209,7 +220,7 @@ public class ProductGridAdapter extends BaseAdapter {
 			} else {
 			    
 				ImageView imageAvatar = (ImageView) convertView.findViewById(R.id.inflater_header_product_grid_image);
-				UrlImageViewHelper.setUrlDrawable(imageAvatar, model.getOwner().getFacebook_avatar());
+				UrlImageViewHelper.setUrlDrawable(imageAvatar, model.getOwner().getFacebook_avatar(), R.drawable.avatar_loading);
 
 				TextView tv_name_owner = (TextView) convertView.findViewById(R.id.inflater_header_product_grid_tv_name);
 				tv_name_owner.setText(model.getOwner().getFullName());
@@ -223,7 +234,11 @@ public class ProductGridAdapter extends BaseAdapter {
                         String data=new Gson().toJson(model.getOwner());
                         intent.putExtra(CommonConstant.INTENT_USER_DATA, data);
                         mContext.startActivity(intent);
-                        ((Activity)mContext).overridePendingTransition(R.anim.anim_right_in,R.anim.anim_no_animation);
+                        CommonUti.addAnimationWhenStartActivity((Activity)mContext);
+                        
+//                        Bundle animation=ActivityOptionsCompat.makeCustomAnimation(mContext, R.anim.anim_right_in, R.anim.anim_no_animation).toBundle();
+//                        act.overridePendingTransition(R.anim.anim_right_in,R.anim.anim_no_animation);
+//                        ActivityCompat.startActivity((Activity)mContext, intent, animation);
                     }
                 });
 			}

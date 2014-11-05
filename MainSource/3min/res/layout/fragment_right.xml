@@ -28,7 +28,6 @@
                 android:layout_width="@dimen/fm_right_avatar_size"
                 android:layout_height="@dimen/fm_right_avatar_size"
                 android:layout_margin="@dimen/common_spacing_double"
-                android:scaleType="centerCrop"
                 android:src="@drawable/ic_launcher"
                 threemins:svg_raw_resource="@raw/shape_avatar" />
 
@@ -55,16 +54,16 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:background="@drawable/background_orange_stroke_round_corners"
-                    android:text="@string/follow"
-                    android:textColor="@color/red_background"
                     android:paddingLeft="@dimen/common_spacing_triple"
                     android:paddingRight="@dimen/common_spacing_triple"
+                    android:text="@string/follow"
+                    android:textColor="@color/red_background"
                     android:visibility="gone" />
             </RelativeLayout>
         </LinearLayout>
 
         <View
-            android:id="@+id/fm_right_group_control_divider" 
+            android:id="@+id/fm_right_group_control_divider"
             style="@style/fm_right_divider_horizontal" />
 
         <!-- group control -->
@@ -110,66 +109,108 @@
             android:orientation="horizontal"
             android:paddingBottom="@dimen/common_spacing"
             android:paddingTop="@dimen/common_spacing" >
+            
+            <!-- feedback -->
 
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical" >
+                android:layout_weight="1" >
 
-                <com.lanna.droidlib.view.CustomTextView
-                    android:id="@+id/fm_right_tv_feedback_number"
-                    style="@style/fm_right_textview_black"
-                    android:text="..."
-                    threemins:customTypeface="@string/font_semibold" />
+                <LinearLayout
+                    android:id="@+id/fm_right_ln_feedback"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical" >
 
-                <com.lanna.droidlib.view.CustomTextView
-                    style="@style/fm_right_textview_grey"
-                    android:text="@string/feedback"
-                    threemins:customTypeface="@string/font_semibold" />
-            </LinearLayout>
+                    <com.lanna.droidlib.view.CustomTextView
+                        android:id="@+id/fm_right_tv_feedback_number"
+                        style="@style/fm_right_textview_black"
+                        android:text="..."
+                        threemins:customTypeface="@string/font_semibold" />
+
+                    <com.lanna.droidlib.view.CustomTextView
+                        style="@style/fm_right_textview_grey"
+                        android:text="@string/feedback"
+                        threemins:customTypeface="@string/font_semibold" />
+                </LinearLayout>
+
+                <!-- loading icon -->
+
+                <ProgressBar
+                    android:id="@+id/fm_right_progress_bar_feedback"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/fm_right_bg_loading" />
+            </FrameLayout>
 
             <View style="@style/fm_right_divider_vertical" />
 
-            <LinearLayout
-                android:id="@+id/fm_right_ln_follower"
+            <FrameLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical" >
+                android:layout_weight="1" >
 
-                <com.lanna.droidlib.view.CustomTextView
-                    android:id="@+id/fm_right_tv_follower_number"
-                    style="@style/fm_right_textview_black"
-                    android:text="..."
-                    threemins:customTypeface="@string/font_semibold" />
+                <LinearLayout
+                    android:id="@+id/fm_right_ln_follower"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical" >
 
-                <com.lanna.droidlib.view.CustomTextView
-                    style="@style/fm_right_textview_grey"
-                    android:text="@string/followers"
-                    threemins:customTypeface="@string/font_semibold" />
-            </LinearLayout>
+                    <com.lanna.droidlib.view.CustomTextView
+                        android:id="@+id/fm_right_tv_follower_number"
+                        style="@style/fm_right_textview_black"
+                        android:text="..."
+                        threemins:customTypeface="@string/font_semibold" />
+
+                    <com.lanna.droidlib.view.CustomTextView
+                        style="@style/fm_right_textview_grey"
+                        android:text="@string/followers"
+                        threemins:customTypeface="@string/font_semibold" />
+                </LinearLayout>
+
+                <!-- loading icon -->
+
+                <ProgressBar
+                    android:id="@+id/fm_right_progress_bar_follower"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/fm_right_bg_loading" />
+            </FrameLayout>
 
             <View style="@style/fm_right_divider_vertical" />
 
-            <LinearLayout
-                android:id="@+id/fm_right_ln_following"
+            <FrameLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical" >
+                android:layout_weight="1" >
 
-                <com.lanna.droidlib.view.CustomTextView
-                    android:id="@+id/fm_right_tv_following_number"
-                    style="@style/fm_right_textview_black"
-                    android:text="..."
-                    threemins:customTypeface="@string/font_semibold" />
+                <LinearLayout
+                    android:id="@+id/fm_right_ln_following"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical" >
 
-                <com.lanna.droidlib.view.CustomTextView
-                    style="@style/fm_right_textview_grey"
-                    android:text="@string/following"
-                    threemins:customTypeface="@string/font_semibold" />
-            </LinearLayout>
+                    <com.lanna.droidlib.view.CustomTextView
+                        android:id="@+id/fm_right_tv_following_number"
+                        style="@style/fm_right_textview_black"
+                        android:text="..."
+                        threemins:customTypeface="@string/font_semibold" />
+
+                    <com.lanna.droidlib.view.CustomTextView
+                        style="@style/fm_right_textview_grey"
+                        android:text="@string/following"
+                        threemins:customTypeface="@string/font_semibold" />
+                </LinearLayout>
+
+                <!-- loading icon -->
+
+                <ProgressBar
+                    android:id="@+id/fm_right_progress_bar_following"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/fm_right_bg_loading" />
+            </FrameLayout>
         </LinearLayout>
     </LinearLayout>
 

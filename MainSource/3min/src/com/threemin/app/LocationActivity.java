@@ -3,7 +3,6 @@ package com.threemin.app;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
@@ -33,7 +32,7 @@ import com.google.gson.Gson;
 import com.threemin.uti.CommonConstant;
 import com.threemins.R;
 
-public class LocationActivity extends Activity implements ConnectionCallbacks,OnConnectionFailedListener {
+public class LocationActivity extends ThreeMinsBaseActivity implements ConnectionCallbacks,OnConnectionFailedListener {
 	GoogleMap googleMap;
 	private LocationClient mLocationClient;
 	ListView list;

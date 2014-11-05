@@ -10,7 +10,7 @@ import android.view.MenuItem;
 import com.threemin.fragment.InputProductFragment;
 import com.threemins.R;
 
-public class InputProductActivity extends FragmentActivity {
+public class InputProductActivity extends ThreeMinsBaseActivity {
     InputProductFragment inputProductFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +24,20 @@ public class InputProductActivity extends FragmentActivity {
             inputProductFragment.setArguments(getIntent().getExtras());
             getSupportFragmentManager().beginTransaction().add(R.id.container, inputProductFragment).commit();
         }
+    }
+    
+    @Override
+    protected void onResume() {
+        // TODO Auto-generated method stub
+        super.onResume();
+        ThreeMinsApplication.isActive = true;
+    }
+    
+    @Override
+    protected void onPause() {
+        // TODO Auto-generated method stub
+        super.onPause();
+        ThreeMinsApplication.isActive = false;
     }
     
     public void initActionBar() {

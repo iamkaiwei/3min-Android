@@ -43,6 +43,20 @@ public class CategoryActivity extends ListActivity {
 		});
 	};
 	
+	@Override
+    protected void onResume() {
+        // TODO Auto-generated method stub
+        super.onResume();
+        ThreeMinsApplication.isActive = true;
+    }
+    
+    @Override
+    protected void onPause() {
+        // TODO Auto-generated method stub
+        super.onPause();
+        ThreeMinsApplication.isActive = false;
+    }
+	
 	public void initActionBar() {
 		getActionBar().setIcon(R.drawable.btn_cancel);
 		getActionBar().setHomeButtonEnabled(true);
@@ -76,7 +90,9 @@ public class CategoryActivity extends ListActivity {
 //				mAdapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
 //				mSpnCategory.setAdapter(mAdapter);
 //				mSpnCategory.setOnItemSelectedListener(onItemSpinnerSelected);
-				CategoryAdapter adapter=new CategoryAdapter(CategoryActivity.this, result, false, null);
+//				CategoryAdapter adapter=new CategoryAdapter(CategoryActivity.this, result, false, null);
+				boolean hideSelectedItem = false;
+              CategoryAdapter adapter=new CategoryAdapter(CategoryActivity.this, result, hideSelectedItem);
 				getListView().setAdapter(adapter);
 			}
 			super.onPostExecute(result);

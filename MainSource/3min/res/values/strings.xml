@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
-    <!-- urban airship -->
-    <string name="gcmSender">400375101132</string>
-    <string name="developmentAppKey">YmOWEA0lR7aW77MI2u-SAQ</string>
-    <string name="developmentAppSecret">gL0ScP2vSAGohDRfZjHDeA</string>
-    <string name="productionAppKey">YmOWEA0lR7aW77MI2u-SAQ</string>
-    <string name="productionAppSecret">gL0ScP2vSAGohDRfZjHDeA</string>
 
     <string name="font_semibold">OpenSans-Semibold.ttf</string>
     <string name="font_bold">OpenSans-Bold.ttf</string>
@@ -33,7 +26,6 @@
     <string name="app_name">3 mins</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="app_id">580806171975545</string>
     <string name="activity_login_btn_login_gg"></string>
     <string name="please_wait">Please wait</string>
     <string name="loading_image">Loading image...</string>
@@ -85,7 +77,7 @@
     <string name="error_empty_image">Please enter at least one image</string>
     <string name="error_miss_field">Please enter all require field</string>
     <string name="error_upload">Fail to upload product</string>
-    <string name="google_map_API">AIzaSyA7LzP742pWpP0Vfmkf0GVwT22-gUzL7Nc</string>
+    
     <string name="title_activity_detail">DetailActivity</string>
     <string name="camera_filter">Filters</string>
     <string name="camera_album">Album</string>
@@ -99,6 +91,7 @@
     <string name="activity_chat_price_offered_label">Price Offered</string>
     <string name="activity_chat_chat_input_hint">Type message here to chat</string>
     <string name="activity_chat_chat_content_label">Chat privately with</string>
+    <string name="activity_chat_empty_message">Message is empty!</string>
     <string name="profile_liked">Liked</string>
     <string name="profile_message">Messages</string>
     <string name="profile_mylist">My Listings</string>
@@ -107,6 +100,8 @@
     <string name="postoffer_start_chatting">Make an offer to start chatting</string>
     <string name="postoffer_tap_to_change">tap to change</string>
     <string formatted="false" name="postoffer_title">%s is selling it for %sk Vnd</string>
+    <string name="activity_chat_no_more_older_messages">There are no older messages</string>
+    <string name="activity_chat_sold">Sold</string>
     
     <!-- fragment filter -->
     <string name="fm_filter_search_hint">Search for products</string>
@@ -154,10 +149,37 @@
     <string name="fm_detail_many_people_liked"> people liked this</string>
     <string name="fm_detail_view_1_offer">View 1 offer</string>
     <string name="fm_detail_view_many_offers">View %s offers</string>
+    <string name="fm_detail_view_all_comment">View all comments</string>
+    <string name="liked">Liked</string>
+    <string name="comment">Comment</string>
+    <string name="share">Share</string>
     
     <!-- common util -->
     <string name="facebook_app_missed_error">Please install Facebook for Android to share easier!</string>
     <string name="share_three_min_info">Hi Guys, Try this app https://play.google.com/store/apps/details?id=com.threemins</string>
     <string name="cannot_load_image_error">Can not load the original images of this product to share.\nUse the medium image instead</string>
+    
+    <string name="text_test">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed dorem ipsum dolor sit amet, consectetur adipisicing elit, sed dorem ipsum dolor sit amet, consectetur adipisicing elit, sed dorem ipsum dolor sit amet, consectetur adipisicing elit, sed d</string>
 
+    <!-- fragment right -->
+    <string name="fm_right_view_1_feedback">View 1 feedback</string>
+    <string name="fm_right_view_many_feedbacks">View %s feedbacks</string>
+    
+    <!-- comment activity -->
+    <string name="act_comment_label">Comments</string>
+    <string name="fm_comment_input_hint">Add a comment...</string>
+    
+    <!-- feedback activity -->
+    <string name="act_feedback_label">Feedback</string>
+    <string name="act_feedback_question">Are you satisfied with this item purchased?</string>
+    <string name="act_feedback_option_not_satisfied">Not satisfied</string>
+    <string name="act_feedback_option_no_comment">No comment</string>
+    <string name="act_feedback_option_i_am_satisfied">I am satisfied</string>
+    <string name="act_feedback_hint">If not satisfied, you can leave your comment.</string>
+    <string name="act_feedback_empty_feedback_warning">If you are not satisfied, please leave your feedback.</string>
+    <string name="act_feedback_sent_successfully">Your feedback is sent.</string>
+    <string name="act_feedback_sent_fail">Something is wrong. Please try again.</string>
+    
+    <!-- header feedback -->
+    <string name="header_feedback_view_all_feedbacks">View all feedbacks</string>
 </resources>

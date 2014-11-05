@@ -31,9 +31,15 @@
     <!-- home action bar -->
     <color name="home_action_bar_text_color_enable">#ffffff</color> <!-- white no transparent -->
     <color name="home_action_bar_text_color_disable">#66ffffff</color> <!-- white transparent 40% -->
+    <color name="home_action_bar_text_color_disable_2">#ff9e93</color> <!-- white no transparent -->
     
     <!-- owner view -->
     <color name="owner_view_onpress">#33000000</color>
     <color name="owner_view">#ffffff</color>
     
+    <!-- dimmed background in home activity -->
+    <color name="activity_home_dimmed_background">#99000000</color> <!-- black with transparent -->
+    
+    <!-- fm right -->
+    <color name="fm_right_bg_loading">#ccffffff</color> <!-- white with 80% of transparentcy -->
 </resources>
