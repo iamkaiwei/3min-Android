@@ -2,6 +2,7 @@ package com.threemin.fragment;
 
 import java.util.List;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -24,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewCallback;
@@ -57,6 +59,8 @@ public class DetailFragment extends Fragment {
 	private final int HIDE_DIALOG = 2;
 	private final int REQUEST_CHECK_OFFER_EXIST = 3;
 	private final int REQUEST_GET_LIST_OFFER = 4;
+	
+	public static final int REQUEST_CODE_EDIT_PRODUCT = 111;
 	
 	public static final String INTENT_PRODUCT_ID_FOR_COMMENT = "productIDForComment";
 	public static final String INTENT_COMMENT_ACTION = "CommentAction";
@@ -106,6 +110,17 @@ public class DetailFragment extends Fragment {
 		}
 		
 		return rootView;
+	}
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+	    // TODO when edit product, update this product to show
+	    super.onActivityResult(requestCode, resultCode, data);
+	    if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == REQUEST_CODE_EDIT_PRODUCT) {
+                Toast.makeText(getActivity(), "Update product", Toast.LENGTH_LONG).show();
+            }
+        }
 	}
 
 	private void initBody(View convertView) {
@@ -191,7 +206,7 @@ public class DetailFragment extends Fragment {
                     Intent intent = new Intent(getActivity(), ImageViewActivity.class);
                     intent.putExtra(CommonConstant.INTENT_EDIT_PRODUCT, true);
                     intent.putExtra(CommonConstant.INTENT_PRODUCT_DATA, strProductData);
-                    startActivity(intent);
+                    startActivityForResult(intent, REQUEST_CODE_EDIT_PRODUCT);
                     CommonUti.addAnimationWhenStartActivity(getActivity());
                 }
             });
@@ -253,7 +268,6 @@ public class DetailFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     //TODO
-//                    doCommentAction(ACTION_POST_COMMENT);
                     new GetInitCommentData(ACTION_POST_COMMENT).execute();
                 }
             });
@@ -265,7 +279,6 @@ public class DetailFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     //TODO
-//                    doCommentAction(ACTION_VIEW_COMMENTS);
                     new GetInitCommentData(ACTION_VIEW_COMMENTS).execute();
                 }
             });
@@ -547,7 +560,6 @@ public class DetailFragment extends Fragment {
 	    
 	    @Override
 	    protected void onPreExecute() {
-	        // TODO Auto-generated method stub
 	        super.onPreExecute();
 	        dialog = new ProgressDialog(getActivity());
 	        dialog.setMessage(getResources().getString(R.string.please_wait));
@@ -562,7 +574,6 @@ public class DetailFragment extends Fragment {
         
         @Override
         protected void onPostExecute(String result) {
-            // TODO Auto-generated method stub
             super.onPostExecute(result);
             if (dialog != null && dialog.isShowing()) {
                 dialog.dismiss();

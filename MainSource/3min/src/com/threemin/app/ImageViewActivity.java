@@ -553,8 +553,9 @@ public class ImageViewActivity extends Activity {
           
           if (mIsUpdateProduct) {
             //TODO: haven't implemented
-              Toast.makeText(mContext, "Update product", Toast.LENGTH_LONG).show();
-              moveTaskToBack(true);
+              Intent intent = new Intent();
+              setResult(RESULT_OK);
+              finish();
           } else {
               if(result!=null){
                   String data=new Gson().toJson(result);
