@@ -23,6 +23,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.animation.OvershootInterpolator;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
@@ -121,6 +122,22 @@ public class HomeFragment extends BaseProductFragment {
             changeIfNoItem();
         }
         return v;
+    }
+    
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        // TODO Auto-generated method stub
+        super.onActivityCreated(savedInstanceState);
+        bottomView.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+
+            @Override
+            public void onGlobalLayout() {
+                if (bottomHeight == 0) {
+                    bottomHeight = bottomView.getHeight();
+                    Log.d("bottom", "height=" + bottomHeight);
+                }
+            }
+        });
     }
 
 
