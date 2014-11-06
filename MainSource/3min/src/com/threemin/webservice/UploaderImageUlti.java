@@ -1,27 +1,38 @@
 package com.threemin.webservice;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
+import org.apache.http.ParseException;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.entity.mime.content.ContentBody;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.params.HttpParams;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.threemin.model.ImageModel;
 import com.threemin.model.ProductModel;
 
 public class UploaderImageUlti {
+    private final String tag = "UploaderImageUlti";
+    
 	private DefaultHttpClient mHttpClient;
 	private final int TIMEOUT = 60000;
 
@@ -47,17 +58,41 @@ public class UploaderImageUlti {
 		}
 	}
 	
-	public HttpResponse updateUserPhoto(String url, ProductModel model, String tokken) {
+	public ProductModel updateUserPhoto(String url, ProductModel model, String tokken) {
 
         try {
 
             HttpPut httpPut = new HttpPut(url);
             MultipartEntityBuilder builder = createMultipartEntityBuilder(model, tokken);
             httpPut.setEntity(builder.build());
-            return mHttpClient.execute(httpPut);
+            
+            HttpResponse response = mHttpClient.execute(httpPut);
+            if (response != null) {
+                HttpEntity r_entity = response.getEntity();
+                String responseString;
+                try {
+                    responseString = EntityUtils.toString(r_entity);
+                    Log.d(tag, "updateUserPhoto response: " + responseString);
+                    JSONObject resultObject = new JSONObject(responseString);
+
+                    ProductModel result = new Gson().fromJson(resultObject.optJSONObject("product").toString(),
+                            ProductModel.class);
+                    return result;
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    Log.d(tag, "updateUserPhoto ex: " + e.toString());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Log.d(tag, "updateUserPhoto ex: " + e.toString());
+                } catch (JSONException e) {
+                    Log.d(tag, "updateUserPhoto ex: " + e.toString());
+                }
+            }
+            return null;
+            
         } catch (Exception e) {
             e.printStackTrace();
-            Log.i("UploaderImageUlti", e.toString());
+            Log.i(tag, e.toString());
             return null;
         }
     }

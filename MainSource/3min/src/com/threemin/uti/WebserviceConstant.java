@@ -13,6 +13,7 @@ public class WebserviceConstant {
 	public static final String GET_PRODUCT_VIA_ID = URL_HOST + API + "/products";
 	public static final String GET_PRODUCT_FOLLOWED = URL_HOST + API + "/products/followed.json";
 	public static final String CREATE_PRODUCT = URL_HOST + API + "/products";
+	public static final String UPDATE_PRODUCT = URL_HOST + API + "/products/%s";
 	public static final String LIKE = URL_HOST + API + "/products/%s/likes";
 	public static final String GET_MY_PRODUCT = URL_HOST + API + "/products/me.json";
 	public static final String GET_USER_LIKED_PRODUCT = URL_HOST + API + "/products/liked.json";

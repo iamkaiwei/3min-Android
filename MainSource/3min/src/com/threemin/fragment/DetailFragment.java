@@ -118,7 +118,12 @@ public class DetailFragment extends Fragment {
 	    super.onActivityResult(requestCode, resultCode, data);
 	    if (resultCode == Activity.RESULT_OK) {
             if (requestCode == REQUEST_CODE_EDIT_PRODUCT) {
-                Toast.makeText(getActivity(), "Update product", Toast.LENGTH_LONG).show();
+//                Toast.makeText(getActivity(), "Update product", Toast.LENGTH_LONG).show();
+                String strProductData = data.getStringExtra(CommonConstant.INTENT_PRODUCT_DATA);
+                Log.i(tag, "Updated product: " + strProductData);
+                productModel = new Gson().fromJson(strProductData, ProductModel.class);
+                lnImgs.removeAllViews();
+                initBody(rootView);
             }
         }
 	}
