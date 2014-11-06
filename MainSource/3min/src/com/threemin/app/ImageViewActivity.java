@@ -78,7 +78,6 @@ public class ImageViewActivity extends Activity {
 	ArrayAdapter<CategoryModel> mAdapter;
 	CategoryModel mSelectedCategory;
 
-//	EditText etName, etPrice, etDescription;
 	EditText etPrice;
 	String mProductName, mProductDescription;
 	
@@ -231,9 +230,6 @@ public class ImageViewActivity extends Activity {
         mBtnLoginFacebook.setPublishPermissions(Arrays.asList("email","user_photos","publish_stream"));
         mSwShareOnFacebook = (Switch) findViewById(R.id.activity_imageview_switch_share_on_facebook);
 
-        //TODO
-//		etDescription = (EditText) findViewById(R.id.activity_imageview_et_description);
-//		etName = (EditText) findViewById(R.id.activity_imageview_et_item);
 		etPrice = (EditText) findViewById(R.id.activity_imageview_et_price);
 		tv_Category=(TextView) findViewById(R.id.activity_imageview_category);
 		tv_Category.setText("");
@@ -254,9 +250,6 @@ public class ImageViewActivity extends Activity {
 	}
 
 	private ProductModel validateInput() {
-	    //TODO
-//		String description = etDescription.getText().toString();
-//		String name = etName.getText().toString();
 	    String description = mProductDescription;
 	    String name = mProductName;
 	    
@@ -377,9 +370,6 @@ public class ImageViewActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 			    Bundle bundle=new Bundle();
-			    //TODO
-//			    bundle.putString(CommonConstant.INTENT_PRODUCT_NAME, etName.getText().toString());
-//			    bundle.putString(CommonConstant.INTENT_PRODUCT_DESCRIPTION, etDescription.getText().toString());
 			    bundle.putString(CommonConstant.INTENT_PRODUCT_NAME, mProductName);
 			    bundle.putString(CommonConstant.INTENT_PRODUCT_DESCRIPTION, mProductDescription);
 			    
@@ -449,11 +439,7 @@ public class ImageViewActivity extends Activity {
 		        String productDescription = data.getStringExtra(CommonConstant.INTENT_PRODUCT_DESCRIPTION);
 		        venue = new Gson().fromJson(data.getStringExtra(CommonConstant.INTENT_PRODUCT_DATA), Venue.class);
 		        tvName.setText(productName);
-		        //TODO
-//		        etName.setText(productName);
 		        mProductName = productName;
-		        
-//		        etDescription.setText(productDescription);
 		        mProductDescription = productDescription;
 		        
 		        if(venue!=null){
@@ -521,11 +507,8 @@ public class ImageViewActivity extends Activity {
 			return;
 		}
 		RequestBatch batch = new RequestBatch();
-		//TODO
-//		String item = etName.getText().toString();
 		String item = mProductName;
 		String price = etPrice.getText().toString();
-//		String description = etDescription.getText().toString();
 		String description = mProductDescription;
 		String caption = getString(R.string.activity_imageview_facebook_caption_name) + " " + item 
 		        + getString(R.string.activity_imageview_facebook_caption_price) + " " + price + "k Vnd"
