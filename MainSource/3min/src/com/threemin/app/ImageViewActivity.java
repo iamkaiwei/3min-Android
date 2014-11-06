@@ -8,6 +8,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -16,6 +17,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
@@ -40,17 +42,23 @@ import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.widget.LoginButton;
 import com.google.gson.Gson;
+import com.koushikdutta.urlimageviewhelper.UrlImageViewCallback;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.threemin.model.CategoryModel;
 import com.threemin.model.ImageModel;
 import com.threemin.model.ProductModel;
 import com.threemin.uti.CommonConstant;
+import com.threemin.uti.CommonUti;
 import com.threemin.uti.PreferenceHelper;
+import com.threemin.uti.WebserviceConstant;
 import com.threemin.view.SquareImageView;
+import com.threemin.webservice.UploaderImageUlti;
 import com.threemins.R;
 import com.threemins.R.id;
 
 public class ImageViewActivity extends Activity {
+    
+    public static final String tag = "ImageViewActivity";
 
 	public final static int REQUEST_CAMERA_ON_CREATE = 10;
 	
@@ -69,7 +77,11 @@ public class ImageViewActivity extends Activity {
 	
 	ArrayAdapter<CategoryModel> mAdapter;
 	CategoryModel mSelectedCategory;
-	EditText etName, etPrice, etDescription;
+
+	EditText etPrice;
+	String mProductName, mProductDescription;
+	
+	
 	List<ImageModel> imageModels;
 	TextView locationName;
 	Venue venue;
@@ -218,9 +230,6 @@ public class ImageViewActivity extends Activity {
         mBtnLoginFacebook.setPublishPermissions(Arrays.asList("email","user_photos","publish_stream"));
         mSwShareOnFacebook = (Switch) findViewById(R.id.activity_imageview_switch_share_on_facebook);
 
-
-		etDescription = (EditText) findViewById(R.id.activity_imageview_et_description);
-		etName = (EditText) findViewById(R.id.activity_imageview_et_item);
 		etPrice = (EditText) findViewById(R.id.activity_imageview_et_price);
 		tv_Category=(TextView) findViewById(R.id.activity_imageview_category);
 		tv_Category.setText("");
@@ -241,8 +250,9 @@ public class ImageViewActivity extends Activity {
 	}
 
 	private ProductModel validateInput() {
-		String description = etDescription.getText().toString();
-		String name = etName.getText().toString();
+	    String description = mProductDescription;
+	    String name = mProductName;
+	    
 		String price = etPrice.getText().toString();
 		
 		ProductModel result=new ProductModel();
@@ -281,7 +291,13 @@ public class ImageViewActivity extends Activity {
 		} else {
 			Log.i("ImageViewActivity", "location empty");
 			//check if it is edit product
-			if (mVenueID != null && mVenueID.length() > 0) {
+			if (    mIsUpdateProduct &&
+			        !TextUtils.isEmpty(mVenueID) &&
+                    !TextUtils.isEmpty(mVenueID) &&
+                    !TextUtils.isEmpty(mVenueID) &&
+                    !TextUtils.isEmpty(mVenueID)
+                ) 
+			{
 			    result.setVenueId(mVenueID);
 	            result.setVenueLat(mVenueLat);
 	            result.setVenueLong(mVenueLong);
@@ -354,8 +370,9 @@ public class ImageViewActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 			    Bundle bundle=new Bundle();
-			    bundle.putString(CommonConstant.INTENT_PRODUCT_NAME, etName.getText().toString());
-			    bundle.putString(CommonConstant.INTENT_PRODUCT_DESCRIPTION, etDescription.getText().toString());
+			    bundle.putString(CommonConstant.INTENT_PRODUCT_NAME, mProductName);
+			    bundle.putString(CommonConstant.INTENT_PRODUCT_DESCRIPTION, mProductDescription);
+			    
 			    String dataLocation= new Gson().toJson(venue);
 			    bundle.putString(CommonConstant.INTENT_PRODUCT_DATA, dataLocation);
 			    Intent intent=new Intent(mContext, InputProductActivity.class);
@@ -422,8 +439,9 @@ public class ImageViewActivity extends Activity {
 		        String productDescription = data.getStringExtra(CommonConstant.INTENT_PRODUCT_DESCRIPTION);
 		        venue = new Gson().fromJson(data.getStringExtra(CommonConstant.INTENT_PRODUCT_DATA), Venue.class);
 		        tvName.setText(productName);
-		        etName.setText(productName);
-		        etDescription.setText(productDescription);
+		        mProductName = productName;
+		        mProductDescription = productDescription;
+		        
 		        if(venue!=null){
                     locationName.setText(venue.getName());
                 }
@@ -489,9 +507,9 @@ public class ImageViewActivity extends Activity {
 			return;
 		}
 		RequestBatch batch = new RequestBatch();
-		String item = etName.getText().toString();
+		String item = mProductName;
 		String price = etPrice.getText().toString();
-		String description = etDescription.getText().toString();
+		String description = mProductDescription;
 		String caption = getString(R.string.activity_imageview_facebook_caption_name) + " " + item 
 		        + getString(R.string.activity_imageview_facebook_caption_price) + " " + price + "k Vnd"
 				+ getString(R.string.activity_imageview_facebook_caption_description) + " " + description;
@@ -553,8 +571,7 @@ public class ImageViewActivity extends Activity {
           
           if (mIsUpdateProduct) {
             //TODO: haven't implemented
-              Toast.makeText(mContext, "Update product", Toast.LENGTH_LONG).show();
-              moveTaskToBack(true);
+              new UpdateProductTask().execute(result);
           } else {
               if(result!=null){
                   String data=new Gson().toJson(result);
@@ -595,11 +612,25 @@ public class ImageViewActivity extends Activity {
             listImgV.add(mImg4);
             List<ImageModel> listImgModel = mProductModel.getImages();
             if (listImgModel.size() > 0) {
+                imageModels.clear();
+                imageModels.addAll(listImgModel);
                 for (int i = 0; i < listImgModel.size(); i++) {
+                    final int index = i;
                     UrlImageViewHelper.setUrlDrawable(
                             listImgV.get(i), 
                             listImgModel.get(i).getOrigin(), 
-                            R.drawable.stuff_img);
+                            R.drawable.stuff_img, new UrlImageViewCallback() {
+                                
+                                @Override
+                                public void onLoaded(ImageView imageView, Bitmap loadedBitmap, String url, boolean loadedFromCache) {
+                                    if (loadedBitmap != null) {
+                                        imageView.setImageBitmap(loadedBitmap);
+                                        String filePath = CommonUti.saveBitmapToLocal(loadedBitmap);
+                                        imageModels.get(index).setUrl(filePath);
+                                    }
+                                }
+                            });
+                    listImgV.get(i).setTag(listImgModel.get(i));
                 }
             }
             
@@ -609,6 +640,10 @@ public class ImageViewActivity extends Activity {
             
             //name:
             tvName.setText(mProductModel.getName());
+            mProductName = mProductModel.getName();
+            
+            //description:
+            mProductDescription = mProductModel.getDescription();
             
             //price:
             etPrice.setText(mProductModel.getPrice());
@@ -623,6 +658,48 @@ public class ImageViewActivity extends Activity {
 	
 	void doDeleteProduct() {
 	    //TODO: haven't implemented
+	}
+	
+	private class UpdateProductTask extends AsyncTask<ProductModel, Void, ProductModel> {
+	    
+	    private ProgressDialog dialog;
+	    
+	    @Override
+	    protected void onPreExecute() {
+	        super.onPreExecute();
+	        if (dialog == null) {
+                dialog = new ProgressDialog(mContext);
+                dialog.setMessage(getString(R.string.please_wait));
+            }
+	        dialog.show();
+	    }
+	    
+	    @Override
+	    protected ProductModel doInBackground(ProductModel... params) {
+	        ProductModel model = params[0];
+	        String token = PreferenceHelper.getInstance(mContext).getTokken();
+	        String url = String.format(WebserviceConstant.UPDATE_PRODUCT, "" + mProductModel.getId());
+	        Log.i(tag, "UpdateProductTask url: " + url);
+	        
+	        return new UploaderImageUlti().updateUserPhoto(url, model, token);
+	    }
+	    
+	    @Override
+	    protected void onPostExecute(ProductModel result) {
+	        super.onPostExecute(result);
+	        if (dialog != null && dialog.isShowing()) {
+                dialog.dismiss();
+            }
+	        Intent intent = new Intent();
+	        if (result != null) {
+                String strProductData = new Gson().toJson(result);
+                Log.i(tag, "UpdateProductTask result: " + strProductData);
+                intent.putExtra(CommonConstant.INTENT_PRODUCT_DATA, strProductData);
+            }
+	        setResult(RESULT_OK, intent);
+	        finish();
+	    }
+	    
 	}
 	
 }

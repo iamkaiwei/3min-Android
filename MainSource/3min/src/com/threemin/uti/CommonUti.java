@@ -1,6 +1,10 @@
 package com.threemin.uti;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import android.app.Activity;
@@ -17,6 +21,7 @@ import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings.Secure;
@@ -341,4 +346,53 @@ public class CommonUti {
 	public static void addAnimationWhenStartActivity(Activity act) {
 	    act.overridePendingTransition(R.anim.anim_right_in,R.anim.anim_no_animation);
 	}
+	
+	/*
+	 * save a bimap to local memory
+	 * return a file path of this bitmap
+	 * @params: 
+	 * Bitmap: bitmap to save
+	 * **/
+	public static String saveBitmapToLocal(Bitmap bitmap) {
+	    File filename = getOutputMediaFile();
+
+        FileOutputStream out = null;
+        try {
+            out = new FileOutputStream(filename);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                out.close();
+            } catch (Throwable ignore) {
+            }
+        }
+        return filename.getAbsolutePath();
+	}
+	
+	public static File getOutputMediaFile() {
+        // To be safe, you should check that the SDCard is mounted
+        // using Environment.getExternalStorageState() before doing this.
+
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                "threemins");
+        // This location works best if you want the created images to be shared
+        // between applications and persist after your app has been uninstalled.
+
+        // Create the storage directory if it does not exist
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
+                Log.d("MyCameraApp", "failed to create directory");
+                return null;
+            }
+        }
+
+        // Create a media file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        File mediaFile;
+        mediaFile = new File(mediaStorageDir.getPath() + File.separator + "IMG_" + timeStamp + ".jpg");
+
+        return mediaFile;
+    }
 }

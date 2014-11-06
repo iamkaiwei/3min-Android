@@ -156,8 +156,6 @@ public class ChatToBuyActivity extends ThreeMinsBaseActivity {
 		} else {
 			mProductModel = new Gson().fromJson(this.getIntent().getStringExtra(CommonConstant.INTENT_PRODUCT_DATA),
 					ProductModel.class);
-			// mOfferedPrice =
-			// this.getIntent().getStringExtra(CommonConstant.INTENT_PRODUCT_OFFER);
 			conversation = new Gson().fromJson(getIntent().getStringExtra(CommonConstant.INTENT_CONVERSATION_DATA),
 					Conversation.class);
 			setData();
@@ -393,17 +391,11 @@ public class ChatToBuyActivity extends ThreeMinsBaseActivity {
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
 			case SHOW_DIALOG:
-				dialog = new ProgressDialog(ChatToBuyActivity.this);
-				dialog.setMessage(getString(R.string.please_wait));
-				dialog.show();
 				if (mSwipe != null) {
 				    mSwipe.setRefreshing(true);
                 }
 				break;
 			case HIDE_DIALOG:
-				if (dialog != null && dialog.isShowing()) {
-					dialog.dismiss();
-				}
 				if (mSwipe != null && mSwipe.isRefreshing()) {
                     mSwipe.setRefreshing(false);
                 }
@@ -460,6 +452,15 @@ public class ChatToBuyActivity extends ThreeMinsBaseActivity {
 	};
 	
 	private class GetConversationViaIdTask extends AsyncTask<String, Void, String> {
+	    
+	    @Override
+	    protected void onPreExecute() {
+	        // TODO Auto-generated method stub
+	        super.onPreExecute();
+	        if (mSwipe != null) {
+                mSwipe.setRefreshing(true);
+            }
+	    }
 
 		@Override
 		protected String doInBackground(String... params) {
@@ -473,6 +474,9 @@ public class ChatToBuyActivity extends ThreeMinsBaseActivity {
 		@Override
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
+			if (mSwipe != null && mSwipe.isRefreshing()) {
+                mSwipe.setRefreshing(false);
+            }
 			if (result != null) {
 				setData();
 			}
@@ -555,6 +559,7 @@ public class ChatToBuyActivity extends ThreeMinsBaseActivity {
         t.start();
 	}
 	
+	//use regex pattern to remove multiple line breaks and multiple spaces
 	public String standardizeString(String input) {
 	    String output = input.trim();
     	output = output.replaceAll("[\r\n]+", "\n");

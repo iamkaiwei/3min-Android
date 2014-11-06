@@ -12,11 +12,15 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.threemin.model.CategoryModel;
+import com.threemin.model.ImageModel;
 import com.threemins.R;
 
 public class CategoryAdapter extends BaseAdapter {
+    
+    public static final String tag = "CategoryAdapter";
 
 	Context mContext;
 	List<CategoryModel> data;
@@ -52,16 +56,25 @@ public class CategoryAdapter extends BaseAdapter {
 
 	@Override
     public View getView(int position, View convertView, ViewGroup parent) {
+	    
+	    CategoryModel model = data.get(position);
+	    Log.i(tag, new Gson().toJson(model).toString());
 
         LayoutInflater inflater = LayoutInflater.from(mContext);
         convertView = inflater.inflate(R.layout.inflater_category, parent, false);
         ImageView img = (ImageView) convertView.findViewById(R.id.inflater_cate_image);
 
-        Log.i("CateID", "" + position + ": " + data.get(position).getId() + "Name: " + data.get(position).getName());
+        Log.i("CateID", "" + position + ": " + model.getId() + "Name: " + model.getName());
 
-        if (data.get(position).getId() != 0) {
+        
+        if (model.getId() != 0) {
             Log.d("postion", "" + position);
-            UrlImageViewHelper.setUrlDrawable(img, data.get(position).getImage().getUrl());
+            ImageModel imgModel = model.getImage();
+            if (imgModel != null) {
+                UrlImageViewHelper.setUrlDrawable(img, model.getImage().getUrl(), R.drawable.stuff_img);
+            } else {
+                img.setImageResource(R.drawable.stuff_img);
+            }
         } else {
             img.setImageResource(R.drawable.ic_everything);
         }

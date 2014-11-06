@@ -5,58 +5,72 @@ import com.google.gson.annotations.SerializedName;
 public class UserModel {
 
     private int id;
-    
+
     private String email;
-    
+
     @SerializedName("created_at")
     private String createAt;
-    
+
     @SerializedName("update_at")
     private String updateAt;
-    
+
     @SerializedName("facebook_id")
     private String facebookId;
-    
+
     private String username;
-    
+
     @SerializedName("first_name")
     private String firstName;
-    
+
     @SerializedName("full_name")
     private String fullName;
-    
+
     @SerializedName("last_name")
     private String lastName;
-    
+
     private String middleName;
     private String gender;
     private String birthday;
     private String udid;
     private String role;
-    
+
     @SerializedName("avatar")
     private String facebook_avatar;
-    
+
     private ImageModel image;
-    
+
     @SerializedName("follower_count")
     private int countFollowers;
-    
+
     @SerializedName("following_count")
     private int countFollowing;
-    
+
     @SerializedName("followed")
     private boolean isFollowed;
-    
+
     @SerializedName("positive_count")
     private int countPositive;
-    
+
     @SerializedName("negative_count")
     private int countNegative;
-    
+
     @SerializedName("normal_count")
     private int countNormal;
 
+    @SerializedName("activities_count")
+    private int countActivities;
+
+    @SerializedName("positive_percent")
+    private int percentPositive;
+
+    @SerializedName("negative_percent")
+    private int percentNegative;
+
+    @SerializedName("normal_percent")
+    private int percentNormal;
+
+    //============== Getters and Setters ====================
+    
     public int getCountFollowers() {
         return countFollowers;
     }
@@ -232,7 +246,37 @@ public class UserModel {
     public void setCountNormal(int countNormal) {
         this.countNormal = countNormal;
     }
-    
-    
+
+    public int getCountActivities() {
+        return countActivities;
+    }
+
+    public void setCountActivities(int countActivities) {
+        this.countActivities = countActivities;
+    }
+
+    public int getPercentPositive() {
+        return percentPositive;
+    }
+
+    public void setPercentPositive(int percentPositive) {
+        this.percentPositive = percentPositive;
+    }
+
+    public int getPercentNegative() {
+        return percentNegative;
+    }
+
+    public void setPercentNegative(int percentNegative) {
+        this.percentNegative = percentNegative;
+    }
+
+    public int getPercentNormal() {
+        return percentNormal;
+    }
+
+    public void setPercentNormal(int percentNormal) {
+        this.percentNormal = percentNormal;
+    }
 
 }

@@ -38,6 +38,7 @@ import android.widget.TextView;
 
 import com.facebook.Session;
 import com.facebook.widget.LoginButton;
+import com.google.gson.Gson;
 import com.threemin.adapter.CategoryAdapter;
 import com.threemin.fragment.HomeFragment;
 import com.threemin.fragment.LeftFragment;
@@ -104,6 +105,8 @@ public class HomeActivity extends ThreeMinsBaseActivity {
             setUpNumberActivities();
         }
     };
+    
+    private boolean isFromOnCreate = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,7 +168,8 @@ public class HomeActivity extends ThreeMinsBaseActivity {
             }
         });
         initActionBar();
-
+        
+        isFromOnCreate = true;
     }
 
     @Override
@@ -185,7 +189,11 @@ public class HomeActivity extends ThreeMinsBaseActivity {
                 new IntentFilter(IntentReceiver.ACTION_NOTIFY_UPDATE_NUMBER_ACTIVITIES));
         
         setUpNumberActivities();
-        rightFragment.updateInfomation();
+        if (isFromOnCreate) {
+            isFromOnCreate = false;
+        } else {
+            rightFragment.updateInfomation();
+        }
     }
 
     @Override
@@ -530,6 +538,7 @@ public class HomeActivity extends ThreeMinsBaseActivity {
         protected void onPostExecute(List<CategoryModel> result) {
             if (result != null) {
 //                categoryAdapter = new CategoryAdapter(HomeActivity.this, result, false, null);
+                Log.i("CateList", new Gson().toJson(result).toString());
                 boolean hideSelectedItem = true;
                 categoryAdapter = new CategoryAdapter(HomeActivity.this, result, hideSelectedItem);
                 mLvListCategories.setAdapter(categoryAdapter);
