@@ -501,7 +501,6 @@ public class ImageViewActivity extends Activity {
                 imgModel.setTypeEditProduct(ImageModel.TYPE_EDIT_PRODUCT_UPDATE);
             }else {
                 imgModel = new ImageModel();
-                imgModel.setTypeEditProduct(ImageModel.TYPE_EDIT_PRODUCT_CREATE);
             }
 		    imgModel.setUrl(imgFile.getAbsolutePath());
 		    imageView.setTag(imgModel);

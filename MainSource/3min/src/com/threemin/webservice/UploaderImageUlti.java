@@ -48,8 +48,19 @@ public class UploaderImageUlti {
 		try {
 
 			HttpPost httppost = new HttpPost(url);
-			MultipartEntityBuilder builder = createMultipartEntityBuilder(model, tokken);
+	         MultipartEntityBuilder builder = MultipartEntityBuilder.create();
 
+	            builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+
+	            /* example for adding an image part */
+	            for (ImageModel imageModel : model.getImages()) {
+	                ContentType contentType = ContentType.create("image/jpeg");
+	                File imageFile = new File(imageModel.getUrl());
+	                FileBody fileBody = new FileBody(imageFile, contentType, imageFile.getName());
+	                builder.addPart("images[]", fileBody);
+	            }
+	            addProductInfo(builder, tokken, model);
+	            
 			httppost.setEntity(builder.build());
 			return mHttpClient.execute(httppost);
 		} catch (Exception e) {
@@ -57,6 +68,23 @@ public class UploaderImageUlti {
 			Log.i("UploaderImageUlti", e.toString());
 			return null;
 		}
+	}
+	
+	public void addProductInfo(MultipartEntityBuilder builder, String tokken, ProductModel model) {
+	    if (!TextUtils.isEmpty(model.getDescription())) {
+            builder.addTextBody("description", model.getDescription());
+        }
+        builder.addTextBody("access_token", tokken);
+        builder.addTextBody("user_id", model.getOwner().getId() + "");
+        builder.addTextBody("name", model.getName());
+        builder.addTextBody("price", model.getPrice());
+        builder.addTextBody("category_id", model.getCategory().getId() + "");
+        if (model.getVenueName() != null) {
+            builder.addTextBody("venue_id", model.getVenueId() + "");
+            builder.addTextBody("venue_name", model.getVenueName());
+            builder.addTextBody("venue_long", model.getVenueLong() + "");
+            builder.addTextBody("venue_lat", model.getVenueLat() + "");
+        }
 	}
 	
 	public ProductModel updateUserPhoto(String url, ProductModel model, String tokken) {
@@ -98,6 +126,7 @@ public class UploaderImageUlti {
         }
     }
 	
+	//use to update product
 	public MultipartEntityBuilder createMultipartEntityBuilder(ProductModel model, String tokken) {
 	    MultipartEntityBuilder builder = MultipartEntityBuilder.create();
 
@@ -125,20 +154,7 @@ public class UploaderImageUlti {
             
             index++;
         }
-        if (!TextUtils.isEmpty(model.getDescription())) {
-            builder.addTextBody("description", model.getDescription());
-        }
-        builder.addTextBody("access_token", tokken);
-        builder.addTextBody("user_id", model.getOwner().getId() + "");
-        builder.addTextBody("name", model.getName());
-        builder.addTextBody("price", model.getPrice());
-        builder.addTextBody("category_id", model.getCategory().getId() + "");
-        if (model.getVenueName() != null) {
-            builder.addTextBody("venue_id", model.getVenueId() + "");
-            builder.addTextBody("venue_name", model.getVenueName());
-            builder.addTextBody("venue_long", model.getVenueLong() + "");
-            builder.addTextBody("venue_lat", model.getVenueLat() + "");
-        }
+        addProductInfo(builder, tokken, model);
         return builder;
 	}
 

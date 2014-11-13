@@ -76,6 +76,11 @@ public class ImageModel {
 	
 	private int typeEditProduct;
 	
+	public ImageModel() {
+	    super();
+	    this.typeEditProduct = TYPE_EDIT_PRODUCT_CREATE;
+	}
+	
 	public void setTypeEditProduct(int type) {
 	    this.typeEditProduct = type;
 	}
