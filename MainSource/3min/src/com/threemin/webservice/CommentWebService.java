@@ -1,6 +1,7 @@
 package com.threemin.webservice;
 
 import java.lang.reflect.Type;
+import java.net.URLEncoder;
 import java.util.List;
 
 import android.util.Log;
@@ -61,13 +62,13 @@ public class CommentWebService {
      * -1: exception
      * */
     public int postComments(String accessToken, int productID, String content) {
-        String url = String.format(WebserviceConstant.POST_COMMENT, "" + productID, accessToken, content);
-        String validURL = WebServiceUtil.getHttpUrl(url);
-        Log.i(tag, "postComments url: " + url);
-        Log.i(tag, "postComments validURL: " + validURL);
-        
         try {
-            int responseCode = WebServiceUtil.postRequest(validURL);
+        String contentEncode = URLEncoder.encode(content, "UTF-8");
+        String url = String.format(WebserviceConstant.POST_COMMENT, "" + productID, accessToken, contentEncode);
+        Log.i(tag, "postComments url: " + url);
+        Log.i(tag, "postComments validURL: " + url);
+        
+            int responseCode = WebServiceUtil.postRequest(url);
             Log.i(tag, "postComments response code: " + responseCode);
             return responseCode;
         } catch (Exception e) {

@@ -68,4 +68,20 @@ public class ImageModel {
 	}
 	
 	
+	//constants for editing product
+	public static final int TYPE_EDIT_PRODUCT_NO_CHANGE = 0;
+	public static final int TYPE_EDIT_PRODUCT_CREATE = 1;
+	public static final int TYPE_EDIT_PRODUCT_UPDATE = 2;
+	public static final int TYPE_EDIT_PRODUCT_DELETE = 3;
+	
+	private int typeEditProduct;
+	
+	public void setTypeEditProduct(int type) {
+	    this.typeEditProduct = type;
+	}
+	
+	public int getTypeEditProduct() {
+	    return this.typeEditProduct;
+	}
+	
 }

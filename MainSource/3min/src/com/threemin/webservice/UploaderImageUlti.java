@@ -23,6 +23,7 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.provider.Telephony.TextBasedSmsColumns;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -103,11 +104,26 @@ public class UploaderImageUlti {
         builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
 
         /* example for adding an image part */
+        int index = 0;
         for (ImageModel imageModel : model.getImages()) {
-            ContentType contentType = ContentType.create("image/jpeg");
-            File imageFile = new File(imageModel.getUrl());
-            FileBody fileBody = new FileBody(imageFile, contentType, imageFile.getName());
-            builder.addPart("images[]", fileBody);
+            int type = imageModel.getTypeEditProduct();
+            Log.i(tag, "ID: " + imageModel.getId() + " type: " + type);
+            if (type == ImageModel.TYPE_EDIT_PRODUCT_UPDATE || type == ImageModel.TYPE_EDIT_PRODUCT_DELETE) {
+                builder.addTextBody("images[" + index + "][id]", "" + imageModel.getId());
+            } else if (type == ImageModel.TYPE_EDIT_PRODUCT_NO_CHANGE) {
+                continue;
+            }
+            
+            if (type == ImageModel.TYPE_EDIT_PRODUCT_DELETE) {
+                builder.addTextBody("images[" + index + "][_destroy]", "1");
+            } else {
+                ContentType contentType = ContentType.create("image/jpeg");
+                File imageFile = new File(imageModel.getUrl());
+                FileBody fileBody = new FileBody(imageFile, contentType, imageFile.getName());
+                builder.addPart("images[" + index + "][content]", fileBody);
+            }
+            
+            index++;
         }
         if (!TextUtils.isEmpty(model.getDescription())) {
             builder.addTextBody("description", model.getDescription());

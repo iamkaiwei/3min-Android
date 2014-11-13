@@ -173,7 +173,22 @@ public class ImageViewActivity extends Activity {
 
 	public void deleteImage (int resId) {
 		ImageView img = (ImageView) findViewById(resId);
-		imageModels.remove((ImageModel)img.getTag());
+		ImageModel model = (ImageModel)img.getTag();
+		
+		Log.i(tag, new Gson().toJson(model).toString());
+		
+		if (mIsUpdateProduct && model.getId() != 0) {
+            model.setTypeEditProduct(ImageModel.TYPE_EDIT_PRODUCT_DELETE);
+            for (ImageModel imgM : imageModels) {
+                if (imgM.getId() == model.getId()) {
+                    imgM.setTypeEditProduct(ImageModel.TYPE_EDIT_PRODUCT_DELETE);
+                }
+            }
+        } else {
+            imageModels.remove(model);
+        }
+		
+		
 		if (img.getDrawable() != null) {
 			img.setImageDrawable(null);
 		}
@@ -187,6 +202,7 @@ public class ImageViewActivity extends Activity {
 	private double mVenueLat;
 	private double mVenueLong;
 	private ImageView mImgDeleteListing;
+	private int[] mListImgID;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -194,12 +210,18 @@ public class ImageViewActivity extends Activity {
 		setContentView(R.layout.activity_imageview);
 
 		mContext = ImageViewActivity.this;
+		mIsUpdateProduct = getIntent().getBooleanExtra(CommonConstant.INTENT_EDIT_PRODUCT, false);
+		
+		mListImgID = new int[4];
+        for (int i = 0; i < mListImgID.length; i++) {
+            mListImgID[i] = 0;
+        }
+        
 		imageModels=new ArrayList<ImageModel>();
 		initActionBar();
 		initWidgets();
 		setEvents();
 		
-		mIsUpdateProduct = getIntent().getBooleanExtra(CommonConstant.INTENT_EDIT_PRODUCT, false);
 		if (mIsUpdateProduct) {
             doEditProduct();
         } else {
@@ -471,7 +493,16 @@ public class ImageViewActivity extends Activity {
 		if(imgFile.exists()){
 		    Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
 		    imageView.setImageBitmap(myBitmap);
-		    ImageModel imgModel = new ImageModel();
+		    ImageModel imgModel;
+		    ImageModel tempModel = (ImageModel)imageView.getTag();
+		    if (mIsUpdateProduct && tempModel != null) {
+                imgModel = tempModel;
+                imageModels.remove(imgModel);
+                imgModel.setTypeEditProduct(ImageModel.TYPE_EDIT_PRODUCT_UPDATE);
+            }else {
+                imgModel = new ImageModel();
+                imgModel.setTypeEditProduct(ImageModel.TYPE_EDIT_PRODUCT_CREATE);
+            }
 		    imgModel.setUrl(imgFile.getAbsolutePath());
 		    imageView.setTag(imgModel);
 		    imageModels.add(imgModel);
@@ -619,7 +650,7 @@ public class ImageViewActivity extends Activity {
                     UrlImageViewHelper.setUrlDrawable(
                             listImgV.get(i), 
                             listImgModel.get(i).getOrigin(), 
-                            R.drawable.stuff_img, new UrlImageViewCallback() {
+                            R.drawable.stuff_img/*, new UrlImageViewCallback() {
                                 
                                 @Override
                                 public void onLoaded(ImageView imageView, Bitmap loadedBitmap, String url, boolean loadedFromCache) {
@@ -629,8 +660,10 @@ public class ImageViewActivity extends Activity {
                                         imageModels.get(index).setUrl(filePath);
                                     }
                                 }
-                            });
+                            }*/);
+                    listImgModel.get(i).setTypeEditProduct(ImageModel.TYPE_EDIT_PRODUCT_NO_CHANGE);
                     listImgV.get(i).setTag(listImgModel.get(i));
+                    mListImgID[i] = listImgModel.get(i).getId();
                 }
             }
             
