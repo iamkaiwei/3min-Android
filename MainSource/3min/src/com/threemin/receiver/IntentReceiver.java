@@ -65,9 +65,9 @@ public class IntentReceiver extends BroadcastReceiver {
             if (ThreeMinsApplication.isActive) {
                 NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                 notificationManager.cancel(id);
-                String msg = intent.getStringExtra(PushManager.EXTRA_ALERT);
+//                String msg = intent.getStringExtra(PushManager.EXTRA_ALERT);
 //                Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
-                notifyNewNotification(context, msg);
+                notifyNewNotification(context, intent);
             }
 
             logPushExtras(intent);
@@ -113,7 +113,7 @@ public class IntentReceiver extends BroadcastReceiver {
         }
     }
     
-    private Intent createIntent(Context context, Intent data) {
+    public static Intent createIntent(Context context, Intent data) {
         Bundle extras = data.getExtras();
         Intent showAppIntent = new Intent();
         
@@ -182,9 +182,12 @@ public class IntentReceiver extends BroadcastReceiver {
         context.sendBroadcast(intent);
     }
     
-    private void notifyNewNotification(Context context, String msg) {
+    private void notifyNewNotification(Context context, Intent intentFromUrbanAirship) {
         Intent intent = new Intent(ACTION_NOTIFY_NEW_NOTIFICATION);
-        intent.putExtra(CommonConstant.INTENT_NEW_NOTIFICATION, msg);
+        Set<String> keySet = intentFromUrbanAirship.getExtras().keySet();
+        for (String key : keySet) {
+            intent.putExtra(key, intentFromUrbanAirship.getStringExtra(key));
+        }
         context.sendBroadcast(intent);
     }
 

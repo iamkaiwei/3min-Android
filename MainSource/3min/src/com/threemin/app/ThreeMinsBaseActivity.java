@@ -12,13 +12,15 @@ import android.os.Handler;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.threemin.receiver.IntentReceiver;
-import com.threemin.uti.CommonConstant;
+import com.threemin.uti.CommonUti;
 import com.threemins.R;
+import com.urbanairship.push.PushManager;
 
 /**
  * All activities of 3mins app are sub-classes of this class
@@ -39,8 +41,7 @@ public class ThreeMinsBaseActivity extends SwipeBackActivity {
         
         @Override
         public void onReceive(Context context, Intent intent) {
-            String msg = intent.getStringExtra(CommonConstant.INTENT_NEW_NOTIFICATION);
-            showNewNotification(msg);
+            showNewNotification(intent);
         }
     };
     
@@ -80,12 +81,12 @@ public class ThreeMinsBaseActivity extends SwipeBackActivity {
     //Fake notification
     private final Handler mBasicActivityHandler = new Handler();
     
-    public void showNewNotification(String msg) {
+    public void showNewNotification(Intent intent) {
         if (mBaseActivity_PopupFakeNotification == null) {
             createFakeNotification();
         }
         
-        setDataToFakeNotification(msg);
+        setDataToFakeNotification(intent);
         
         int result = 0;
         int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
@@ -115,8 +116,21 @@ public class ThreeMinsBaseActivity extends SwipeBackActivity {
         mBaseActivity_TvPopupContent = (TextView) mBaseActivity_LayoutPopup.findViewById(R.id.fake_notification_tv_content);
     }
     
-    public void setDataToFakeNotification(String msg) {
+    public void setDataToFakeNotification(Intent intent) {
+        String msg = intent.getStringExtra(PushManager.EXTRA_ALERT);
         mBaseActivity_TvPopupContent.setText(msg);
+        final Intent intentToStartActivity = IntentReceiver.createIntent(this, intent);
+        mBaseActivity_TvPopupContent.setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+                if (mBaseActivity_PopupFakeNotification != null && mBaseActivity_PopupFakeNotification.isShowing()) {
+                    mBaseActivity_PopupFakeNotification.dismiss();
+                    startActivity(intentToStartActivity);
+                    CommonUti.addAnimationWhenStartActivity(ThreeMinsBaseActivity.this);
+                }
+            }
+        });
     }
     
 }
