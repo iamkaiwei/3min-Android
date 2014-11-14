@@ -4,10 +4,12 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.nio.charset.Charset;
 
 import org.json.JSONObject;
@@ -115,6 +117,18 @@ public class WebServiceUtil {
 	public static String getHttpUrl(String fileURL) {
 		fileURL = fileURL.replaceAll(" ", "%20");
 		return fileURL;
+	}
+	
+	public static String encodeMessage(String msg) {
+	    try {
+            String encodeMsg = URLEncoder.encode(msg, "UTF-8");
+            return encodeMsg;
+        } catch (UnsupportedEncodingException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            Log.i(tag, "encodeMessage ex: " + e.toString());
+            return null;
+        }
 	}
 	
 	//return the response code
