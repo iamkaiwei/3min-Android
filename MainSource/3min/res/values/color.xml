@@ -42,4 +42,7 @@
     
     <!-- fm right -->
     <color name="fm_right_bg_loading">#ccffffff</color> <!-- white with 80% of transparentcy -->
+    
+    <!-- base activity -->
+    <color name="black_with_transparent">#88000000</color>
 </resources>

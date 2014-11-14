@@ -29,6 +29,7 @@ public class IntentReceiver extends BroadcastReceiver {
     private static final String tag = "IntentReceiver";
     
     public static final String ACTION_NOTIFY_UPDATE_NUMBER_ACTIVITIES = "com.threemin.receiver.IntentReceiver.NotifyUpdateNumberActivities";
+    public static final String ACTION_NOTIFY_NEW_NOTIFICATION = "com.threemin.receiver.IntentReceiver.NotifyNewNotification";
 
     // A set of actions that launch activities when a push is opened.  Update
     // with any custom actions that also start activities when a push is opened.
@@ -65,7 +66,8 @@ public class IntentReceiver extends BroadcastReceiver {
                 NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                 notificationManager.cancel(id);
                 String msg = intent.getStringExtra(PushManager.EXTRA_ALERT);
-                Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
+//                Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
+                notifyNewNotification(context, msg);
             }
 
             logPushExtras(intent);
@@ -177,6 +179,12 @@ public class IntentReceiver extends BroadcastReceiver {
     
     private void notifyUpdateNumberActivities(Context context) {
         Intent intent = new Intent(ACTION_NOTIFY_UPDATE_NUMBER_ACTIVITIES);
+        context.sendBroadcast(intent);
+    }
+    
+    private void notifyNewNotification(Context context, String msg) {
+        Intent intent = new Intent(ACTION_NOTIFY_NEW_NOTIFICATION);
+        intent.putExtra(CommonConstant.INTENT_NEW_NOTIFICATION, msg);
         context.sendBroadcast(intent);
     }
 
