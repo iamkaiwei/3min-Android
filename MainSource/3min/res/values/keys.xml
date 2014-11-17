@@ -13,4 +13,7 @@
     <!-- google map -->
     <!-- <string name="google_map_API">AIzaSyA7LzP742pWpP0Vfmkf0GVwT22-gUzL7Nc</string> -->
     <string name="google_map_API">AIzaSyDR-68JhnBJIhH9jh3ErQbW_6Vbsj93ObA</string>
+    
+    <!-- Crittercism App ID -->
+    <string name="crittercism_app_id">545b377417878458c6000003</string>
 </resources>
