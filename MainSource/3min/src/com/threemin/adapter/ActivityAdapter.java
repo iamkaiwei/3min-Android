@@ -31,6 +31,9 @@ public class ActivityAdapter extends BaseAdapter {
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
+	    if (mData == null) {
+            return 0;
+        }
 		return mData.size();
 	}
 
@@ -83,7 +86,7 @@ public class ActivityAdapter extends BaseAdapter {
 		return convertView;
 	}
 	
-	public void setListUsers(List<ActivityModel> list) {
+	public void setListActivities(List<ActivityModel> list) {
         mData = list;
         this.notifyDataSetChanged();
     }

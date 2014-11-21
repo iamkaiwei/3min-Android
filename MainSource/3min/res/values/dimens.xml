@@ -156,5 +156,8 @@
     <!-- inflater_feedback_content -->
     <dimen name="inf_feedback_margin">20dp</dimen>
     <dimen name="inf_feedback_avatar_size">35dp</dimen>
+    
+    <!-- dialog delete product -->
+    <dimen name="dialog_delete_product_iv_product_size">50dp</dimen>
 
 </resources>

@@ -8,6 +8,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -22,12 +23,14 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -42,16 +45,15 @@ import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.widget.LoginButton;
 import com.google.gson.Gson;
-import com.koushikdutta.urlimageviewhelper.UrlImageViewCallback;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.threemin.model.CategoryModel;
 import com.threemin.model.ImageModel;
 import com.threemin.model.ProductModel;
 import com.threemin.uti.CommonConstant;
-import com.threemin.uti.CommonUti;
 import com.threemin.uti.PreferenceHelper;
 import com.threemin.uti.WebserviceConstant;
 import com.threemin.view.SquareImageView;
+import com.threemin.webservice.ProductWebservice;
 import com.threemin.webservice.UploaderImageUlti;
 import com.threemins.R;
 import com.threemins.R.id;
@@ -202,7 +204,6 @@ public class ImageViewActivity extends Activity {
 	private double mVenueLat;
 	private double mVenueLong;
 	private ImageView mImgDeleteListing;
-	private int[] mListImgID;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -211,11 +212,6 @@ public class ImageViewActivity extends Activity {
 
 		mContext = ImageViewActivity.this;
 		mIsUpdateProduct = getIntent().getBooleanExtra(CommonConstant.INTENT_EDIT_PRODUCT, false);
-		
-		mListImgID = new int[4];
-        for (int i = 0; i < mListImgID.length; i++) {
-            mListImgID[i] = 0;
-        }
         
 		imageModels=new ArrayList<ImageModel>();
 		initActionBar();
@@ -645,24 +641,12 @@ public class ImageViewActivity extends Activity {
                 imageModels.clear();
                 imageModels.addAll(listImgModel);
                 for (int i = 0; i < listImgModel.size(); i++) {
-                    final int index = i;
                     UrlImageViewHelper.setUrlDrawable(
                             listImgV.get(i), 
-                            listImgModel.get(i).getOrigin(), 
-                            R.drawable.stuff_img/*, new UrlImageViewCallback() {
-                                
-                                @Override
-                                public void onLoaded(ImageView imageView, Bitmap loadedBitmap, String url, boolean loadedFromCache) {
-                                    if (loadedBitmap != null) {
-                                        imageView.setImageBitmap(loadedBitmap);
-                                        String filePath = CommonUti.saveBitmapToLocal(loadedBitmap);
-                                        imageModels.get(index).setUrl(filePath);
-                                    }
-                                }
-                            }*/);
+                            listImgModel.get(i).getMedium(), 
+                            R.drawable.stuff_img);
                     listImgModel.get(i).setTypeEditProduct(ImageModel.TYPE_EDIT_PRODUCT_NO_CHANGE);
                     listImgV.get(i).setTag(listImgModel.get(i));
-                    mListImgID[i] = listImgModel.get(i).getId();
                 }
             }
             
@@ -690,6 +674,45 @@ public class ImageViewActivity extends Activity {
 	
 	void doDeleteProduct() {
 	    //TODO: haven't implemented
+	    Dialog dialog = createDeleteProductDialog();
+	    dialog.show();
+	    
+	}
+	
+	public Dialog createDeleteProductDialog() {
+	    final Dialog dialog = new Dialog(this, R.style.FeedbackDialog);
+        View dialogLayout = LayoutInflater.from(this).inflate(R.layout.dialog_delete_product, null);
+        
+        Button btnYes = (Button) dialogLayout.findViewById(R.id.dialog_delete_product_btn_yes);
+        Button btnNo = (Button) dialogLayout.findViewById(R.id.dialog_delete_product_btn_no);
+        ImageView ivProduct = (ImageView) dialogLayout.findViewById(R.id.dialog_delete_product_iv_product);
+        
+        btnYes.setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                new DeleteProductTask().execute();  
+            }
+        });
+        
+        btnNo.setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        
+        List<ImageModel> list = mProductModel.getImages();
+        if (list != null && list.size() > 0) {
+            UrlImageViewHelper.setUrlDrawable(ivProduct, list.get(0).getMedium(), R.drawable.stuff_img);
+        } else {
+            ivProduct.setImageResource(R.drawable.stuff_img);
+        }
+        
+        dialog.setContentView(dialogLayout);
+        return dialog;
 	}
 	
 	private class UpdateProductTask extends AsyncTask<ProductModel, Void, ProductModel> {
@@ -732,6 +755,58 @@ public class ImageViewActivity extends Activity {
 	        finish();
 	    }
 	    
+	}
+	
+	private class DeleteProductTask extends AsyncTask<Void, Void, Integer> {
+	    private ProgressDialog dialog;
+	    
+	    @Override
+	    protected void onPreExecute() {
+	        super.onPreExecute();
+	        if (dialog == null) {
+                dialog = new ProgressDialog(ImageViewActivity.this);
+                dialog.setMessage(getString(R.string.please_wait));
+            }
+	        
+	        dialog.show();
+	    }
+	    
+	    @Override
+	    protected Integer doInBackground(Void... params) {
+	        String token = PreferenceHelper.getInstance(ImageViewActivity.this).getTokken();
+	        int id = mProductModel.getId();
+	        int result = new ProductWebservice().deleteProduct(token, id);
+	        Log.i(tag, "DeleteProductTask: result: " + result);
+	        return result;
+	    }
+	    
+	    @Override
+	    protected void onPostExecute(Integer result) {
+	        super.onPostExecute(result);
+	        
+	        if (dialog != null && dialog.isShowing()) {
+                dialog.dismiss();
+            }
+	        
+	        if (result == WebserviceConstant.RESPONSE_CODE_SUCCESS) {
+                doSuccessToDeleteProduct();
+            } else {
+                doFailToDeleteProduct();
+            }
+	    }
+	}
+	
+	public void doSuccessToDeleteProduct() {
+        Intent intent = new Intent(this, HomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK); 
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        overridePendingTransition(R.anim.anim_left_in, R.anim.anim_right_out);
+        Toast.makeText(this, getString(R.string.notify_product_deleted), Toast.LENGTH_LONG).show();
+	}
+	
+	public void doFailToDeleteProduct() {
+        Toast.makeText(this, getString(R.string.notify_fail_to_delete_product), Toast.LENGTH_LONG).show();
 	}
 	
 }

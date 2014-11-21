@@ -62,11 +62,12 @@ public class IntentReceiver extends BroadcastReceiver {
             //TODO: testing - check if the app is in forceground.
             //if app is active: cancel the notification
             //else: do nothing
-            if (ThreeMinsApplication.isActive) {
+            //exception: if it is a notification for requesting feedback, always create notification
+            Bundle extras = intent.getExtras();
+            int type = Integer.parseInt(extras.getString("notification_type"));
+            if (ThreeMinsApplication.isActive && type != CommonConstant.TYPE_REMIND_BUYER_FEEDBACK) {
                 NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                 notificationManager.cancel(id);
-//                String msg = intent.getStringExtra(PushManager.EXTRA_ALERT);
-//                Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
                 notifyNewNotification(context, intent);
             }
 
@@ -93,12 +94,6 @@ public class IntentReceiver extends BroadcastReceiver {
                 launch.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(launch);
             }
-
-//            Intent launch = new Intent(Intent.ACTION_MAIN);
-//            launch.setClass(UAirship.shared().getApplicationContext(), HomeActivity.class);
-//            launch.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//
-//            UAirship.shared().getApplicationContext().startActivity(launch);
 
         } else if (action.equals(PushManager.ACTION_REGISTRATION_FINISHED)) {
             Log.i(tag, "Registration complete. APID:" + intent.getStringExtra(PushManager.EXTRA_APID)

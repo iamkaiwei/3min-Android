@@ -187,7 +187,7 @@ public class UserActivityFragment extends Fragment {
                     mDBHelper.deleteAllActivities();
                 } else if (currentStep == STEP_LOADMORE) { 
                     data.addAll(result);
-                    adapter.setListUsers(data);
+                    adapter.setListActivities(data);
                 }
                 mDBHelper.insertListActivities(result);
             } else if (currentStep == STEP_INIT) {
@@ -195,7 +195,7 @@ public class UserActivityFragment extends Fragment {
                 if (adapter == null) {
                     adapter = new ActivityAdapter(getActivity(), result);
                 } else {
-                    adapter.setListUsers(result);
+                    adapter.setListActivities(result);
                 }
             }
             Log.i(tag, "GetActivitiesListTask result: " + new Gson().toJson(result));

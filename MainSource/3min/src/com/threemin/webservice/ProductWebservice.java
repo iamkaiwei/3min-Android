@@ -3,6 +3,9 @@ package com.threemin.webservice;
 import java.lang.reflect.Type;
 import java.util.List;
 
+import org.json.JSONObject;
+
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -81,5 +84,30 @@ public class ProductWebservice {
             e.printStackTrace();
         }
 	    return null;
+	}
+	
+	public int deleteProduct(String accessToken, int productID) {
+	    String url = String.format(WebserviceConstant.DELETE_PRODUCT, "" + productID, "" + accessToken);
+	    Log.i(tag, "deleteProduct url: " + url);
+	    
+	    try {
+            String result = WebServiceUtil.deleteJson(url);
+            if (!TextUtils.isEmpty(result)) {
+                Log.d("result", result);
+                JSONObject jsonResult = new JSONObject(result);
+                if ( jsonResult.getString("status").equals("success")) {
+                    return WebserviceConstant.RESPONSE_CODE_SUCCESS;
+                } else { 
+                    return WebserviceConstant.RESPONSE_CODE_EXCEPTION;
+                }
+            } else {
+                Log.i(tag, "deleteProduct result null: ");
+                return WebserviceConstant.RESPONSE_CODE_EXCEPTION;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.i(tag, "deleteProduct ex: " + e.toString());
+            return WebserviceConstant.RESPONSE_CODE_EXCEPTION;
+        }
 	}
 }

@@ -41,6 +41,7 @@ public class ThreeMinsBaseActivity extends SwipeBackActivity {
         
         @Override
         public void onReceive(Context context, Intent intent) {
+            mBasicActivity_CurrentNotificationTimestamp = System.currentTimeMillis();
             showNewNotification(intent);
         }
     };
@@ -79,9 +80,12 @@ public class ThreeMinsBaseActivity extends SwipeBackActivity {
     }
     
     //Fake notification
-    private final Handler mBasicActivityHandler = new Handler();
+    protected final Handler mBasicActivityHandler = new Handler();
+    protected static long mBasicActivity_CurrentNotificationTimestamp;
     
     public void showNewNotification(Intent intent) {
+        final long notificationTimestamp = mBasicActivity_CurrentNotificationTimestamp;
+        
         if (mBaseActivity_PopupFakeNotification == null) {
             createFakeNotification();
         }
@@ -97,7 +101,9 @@ public class ThreeMinsBaseActivity extends SwipeBackActivity {
                 
                 @Override
                 public void run() {
-                    if (mBaseActivity_PopupFakeNotification != null && mBaseActivity_PopupFakeNotification.isShowing()) {
+                    if (mBaseActivity_PopupFakeNotification != null 
+                            && mBaseActivity_PopupFakeNotification.isShowing()
+                            && notificationTimestamp == mBasicActivity_CurrentNotificationTimestamp) {
                         mBaseActivity_PopupFakeNotification.dismiss();
                     }
                 }
@@ -111,7 +117,6 @@ public class ThreeMinsBaseActivity extends SwipeBackActivity {
         mBaseActivity_PopupFakeNotification.setBackgroundDrawable(new BitmapDrawable(getResources()));
         mBaseActivity_PopupFakeNotification.setOutsideTouchable(true);
         mBaseActivity_PopupFakeNotification.setTouchable(true);
-//        mBaseActivity_PopupFakeNotification.setFocusable(true);
         mBaseActivity_PopupFakeNotification.setAnimationStyle(R.style.activity_home_popup_animation);
         mBaseActivity_TvPopupContent = (TextView) mBaseActivity_LayoutPopup.findViewById(R.id.fake_notification_tv_content);
     }
