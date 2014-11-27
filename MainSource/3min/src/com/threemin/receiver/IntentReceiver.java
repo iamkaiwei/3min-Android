@@ -7,8 +7,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.threemin.app.ChatToBuyActivity;
 import com.threemin.app.DetailActivity;
@@ -174,7 +174,8 @@ public class IntentReceiver extends BroadcastReceiver {
     
     private void notifyUpdateNumberActivities(Context context) {
         Intent intent = new Intent(ACTION_NOTIFY_UPDATE_NUMBER_ACTIVITIES);
-        context.sendBroadcast(intent);
+//        context.sendBroadcast(intent);
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
     }
     
     private void notifyNewNotification(Context context, Intent intentFromUrbanAirship) {
@@ -183,7 +184,8 @@ public class IntentReceiver extends BroadcastReceiver {
         for (String key : keySet) {
             intent.putExtra(key, intentFromUrbanAirship.getStringExtra(key));
         }
-        context.sendBroadcast(intent);
+//        context.sendBroadcast(intent);
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
     }
 
 }

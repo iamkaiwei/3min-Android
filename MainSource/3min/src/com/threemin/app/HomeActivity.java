@@ -13,6 +13,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
@@ -184,7 +185,7 @@ public class HomeActivity extends ThreeMinsBaseActivity {
         super.onResume();
         
         //register broadcast receiver to update number activities if it changes
-        registerReceiver(
+        LocalBroadcastManager.getInstance(this).registerReceiver(
                 mBRUpdateActivitiesCount, 
                 new IntentFilter(IntentReceiver.ACTION_NOTIFY_UPDATE_NUMBER_ACTIVITIES));
         
@@ -201,7 +202,7 @@ public class HomeActivity extends ThreeMinsBaseActivity {
         Log.i("LifeCycle", "onPause");
         super.onPause();
         
-        unregisterReceiver(mBRUpdateActivitiesCount);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mBRUpdateActivitiesCount);
     }
 
     @Override
