@@ -58,7 +58,7 @@ import com.threemin.webservice.UploaderImageUlti;
 import com.threemins.R;
 import com.threemins.R.id;
 
-public class ImageViewActivity extends Activity {
+public class ImageViewActivity extends ThreeMinsBaseActivity {
     
     public static final String tag = "ImageViewActivity";
 
