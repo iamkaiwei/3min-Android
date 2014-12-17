@@ -205,6 +205,7 @@ public class ImageViewActivity extends Activity {
 	private double mVenueLong;
 	private ImageView mImgDeleteListing;
 
+	private boolean mFlagCalledFromOnCreate = false;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -218,18 +219,30 @@ public class ImageViewActivity extends Activity {
 		initWidgets();
 		setEvents();
 		
-		if (mIsUpdateProduct) {
-            doEditProduct();
-        } else {
-            mImgDeleteListing.setVisibility(View.GONE);
-            startActivityForResult(new Intent(ImageViewActivity.this, ActivityCamera.class), REQUEST_CAMERA_ON_CREATE);
-        }
+//		if (mIsUpdateProduct) {
+//            doEditProduct();
+//        } else {
+//            mImgDeleteListing.setVisibility(View.GONE);
+//            startActivityForResult(new Intent(ImageViewActivity.this, ActivityCamera.class), REQUEST_CAMERA_ON_CREATE);
+//        }
+		mFlagCalledFromOnCreate = true;
 	}
 	
 	@Override
     protected void onResume() {
         super.onResume();
         ThreeMinsApplication.isActive = true;
+        
+        if (mFlagCalledFromOnCreate == true) {
+            mFlagCalledFromOnCreate = false;
+            if (mIsUpdateProduct) {
+                doEditProduct();
+            } else {
+                mImgDeleteListing.setVisibility(View.GONE);
+                startActivityForResult(new Intent(ImageViewActivity.this, ActivityCamera.class), REQUEST_CAMERA_ON_CREATE);
+            }
+        }
+        
     }
     
     @Override
