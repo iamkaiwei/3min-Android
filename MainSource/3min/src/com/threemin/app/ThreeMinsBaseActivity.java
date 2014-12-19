@@ -26,9 +26,9 @@ import com.urbanairship.push.PushManager;
 /**
  * All activities of 3mins app are sub-classes of this class
  * There are some exceptions:
+ * 
  * + CategoryActivity: ListActivity
  * + FeedbackDialogActivity: Activity
- * + ImageViewActivity: Activity
  * 
  * In these activities, we have to override onPause and onResume to update value of var ThreeMinsApplication.isActive
  * */

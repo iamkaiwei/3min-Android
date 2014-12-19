@@ -23,6 +23,14 @@ public class ActivityAdapter extends BaseAdapter {
 	Context mContext;
 	List<ActivityModel> mData;
 	
+	static class ViewHolder {
+	    public ImageView   ivAvatar;
+	    public TextView    tvContent;
+	    public TextView    tvMessage;
+	    public TextView    tvTime;
+	    public ImageView   ivProduct;
+	}
+	
 	public ActivityAdapter(Context context, List<ActivityModel> data ){
 		mContext = context;
 		mData = data;
@@ -30,7 +38,6 @@ public class ActivityAdapter extends BaseAdapter {
 
 	@Override
 	public int getCount() {
-		// TODO Auto-generated method stub
 	    if (mData == null) {
             return 0;
         }
@@ -39,7 +46,6 @@ public class ActivityAdapter extends BaseAdapter {
 
 	@Override
 	public Object getItem(int position) {
-		// TODO Auto-generated method stub
 		return mData.get(position);
 	}
 
@@ -53,35 +59,42 @@ public class ActivityAdapter extends BaseAdapter {
 		if (convertView == null) {
 			LayoutInflater inflater = LayoutInflater.from(mContext);
 			convertView = inflater.inflate(R.layout.inflater_activity, parent, false);
+			
+			ViewHolder vh = new ViewHolder();
+			vh.ivAvatar = (ImageView) convertView.findViewById(R.id.inflater_activity_avatar);
+	        vh.tvContent = (TextView) convertView.findViewById(R.id.inflater_activity_tv_content);
+	        vh.tvMessage = (TextView) convertView.findViewById(R.id.inflater_activity_tv_message);
+	        vh.tvTime = (TextView) convertView.findViewById(R.id.inflater_activity_tv_time);
+	        vh.ivProduct = (ImageView) convertView.findViewById(R.id.inflater_activity_product);
+	        
+	        convertView.setTag(vh);
 		}
 		
-		ImageView imgAvatar = (ImageView) convertView.findViewById(R.id.inflater_activity_avatar);
-		TextView tvContent = (TextView) convertView.findViewById(R.id.inflater_activity_tv_content);
-		TextView tvMessage = (TextView) convertView.findViewById(R.id.inflater_activity_tv_message);
-		TextView tvTime = (TextView) convertView.findViewById(R.id.inflater_activity_tv_time);
-		ImageView imgProduct = (ImageView) convertView.findViewById(R.id.inflater_activity_product);
+		ActivityModel model = mData.get(position);
+		ViewHolder holder = (ViewHolder) convertView.getTag();
 		
-		UrlImageViewHelper.setUrlDrawable(imgAvatar, mData.get(position).getUser().getFacebook_avatar(), R.drawable.avatar_loading);
+		UrlImageViewHelper.setUrlDrawable(holder.ivAvatar, model.getUser().getFacebook_avatar(), R.drawable.avatar_loading);
 		
-		String content = mData.get(position).getContent();
-		String fullName = mData.get(position).getUser().getFullName();
+		String content = model.getContent();
+		String fullName = model.getUser().getFullName();
 		String newContent = content.substring(fullName.length(), content.length());
 		Log.i("tructran", "content " + content + "\nFull name " + fullName + "\nNew content " + newContent);
+		
 //		bgRedColor = "ff401a";
 //		bgGreyColor = "a9a9a9";
-		tvContent.setText(Html.fromHtml("<font color=\"#ff401a\">" + fullName + "</font>" + "<font color=\"#a9a9a9\">" + " " + newContent + "</font>"));
+		holder.tvContent.setText(Html.fromHtml("<font color=\"#ff401a\">" + fullName + "</font>" + "<font color=\"#a9a9a9\">" + " " + newContent + "</font>"));
 		
-		tvTime.setText(DateUtils.getRelativeTimeSpanString(mData.get(position).getUpdateTime() * 1000,
+		holder.tvTime.setText(DateUtils.getRelativeTimeSpanString(model.getUpdateTime() * 1000,
 				System.currentTimeMillis(), 0L, DateUtils.FORMAT_ABBREV_RELATIVE));
 		
-		tvMessage.setVisibility(View.GONE);
+		holder.tvMessage.setVisibility(View.GONE);
 		
-		String imgURL = mData.get(position).getDisplayImageUrl();
+		String imgURL = model.getDisplayImageUrl();
 		if (imgURL != null && imgURL.length() > 0) {
-            imgProduct.setVisibility(View.VISIBLE);
-		    UrlImageViewHelper.setUrlDrawable(imgProduct, mData.get(position).getDisplayImageUrl(), R.drawable.stuff_img);
+            holder.ivProduct.setVisibility(View.VISIBLE);
+		    UrlImageViewHelper.setUrlDrawable(holder.ivProduct, model.getDisplayImageUrl(), R.drawable.stuff_img);
         } else {
-            imgProduct.setVisibility(View.GONE);
+            holder.ivProduct.setVisibility(View.GONE);
         }
 		return convertView;
 	}
