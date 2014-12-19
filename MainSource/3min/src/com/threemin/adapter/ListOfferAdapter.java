@@ -14,9 +14,17 @@ import android.widget.TextView;
 
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.threemin.model.Conversation;
+import com.threemin.uti.CommonConstant;
 import com.threemins.R;
 
 public class ListOfferAdapter extends BaseAdapter {
+    
+    static class ViewHolder {
+        public ImageView ivAvatar;
+        public TextView tvName;
+        public TextView tvTime;
+        public TextView tvOffer;
+    }
 
 	List<Conversation> data;
 
@@ -26,54 +34,51 @@ public class ListOfferAdapter extends BaseAdapter {
 
 	@Override
 	public int getCount() {
-		// TODO Auto-generated method stub
+	    if (data == null) {
+            return 0;
+        }
 		return data.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		// TODO Auto-generated method stub
+	    if (data == null) {
+            return null;
+        }
 		return data.get(position);
 	}
 
 	@Override
 	public long getItemId(int position) {
-		// TODO Auto-generated method stub
 		return position;
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+	    if (convertView == null) {
+	        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+	        convertView = inflater.inflate(R.layout.inflater_conversation, parent, false);
+	        
+	        ViewHolder vh = new ViewHolder();
+	        vh.ivAvatar = (ImageView) convertView.findViewById(R.id.inflater_heeader_product_image);
+	        vh.tvName = (TextView) convertView.findViewById(R.id.inflater_heeader_product_tv_name);
+	        vh.tvTime = (TextView) convertView.findViewById(R.id.inflater_heeader_product_tv_time);
+	        vh.tvOffer = (TextView) convertView.findViewById(R.id.inflater_heeader_product_tv_offered_price);
+	        convertView.setTag(vh);
+        }
 		Conversation conversation = data.get(position);
-		LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-		convertView = inflater.inflate(R.layout.inflater_conversation, parent, false);
+		ViewHolder vh = (ViewHolder) convertView.getTag();
 		//
 		if (conversation.getUser() != null) {
-			ImageView avatar = (ImageView) convertView.findViewById(R.id.inflater_heeader_product_image);
-			UrlImageViewHelper.setUrlDrawable(avatar, conversation.getUser().getFacebook_avatar(), R.drawable.avatar_loading);
+			UrlImageViewHelper.setUrlDrawable(vh.ivAvatar, conversation.getUser().getFacebook_avatar(), R.drawable.avatar_loading);
 
-			TextView name = (TextView) convertView.findViewById(R.id.inflater_heeader_product_tv_name);
-			name.setText(conversation.getUser().getFullName());
+			vh.tvName.setText(conversation.getUser().getFullName());
 
-			TextView tv_time = (TextView) convertView.findViewById(R.id.inflater_heeader_product_tv_time);
-			tv_time.setText(DateUtils.getRelativeTimeSpanString(conversation.getLastest_update() * 1000,
+			vh.tvTime.setText(DateUtils.getRelativeTimeSpanString(conversation.getLastest_update() * 1000,
 					System.currentTimeMillis(), 0L, DateUtils.FORMAT_ABBREV_RELATIVE));
 			
-			if (conversation.getProduct() != null) {
-				ImageView imageViewProduct = (ImageView) convertView.findViewById(R.id.imageView1);
-				int size = conversation.getProduct().getImages().size();
-				if (size > 0) {
-					UrlImageViewHelper.setUrlDrawable(imageViewProduct, conversation.getProduct().getImages().get(0)
-							.getSquare());
-				} else {
-					Log.d("ListOfferAdapter", "Size 0: "  + conversation.getProduct().toString());
-					imageViewProduct.setImageResource(R.drawable.stuff_img);
-				}
-			}
-			if(!TextUtils.isEmpty(conversation.getLastest_message())){
-				TextView lastMessage=(TextView) convertView.findViewById(R.id.inflater_heeader_product_tv_last_message);
-				lastMessage.setText(conversation.getLastest_message());
-			}
+			vh.tvOffer.setText(parent.getContext().getString(R.string.activity_chat_price_offered_label) + ": " + conversation.getOffer() + CommonConstant.CURRENCY);
+			
 		}
 
 		return convertView;
