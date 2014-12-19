@@ -42,6 +42,9 @@ public class FeedbackAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
+        if (mData == null) {
+            return null;
+        }
         return mData.get(position);
     }
 
@@ -67,12 +70,6 @@ public class FeedbackAdapter extends BaseAdapter {
         
         FeedbackModel m = mData.get(position);
         ViewHolder vh = (ViewHolder) convertView.getTag();
-        
-        
-//        ImageView imgAvatar = (ImageView) convertView.findViewById(R.id.inf_feedback_avatar);
-//        TextView tvName = (TextView) convertView.findViewById(R.id.inf_feedback_tv_name);
-//        TextView tvTime = (TextView) convertView.findViewById(R.id.inf_feedback_tv_time);
-//        TextView tvContent = (TextView) convertView.findViewById(R.id.inf_feedback_tv_content);
         
         String avatarUrl = m.getUser().getFacebook_avatar();
         String fullName = m.getUser().getFullName();
