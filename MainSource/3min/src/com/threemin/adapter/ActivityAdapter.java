@@ -46,11 +46,17 @@ public class ActivityAdapter extends BaseAdapter {
 
 	@Override
 	public Object getItem(int position) {
+	    if (mData == null) {
+            return null;
+        }
 		return mData.get(position);
 	}
 
 	@Override
 	public long getItemId(int position) {
+	    if (mData == null) {
+            return -1;
+        }
 		return mData.get(position).getId();
 	}
 
