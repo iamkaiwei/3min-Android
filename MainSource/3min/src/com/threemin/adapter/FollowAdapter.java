@@ -27,6 +27,12 @@ import android.widget.TextView;
 
 public class FollowAdapter extends BaseAdapter {
     
+    static class ViewHolder {
+        public ImageView imgAvatar;
+        public TextView tvName;
+        public ImageView imgFollow;
+    }
+    
     private List<UserModel> mData;
     Context mContext;
     
@@ -37,11 +43,17 @@ public class FollowAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
+        if (mData == null) {
+            return 0;
+        }
         return mData.size();
     }
 
     @Override
     public UserModel getItem(int position) {
+        if (mData == null) {
+            return null;
+        }
         return mData.get(position);
     }
 
@@ -55,11 +67,18 @@ public class FollowAdapter extends BaseAdapter {
         if (convertView == null) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
             convertView = inflater.inflate(R.layout.inflater_follow, parent, false);
+            
+            ViewHolder vh = new ViewHolder();
+            vh.imgAvatar = (ImageView) convertView.findViewById(R.id.inflater_follow_avatar);
+            vh.imgFollow = (ImageView) convertView.findViewById(R.id.inflater_follow_img_follow);
+            vh.tvName = (TextView) convertView.findViewById(R.id.inflater_follow_tv_name);
+            
+            convertView.setTag(vh);
         }
-        final UserModel model = mData.get(position);
         
-        LinearLayout lvUserInfo = (LinearLayout) convertView.findViewById(R.id.inflater_follow_ln_user_info);
-        lvUserInfo.setOnClickListener(new OnClickListener() {
+        final UserModel model = mData.get(position);
+        ViewHolder vh = (ViewHolder) convertView.getTag();
+        convertView.setOnClickListener(new OnClickListener() {
             
             @Override
             public void onClick(View v) {
@@ -69,73 +88,12 @@ public class FollowAdapter extends BaseAdapter {
             }
         });
         
-        ImageView imgAvatar = (ImageView) convertView.findViewById(R.id.inflater_follow_avatar);
-        UrlImageViewHelper.setUrlDrawable(imgAvatar, model.getFacebook_avatar(), R.drawable.avatar_loading);
+        UrlImageViewHelper.setUrlDrawable(vh.imgAvatar, model.getFacebook_avatar(), R.drawable.avatar_loading);
         
-        TextView tvName = (TextView) convertView.findViewById(R.id.inflater_follow_tv_name);
-        tvName.setText(model.getFullName());
+        vh.tvName.setText(model.getFullName());
         
-        ImageView imgFollow = (ImageView) convertView.findViewById(R.id.inflater_follow_img_follow);
-        imgFollow.setSelected(model.isFollowed());
-        imgFollow.setOnClickListener(new OnClickListener() {
-            
-            @Override
-            public void onClick(View v) {
-                doFollowFunction(v, model.getId());
-            }
-        });
+        vh.imgFollow.setSelected(model.isFollowed());
         return convertView;
-    }
-    
-  //follow or unfollow a user
-    public void doFollowFunction(View v, int userId) {
-        if (v.isSelected()) {
-            v.setSelected(false);
-            new FollowUserTask(RightFragment.UNFOLLOW).execute(userId);
-        } else {
-            v.setSelected(true);
-            new FollowUserTask(RightFragment.FOLLOW).execute(userId);
-        }
-    }
-    
-    //call web service to follow or unfollow a user
-    private class FollowUserTask extends AsyncTask<Integer, Void, String> {
-
-        boolean followMode;
-        ProgressDialog dialog;
-        
-        public FollowUserTask(boolean followMode) {
-            this.followMode = followMode;
-        }
-        
-        @Override
-        protected void onPreExecute() {
-            // TODO Auto-generated method stub
-            super.onPreExecute();
-            dialog = new ProgressDialog(mContext);
-            dialog.setMessage(mContext.getString(R.string.please_wait));
-            dialog.show();
-        }
-        
-        @Override
-        protected String doInBackground(Integer... params) {
-            String tokken = PreferenceHelper.getInstance(mContext).getTokken();
-            String result;
-            if (followMode == RightFragment.FOLLOW) {
-                result = new RelationshipWebService().followUser(tokken, params[0]);
-            } else {
-                result = new RelationshipWebService().unfollowUser(tokken, params[0]);
-            }
-                 
-            return result;
-        }
-        
-        @Override
-        protected void onPostExecute(String result) {
-            if (dialog != null && dialog.isShowing()) {
-                dialog.dismiss();
-            }
-        }
     }
     
     public void setListUsers(List<UserModel> list) {
