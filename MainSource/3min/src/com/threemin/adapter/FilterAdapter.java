@@ -10,23 +10,27 @@ import android.widget.TextView;
 import com.threemins.R;
 
 public class FilterAdapter extends BaseAdapter {
+    
+    public static final int NUMBER_FILTER = 6;
+    
+    static class ViewHolder {
+        public ImageView ivImage;
+        public TextView tvFilterName;
+    }
 
     private int selectedPositon;
 	@Override
 	public int getCount() {
-		// TODO Auto-generated method stub
-		return 6;
+		return NUMBER_FILTER;
 	}
 
 	@Override
 	public Object getItem(int arg0) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public long getItemId(int position) {
-		// TODO Auto-generated method stub
 		return position;
 	}
 
@@ -35,10 +39,17 @@ public class FilterAdapter extends BaseAdapter {
 		if (convertView == null) {
 			LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 			convertView = inflater.inflate(R.layout.inflater_image_filter, parent, false);
+			
+			ViewHolder vh = new ViewHolder();
+			vh.tvFilterName = (TextView) convertView.findViewById(R.id.inflater_filter_text);
+			vh.ivImage = (ImageView) convertView.findViewById(R.id.inflater_filter_img);
+			
+			convertView.setTag(vh);
 		}
-		ImageView image = (ImageView) convertView.findViewById(R.id.inflater_filter_img);
-		TextView text = (TextView) convertView.findViewById(R.id.inflater_filter_text);
-		initItem(position, image, text);
+		
+		ViewHolder vh = (ViewHolder) convertView.getTag();
+		
+		initItem(position, vh.ivImage, vh.tvFilterName);
 		if(position==selectedPositon){
 		    convertView.setSelected(true);
 		} else {
