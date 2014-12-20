@@ -45,16 +45,16 @@
     
     <!-- inflater_body_product_grid.xml -->
     <dimen name="inflater_body_product_grid_padding">10dp</dimen>
-    <dimen name="inflater_body_product_grid_common_spacing">3dp</dimen>
+    <dimen name="inflater_product_common_spacing">3dp</dimen>
     <dimen name="inflater_body_product_grid_product_img">170dp</dimen>
     <dimen name="inflater_body_product_grid_line_view_margin_left">15dp</dimen>
     <dimen name="inflater_body_product_grid_img_avatar_like">25dp</dimen>
     
      <!-- inflater_header_grid -->
-    <dimen name="inflater_header_grid_margin_left">10dp</dimen>
+    <dimen name="inflater_product_margin_left">10dp</dimen>
     <dimen name="inflater_header_grid_padding">10dp</dimen>
     <dimen name="inflater_header_grid_avatar_size">35dp</dimen>
-    <dimen name="inflater_header_grid_tv_name_margin_bottom">3dp</dimen>
+    <dimen name="inflater_product_tv_owner_name_margin_bottom">3dp</dimen>
     
     <!-- inflater_body_product.xml -->
     <dimen name="inflater_body_product_margin_top">10dp</dimen>

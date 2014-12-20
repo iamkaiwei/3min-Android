@@ -38,6 +38,23 @@ import com.threemin.webservice.UserWebService;
 import com.threemins.R;
 
 public class ProductGridAdapter extends BaseAdapter {
+    
+    static class ViewHolder {
+        public ImageView ivProduct;
+        public TextView tvProductName;
+        public TextView tvProductPrice;
+        public TextView tvProductLike;
+        public TextView tvProductComment;
+        public ImageView ivLikeIcon;
+        public LinearLayout llGroupLike;
+        public View vOwnerView;
+        public View vDevider;
+        public ImageView ivOwnerAvatar;
+        public TextView tvOwnerName;
+        public TextView tvOwnerTime;
+        public ImageView ivShareIcon;
+    }
+    
 	private List<ProductModel> mData;
 	private Context mContext;
 	private LoginButton mLoginButton;
@@ -73,6 +90,9 @@ public class ProductGridAdapter extends BaseAdapter {
 
 	@Override
 	public Object getItem(int position) {
+	    if (mData == null) {
+            return null;
+        }
 		return mData.get(position);
 	}
 
@@ -81,25 +101,32 @@ public class ProductGridAdapter extends BaseAdapter {
 		return position;
 	}
 	
-	
-    long logTime;
-	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+	    if (convertView == null) {
+            convertView = inflater.inflate(R.layout.inflater_body_product_grid, null);
+            
+            ViewHolder vh = new ViewHolder();
+            vh.ivProduct = (ImageView) convertView.findViewById(R.id.inflater_product_iv_product_image);
+            vh.tvProductName = (TextView) convertView.findViewById(R.id.inflater_product_tv_product_name);
+            vh.tvProductPrice = (TextView) convertView.findViewById(R.id.inflater_product_tv_product_price);
+            vh.tvProductLike = (TextView) convertView.findViewById(R.id.inflater_product_tv_product_like);
+            vh.tvProductComment = (TextView) convertView.findViewById(R.id.inflater_product_tv_product_comment);
+            vh.ivLikeIcon = (ImageView) convertView.findViewById(R.id.inflater_product_iv_like);
+            vh.llGroupLike = (LinearLayout) convertView.findViewById(R.id.inflater_product_ll_group_like);
+            vh.vOwnerView = convertView.findViewById(R.id.inflater_product_ll_owner_view);
+            vh.vDevider = convertView.findViewById(R.id.inflater_product_v_divider);
+            vh.ivOwnerAvatar = (ImageView) convertView.findViewById(R.id.inflater_product_iv_owner_avatar);
+            vh.tvOwnerName =     (TextView) convertView.findViewById(R.id.inflater_product_tv_owner_time);
+            vh.tvOwnerTime = (TextView) convertView.findViewById(R.id.inflater_product_tv_owner_time);
+            vh.ivShareIcon = (ImageView) convertView.findViewById(R.id.inflater_product_iv_share_icon);
+            
+            convertView.setTag(vh);
+        }
 	    
-	   logTime = System.currentTimeMillis();
-	        
-		LinearLayout layout = null;
-
-		if (convertView == null) {
-			layout = (LinearLayout) inflater.inflate(R.layout.inflater_body_product_grid, null);
-		} else {
-			layout = (LinearLayout) convertView;
-		}
-		Log.d("3min", "Inflation time = "+ (System.currentTimeMillis() - logTime));
-		initBody(position, layout);
-		Log.d("3min", "Complete time = "+ (System.currentTimeMillis() - logTime));
-		return layout;
+	    initBody(position, convertView);
+	    
+		return convertView;
 	}
 
 	private void initBody(int position, View convertView) {
@@ -107,13 +134,9 @@ public class ProductGridAdapter extends BaseAdapter {
 			return;
 		}
 		final ProductModel model = mData.get(position);
+		final ViewHolder vh = (ViewHolder) convertView.getTag();
 
 		if (model != null) {
-			ImageView image = (ImageView) convertView.findViewById(R.id.inflater_body_product_grid_image);
-//			LayoutParams param=image.getLayoutParams();
-//			param.height=widthItem;
-//			image.setLayoutParams(param);
-			
 			if (model.getImages().size() > 0) {
 //			    Log.d("image", "height="+image.getHeight());
 			    List<Integer> dimens = model.getImages().get(0).getDimensions();
@@ -123,12 +146,12 @@ public class ProductGridAdapter extends BaseAdapter {
 			        int h = model.getImages().get(0).getDimensions().get(1);
 			        float ratio = (float)this.widthItem / (float)w;
 			        int heightItem = (int) (h * ratio);
-                    LayoutParams param = image.getLayoutParams();
+                    LayoutParams param = vh.ivProduct.getLayoutParams();
                     param.height = heightItem;
-                    image.setLayoutParams(param);
-                    UrlImageViewHelper.setUrlDrawable(image, model.getImages().get(0).getMedium(),R.drawable.stuff_img);
+                    vh.ivProduct.setLayoutParams(param);
+                    UrlImageViewHelper.setUrlDrawable(vh.ivProduct, model.getImages().get(0).getMedium(),R.drawable.stuff_img);
                 } else {
-                    UrlImageViewHelper.setUrlDrawable(image, model.getImages().get(0).getMedium(), R.drawable.stuff_img, new UrlImageViewCallback() {
+                    UrlImageViewHelper.setUrlDrawable(vh.ivProduct, model.getImages().get(0).getMedium(), R.drawable.stuff_img, new UrlImageViewCallback() {
                         
                         @Override
                         public void onLoaded(ImageView imageView, Bitmap loadedBitmap, String url, boolean loadedFromCache) {
@@ -141,42 +164,32 @@ public class ProductGridAdapter extends BaseAdapter {
                         }
                     });
                 }
-				
-				
-//				imageLoader.displayImage( model.getImages().get(0).getOrigin(),image,options);
-//			    Log.d("3min", "Image: "+model.getImages().get(0).getSquare());
-//			    Picasso.with(mContext).load(model.getImages().get(0).getOrigin()).placeholder(R.drawable.stuff_img).into(image);
 			}
 
-			TextView tv_name = (TextView) convertView.findViewById(R.id.inflater_body_product_grid_tv_name);
-			tv_name.setText(model.getName());
+			vh.tvProductName.setText(model.getName());
 
-			TextView tv_price = (TextView) convertView.findViewById(R.id.inflater_body_product_grid_tv_price);
-			tv_price.setText(model.getPrice() + CommonConstant.CURRENCY);
+			vh.tvProductPrice.setText(model.getPrice() + CommonConstant.CURRENCY);
 
-			final TextView tv_like = (TextView) convertView.findViewById(R.id.inflater_body_product_grid_tv_like);
 			if (model.getLike() > 0) {
-				tv_like.setText("" + model.getLike());
+				vh.tvProductLike.setText("" + model.getLike());
 			} else {
-				tv_like.setText("");
+			    vh.tvProductLike.setText("");
 			}
 			
-			final TextView tv_comment = (TextView) convertView.findViewById(R.id.inflater_body_product_grid_tv_comment);
 			if (model.getCommentsCount() > 0) {
-                tv_comment.setText("" + model.getCommentsCount());
+                vh.tvProductComment.setText("" + model.getCommentsCount());
             } else {
-                tv_comment.setText("");
+                vh.tvProductComment.setText("");
             }
 
-			final ImageView img_like = (ImageView) convertView.findViewById(R.id.inflater_body_product_grid_img_like);
 			if (model.isLiked()) {
-				img_like.setSelected(true);
+				vh.ivLikeIcon.setSelected(true);
 			} else {
-				img_like.setSelected(false);
+			    vh.ivLikeIcon.setSelected(false);
 			}
+			
 			//allow user to like or unlike a product when tap on icon like
-			LinearLayout layout_like = (LinearLayout) convertView.findViewById(R.id.inflater_body_product_grid_group_like);
-			layout_like.setOnClickListener(new OnClickListener() {
+			vh.llGroupLike.setOnClickListener(new OnClickListener() {
                 
                 @Override
                 public void onClick(View v) {
@@ -190,18 +203,17 @@ public class ProductGridAdapter extends BaseAdapter {
                     }
 
                     if (model.getLike() > 0) {
-                        tv_like.setText("" + model.getLike());
+                        vh.tvProductLike.setText("" + model.getLike());
                     } else {
-                        tv_like.setText("");
+                        vh.tvProductLike.setText("");
                     }
 
                     if (model.isLiked()) {
-                        img_like.setSelected(true);
+                        vh.ivLikeIcon.setSelected(true);
                     } else {
-                        img_like.setSelected(false);
+                        vh.ivLikeIcon.setSelected(false);
                     }
 
-                    // mAdapter.notifyDataSetChanged();
                     Thread t = new Thread(new Runnable() {
 
                         @Override
@@ -215,18 +227,12 @@ public class ProductGridAdapter extends BaseAdapter {
             });
 			
 			if (model.getOwner() == null ) {
-				convertView.findViewById(R.id.owner_view).setVisibility(View.GONE);
-				convertView.findViewById(R.id.inflater_body_product_grid_divider).setVisibility(View.GONE);
+				vh.vOwnerView.setVisibility(View.GONE);
+				vh.vDevider.setVisibility(View.GONE);
 			} else {
-			    
-				ImageView imageAvatar = (ImageView) convertView.findViewById(R.id.inflater_header_product_grid_image);
-				UrlImageViewHelper.setUrlDrawable(imageAvatar, model.getOwner().getFacebook_avatar(), R.drawable.avatar_loading);
-
-				TextView tv_name_owner = (TextView) convertView.findViewById(R.id.inflater_header_product_grid_tv_name);
-				tv_name_owner.setText(model.getOwner().getFullName());
-				
-				View owner_view = convertView.findViewById(R.id.owner_view);
-				owner_view.setOnClickListener(new OnClickListener() {
+				UrlImageViewHelper.setUrlDrawable(vh.ivOwnerAvatar, model.getOwner().getFacebook_avatar(), R.drawable.avatar_loading);
+				vh.tvOwnerName.setText(model.getOwner().getFullName());
+				vh.vOwnerView.setOnClickListener(new OnClickListener() {
                     
                     @Override
                     public void onClick(View v) {
@@ -235,21 +241,15 @@ public class ProductGridAdapter extends BaseAdapter {
                         intent.putExtra(CommonConstant.INTENT_USER_DATA, data);
                         mContext.startActivity(intent);
                         CommonUti.addAnimationWhenStartActivity((Activity)mContext);
-                        
-//                        Bundle animation=ActivityOptionsCompat.makeCustomAnimation(mContext, R.anim.anim_right_in, R.anim.anim_no_animation).toBundle();
-//                        act.overridePendingTransition(R.anim.anim_right_in,R.anim.anim_no_animation);
-//                        ActivityCompat.startActivity((Activity)mContext, intent, animation);
                     }
                 });
 			}
-			TextView tv_time = (TextView) convertView.findViewById(R.id.inflater_header_product_grid_tv_time);
-			tv_time.setText(DateUtils.getRelativeTimeSpanString(model.getUpdateTime() * 1000,
+			vh.tvOwnerTime.setText(DateUtils.getRelativeTimeSpanString(model.getUpdateTime() * 1000,
 					System.currentTimeMillis(), 0L, DateUtils.FORMAT_ABBREV_RELATIVE));
 			
 			if (mContext != null && mLoginButton != null) {
 				final int finalPosition = position;
-				ImageView img_share = (ImageView) convertView.findViewById(R.id.inflater_body_product_grid_img_share);
-				img_share.setOnClickListener(new OnClickListener() {
+				vh.ivShareIcon.setOnClickListener(new OnClickListener() {
 					
 					@Override
 					public void onClick(View v) {

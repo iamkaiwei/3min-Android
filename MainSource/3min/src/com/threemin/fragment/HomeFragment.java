@@ -415,14 +415,14 @@ public class HomeFragment extends BaseProductFragment {
             productModel.setLike(productModel.getLike() - 1);
         }
 
-        TextView tv_like = (TextView) view.findViewById(R.id.inflater_body_product_grid_tv_like);
+        TextView tv_like = (TextView) view.findViewById(R.id.inflater_product_tv_product_like);
         if (productModel.getLike() > 0) {
             tv_like.setText("" + productModel.getLike());
         } else {
             tv_like.setText("");
         }
 
-        ImageView img_like = (ImageView) view.findViewById(R.id.inflater_body_product_grid_img_like);
+        ImageView img_like = (ImageView) view.findViewById(R.id.inflater_product_iv_like);
         if (productModel.isLiked()) {
             img_like.setSelected(true);
         } else {

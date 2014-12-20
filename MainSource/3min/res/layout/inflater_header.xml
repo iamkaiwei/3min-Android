@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/inflater_header_grid_margin_left"
+            android:layout_marginLeft="@dimen/inflater_product_margin_left"
             android:layout_toRightOf="@id/inflater_heeader_product_image"
             android:orientation="vertical" >
 
@@ -32,7 +32,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_marginBottom="@dimen/inflater_header_grid_tv_name_margin_bottom"
+                android:layout_marginBottom="@dimen/inflater_product_tv_owner_name_margin_bottom"
                 android:text="Name"
                 android:textColor="@color/common_black"
                 android:textSize="@dimen/textsize_small"
@@ -51,7 +51,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/inflater_heeader_product_tv_name"
-                android:layout_marginLeft="@dimen/inflater_body_product_grid_common_spacing"
+                android:layout_marginLeft="@dimen/inflater_product_common_spacing"
                 android:layout_toRightOf="@+id/inflater_heeader_product_image_clock"
                 android:text="2 days ago"
                 android:textColor="@color/common_grey"
