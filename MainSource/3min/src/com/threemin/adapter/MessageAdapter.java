@@ -17,16 +17,17 @@ import com.threemins.R;
 
 public class MessageAdapter extends BaseAdapter {
     
-    public static final int MY_MESSAGE = 1;
-    public static final int THEIR_MESSAGE = 2;
+    public static final int MY_MESSAGE = 0;
+    public static final int THEIR_MESSAGE = 1;
+    public static final int COUNT_ITEM_TYPE = 2;
     
-    static class ViewHolderMyMessage {
+    static class ViewHolderMyMessage extends Object {
         public ImageView ivAvatar;
         public TextView tvChat;
         public TextView tvTime;
     }
     
-    static class ViewHolderTheirMessage {
+    static class ViewHolderTheirMessage extends Object {
         public ImageView ivAvatar;
         public TextView tvChat;
         public TextView tvTime;
@@ -62,6 +63,11 @@ public class MessageAdapter extends BaseAdapter {
 	}
 	
 	@Override
+	public int getViewTypeCount() {
+	    return COUNT_ITEM_TYPE;
+	}
+	
+	@Override
 	public int getItemViewType(int position) {
 	    if (mData == null) {
             return 0;
@@ -89,7 +95,7 @@ public class MessageAdapter extends BaseAdapter {
 	}
 
 	private View initMyMessage(int position, View convertView, ViewGroup parent) {
-	    if (convertView == null) {
+	    if (convertView == null || convertView.getTag() instanceof ViewHolderTheirMessage) {
 	        LayoutInflater inflater = LayoutInflater.from(mContext);
 	        convertView = inflater.inflate(R.layout.layout_chat_mine, parent, false);
 	        
@@ -117,7 +123,7 @@ public class MessageAdapter extends BaseAdapter {
 	}
 
 	private View initTheirMessage(int position, View convertView, ViewGroup parent) {
-	    if (convertView == null) {
+	    if (convertView == null || convertView.getTag() instanceof ViewHolderMyMessage) {
 	        LayoutInflater inflater = LayoutInflater.from(mContext);
 	        convertView = inflater.inflate(R.layout.layout_chat_theirs, parent, false);
 	        
