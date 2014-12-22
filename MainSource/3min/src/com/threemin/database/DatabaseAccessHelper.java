@@ -47,6 +47,8 @@ public class DatabaseAccessHelper {
             mDB.insert(TableUser.TBL_NAME, null, cvUser);
         }
         
+        cursor.close();
+        
         return mDB.insert(TableActivity.TBL_NAME, null, cv);
     }
     
@@ -149,6 +151,8 @@ public class DatabaseAccessHelper {
             UserModel user = cursorToUserModel(cursor);
             model.setUser(user);
         }
+        
+        cursor.close();
         
         return model;
     }
