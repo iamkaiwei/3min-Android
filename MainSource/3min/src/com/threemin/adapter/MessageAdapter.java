@@ -21,13 +21,13 @@ public class MessageAdapter extends BaseAdapter {
     public static final int THEIR_MESSAGE = 1;
     public static final int COUNT_ITEM_TYPE = 2;
     
-    static class ViewHolderMyMessage extends Object {
+    static class ViewHolderMyMessage {
         public ImageView ivAvatar;
         public TextView tvChat;
         public TextView tvTime;
     }
     
-    static class ViewHolderTheirMessage extends Object {
+    static class ViewHolderTheirMessage {
         public ImageView ivAvatar;
         public TextView tvChat;
         public TextView tvTime;
@@ -82,72 +82,78 @@ public class MessageAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+	    MessageModel model = mData.get(position);
 	    int type = getItemViewType(position);
-		if (type == THEIR_MESSAGE) {
-			return initTheirMessage(position, convertView, parent);
-		} else if (type == MY_MESSAGE) {
-		    return initMyMessage(position, convertView, parent);
+	    
+	    if (convertView == null) {
+            if (type == MY_MESSAGE) {
+                convertView = createMyMessageView(parent);
+            } else if (type == THEIR_MESSAGE) {
+                convertView = createTheirMessageView(parent);
+            }
+        }
+	    
+	    if (type == MY_MESSAGE) {
+            bindMyMessage(convertView, parent, model);
         } else {
-            //throw exception: unknown view type
-            return new View(parent.getContext());
-		}
-		
-	}
-
-	private View initMyMessage(int position, View convertView, ViewGroup parent) {
-	    if (convertView == null || convertView.getTag() instanceof ViewHolderTheirMessage) {
-	        LayoutInflater inflater = LayoutInflater.from(mContext);
-	        convertView = inflater.inflate(R.layout.layout_chat_mine, parent, false);
-	        
-	        ViewHolderMyMessage vh = new ViewHolderMyMessage();
-	        vh.ivAvatar = (ImageView) convertView.findViewById(R.id.layout_chat_mine_avatar);
-	        vh.tvChat = (TextView) convertView.findViewById(R.id.layout_chat_mine_tv_chat);
-	        vh.tvTime = (TextView) convertView.findViewById(R.id.layout_chat_mine_tv_time);
-	        
-	        convertView.setTag(vh);
+            bindTheirMessage(convertView, parent, model);
         }
 	    
-	    MessageModel model = mData.get(position);
-	    ViewHolderMyMessage vh = (ViewHolderMyMessage) convertView.getTag();
-	    
-//		TextView tvChat = (TextView) convertView.findViewById(R.id.layout_chat_mine_tv_chat);
-		vh.tvChat.setText(model.getMsg());
-		
-//		ImageView avatar=(ImageView) convertView.findViewById(R.id.layout_chat_mine_avatar);
-		UrlImageViewHelper.setUrlDrawable(vh.ivAvatar, model.getUserModel().getFacebook_avatar(), R.drawable.avatar_loading);
-		
-//		TextView tv_time = (TextView) convertView.findViewById(R.id.layout_chat_mine_tv_time);
-		vh.tvTime.setText(DateUtils.getRelativeTimeSpanString(model.getTimestamp() * 1000,
-				System.currentTimeMillis(), 0L, DateUtils.FORMAT_ABBREV_RELATIVE));
-		return convertView;
-	}
-
-	private View initTheirMessage(int position, View convertView, ViewGroup parent) {
-	    if (convertView == null || convertView.getTag() instanceof ViewHolderMyMessage) {
-	        LayoutInflater inflater = LayoutInflater.from(mContext);
-	        convertView = inflater.inflate(R.layout.layout_chat_theirs, parent, false);
-	        
-	        ViewHolderTheirMessage vh = new ViewHolderTheirMessage();
-	        vh.tvChat = (TextView) convertView.findViewById(R.id.layout_chat_theirs_tv_chat);
-	        vh.ivAvatar =(ImageView) convertView.findViewById(R.id.layout_chat_theirs_avatar);
-	        vh.tvTime = (TextView) convertView.findViewById(R.id.layout_chat_theirs_tv_time_chat);
-	        
-	        convertView.setTag(vh);
-        }
-	    
-	    MessageModel model = mData.get(position);
-	    ViewHolderTheirMessage vh = (ViewHolderTheirMessage) convertView.getTag();
-		vh.tvChat.setText(model.getMsg());
-		
-		if (model.getUserModel() != null) {
-			UrlImageViewHelper.setUrlDrawable(vh.ivAvatar, model.getUserModel().getFacebook_avatar(), R.drawable.avatar_loading);
-		}
-		
-		vh.tvTime.setText(DateUtils.getRelativeTimeSpanString(mData.get(position).getTimestamp() * 1000,
-				System.currentTimeMillis(), 0L, DateUtils.FORMAT_ABBREV_RELATIVE));
-		return convertView;
+	    return convertView;
 	}
 	
+	private View createMyMessageView(ViewGroup parent) {
+	    LayoutInflater inflater = LayoutInflater.from(mContext);
+        View v = inflater.inflate(R.layout.layout_chat_mine, parent, false);
+        
+        ViewHolderMyMessage vh = new ViewHolderMyMessage();
+        vh.ivAvatar = (ImageView) v.findViewById(R.id.layout_chat_mine_avatar);
+        vh.tvChat = (TextView) v.findViewById(R.id.layout_chat_mine_tv_chat);
+        vh.tvTime = (TextView) v.findViewById(R.id.layout_chat_mine_tv_time);
+        
+        v.setTag(vh);
+        return v;
+	}
+	
+	private View createTheirMessageView(ViewGroup parent) {
+	    LayoutInflater inflater = LayoutInflater.from(mContext);
+        View v = inflater.inflate(R.layout.layout_chat_theirs, parent, false);
+        
+        ViewHolderTheirMessage vh = new ViewHolderTheirMessage();
+        vh.tvChat = (TextView) v.findViewById(R.id.layout_chat_theirs_tv_chat);
+        vh.ivAvatar =(ImageView) v.findViewById(R.id.layout_chat_theirs_avatar);
+        vh.tvTime = (TextView) v.findViewById(R.id.layout_chat_theirs_tv_time_chat);
+        
+        v.setTag(vh);
+        return v;
+	}
+	
+	private void bindTheirMessage(View convertView, ViewGroup parent, MessageModel model) {
+	    if (!(convertView.getTag() instanceof ViewHolderTheirMessage)) {
+            convertView = createTheirMessageView(parent);
+        }
+	    ViewHolderTheirMessage vh = (ViewHolderTheirMessage) convertView.getTag();
+        vh.tvChat.setText(model.getMsg());
+        UrlImageViewHelper.setUrlDrawable(vh.ivAvatar, model.getUserModel().getFacebook_avatar(), R.drawable.avatar_loading);
+        vh.tvTime.setText(DateUtils.getRelativeTimeSpanString(model.getTimestamp() * 1000,
+                System.currentTimeMillis(), 0L, DateUtils.FORMAT_ABBREV_RELATIVE));
+	}
+	
+	private void bindMyMessage(View convertView, ViewGroup parent, MessageModel model) {
+	    if (!(convertView.getTag() instanceof ViewHolderMyMessage)) {
+            convertView = createMyMessageView(parent);
+        }
+	    ViewHolderMyMessage vh = (ViewHolderMyMessage) convertView.getTag();
+        vh.tvChat.setText(model.getMsg());
+        
+        if (model.getUserModel() != null) {
+            UrlImageViewHelper.setUrlDrawable(vh.ivAvatar, model.getUserModel().getFacebook_avatar(), R.drawable.avatar_loading);
+        }
+        
+        vh.tvTime.setText(DateUtils.getRelativeTimeSpanString(model.getTimestamp() * 1000,
+                System.currentTimeMillis(), 0L, DateUtils.FORMAT_ABBREV_RELATIVE));
+	}
+
 	public void addData(MessageModel messageModel){
 		mData.add(messageModel);
 		notifyDataSetChanged();
