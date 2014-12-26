@@ -329,25 +329,24 @@ public class ImageViewActivity extends ThreeMinsBaseActivity {
             onBackPressed();
             return true;
         case R.id.action_submit:
-            Log.i("cached", "onOptionsItemSelected size imgs: " + mImageModels.size());
-//          ProductModel result=validateInput();
-//          
-//          if (mIsUpdateProduct) {
-//            //TODO: haven't implemented
-//              new UpdateProductTask().execute(result);
-//          } else {
-//              if(result!=null){
-//                  String data=new Gson().toJson(result);
-//                  Intent intent=new Intent();
-//                  intent.putExtra(CommonConstant.INTENT_PRODUCT_DATA, data);
-//                  setResult(RESULT_OK, intent);
-//                  if (mSwShareOnFacebook.isChecked()) {
-//                      doShareOnFacebook();
-//                  }
-//                  mFlagUploadingFinished = true;
-//                  finish();
-//              }
-//          }
+          ProductModel result=validateInput();
+          
+          if (mIsUpdateProduct) {
+            //TODO: haven't implemented
+              new UpdateProductTask().execute(result);
+          } else {
+              if(result!=null){
+                  String data=new Gson().toJson(result);
+                  Intent intent=new Intent();
+                  intent.putExtra(CommonConstant.INTENT_PRODUCT_DATA, data);
+                  setResult(RESULT_OK, intent);
+                  if (mSwShareOnFacebook.isChecked()) {
+                      doShareOnFacebook();
+                  }
+                  mFlagUploadingFinished = true;
+                  finish();
+              }
+          }
           
             return true;
         default:
