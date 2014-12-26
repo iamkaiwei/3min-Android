@@ -27,6 +27,8 @@ public class CommonConstant {
     public static final String PREF_USER = "PREF_USER";
     public static final String PREF_APID = "PREF_APID";
     public static final String PREF_ACTIVITIES = "PREF_ACTIVITIES";
+    public static final String PREF_IS_PRODUCT_CACHED = "PREF_IS_PRODUCT_CACHED";
+    public static final String PREF_CACHED_PRODUCT_DATA = "PREF_CACHED_PRODUCT_DATA";
 
     public static final String CURRENCY = "k Vnd";
 

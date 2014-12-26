@@ -84,7 +84,7 @@ public class ImageViewActivity extends ThreeMinsBaseActivity {
 	String mProductName, mProductDescription;
 	
 	
-	List<ImageModel> imageModels;
+	List<ImageModel> mImageModels;
 	TextView locationName;
 	Venue venue;
     Switch mSwShareOnFacebook;
@@ -181,13 +181,13 @@ public class ImageViewActivity extends ThreeMinsBaseActivity {
 		
 		if (mIsUpdateProduct && model.getId() != 0) {
             model.setTypeEditProduct(ImageModel.TYPE_EDIT_PRODUCT_DELETE);
-            for (ImageModel imgM : imageModels) {
+            for (ImageModel imgM : mImageModels) {
                 if (imgM.getId() == model.getId()) {
                     imgM.setTypeEditProduct(ImageModel.TYPE_EDIT_PRODUCT_DELETE);
                 }
             }
         } else {
-            imageModels.remove(model);
+            mImageModels.remove(model);
         }
 		
 		
@@ -206,6 +206,9 @@ public class ImageViewActivity extends ThreeMinsBaseActivity {
 	private ImageView mImgDeleteListing;
 
 	private boolean mFlagCalledFromOnCreate = false;
+	private boolean mFlagUploadingFinished = false;
+	
+	//activity 's life cycle
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -214,11 +217,12 @@ public class ImageViewActivity extends ThreeMinsBaseActivity {
 		mContext = ImageViewActivity.this;
 		mIsUpdateProduct = getIntent().getBooleanExtra(CommonConstant.INTENT_EDIT_PRODUCT, false);
         
-		imageModels=new ArrayList<ImageModel>();
+		mImageModels=new ArrayList<ImageModel>();
 		initActionBar();
 		initWidgets();
 		setEvents();
 		
+		//do this part in onResume to avoid crash
 //		if (mIsUpdateProduct) {
 //            doEditProduct();
 //        } else {
@@ -230,26 +234,128 @@ public class ImageViewActivity extends ThreeMinsBaseActivity {
 	
 	@Override
     protected void onResume() {
+	    //TODO
         super.onResume();
-        ThreeMinsApplication.isActive = true;
         
         if (mFlagCalledFromOnCreate == true) {
             mFlagCalledFromOnCreate = false;
-            if (mIsUpdateProduct) {
-                doEditProduct();
+            if (PreferenceHelper.getInstance(mContext).checkIfProductIsCached() == true) {
+                Log.i("cached", "onResume true");
+                ProductModel model = PreferenceHelper.getInstance(mContext).getCachedProduct();
+                Log.i("cached", "onResume " + new Gson().toJson(model));
+                loadCachedProduct(model);
             } else {
-                mImgDeleteListing.setVisibility(View.GONE);
-                startActivityForResult(new Intent(ImageViewActivity.this, ActivityCamera.class), REQUEST_CAMERA_ON_CREATE);
+                if (mIsUpdateProduct) {
+                    doEditProduct();
+                } else {
+                    mImgDeleteListing.setVisibility(View.GONE);
+                    startActivityForResult(new Intent(ImageViewActivity.this, ActivityCamera.class),
+                            REQUEST_CAMERA_ON_CREATE);
+                }
             }
         }
-        
     }
     
     @Override
     protected void onPause() {
         super.onPause();
-        ThreeMinsApplication.isActive = false;
+        cacheImageIfNeed();
     }
+    
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.i("tructran", "Result Code is - " + resultCode +"");
+        Session session = Session.getActiveSession();
+        if (session != null) {
+            session.onActivityResult(ImageViewActivity.this, requestCode, resultCode, data);
+        } else {
+            Log.i("tructran", "session null");
+        }
+        
+        if (resultCode == RESULT_OK) {
+            if (requestCode >= REQUEST_CAMERA_IMG_1 && requestCode <= REQUEST_CAMERA_IMG_4) {
+                String uri = data.getStringExtra("imagePath");
+                if (requestCode == REQUEST_CAMERA_IMG_1) {
+                    setImageURI(uri,mImg1);
+                } else if (requestCode == REQUEST_CAMERA_IMG_2) {
+                    setImageURI(uri,mImg2);
+                } else if (requestCode == REQUEST_CAMERA_IMG_3) {
+                    setImageURI(uri,mImg3);
+                } else if (requestCode == REQUEST_CAMERA_IMG_4) {
+                    setImageURI(uri,mImg4);
+                }
+            } 
+            else if(requestCode== REQUEST_LOCATION){
+                String result=data.getStringExtra(CommonConstant.INTENT_PRODUCT_DATA);
+                venue=new Gson().fromJson(result, Venue.class);
+                if(venue!=null){
+                    locationName.setText(venue.getName());
+                }
+            } else if (requestCode == REQUEST_CAMERA_ON_CREATE) {
+                String uri = data.getStringExtra("imagePath");
+                setImageURI(uri,mImg1);
+            }
+            else if(requestCode==REQUEST_CATEGORY){
+                String json=data.getStringExtra(CommonConstant.INTENT_CATEGORY_DATA);
+                mSelectedCategory=new Gson().fromJson(json, CategoryModel.class);
+                tv_Category.setText(mSelectedCategory.getName());
+            } else if(requestCode==REQUEST_PRODUCT_INPUT_ITEM){
+                String productName = data.getStringExtra(CommonConstant.INTENT_PRODUCT_NAME);
+                String productDescription = data.getStringExtra(CommonConstant.INTENT_PRODUCT_DESCRIPTION);
+                venue = new Gson().fromJson(data.getStringExtra(CommonConstant.INTENT_PRODUCT_DATA), Venue.class);
+                tvName.setText(productName);
+                mProductName = productName;
+                mProductDescription = productDescription;
+                
+                if(venue!=null){
+                    locationName.setText(venue.getName());
+                }
+            }
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_post_product, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case android.R.id.home:
+            onBackPressed();
+            return true;
+        case R.id.action_submit:
+            Log.i("cached", "onOptionsItemSelected size imgs: " + mImageModels.size());
+//          ProductModel result=validateInput();
+//          
+//          if (mIsUpdateProduct) {
+//            //TODO: haven't implemented
+//              new UpdateProductTask().execute(result);
+//          } else {
+//              if(result!=null){
+//                  String data=new Gson().toJson(result);
+//                  Intent intent=new Intent();
+//                  intent.putExtra(CommonConstant.INTENT_PRODUCT_DATA, data);
+//                  setResult(RESULT_OK, intent);
+//                  if (mSwShareOnFacebook.isChecked()) {
+//                      doShareOnFacebook();
+//                  }
+//                  mFlagUploadingFinished = true;
+//                  finish();
+//              }
+//          }
+          
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
+    }
+    
+    //my methods
 
 	public void initWidgets() {
 		mImg1 = (SquareImageView) findViewById(R.id.activity_imageview_img_1);
@@ -287,11 +393,11 @@ public class ImageViewActivity extends ThreeMinsBaseActivity {
 		String price = etPrice.getText().toString();
 		
 		ProductModel result=new ProductModel();
-		if(imageModels.isEmpty()){
+		if(mImageModels.isEmpty()){
 			Toast.makeText(mContext, R.string.error_empty_image, Toast.LENGTH_SHORT).show();
 			Log.i("ImageViewActivity", "list img empty");
 		} else {
-			result.setImages(imageModels);
+			result.setImages(mImageModels);
 		}
 		
 		if(TextUtils.isEmpty(name)){
@@ -324,9 +430,7 @@ public class ImageViewActivity extends ThreeMinsBaseActivity {
 			//check if it is edit product
 			if (    mIsUpdateProduct &&
 			        !TextUtils.isEmpty(mVenueID) &&
-                    !TextUtils.isEmpty(mVenueID) &&
-                    !TextUtils.isEmpty(mVenueID) &&
-                    !TextUtils.isEmpty(mVenueID)
+                    !TextUtils.isEmpty(mVenueName)
                 ) 
 			{
 			    result.setVenueId(mVenueID);
@@ -427,59 +531,6 @@ public class ImageViewActivity extends ThreeMinsBaseActivity {
 		getActionBar().setHomeButtonEnabled(true);
 	}
 
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-        Log.i("tructran", "Result Code is - " + resultCode +"");
-        Session session = Session.getActiveSession();
-        if (session != null) {
-            session.onActivityResult(ImageViewActivity.this, requestCode, resultCode, data);
-        } else {
-            Log.i("tructran", "session null");
-        }
-        
-		if (resultCode == RESULT_OK) {
-			if (requestCode >= REQUEST_CAMERA_IMG_1 && requestCode <= REQUEST_CAMERA_IMG_4) {
-				String uri = data.getStringExtra("imagePath");
-				if (requestCode == REQUEST_CAMERA_IMG_1) {
-					setImageURI(uri,mImg1);
-				} else if (requestCode == REQUEST_CAMERA_IMG_2) {
-					setImageURI(uri,mImg2);
-				} else if (requestCode == REQUEST_CAMERA_IMG_3) {
-					setImageURI(uri,mImg3);
-				} else if (requestCode == REQUEST_CAMERA_IMG_4) {
-					setImageURI(uri,mImg4);
-				}
-			} 
-			else if(requestCode== REQUEST_LOCATION){
-				String result=data.getStringExtra(CommonConstant.INTENT_PRODUCT_DATA);
-				venue=new Gson().fromJson(result, Venue.class);
-				if(venue!=null){
-					locationName.setText(venue.getName());
-				}
-			} else if (requestCode == REQUEST_CAMERA_ON_CREATE) {
-				String uri = data.getStringExtra("imagePath");
-				setImageURI(uri,mImg1);
-			}
-			else if(requestCode==REQUEST_CATEGORY){
-				String json=data.getStringExtra(CommonConstant.INTENT_CATEGORY_DATA);
-				mSelectedCategory=new Gson().fromJson(json, CategoryModel.class);
-				tv_Category.setText(mSelectedCategory.getName());
-			} else if(requestCode==REQUEST_PRODUCT_INPUT_ITEM){
-			    String productName = data.getStringExtra(CommonConstant.INTENT_PRODUCT_NAME);
-		        String productDescription = data.getStringExtra(CommonConstant.INTENT_PRODUCT_DESCRIPTION);
-		        venue = new Gson().fromJson(data.getStringExtra(CommonConstant.INTENT_PRODUCT_DATA), Venue.class);
-		        tvName.setText(productName);
-		        mProductName = productName;
-		        mProductDescription = productDescription;
-		        
-		        if(venue!=null){
-                    locationName.setText(venue.getName());
-                }
-			}
-		}
-	}
-
 	public String getPath(Uri uri) {
 
 		ContentResolver cr = this.getContentResolver();
@@ -506,17 +557,20 @@ public class ImageViewActivity extends ThreeMinsBaseActivity {
 		    ImageModel tempModel = (ImageModel)imageView.getTag();
 		    if (mIsUpdateProduct && tempModel != null) {
                 imgModel = tempModel;
-                imageModels.remove(imgModel);
+                mImageModels.remove(imgModel);
                 imgModel.setTypeEditProduct(ImageModel.TYPE_EDIT_PRODUCT_UPDATE);
             }else {
                 imgModel = new ImageModel();
+                imgModel.setTypeEditProduct(ImageModel.TYPE_EDIT_PRODUCT_CREATE);
             }
 		    imgModel.setUrl(imgFile.getAbsolutePath());
 		    imageView.setTag(imgModel);
-		    imageModels.add(imgModel);
+		    mImageModels.add(imgModel);
+		    Log.i("cached", "setImageURI: add img" + mImageModels.size());
 		} else {
 			Toast.makeText(this, "File does not exists", Toast.LENGTH_LONG).show();
 		}
+		Log.i("cached", "setImageURI: " + mImageModels.size());
 	}
 
     public void doShareOnFacebook() {
@@ -598,45 +652,65 @@ public class ImageViewActivity extends ThreeMinsBaseActivity {
 		Log.i("tructran", "createRequestFromFile: done, request null");
 		return null;
 	}
+	
+	//TODO: ============ cache product =================================
+	
+	public void cacheImageIfNeed() {
+	    if (mFlagUploadingFinished == false && mImageModels != null && mImageModels.size() > 0) {
+	        ProductModel cacheModel = new ProductModel();
+	        cacheModel.setCategory(mSelectedCategory);
+	        cacheModel.setDescription(mProductDescription);
+	        cacheModel.setName(mProductName);
+	        cacheModel.setPrice(etPrice.getText().toString());
+	        cacheModel.setVenueId(mVenueID);
+	        cacheModel.setVenueName(mVenueName);
+	        cacheModel.setVenueLat(mVenueLat);
+	        cacheModel.setVenueLong(mVenueLong);
+	        cacheModel.setImages(mImageModels);
+	        
+	        Log.i("cached", "cacheImageIfNeed size: " + mImageModels.size());
+	        
+	        PreferenceHelper.getInstance(mContext).cacheProduct(cacheModel);
+        } else {
+            Log.i("cached", "cacheImageIfNeed: mFlagUploadingFinished: " + mFlagUploadingFinished + "list: " + mImageModels == null ? "null" : "" + mImageModels.size());
+        }
+	}
+	
+	public void loadCachedProduct(ProductModel model) {
+	    if (model != null) {
+	        Log.i("cached", "loadCachedProduct " + new Gson().toJson(model));
+	        mProductName = model.getName();
+	        if (mProductName != null) {
+	            tvName.setText(mProductName);
+            }
+	        mProductDescription = model.getDescription();
+	        mSelectedCategory = model.getCategory();
+	        if (mSelectedCategory != null) {
+	            tv_Category.setText(mSelectedCategory.getName());
+            }
+	        etPrice.setText(model.getPrice());
+	        mVenueID = model.getVenueId();
+	        mVenueLat = model.getVenueLat();
+	        mVenueLong = model.getVenueLong();
+	        mVenueName = model.getVenueName();
+	        
+	        mImageModels = model.getImages();
+	        ImageView[] listImgV = new ImageView[4];
+	        listImgV[0] = mImg1;
+            listImgV[1] = mImg2;
+            listImgV[2] = mImg3;
+            listImgV[3] = mImg4;
+            for (int i = 0; i < mImageModels.size(); i++) {
+                ImageModel imgModel = mImageModels.get(i);
+                String imgPath = imgModel.getUrl();
+                Bitmap bmp = BitmapFactory.decodeFile(imgPath);
+                listImgV[i].setImageBitmap(bmp);
+            }
+            
+        }
+	    PreferenceHelper.getInstance(mContext).clearCachedProduct();
+	}
     
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			onBackPressed();
-			return true;
-		case R.id.action_submit:
-          ProductModel result=validateInput();
-          
-          if (mIsUpdateProduct) {
-            //TODO: haven't implemented
-              new UpdateProductTask().execute(result);
-          } else {
-              if(result!=null){
-                  String data=new Gson().toJson(result);
-                  Intent intent=new Intent();
-                  intent.putExtra(CommonConstant.INTENT_PRODUCT_DATA, data);
-                  setResult(RESULT_OK, intent);
-                  if (mSwShareOnFacebook.isChecked()) {
-                      doShareOnFacebook();
-                  }
-                  finish();
-              }
-          }
-          
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-	}
-	
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.menu_post_product, menu);
-		return super.onCreateOptionsMenu(menu);
-	}
-	
 	//TODO============== EDIT PRODUCT ================================
 	public void doEditProduct() {
 	    String strData = getIntent().getStringExtra(CommonConstant.INTENT_PRODUCT_DATA);
@@ -651,8 +725,8 @@ public class ImageViewActivity extends ThreeMinsBaseActivity {
             listImgV.add(mImg4);
             List<ImageModel> listImgModel = mProductModel.getImages();
             if (listImgModel.size() > 0) {
-                imageModels.clear();
-                imageModels.addAll(listImgModel);
+                mImageModels.clear();
+                mImageModels.addAll(listImgModel);
                 for (int i = 0; i < listImgModel.size(); i++) {
                     UrlImageViewHelper.setUrlDrawable(
                             listImgV.get(i), 
@@ -686,7 +760,6 @@ public class ImageViewActivity extends ThreeMinsBaseActivity {
 	}
 	
 	void doDeleteProduct() {
-	    //TODO: haven't implemented
 	    Dialog dialog = createDeleteProductDialog();
 	    dialog.show();
 	    
