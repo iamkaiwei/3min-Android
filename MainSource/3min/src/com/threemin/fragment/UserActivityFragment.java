@@ -96,15 +96,6 @@ public class UserActivityFragment extends Fragment {
                     startActivityForRelationship(model);
                 }
                 
-//                if (CommonConstant.ACTIVITY_TYPE_RELATIONSHIP.equals(model.getSubjectType())) {
-//                    startActivityForRelationship(model);
-//                } else if (CommonConstant.ACTIVITY_TYPE_CONVERSATION.equals(model.getSubjectType())) {
-//                    startActivityForConversation(model);
-//                } else if (CommonConstant.ACTIVITY_TYPE_PRODUCT.equals(model.getSubjectType())) {
-//                    startActivityForProduct(model);
-//                } else {
-//                    Toast.makeText(getActivity(), "Not implement", Toast.LENGTH_LONG).show();
-//                }
             }
         });
 		

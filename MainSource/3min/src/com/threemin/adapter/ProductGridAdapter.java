@@ -110,7 +110,7 @@ public class ProductGridAdapter extends BaseAdapter {
             vh.vOwnerView = convertView.findViewById(R.id.inflater_product_ll_owner_view);
             vh.vDevider = convertView.findViewById(R.id.inflater_product_v_divider);
             vh.ivOwnerAvatar = (ImageView) convertView.findViewById(R.id.inflater_product_iv_owner_avatar);
-            vh.tvOwnerName =     (TextView) convertView.findViewById(R.id.inflater_product_tv_owner_time);
+            vh.tvOwnerName =     (TextView) convertView.findViewById(R.id.inflater_product_tv_owner_name);
             vh.tvOwnerTime = (TextView) convertView.findViewById(R.id.inflater_product_tv_owner_time);
             vh.ivShareIcon = (ImageView) convertView.findViewById(R.id.inflater_product_iv_share_icon);
             
