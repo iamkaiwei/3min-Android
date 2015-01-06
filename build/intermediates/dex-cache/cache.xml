@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/Users/tructran/3min-Android/MainSource/3min/libs/pusher-java-client-0.3.1-jar-with-dependencies.jar"
+        jumboMode="false"
+        revision="21.1.1"
+        sha1="84a5a55b2fbc27d124a5dd3e139b46dbd9920ec2">
+        <dex dex="/Users/tructran/3min-Android/MainSource/3min/build/intermediates/pre-dexed/debug/pusher-java-client-0.3.1-jar-with-dependencies-7efba545c9724cc9b8d7c69d7ead6c6c3e0f7db3.jar" />
+    </item>
+    <item
+        jar="/Users/tructran/3min-Android/MainSource/3min/build/intermediates/exploded-aar/jp.co.cyberagent.android.gpuimage/library/1.1.2-SNAPSHOT/classes.jar"
+        jumboMode="false"
+        revision="21.1.1"
+        sha1="156ace501e2be457455eec098e9af8f399c5888b">
+        <dex dex="/Users/tructran/3min-Android/MainSource/3min/build/intermediates/pre-dexed/debug/classes-9bc5282cfc67a639fabb6811f6696406617245a8.jar" />
+    </item>
+    <item
+        jar="/Users/tructran/3min-Android/MainSource/3min/build/intermediates/exploded-aar/3min-Android.Libs/easyFoursquare4Android/unspecified/libs/foursquare-api-1.0.2.jar"
+        jumboMode="false"
+        revision="21.1.1"
+        sha1="8f8b2bf3004096b8bedbc1d417830a6c828627ea">
+        <dex dex="/Users/tructran/3min-Android/MainSource/3min/build/intermediates/pre-dexed/debug/foursquare-api-1.0.2-1d9c46efc5ec983e42129fb7365d4d7c9cc9ff31.jar" />
+    </item>
+    <item
+        jar="/Users/tructran/3min-Android/MainSource/3min/libs/picasso-2.3.2.jar"
+        jumboMode="false"
+        revision="21.1.1"
+        sha1="d6b7f0093cec6c9faf65dbfd6a6a345d0ed25e27">
+        <dex dex="/Users/tructran/3min-Android/MainSource/3min/build/intermediates/pre-dexed/debug/picasso-2.3.2-b846058c6675917d095c8bcc4a01709712125115.jar" />
+    </item>
+    <item
+        jar="/Users/tructran/3min-Android/MainSource/3min/libs/httpcore-4.3.2.jar"
+        jumboMode="false"
+        revision="21.1.1"
+        sha1="31fbbff1ddbf98f3aa7377c94d33b0447c646b6e">
+        <dex dex="/Users/tructran/3min-Android/MainSource/3min/build/intermediates/pre-dexed/debug/httpcore-4.3.2-6333e84edcc20c41d14f51b2d9e4c6f0d93df0b5.jar" />
+    </item>
+    <item
+        jar="/Users/tructran/3min-Android/MainSource/3min/build/intermediates/exploded-aar/3min-Android.Libs/UrlImageViewHelper/unspecified/classes.jar"
+        jumboMode="false"
+        revision="21.1.1"
+        sha1="6d1bec37b9a7757e1ae226a23be72a0d0d2dc9eb">
+        <dex dex="/Users/tructran/3min-Android/MainSource/3min/build/intermediates/pre-dexed/debug/classes-d5b48fbbc5695167b8667c2fe4282fcc58d38181.jar" />
+    </item>
+    <item
+        jar="/Users/tructran/3min-Android/MainSource/3min/build/intermediates/exploded-aar/3min-Android.Libs.SwipeBackLayout_lib.src/main/unspecified/classes.jar"
+        jumboMode="false"
+        revision="21.1.1"
+        sha1="2bdc410880f4dba16387e0b0d2d3de95124090eb">
+        <dex dex="/Users/tructran/3min-Android/MainSource/3min/build/intermediates/pre-dexed/debug/classes-5387d3c1b65d06d4fb48bb8717a3b976b6282769.jar" />
+    </item>
+    <item
+        jar="/Users/tructran/3min-Android/MainSource/3min/build/intermediates/exploded-aar/3min-Android.Libs/google-play-services_lib/unspecified/classes.jar"
+        jumboMode="false"
+        revision="21.1.1"
+        sha1="81ad62543b6c9df1ea496f69aa3c9a8c6961a92d">
+        <dex dex="/Users/tructran/3min-Android/MainSource/3min/build/intermediates/pre-dexed/debug/classes-bc638f7c31e5b459503c453d7e9c2815022e0f52.jar" />
+    </item>
+    <item
+        jar="/Users/tructran/3min-Android/MainSource/3min/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.1"
+        sha1="686344a780033e4ba22b926cd225f8d4941247e6">
+        <dex dex="/Users/tructran/3min-Android/MainSource/3min/build/intermediates/pre-dexed/debug/classes-c342b6d0008cb71f44fb6a91b88b8158867fd083.jar" />
+    </item>
+    <item
+        jar="/Users/tructran/3min-Android/MainSource/3min/libs/httpmime-4.3.3.jar"
+        jumboMode="false"
+        revision="21.1.1"
+        sha1="e02368d7b56c0c376f227378a4f77de62864d020">
+        <dex dex="/Users/tructran/3min-Android/MainSource/3min/build/intermediates/pre-dexed/debug/httpmime-4.3.3-4c765c667c061b97e731644bc728effabd75f843.jar" />
+    </item>
+    <item
+        jar="/Users/tructran/3min-Android/MainSource/3min/libs/crittercism_v5_0_3_sdkonly.jar"
+        jumboMode="false"
+        revision="21.1.1"
+        sha1="43d62449db7a758f02de269b6f6ca8f978775d48">
+        <dex dex="/Users/tructran/3min-Android/MainSource/3min/build/intermediates/pre-dexed/debug/crittercism_v5_0_3_sdkonly-7de72572028568224a64ad45031f92d3b158be20.jar" />
+    </item>
+    <item
+        jar="/Users/tructran/3min-Android/MainSource/3min/libs/urbanairship-lib-4.0.2.jar"
+        jumboMode="false"
+        revision="21.1.1"
+        sha1="aff3eb265eea2d256e4e44d57216c724bc08dd41">
+        <dex dex="/Users/tructran/3min-Android/MainSource/3min/build/intermediates/pre-dexed/debug/urbanairship-lib-4.0.2-b597b8234f2f9979391be95c39b42e00fe148c38.jar" />
+    </item>
+    <item
+        jar="/Users/tructran/3min-Android/MainSource/3min/build/intermediates/exploded-aar/3min-Android.Libs/easyFoursquare4Android/unspecified/classes.jar"
+        jumboMode="false"
+        revision="21.1.1"
+        sha1="303137e93319e48010f04b3e4e8766c977d8823f">
+        <dex dex="/Users/tructran/3min-Android/MainSource/3min/build/intermediates/pre-dexed/debug/classes-f943dc56f17145389c9ad952ac54f3c6aec27ac1.jar" />
+    </item>
+    <item
+        jar="/Users/tructran/3min-Android/MainSource/3min/build/intermediates/exploded-aar/3min-Android.Libs/AndroidAnimator/unspecified/classes.jar"
+        jumboMode="false"
+        revision="21.1.1"
+        sha1="d50c3da380ac8ad4da7cd5395f926bc1d52331e5">
+        <dex dex="/Users/tructran/3min-Android/MainSource/3min/build/intermediates/pre-dexed/debug/classes-4ddd946a53e36dfcc42a5b23795f7e52856ddaef.jar" />
+    </item>
+    <item
+        jar="/Users/tructran/3min-Android/MainSource/3min/build/intermediates/exploded-aar/3min-Android.Libs/facebook/unspecified/libs/bolts.jar"
+        jumboMode="false"
+        revision="21.1.1"
+        sha1="1e5ba33c837d05dcca9dc40a0ab458f8599d7aef">
+        <dex dex="/Users/tructran/3min-Android/MainSource/3min/build/intermediates/pre-dexed/debug/bolts-05d786f8b17cb822a656529ca35fb35791b2171a.jar" />
+    </item>
+    <item
+        jar="/Users/tructran/Downloads/adt-bundle-mac-x86_64-20140702/sdk/extras/android/m2repository/com/android/support/support-annotations/21.0.0/support-annotations-21.0.0.jar"
+        jumboMode="false"
+        revision="21.1.1"
+        sha1="1a578b9607b36266c63d43a4fa0ab5664dbe911e">
+        <dex dex="/Users/tructran/3min-Android/MainSource/3min/build/intermediates/pre-dexed/debug/support-annotations-21.0.0-cf1abf788a9f6d1d61d2a1483e1ddc4ae6adf078.jar" />
+    </item>
+    <item
+        jar="/Users/tructran/3min-Android/MainSource/3min/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.0/libs/internal_impl-21.0.0.jar"
+        jumboMode="false"
+        revision="21.1.1"
+        sha1="1609e6d42d0480b0f4188e2c29f75388fa12a8f0">
+        <dex dex="/Users/tructran/3min-Android/MainSource/3min/build/intermediates/pre-dexed/debug/internal_impl-21.0.0-0cf000cf7e48a417249ac284d99e443333d4a652.jar" />
+    </item>
+    <item
+        jar="/Users/tructran/3min-Android/MainSource/3min/build/intermediates/exploded-aar/3min-Android.Libs/google-play-services_lib/unspecified/libs/google-play-services.jar"
+        jumboMode="false"
+        revision="21.1.1"
+        sha1="7676c0cb230efa6ac41c47867d372ed5913029d4">
+        <dex dex="/Users/tructran/3min-Android/MainSource/3min/build/intermediates/pre-dexed/debug/google-play-services-b4b5c45708904cf74912c01554f5c6d65f1da455.jar" />
+    </item>
+    <item
+        jar="/Users/tructran/3min-Android/MainSource/3min/build/intermediates/exploded-aar/3min-Android.Libs/facebook/unspecified/classes.jar"
+        jumboMode="false"
+        revision="21.1.1"
+        sha1="d389866e83ba6982653552040d856ec8c9840d4e">
+        <dex dex="/Users/tructran/3min-Android/MainSource/3min/build/intermediates/pre-dexed/debug/classes-dcd7f88ff2f5b22791826f73a168b7532e1b8727.jar" />
+    </item>
+    <item
+        jar="/Users/tructran/3min-Android/MainSource/3min/libs/apache-mime4j-core-0.7.2.jar"
+        jumboMode="false"
+        revision="21.1.1"
+        sha1="a81264fe0265ebe8fd1d8128aad06dc320de6eef">
+        <dex dex="/Users/tructran/3min-Android/MainSource/3min/build/intermediates/pre-dexed/debug/apache-mime4j-core-0.7.2-db56e63b130176f1e8ec5d46738696aef962e13d.jar" />
+    </item>
+    <item
+        jar="/Users/tructran/3min-Android/MainSource/3min/libs/apache-mime4j-core-0.7.2-javadoc.jar"
+        jumboMode="false"
+        revision="21.1.1"
+        sha1="6eef338b572ad9ae1f2b80fa9f45127624aa499c">
+        <dex dex="/Users/tructran/3min-Android/MainSource/3min/build/intermediates/pre-dexed/debug/apache-mime4j-core-0.7.2-javadoc-f6710a2ee58e7963fafc5189339fdfa746c1f832.jar" />
+    </item>
+    <item
+        jar="/Users/tructran/3min-Android/MainSource/3min/build/intermediates/exploded-aar/3min-Android.Libs/MaskLibrary/unspecified/classes.jar"
+        jumboMode="false"
+        revision="21.1.1"
+        sha1="2c347b0b45cd519dabb1e567c3145d963cd56e42">
+        <dex dex="/Users/tructran/3min-Android/MainSource/3min/build/intermediates/pre-dexed/debug/classes-08495269811ae345394abffd7ed6be0e1a4928db.jar" />
+    </item>
+    <item
+        jar="/Users/tructran/3min-Android/MainSource/3min/libs/httpclient-4.3.3.jar"
+        jumboMode="false"
+        revision="21.1.1"
+        sha1="18f4247ff4572a074444572cee34647c43e7c9c7">
+        <dex dex="/Users/tructran/3min-Android/MainSource/3min/build/intermediates/pre-dexed/debug/httpclient-4.3.3-bd7cf3db2fb99cb0c5ccf0bf0781ee747d2668d6.jar" />
+    </item>
+    <item
+        jar="/Users/tructran/3min-Android/MainSource/3min/build/intermediates/exploded-aar/3min-Android.Libs/AndroidStaggeredGrid/unspecified/classes.jar"
+        jumboMode="false"
+        revision="21.1.1"
+        sha1="75217bc2d08375ad3c789ee395fcc6ea9a1ebf72">
+        <dex dex="/Users/tructran/3min-Android/MainSource/3min/build/intermediates/pre-dexed/debug/classes-edb5d7c644f5a4c33be6cfbf730a93c7211a5f5e.jar" />
+    </item>
+    <item
+        jar="/Users/tructran/3min-Android/MainSource/3min/build/intermediates/exploded-aar/com.edmodo/cropper/1.0.1/classes.jar"
+        jumboMode="false"
+        revision="21.1.1"
+        sha1="41ef1672a9edec752de0ca05f71543212ee0eea9">
+        <dex dex="/Users/tructran/3min-Android/MainSource/3min/build/intermediates/pre-dexed/debug/classes-45ccf3d920111931e99027cff6d649c727452f4a.jar" />
+    </item>
+
+</items>
