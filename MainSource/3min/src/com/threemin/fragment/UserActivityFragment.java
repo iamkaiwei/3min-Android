@@ -96,15 +96,6 @@ public class UserActivityFragment extends Fragment {
                     startActivityForRelationship(model);
                 }
                 
-//                if (CommonConstant.ACTIVITY_TYPE_RELATIONSHIP.equals(model.getSubjectType())) {
-//                    startActivityForRelationship(model);
-//                } else if (CommonConstant.ACTIVITY_TYPE_CONVERSATION.equals(model.getSubjectType())) {
-//                    startActivityForConversation(model);
-//                } else if (CommonConstant.ACTIVITY_TYPE_PRODUCT.equals(model.getSubjectType())) {
-//                    startActivityForProduct(model);
-//                } else {
-//                    Toast.makeText(getActivity(), "Not implement", Toast.LENGTH_LONG).show();
-//                }
             }
         });
 		
@@ -187,7 +178,7 @@ public class UserActivityFragment extends Fragment {
                     mDBHelper.deleteAllActivities();
                 } else if (currentStep == STEP_LOADMORE) { 
                     data.addAll(result);
-                    adapter.setListUsers(data);
+                    adapter.setListActivities(data);
                 }
                 mDBHelper.insertListActivities(result);
             } else if (currentStep == STEP_INIT) {
@@ -195,7 +186,7 @@ public class UserActivityFragment extends Fragment {
                 if (adapter == null) {
                     adapter = new ActivityAdapter(getActivity(), result);
                 } else {
-                    adapter.setListUsers(result);
+                    adapter.setListActivities(result);
                 }
             }
             Log.i(tag, "GetActivitiesListTask result: " + new Gson().toJson(result));

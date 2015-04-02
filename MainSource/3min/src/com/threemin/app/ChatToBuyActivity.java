@@ -236,6 +236,7 @@ public class ChatToBuyActivity extends ThreeMinsBaseActivity {
 					public void run() {
 						MessageModel messageModel = new MessageModel(arg2, conversation.getUser(), IS_THEIR_MESSAGE);
 						mMessageAdapter.addData(messageModel);
+			            mLvChatContent.smoothScrollToPositionFromTop(mMessageAdapter.getCount()-1, 0, 350);
 					}
 				});
 			}

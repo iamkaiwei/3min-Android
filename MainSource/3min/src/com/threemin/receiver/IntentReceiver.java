@@ -7,8 +7,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.threemin.app.ChatToBuyActivity;
 import com.threemin.app.DetailActivity;
@@ -29,6 +29,7 @@ public class IntentReceiver extends BroadcastReceiver {
     private static final String tag = "IntentReceiver";
     
     public static final String ACTION_NOTIFY_UPDATE_NUMBER_ACTIVITIES = "com.threemin.receiver.IntentReceiver.NotifyUpdateNumberActivities";
+    public static final String ACTION_NOTIFY_NEW_NOTIFICATION = "com.threemin.receiver.IntentReceiver.NotifyNewNotification";
 
     // A set of actions that launch activities when a push is opened.  Update
     // with any custom actions that also start activities when a push is opened.
@@ -61,11 +62,13 @@ public class IntentReceiver extends BroadcastReceiver {
             //TODO: testing - check if the app is in forceground.
             //if app is active: cancel the notification
             //else: do nothing
-            if (ThreeMinsApplication.isActive) {
+            //exception: if it is a notification for requesting feedback, always create notification
+            Bundle extras = intent.getExtras();
+            int type = Integer.parseInt(extras.getString("notification_type"));
+            if (ThreeMinsApplication.isActive && type != CommonConstant.TYPE_REMIND_BUYER_FEEDBACK) {
                 NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                 notificationManager.cancel(id);
-                String msg = intent.getStringExtra(PushManager.EXTRA_ALERT);
-                Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
+                notifyNewNotification(context, intent);
             }
 
             logPushExtras(intent);
@@ -92,12 +95,6 @@ public class IntentReceiver extends BroadcastReceiver {
                 context.startActivity(launch);
             }
 
-//            Intent launch = new Intent(Intent.ACTION_MAIN);
-//            launch.setClass(UAirship.shared().getApplicationContext(), HomeActivity.class);
-//            launch.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//
-//            UAirship.shared().getApplicationContext().startActivity(launch);
-
         } else if (action.equals(PushManager.ACTION_REGISTRATION_FINISHED)) {
             Log.i(tag, "Registration complete. APID:" + intent.getStringExtra(PushManager.EXTRA_APID)
                     + ". Valid: " + intent.getBooleanExtra(PushManager.EXTRA_REGISTRATION_VALID, false));
@@ -111,7 +108,7 @@ public class IntentReceiver extends BroadcastReceiver {
         }
     }
     
-    private Intent createIntent(Context context, Intent data) {
+    public static Intent createIntent(Context context, Intent data) {
         Bundle extras = data.getExtras();
         Intent showAppIntent = new Intent();
         
@@ -177,7 +174,18 @@ public class IntentReceiver extends BroadcastReceiver {
     
     private void notifyUpdateNumberActivities(Context context) {
         Intent intent = new Intent(ACTION_NOTIFY_UPDATE_NUMBER_ACTIVITIES);
-        context.sendBroadcast(intent);
+//        context.sendBroadcast(intent);
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+    }
+    
+    private void notifyNewNotification(Context context, Intent intentFromUrbanAirship) {
+        Intent intent = new Intent(ACTION_NOTIFY_NEW_NOTIFICATION);
+        Set<String> keySet = intentFromUrbanAirship.getExtras().keySet();
+        for (String key : keySet) {
+            intent.putExtra(key, intentFromUrbanAirship.getStringExtra(key));
+        }
+//        context.sendBroadcast(intent);
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
     }
 
 }

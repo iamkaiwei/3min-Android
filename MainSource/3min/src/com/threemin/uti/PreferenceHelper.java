@@ -6,6 +6,7 @@ import android.content.SharedPreferences.Editor;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.threemin.model.ProductModel;
 import com.threemin.model.UserModel;
 
 
@@ -135,5 +136,31 @@ public class PreferenceHelper {
 	
 	public int getNumberActivities() {
 	    return getInteger(CommonConstant.PREF_ACTIVITIES, 0);
+	}
+	
+	public void cacheProduct(ProductModel model) {
+	    String strCache = new Gson().toJson(model);
+	    clearCachedProduct();
+	    putBoolean(CommonConstant.PREF_IS_PRODUCT_CACHED, true);
+	    putString(CommonConstant.PREF_CACHED_PRODUCT_DATA, strCache);
+	}
+	
+	public void clearCachedProduct() {
+	    putBoolean(CommonConstant.PREF_IS_PRODUCT_CACHED, false);
+	    putString(CommonConstant.PREF_CACHED_PRODUCT_DATA, "");
+	}
+	
+	public boolean checkIfProductIsCached() {
+	    return getBoolean(CommonConstant.PREF_IS_PRODUCT_CACHED, DEFAULT_BOOLEAN);
+	} 
+	
+	public ProductModel getCachedProduct() {
+	    ProductModel model = null;
+	    String cache = getString(CommonConstant.PREF_CACHED_PRODUCT_DATA, null);
+	    if (cache != null && cache.length() > 0) {
+            model = new Gson().fromJson(cache, ProductModel.class);
+        }
+	    
+	    return model;
 	}
 }

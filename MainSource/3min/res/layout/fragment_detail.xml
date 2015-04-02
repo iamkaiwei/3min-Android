@@ -43,7 +43,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="@dimen/inflater_header_grid_margin_left"
+                        android:layout_marginLeft="@dimen/inflater_product_margin_left"
                         android:orientation="vertical" >
 
                         <LinearLayout

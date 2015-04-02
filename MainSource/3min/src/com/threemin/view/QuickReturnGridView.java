@@ -146,7 +146,7 @@ public class QuickReturnGridView extends StaggeredGridView {
                         // In case user presses any other item (position)
                         mTookFirstEvent = true;
                         mMessage = mMessage == null ? new Message() : mHandler.obtainMessage();
-                        // ”Recycling” the message, instead creating new
+                        // Recycling the message, instead creating new
                         // instance we get the old one
                         mHandler.removeMessages(SINGLE_TAP);
                         mMessage.what = SINGLE_TAP;

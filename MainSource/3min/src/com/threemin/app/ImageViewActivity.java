@@ -8,6 +8,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -22,12 +23,14 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -42,21 +45,20 @@ import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.widget.LoginButton;
 import com.google.gson.Gson;
-import com.koushikdutta.urlimageviewhelper.UrlImageViewCallback;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.threemin.model.CategoryModel;
 import com.threemin.model.ImageModel;
 import com.threemin.model.ProductModel;
 import com.threemin.uti.CommonConstant;
-import com.threemin.uti.CommonUti;
 import com.threemin.uti.PreferenceHelper;
 import com.threemin.uti.WebserviceConstant;
 import com.threemin.view.SquareImageView;
+import com.threemin.webservice.ProductWebservice;
 import com.threemin.webservice.UploaderImageUlti;
 import com.threemins.R;
 import com.threemins.R.id;
 
-public class ImageViewActivity extends Activity {
+public class ImageViewActivity extends ThreeMinsBaseActivity {
     
     public static final String tag = "ImageViewActivity";
 
@@ -82,7 +84,7 @@ public class ImageViewActivity extends Activity {
 	String mProductName, mProductDescription;
 	
 	
-	List<ImageModel> imageModels;
+	List<ImageModel> mImageModels;
 	TextView locationName;
 	Venue venue;
     Switch mSwShareOnFacebook;
@@ -173,7 +175,22 @@ public class ImageViewActivity extends Activity {
 
 	public void deleteImage (int resId) {
 		ImageView img = (ImageView) findViewById(resId);
-		imageModels.remove((ImageModel)img.getTag());
+		ImageModel model = (ImageModel)img.getTag();
+		
+		Log.i(tag, new Gson().toJson(model).toString());
+		
+		if (mIsUpdateProduct && model.getId() != 0) {
+            model.setTypeEditProduct(ImageModel.TYPE_EDIT_PRODUCT_DELETE);
+            for (ImageModel imgM : mImageModels) {
+                if (imgM.getId() == model.getId()) {
+                    imgM.setTypeEditProduct(ImageModel.TYPE_EDIT_PRODUCT_DELETE);
+                }
+            }
+        } else {
+            mImageModels.remove(model);
+        }
+		
+		
 		if (img.getDrawable() != null) {
 			img.setImageDrawable(null);
 		}
@@ -188,37 +205,156 @@ public class ImageViewActivity extends Activity {
 	private double mVenueLong;
 	private ImageView mImgDeleteListing;
 
+	private boolean mFlagCalledFromOnCreate = false;
+	private boolean mFlagUploadingFinished = false;
+	
+	//activity 's life cycle
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_imageview);
 
 		mContext = ImageViewActivity.this;
-		imageModels=new ArrayList<ImageModel>();
+		mIsUpdateProduct = getIntent().getBooleanExtra(CommonConstant.INTENT_EDIT_PRODUCT, false);
+        
+		mImageModels=new ArrayList<ImageModel>();
 		initActionBar();
 		initWidgets();
 		setEvents();
 		
-		mIsUpdateProduct = getIntent().getBooleanExtra(CommonConstant.INTENT_EDIT_PRODUCT, false);
-		if (mIsUpdateProduct) {
-            doEditProduct();
-        } else {
-            mImgDeleteListing.setVisibility(View.GONE);
-            startActivityForResult(new Intent(ImageViewActivity.this, ActivityCamera.class), REQUEST_CAMERA_ON_CREATE);
-        }
+		//do this part in onResume to avoid crash
+//		if (mIsUpdateProduct) {
+//            doEditProduct();
+//        } else {
+//            mImgDeleteListing.setVisibility(View.GONE);
+//            startActivityForResult(new Intent(ImageViewActivity.this, ActivityCamera.class), REQUEST_CAMERA_ON_CREATE);
+//        }
+		mFlagCalledFromOnCreate = true;
 	}
 	
 	@Override
     protected void onResume() {
+	    //TODO
         super.onResume();
-        ThreeMinsApplication.isActive = true;
+        
+        if (mFlagCalledFromOnCreate == true) {
+            mFlagCalledFromOnCreate = false;
+            if (PreferenceHelper.getInstance(mContext).checkIfProductIsCached() == true) {
+                Log.i("cached", "onResume true");
+                ProductModel model = PreferenceHelper.getInstance(mContext).getCachedProduct();
+                Log.i("cached", "onResume " + new Gson().toJson(model));
+                loadCachedProduct(model);
+            } else {
+                if (mIsUpdateProduct) {
+                    doEditProduct();
+                } else {
+                    mImgDeleteListing.setVisibility(View.GONE);
+                    startActivityForResult(new Intent(ImageViewActivity.this, ActivityCamera.class),
+                            REQUEST_CAMERA_ON_CREATE);
+                }
+            }
+        }
     }
     
     @Override
     protected void onPause() {
         super.onPause();
-        ThreeMinsApplication.isActive = false;
+        cacheImageIfNeed();
     }
+    
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.i("tructran", "Result Code is - " + resultCode +"");
+        Session session = Session.getActiveSession();
+        if (session != null) {
+            session.onActivityResult(ImageViewActivity.this, requestCode, resultCode, data);
+        } else {
+            Log.i("tructran", "session null");
+        }
+        
+        if (resultCode == RESULT_OK) {
+            if (requestCode >= REQUEST_CAMERA_IMG_1 && requestCode <= REQUEST_CAMERA_IMG_4) {
+                String uri = data.getStringExtra("imagePath");
+                if (requestCode == REQUEST_CAMERA_IMG_1) {
+                    setImageURI(uri,mImg1);
+                } else if (requestCode == REQUEST_CAMERA_IMG_2) {
+                    setImageURI(uri,mImg2);
+                } else if (requestCode == REQUEST_CAMERA_IMG_3) {
+                    setImageURI(uri,mImg3);
+                } else if (requestCode == REQUEST_CAMERA_IMG_4) {
+                    setImageURI(uri,mImg4);
+                }
+            } 
+            else if(requestCode== REQUEST_LOCATION){
+                String result=data.getStringExtra(CommonConstant.INTENT_PRODUCT_DATA);
+                venue=new Gson().fromJson(result, Venue.class);
+                if(venue!=null){
+                    locationName.setText(venue.getName());
+                }
+            } else if (requestCode == REQUEST_CAMERA_ON_CREATE) {
+                String uri = data.getStringExtra("imagePath");
+                setImageURI(uri,mImg1);
+            }
+            else if(requestCode==REQUEST_CATEGORY){
+                String json=data.getStringExtra(CommonConstant.INTENT_CATEGORY_DATA);
+                mSelectedCategory=new Gson().fromJson(json, CategoryModel.class);
+                tv_Category.setText(mSelectedCategory.getName());
+            } else if(requestCode==REQUEST_PRODUCT_INPUT_ITEM){
+                String productName = data.getStringExtra(CommonConstant.INTENT_PRODUCT_NAME);
+                String productDescription = data.getStringExtra(CommonConstant.INTENT_PRODUCT_DESCRIPTION);
+                venue = new Gson().fromJson(data.getStringExtra(CommonConstant.INTENT_PRODUCT_DATA), Venue.class);
+                tvName.setText(productName);
+                mProductName = productName;
+                mProductDescription = productDescription;
+                
+                if(venue!=null){
+                    locationName.setText(venue.getName());
+                }
+            }
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_post_product, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case android.R.id.home:
+            onBackPressed();
+            return true;
+        case R.id.action_submit:
+          ProductModel result=validateInput();
+          
+          if (mIsUpdateProduct) {
+            //TODO: haven't implemented
+              new UpdateProductTask().execute(result);
+          } else {
+              if(result!=null){
+                  String data=new Gson().toJson(result);
+                  Intent intent=new Intent();
+                  intent.putExtra(CommonConstant.INTENT_PRODUCT_DATA, data);
+                  setResult(RESULT_OK, intent);
+                  if (mSwShareOnFacebook.isChecked()) {
+                      doShareOnFacebook();
+                  }
+                  mFlagUploadingFinished = true;
+                  finish();
+              }
+          }
+          
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
+    }
+    
+    //my methods
 
 	public void initWidgets() {
 		mImg1 = (SquareImageView) findViewById(R.id.activity_imageview_img_1);
@@ -256,11 +392,11 @@ public class ImageViewActivity extends Activity {
 		String price = etPrice.getText().toString();
 		
 		ProductModel result=new ProductModel();
-		if(imageModels.isEmpty()){
+		if(mImageModels.isEmpty()){
 			Toast.makeText(mContext, R.string.error_empty_image, Toast.LENGTH_SHORT).show();
 			Log.i("ImageViewActivity", "list img empty");
 		} else {
-			result.setImages(imageModels);
+			result.setImages(mImageModels);
 		}
 		
 		if(TextUtils.isEmpty(name)){
@@ -293,9 +429,7 @@ public class ImageViewActivity extends Activity {
 			//check if it is edit product
 			if (    mIsUpdateProduct &&
 			        !TextUtils.isEmpty(mVenueID) &&
-                    !TextUtils.isEmpty(mVenueID) &&
-                    !TextUtils.isEmpty(mVenueID) &&
-                    !TextUtils.isEmpty(mVenueID)
+                    !TextUtils.isEmpty(mVenueName)
                 ) 
 			{
 			    result.setVenueId(mVenueID);
@@ -396,59 +530,6 @@ public class ImageViewActivity extends Activity {
 		getActionBar().setHomeButtonEnabled(true);
 	}
 
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-        Log.i("tructran", "Result Code is - " + resultCode +"");
-        Session session = Session.getActiveSession();
-        if (session != null) {
-            session.onActivityResult(ImageViewActivity.this, requestCode, resultCode, data);
-        } else {
-            Log.i("tructran", "session null");
-        }
-        
-		if (resultCode == RESULT_OK) {
-			if (requestCode >= REQUEST_CAMERA_IMG_1 && requestCode <= REQUEST_CAMERA_IMG_4) {
-				String uri = data.getStringExtra("imagePath");
-				if (requestCode == REQUEST_CAMERA_IMG_1) {
-					setImageURI(uri,mImg1);
-				} else if (requestCode == REQUEST_CAMERA_IMG_2) {
-					setImageURI(uri,mImg2);
-				} else if (requestCode == REQUEST_CAMERA_IMG_3) {
-					setImageURI(uri,mImg3);
-				} else if (requestCode == REQUEST_CAMERA_IMG_4) {
-					setImageURI(uri,mImg4);
-				}
-			} 
-			else if(requestCode== REQUEST_LOCATION){
-				String result=data.getStringExtra(CommonConstant.INTENT_PRODUCT_DATA);
-				venue=new Gson().fromJson(result, Venue.class);
-				if(venue!=null){
-					locationName.setText(venue.getName());
-				}
-			} else if (requestCode == REQUEST_CAMERA_ON_CREATE) {
-				String uri = data.getStringExtra("imagePath");
-				setImageURI(uri,mImg1);
-			}
-			else if(requestCode==REQUEST_CATEGORY){
-				String json=data.getStringExtra(CommonConstant.INTENT_CATEGORY_DATA);
-				mSelectedCategory=new Gson().fromJson(json, CategoryModel.class);
-				tv_Category.setText(mSelectedCategory.getName());
-			} else if(requestCode==REQUEST_PRODUCT_INPUT_ITEM){
-			    String productName = data.getStringExtra(CommonConstant.INTENT_PRODUCT_NAME);
-		        String productDescription = data.getStringExtra(CommonConstant.INTENT_PRODUCT_DESCRIPTION);
-		        venue = new Gson().fromJson(data.getStringExtra(CommonConstant.INTENT_PRODUCT_DATA), Venue.class);
-		        tvName.setText(productName);
-		        mProductName = productName;
-		        mProductDescription = productDescription;
-		        
-		        if(venue!=null){
-                    locationName.setText(venue.getName());
-                }
-			}
-		}
-	}
-
 	public String getPath(Uri uri) {
 
 		ContentResolver cr = this.getContentResolver();
@@ -471,13 +552,24 @@ public class ImageViewActivity extends Activity {
 		if(imgFile.exists()){
 		    Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
 		    imageView.setImageBitmap(myBitmap);
-		    ImageModel imgModel = new ImageModel();
+		    ImageModel imgModel;
+		    ImageModel tempModel = (ImageModel)imageView.getTag();
+		    if (mIsUpdateProduct && tempModel != null) {
+                imgModel = tempModel;
+                mImageModels.remove(imgModel);
+                imgModel.setTypeEditProduct(ImageModel.TYPE_EDIT_PRODUCT_UPDATE);
+            }else {
+                imgModel = new ImageModel();
+                imgModel.setTypeEditProduct(ImageModel.TYPE_EDIT_PRODUCT_CREATE);
+            }
 		    imgModel.setUrl(imgFile.getAbsolutePath());
 		    imageView.setTag(imgModel);
-		    imageModels.add(imgModel);
+		    mImageModels.add(imgModel);
+		    Log.i("cached", "setImageURI: add img" + mImageModels.size());
 		} else {
 			Toast.makeText(this, "File does not exists", Toast.LENGTH_LONG).show();
 		}
+		Log.i("cached", "setImageURI: " + mImageModels.size());
 	}
 
     public void doShareOnFacebook() {
@@ -559,45 +651,65 @@ public class ImageViewActivity extends Activity {
 		Log.i("tructran", "createRequestFromFile: done, request null");
 		return null;
 	}
+	
+	//TODO: ============ cache product =================================
+	
+	public void cacheImageIfNeed() {
+	    if (mFlagUploadingFinished == false && mImageModels != null && mImageModels.size() > 0) {
+	        ProductModel cacheModel = new ProductModel();
+	        cacheModel.setCategory(mSelectedCategory);
+	        cacheModel.setDescription(mProductDescription);
+	        cacheModel.setName(mProductName);
+	        cacheModel.setPrice(etPrice.getText().toString());
+	        cacheModel.setVenueId(mVenueID);
+	        cacheModel.setVenueName(mVenueName);
+	        cacheModel.setVenueLat(mVenueLat);
+	        cacheModel.setVenueLong(mVenueLong);
+	        cacheModel.setImages(mImageModels);
+	        
+	        Log.i("cached", "cacheImageIfNeed size: " + mImageModels.size());
+	        
+	        PreferenceHelper.getInstance(mContext).cacheProduct(cacheModel);
+        } else {
+            Log.i("cached", "cacheImageIfNeed: mFlagUploadingFinished: " + mFlagUploadingFinished + "list: " + mImageModels == null ? "null" : "" + mImageModels.size());
+        }
+	}
+	
+	public void loadCachedProduct(ProductModel model) {
+	    if (model != null) {
+	        Log.i("cached", "loadCachedProduct " + new Gson().toJson(model));
+	        mProductName = model.getName();
+	        if (mProductName != null) {
+	            tvName.setText(mProductName);
+            }
+	        mProductDescription = model.getDescription();
+	        mSelectedCategory = model.getCategory();
+	        if (mSelectedCategory != null) {
+	            tv_Category.setText(mSelectedCategory.getName());
+            }
+	        etPrice.setText(model.getPrice());
+	        mVenueID = model.getVenueId();
+	        mVenueLat = model.getVenueLat();
+	        mVenueLong = model.getVenueLong();
+	        mVenueName = model.getVenueName();
+	        
+	        mImageModels = model.getImages();
+	        ImageView[] listImgV = new ImageView[4];
+	        listImgV[0] = mImg1;
+            listImgV[1] = mImg2;
+            listImgV[2] = mImg3;
+            listImgV[3] = mImg4;
+            for (int i = 0; i < mImageModels.size(); i++) {
+                ImageModel imgModel = mImageModels.get(i);
+                String imgPath = imgModel.getUrl();
+                Bitmap bmp = BitmapFactory.decodeFile(imgPath);
+                listImgV[i].setImageBitmap(bmp);
+            }
+            
+        }
+	    PreferenceHelper.getInstance(mContext).clearCachedProduct();
+	}
     
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			onBackPressed();
-			return true;
-		case R.id.action_submit:
-          ProductModel result=validateInput();
-          
-          if (mIsUpdateProduct) {
-            //TODO: haven't implemented
-              new UpdateProductTask().execute(result);
-          } else {
-              if(result!=null){
-                  String data=new Gson().toJson(result);
-                  Intent intent=new Intent();
-                  intent.putExtra(CommonConstant.INTENT_PRODUCT_DATA, data);
-                  setResult(RESULT_OK, intent);
-                  if (mSwShareOnFacebook.isChecked()) {
-                      doShareOnFacebook();
-                  }
-                  finish();
-              }
-          }
-          
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-	}
-	
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.menu_post_product, menu);
-		return super.onCreateOptionsMenu(menu);
-	}
-	
 	//TODO============== EDIT PRODUCT ================================
 	public void doEditProduct() {
 	    String strData = getIntent().getStringExtra(CommonConstant.INTENT_PRODUCT_DATA);
@@ -612,24 +724,14 @@ public class ImageViewActivity extends Activity {
             listImgV.add(mImg4);
             List<ImageModel> listImgModel = mProductModel.getImages();
             if (listImgModel.size() > 0) {
-                imageModels.clear();
-                imageModels.addAll(listImgModel);
+                mImageModels.clear();
+                mImageModels.addAll(listImgModel);
                 for (int i = 0; i < listImgModel.size(); i++) {
-                    final int index = i;
                     UrlImageViewHelper.setUrlDrawable(
                             listImgV.get(i), 
-                            listImgModel.get(i).getOrigin(), 
-                            R.drawable.stuff_img, new UrlImageViewCallback() {
-                                
-                                @Override
-                                public void onLoaded(ImageView imageView, Bitmap loadedBitmap, String url, boolean loadedFromCache) {
-                                    if (loadedBitmap != null) {
-                                        imageView.setImageBitmap(loadedBitmap);
-                                        String filePath = CommonUti.saveBitmapToLocal(loadedBitmap);
-                                        imageModels.get(index).setUrl(filePath);
-                                    }
-                                }
-                            });
+                            listImgModel.get(i).getMedium(), 
+                            R.drawable.stuff_img);
+                    listImgModel.get(i).setTypeEditProduct(ImageModel.TYPE_EDIT_PRODUCT_NO_CHANGE);
                     listImgV.get(i).setTag(listImgModel.get(i));
                 }
             }
@@ -657,7 +759,45 @@ public class ImageViewActivity extends Activity {
 	}
 	
 	void doDeleteProduct() {
-	    //TODO: haven't implemented
+	    Dialog dialog = createDeleteProductDialog();
+	    dialog.show();
+	    
+	}
+	
+	public Dialog createDeleteProductDialog() {
+	    final Dialog dialog = new Dialog(this, R.style.FeedbackDialog);
+        View dialogLayout = LayoutInflater.from(this).inflate(R.layout.dialog_delete_product, null);
+        
+        Button btnYes = (Button) dialogLayout.findViewById(R.id.dialog_delete_product_btn_yes);
+        Button btnNo = (Button) dialogLayout.findViewById(R.id.dialog_delete_product_btn_no);
+        ImageView ivProduct = (ImageView) dialogLayout.findViewById(R.id.dialog_delete_product_iv_product);
+        
+        btnYes.setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                new DeleteProductTask().execute();  
+            }
+        });
+        
+        btnNo.setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        
+        List<ImageModel> list = mProductModel.getImages();
+        if (list != null && list.size() > 0) {
+            UrlImageViewHelper.setUrlDrawable(ivProduct, list.get(0).getMedium(), R.drawable.stuff_img);
+        } else {
+            ivProduct.setImageResource(R.drawable.stuff_img);
+        }
+        
+        dialog.setContentView(dialogLayout);
+        return dialog;
 	}
 	
 	private class UpdateProductTask extends AsyncTask<ProductModel, Void, ProductModel> {
@@ -700,6 +840,58 @@ public class ImageViewActivity extends Activity {
 	        finish();
 	    }
 	    
+	}
+	
+	private class DeleteProductTask extends AsyncTask<Void, Void, Integer> {
+	    private ProgressDialog dialog;
+	    
+	    @Override
+	    protected void onPreExecute() {
+	        super.onPreExecute();
+	        if (dialog == null) {
+                dialog = new ProgressDialog(ImageViewActivity.this);
+                dialog.setMessage(getString(R.string.please_wait));
+            }
+	        
+	        dialog.show();
+	    }
+	    
+	    @Override
+	    protected Integer doInBackground(Void... params) {
+	        String token = PreferenceHelper.getInstance(ImageViewActivity.this).getTokken();
+	        int id = mProductModel.getId();
+	        int result = new ProductWebservice().deleteProduct(token, id);
+	        Log.i(tag, "DeleteProductTask: result: " + result);
+	        return result;
+	    }
+	    
+	    @Override
+	    protected void onPostExecute(Integer result) {
+	        super.onPostExecute(result);
+	        
+	        if (dialog != null && dialog.isShowing()) {
+                dialog.dismiss();
+            }
+	        
+	        if (result == WebserviceConstant.RESPONSE_CODE_SUCCESS) {
+                doSuccessToDeleteProduct();
+            } else {
+                doFailToDeleteProduct();
+            }
+	    }
+	}
+	
+	public void doSuccessToDeleteProduct() {
+        Intent intent = new Intent(this, HomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK); 
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        overridePendingTransition(R.anim.anim_left_in, R.anim.anim_right_out);
+        Toast.makeText(this, getString(R.string.notify_product_deleted), Toast.LENGTH_LONG).show();
+	}
+	
+	public void doFailToDeleteProduct() {
+        Toast.makeText(this, getString(R.string.notify_fail_to_delete_product), Toast.LENGTH_LONG).show();
 	}
 	
 }

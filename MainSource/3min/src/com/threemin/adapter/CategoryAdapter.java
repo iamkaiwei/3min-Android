@@ -21,6 +21,12 @@ import com.threemins.R;
 public class CategoryAdapter extends BaseAdapter {
     
     public static final String tag = "CategoryAdapter";
+    
+    static class ViewHolder {
+        public ImageView ivCategoryIcon;
+        public TextView tvCategoryName;
+        public View vDivider;
+    }
 
 	Context mContext;
 	List<CategoryModel> data;
@@ -37,6 +43,9 @@ public class CategoryAdapter extends BaseAdapter {
 
 	@Override
 	public int getCount() {
+	    if (data == null) {
+            return 0;
+        }
 		return data.size();
 	}
 
@@ -57,12 +66,21 @@ public class CategoryAdapter extends BaseAdapter {
 	@Override
     public View getView(int position, View convertView, ViewGroup parent) {
 	    
+	    if (convertView == null) {
+	        LayoutInflater inflater = LayoutInflater.from(mContext);
+	        convertView = inflater.inflate(R.layout.inflater_category, parent, false);
+	        
+	        ViewHolder vh = new ViewHolder();
+	        vh.ivCategoryIcon =    (ImageView) convertView.findViewById(R.id.inflater_cate_image);
+	        vh.tvCategoryName =    (TextView) convertView.findViewById(R.id.inflater_cate_tv_name);
+	        vh.vDivider =          convertView.findViewById(R.id.inflater_cate_list_divider);
+	        
+	        convertView.setTag(vh);
+        }
+	    
 	    CategoryModel model = data.get(position);
+	    ViewHolder holder = (ViewHolder) convertView.getTag();
 	    Log.i(tag, new Gson().toJson(model).toString());
-
-        LayoutInflater inflater = LayoutInflater.from(mContext);
-        convertView = inflater.inflate(R.layout.inflater_category, parent, false);
-        ImageView img = (ImageView) convertView.findViewById(R.id.inflater_cate_image);
 
         Log.i("CateID", "" + position + ": " + model.getId() + "Name: " + model.getName());
 
@@ -71,21 +89,28 @@ public class CategoryAdapter extends BaseAdapter {
             Log.d("postion", "" + position);
             ImageModel imgModel = model.getImage();
             if (imgModel != null) {
-                UrlImageViewHelper.setUrlDrawable(img, model.getImage().getUrl(), R.drawable.stuff_img);
+                UrlImageViewHelper.setUrlDrawable(holder.ivCategoryIcon, model.getImage().getUrl(), R.drawable.stuff_img);
             } else {
-                img.setImageResource(R.drawable.stuff_img);
+                holder.ivCategoryIcon.setImageResource(R.drawable.stuff_img);
             }
         } else {
-            img.setImageResource(R.drawable.ic_everything);
+            holder.ivCategoryIcon.setImageResource(R.drawable.ic_everything);
         }
 
-        TextView tvName = (TextView) convertView.findViewById(R.id.inflater_cate_tv_name);
-        tvName.setText(data.get(position).getName());
+        holder.tvCategoryName.setText(data.get(position).getName());
+        
+        //because we use view holder, after set height = 1 to hide selected item,
+        //we have to reset height to original size in other ones
         if (selectedCate == position && hideSelectedItem) {
             LayoutParams params = convertView.getLayoutParams();
             params.height = 1;
             convertView.setLayoutParams(params);
-            convertView.findViewById(R.id.inflater_cate_list_divider).setVisibility(View.GONE);
+            holder.vDivider.setVisibility(View.GONE);
+        } else {
+            LayoutParams params = convertView.getLayoutParams();
+            params.height = mContext.getResources().getDimensionPixelSize(R.dimen.inflater_category_row_height);
+            convertView.setLayoutParams(params);
+            holder.vDivider.setVisibility(View.VISIBLE);
         }
         return convertView;
 

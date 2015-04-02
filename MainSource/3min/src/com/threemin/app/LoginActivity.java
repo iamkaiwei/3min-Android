@@ -28,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crittercism.app.Crittercism;
 import com.facebook.Session;
 import com.facebook.widget.LoginButton;
 import com.google.android.gms.auth.GoogleAuthException;
@@ -116,6 +117,7 @@ public class LoginActivity extends FragmentActivity implements ConnectionCallbac
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Crittercism.initialize(getApplicationContext(), getString(R.string.crittercism_app_id));
 		setContentView(R.layout.activity_login);
 		
 		mSharedPreferences = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);

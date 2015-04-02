@@ -2,12 +2,6 @@ package com.threemin.adapter;
 
 import java.util.List;
 
-import com.google.android.gms.internal.in;
-import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
-import com.threemin.model.ActivityModel;
-import com.threemin.model.CommentModel;
-import com.threemins.R;
-
 import android.content.Context;
 import android.text.Html;
 import android.text.format.DateUtils;
@@ -18,7 +12,17 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
+import com.threemin.model.CommentModel;
+import com.threemins.R;
+
 public class CommentAdapter extends BaseAdapter {
+    
+    static class ViewHolder {
+        public ImageView ivAvatar;
+        public TextView tvContent;
+        public TextView tvTime;
+    }
     
     Context mContext;
     private List<CommentModel> mData;
@@ -30,6 +34,9 @@ public class CommentAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
+        if (mData == null) {
+            return 0;
+        }
         return mData.size();
     }
 
@@ -51,19 +58,23 @@ public class CommentAdapter extends BaseAdapter {
         if (convertView == null) {
             LayoutInflater inflater = LayoutInflater.from(mContext);
             convertView = inflater.inflate(R.layout.inflater_comment, null);
+            
+            ViewHolder vh = new ViewHolder();
+            vh.ivAvatar = (ImageView) convertView.findViewById(R.id.inflater_comment_avatar);
+            vh.tvContent = (TextView) convertView.findViewById(R.id.inflater_comment_tv_name_and_content);
+            vh.tvTime = (TextView) convertView.findViewById(R.id.inflater_comment_tv_time);
+            
+            convertView.setTag(vh);
         }
         
-        ImageView imgAvatar = (ImageView) convertView.findViewById(R.id.inflater_comment_avatar);
-        TextView tvContent = (TextView) convertView.findViewById(R.id.inflater_comment_tv_name_and_content);
-        TextView tvTime = (TextView) convertView.findViewById(R.id.inflater_comment_tv_time);
-        
         CommentModel model = mData.get(position);
+        ViewHolder holder = (ViewHolder)convertView.getTag();
         
-        UrlImageViewHelper.setUrlDrawable(imgAvatar, model.getUser().getFacebook_avatar(), R.drawable.avatar_loading);
-        tvContent.setText(Html.fromHtml("<font color=\"#ff401a\">" + model.getUser().getFullName() + "</font>" 
+        UrlImageViewHelper.setUrlDrawable(holder.ivAvatar, model.getUser().getFacebook_avatar(), R.drawable.avatar_loading);
+        holder.tvContent.setText(Html.fromHtml("<font color=\"#ff401a\">" + model.getUser().getFullName() + "</font>" 
                                         + "<font color=\"#a9a9a9\">" + " " + model.getContent() + "</font>"));
         
-        tvTime.setText(DateUtils.getRelativeTimeSpanString(model.getUpdated_at() * 1000,
+        holder.tvTime.setText(DateUtils.getRelativeTimeSpanString(model.getUpdated_at() * 1000,
                 System.currentTimeMillis(), 0L, DateUtils.FORMAT_ABBREV_RELATIVE));
         return convertView;
     }

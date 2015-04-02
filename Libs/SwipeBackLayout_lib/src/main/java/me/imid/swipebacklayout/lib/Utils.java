@@ -1,8 +1,10 @@
 
 package me.imid.swipebacklayout.lib;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
-
+import android.app.ActivityOptions;
+import android.os.Build;
 import java.lang.reflect.Method;
 
 /**
@@ -45,6 +47,7 @@ public class Utils {
      * This call has no effect on non-translucent activities or on activities
      * with the {@link android.R.attr#windowIsFloating} attribute.
      */
+    @SuppressLint("NewApi")
     public static void convertActivityToTranslucent(Activity activity) {
         try {
             Class<?>[] classes = Activity.class.getDeclaredClasses();
@@ -54,13 +57,20 @@ public class Utils {
                     translucentConversionListenerClazz = clazz;
                 }
             }
-            Method method = Activity.class.getDeclaredMethod("convertToTranslucent",
-                    translucentConversionListenerClazz);
-            method.setAccessible(true);
-            method.invoke(activity, new Object[] {
-                null
-            });
+            Method[] methods = Activity.class.getDeclaredMethods();
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+                Method method = Activity.class.getDeclaredMethod("convertToTranslucent",
+                        translucentConversionListenerClazz);
+                method.setAccessible(true);
+                method.invoke(activity, new Object[] { null });
+            } else {
+                Method method = Activity.class.getDeclaredMethod("convertToTranslucent",
+                        translucentConversionListenerClazz, ActivityOptions.class);
+                method.setAccessible(true);
+                method.invoke(activity, new Object[] { null, null });
+            }
         } catch (Throwable t) {
+            t.printStackTrace();
         }
     }
 }

@@ -28,6 +28,13 @@ public class FeedbackWebservice {
      * */
 
     public int sendFeedback(String token, int productID, int scheduleID, String content, int status, int userID){
+        String encodedContent = WebServiceUtil.encodeMessage(content);
+        
+        if (encodedContent == null) {
+            Log.i(tag, "Encoded Content null");
+            return WebserviceConstant.RESPONSE_CODE_EXCEPTION;
+        } 
+        
         String strStatus = "";
         switch (status) {
         case FeedbackActivity.CHECK_NO_COMMENT:
@@ -50,17 +57,15 @@ public class FeedbackWebservice {
                 token,
                 "" + productID,
                 "" + scheduleID,
-                content,
+                encodedContent,
                 strStatus,
                 "" + userID);
         
-        String validLink = WebServiceUtil.getHttpUrl(link);
         
         Log.i(tag, "sendFeedback link: " + link);
-        Log.i(tag, "sendFeedback valid link: " + validLink);
         int responseCode;
         try {
-            responseCode = WebServiceUtil.postRequest(validLink);
+            responseCode = WebServiceUtil.postRequest(link);
             Log.i(tag, "sendFeedback responseCode: " + responseCode);
             return responseCode;
         } catch (Exception e) {

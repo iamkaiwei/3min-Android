@@ -341,4 +341,10 @@
     <!-- header feedback -->
     <string name="header_feedback_view_all_feedbacks">Xem tất cả phản hồi</string>
     
+    <!-- dialog delete product -->
+    <string name="dialog_delete_product_message">Bạn có chắc chắn muốn xóa sản phầm này không?</string>
+    <string name="dialog_delete_product_btn_yes">Xóa</string>
+    <string name="dialog_delete_product_btn_no">Bỏ qua</string>
+    <string name="notify_product_deleted">Đã xóa</string>
+    <string name="notify_fail_to_delete_product">Có lỗi xảy ra khi xóa sản phẩm.</string>
 </resources>

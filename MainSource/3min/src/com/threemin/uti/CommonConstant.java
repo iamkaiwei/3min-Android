@@ -27,6 +27,8 @@ public class CommonConstant {
     public static final String PREF_USER = "PREF_USER";
     public static final String PREF_APID = "PREF_APID";
     public static final String PREF_ACTIVITIES = "PREF_ACTIVITIES";
+    public static final String PREF_IS_PRODUCT_CACHED = "PREF_IS_PRODUCT_CACHED";
+    public static final String PREF_CACHED_PRODUCT_DATA = "PREF_CACHED_PRODUCT_DATA";
 
     public static final String CURRENCY = "k Vnd";
 
@@ -46,6 +48,7 @@ public class CommonConstant {
     public static final String INTENT_IS_FROM_PUSH_NOTIFICATION = "isFromPushNotification";
     public static final String INTENT_SCHEDULE_ID = "scheduleID";
     public static final String INTENT_EDIT_PRODUCT = "editProduct";
+    public static final String INTENT_NEW_NOTIFICATION = "newNotification";    
 
     public static final String PUSHER_CHAT_EVENT_NAME = "client-chat";
     public static final String PUSHER_CHAT_EVENT_TYPING = "client-typing";

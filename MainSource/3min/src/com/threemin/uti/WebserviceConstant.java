@@ -1,5 +1,7 @@
 package com.threemin.uti;
 
+import com.google.android.gms.common.UserRecoverableException;
+
 public class WebserviceConstant {
     public static final int RESPONSE_CODE_SUCCESS = 200;
     public static final int RESPONSE_CODE_EXCEPTION = -1;
@@ -38,4 +40,5 @@ public class WebserviceConstant {
 	public static final String GET_USERS_WHO_LIKED_PRODUCT = URL_HOST + API + "/products/%s/likes.json?access_token=%s&page=%s";
 	public static final String SEND_FEEDBACK = URL_HOST + API + "/feedbacks?access_token=%s&product_id=%s&schedule_id=%s&feedback[content]=%s&feedback[status]=%s&feedback[user_id]=%s";
 	public static final String GET_FEEDBACK_OF_USER = URL_HOST + API + "/feedbacks.json?access_token=%s&user_id=%s&page=%s";
+	public static final String DELETE_PRODUCT = URL_HOST + API + "/products/%s?access_token=%s";
 }

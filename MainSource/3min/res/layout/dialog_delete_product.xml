@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:threemins="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/common_spacing" >
+
+        <ImageView
+            android:id="@+id/dialog_delete_product_iv_product"
+            android:layout_width="@dimen/dialog_delete_product_iv_product_size"
+            android:layout_height="@dimen/dialog_delete_product_iv_product_size"
+            android:scaleType="centerCrop" />
+
+        <com.lanna.droidlib.view.CustomTextView
+            android:id="@+id/dialog_delete_product_tv_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/common_spacing"
+            android:text="@string/dialog_delete_product_message"
+            android:textColor="@color/common_black"
+            android:textSize="@dimen/textsize_medium"
+            threemins:customTypeface="@string/font_semibold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2" >
+
+        <com.lanna.droidlib.view.CustomButton
+            android:id="@+id/dialog_delete_product_btn_yes"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/dialog_delete_product_btn_yes"
+            threemins:customTypeface="@string/font_semibold" />
+
+        <com.lanna.droidlib.view.CustomButton
+            android:id="@+id/dialog_delete_product_btn_no"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/dialog_delete_product_btn_no"
+            threemins:customTypeface="@string/font_semibold" />
+    </LinearLayout>
+
+</LinearLayout>

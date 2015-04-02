@@ -91,6 +91,9 @@ public class ActivityCamera extends ThreeMinsBaseActivity implements OnSeekBarCh
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_camera);
+		
+		disableSwipeBack();
+		
 		((SeekBar) findViewById(R.id.seekBar)).setOnSeekBarChangeListener(this);
 		mBtnCapture = (ImageButton) findViewById(R.id.button_capture);
 		mBtnCapture.setOnClickListener(this);
